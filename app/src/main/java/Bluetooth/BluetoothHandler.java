@@ -14,10 +14,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.Button;
-import android.widget.TextView;
-
-import com.pi314.friendonator.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -34,31 +30,57 @@ import java.util.UUID;
  * Created by andrea on 30/09/14.
  */
 public class BluetoothHandler {
-    BluetoothAdapter mBluetoothAdapter =null;
+    BluetoothAdapter mBluetoothAdapter = null;
     BluetoothDevice device;
     private static final int REQUEST_ENABLE_BT = 1;
     private static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private static final String NAME = "BluetoothDemo";
     BluetoothDevice remoteDevice;
+    private boolean registered = false;
     List<String> lstDisptV = new ArrayList<String>();
 
     public BluetoothHandler() {
     }
-//////////////////////
-    public BluetoothAdapter getAdapter(){
+
+//////////////////
+    public BluetoothAdapter getAdapter() {
         return mBluetoothAdapter;
     }
-    public List<String> getList(){return lstDisptV;}
+
+    public List<String> getList() {
+        return lstDisptV;
+    }
 ///////////////////
 
     public void startServer() {
         new Thread(new AcceptThread()).start();
 
     }
+
     public void startClient() {
         if (device != null) {
             new Thread(new ConnectThread(device)).start();
         }
+    }
+
+    private void registerAdapter(Activity activity) {
+        IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        activity.registerReceiver(getmReceiver(), filter);
+        registered = true;
+    }
+
+    public void SetUnlimitedVisibility(Activity activity){
+        Intent discoverableIntent = new
+        Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+        discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
+        activity.startActivity(discoverableIntent);
+    }
+
+    public void Scan(Activity activity) {
+        if (!registered) {
+            registerAdapter(activity);
+        }
+        getAdapter().startDiscovery();
     }
 
     public boolean startbt() {
@@ -79,7 +101,6 @@ public class BluetoothHandler {
     }
 
 
-
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -87,6 +108,7 @@ public class BluetoothHandler {
         }
 
     };
+
     public void mkmsg(String str) {
         //handler junk, because thread can't update screen!
         Message msg = new Message();
@@ -97,19 +119,18 @@ public class BluetoothHandler {
     }
 
 
-    public BroadcastReceiver getmReceiver(){
+    public BroadcastReceiver getmReceiver() {
         return this.mReceiver;
     }
-    // Create a BroadcastReceiver for ACTION_FOUND
+
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            // When discovery finds a device
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                // Get the BluetoothDevice object from the Intent
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                // Add the name and address to an array adapter to show in a ListView
-                lstDisptV.add(device.getName());
+                if (!lstDisptV.contains(device.getName())) {
+                    lstDisptV.add(device.getName());
+                }
             }
         }
     };
@@ -123,12 +144,12 @@ public class BluetoothHandler {
             // Loop through paired devices
             final BluetoothDevice blueDev[] = new BluetoothDevice[pairedDevices.size()];
             String[] items = new String[blueDev.length];
-            int i =0;
+            int i = 0;
 
             for (BluetoothDevice devicel : pairedDevices) {
                 blueDev[i] = devicel;
                 items[i] = blueDev[i].getName() + ": " + blueDev[i].getAddress();
-                pop += (items[i]+"\n");
+                pop += (items[i] + "\n");
                 //mArrayAdapter.add(device.getName() + "\n" + device.getAddress());
                 i++;
             }
@@ -137,7 +158,7 @@ public class BluetoothHandler {
             builder.setSingleChoiceItems(items, -1, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     dialog.dismiss();
-                    if (item >= 0 && item <blueDev.length) {
+                    if (item >= 0 && item < blueDev.length) {
                         device = blueDev[item];
                     }
 
@@ -163,6 +184,9 @@ public class BluetoothHandler {
             }
             mmServerSocket = tmp;
         }
+
+
+
         public void run() {
             mkmsg("waiting on accept");
             BluetoothSocket socket = null;
@@ -177,29 +201,29 @@ public class BluetoothHandler {
             // If a connection was accepted
             if (socket != null) {
                 mkmsg("Connection made\n");
-                mkmsg("Remote device address: "+socket.getRemoteDevice().getAddress().toString()+"\n");
+                mkmsg("Remote device address: " + socket.getRemoteDevice().getAddress().toString() + "\n");
                 //Note this is copied from the TCPdemo code.
                 try {
                     mkmsg("Attempting to receive a message ...\n");
                     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     String str = in.readLine();
-                    mkmsg("received a message:\n" + str+"\n");
+                    mkmsg("received a message:\n" + str + "\n");
 
-                    PrintWriter out = new PrintWriter( new BufferedWriter( new OutputStreamWriter(socket.getOutputStream())),true);
+                    PrintWriter out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(socket.getOutputStream())), true);
                     mkmsg("Attempting to send message ...\n");
                     out.println("Reponse from Bluetooth Demo Server");
                     out.flush();
                     mkmsg("Message sent...\n");
 
                     mkmsg("We are done, closing connection\n");
-                } catch(Exception e) {
+                } catch (Exception e) {
                     mkmsg("Error happened sending/receiving\n");
 
                 } finally {
                     try {
                         socket.close();
                     } catch (IOException e) {
-                        mkmsg("Unable to close socket"+e.getMessage()+"\n");
+                        mkmsg("Unable to close socket" + e.getMessage() + "\n");
                     }
                 }
             } else {
@@ -216,6 +240,7 @@ public class BluetoothHandler {
             }
         }
     }
+
     private class ConnectThread extends Thread {
         private BluetoothSocket socket;
         private final BluetoothDevice mmDevice;
