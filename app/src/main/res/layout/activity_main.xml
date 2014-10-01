@@ -24,4 +24,6 @@
         android:text="output: "
         >
     </TextView>
+
+
 </LinearLayout>
