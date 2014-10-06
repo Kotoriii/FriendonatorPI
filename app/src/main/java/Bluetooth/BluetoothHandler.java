@@ -141,6 +141,9 @@ public class BluetoothHandler {
         return true;
     }
 
+    public void stopBlueTooth(){
+       mBluetoothAdapter.disable();
+    }
 
     public BroadcastReceiver getReceiver() {
         return this.mReceiver;

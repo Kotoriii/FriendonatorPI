@@ -75,7 +75,9 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     @Override
     public void onClick(View v) {
         if ( (Button)v == btnServer) {
-            bth.startServer();
+          //  bth.startServer();
+            ((Button) v).setText("disabe BT");
+            bMan.getHandler().stopBlueTooth();
         } else if ( (Button)v == btnClient) {
             if (device != null) {
                // output.append("button client\n");
@@ -100,5 +102,9 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
+    }
 }
