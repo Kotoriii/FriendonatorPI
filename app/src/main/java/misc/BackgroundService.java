@@ -1,5 +1,6 @@
 package misc;
 
+import android.app.Activity;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -11,6 +12,9 @@ import android.widget.Toast;
 
 import com.pi314.friendonator.MainActivity;
 import com.pi314.friendonator.R;
+
+import Bluetooth.BlueMan;
+import Bluetooth.BluetoothHandler;
 
 /**
  * Created by andrea on 01/10/14.
@@ -92,4 +96,25 @@ public class BackgroundService extends IntentService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(mIdNotification, mBuilder.build());
     }
+
+    public void ScanEveryX(final int x, final Activity activity){
+        final BlueMan bMan = BlueMan.getInstance(activity);
+        Thread scanner = new Thread(){
+            public void run(){
+                try{
+                    while (true){
+                        synchronized (this) {
+                            bMan.startScan();
+                        }
+                        this.sleep(x);
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        };
+        scanner.start();
+
+    }
+
 }
