@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -22,3 +23,40 @@
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
+=======
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:id="@+id/widget30"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <TextView
+        android:id="@+id/inTxt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="BlueTooth Demo"
+        ></TextView>
+    <LinearLayout android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_width="match_parent">
+        <Button android:layout_height="wrap_content" android:text="Server" android:layout_width="wrap_content" android:id="@+id/btnServer"></Button>
+        <Button android:layout_height="wrap_content" android:text="Scan" android:layout_width="wrap_content" android:id="@+id/btnScan"></Button>
+        <Button android:text="Client" android:id="@+id/btnClient" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="startService"
+            android:id="@+id/startservice" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/output"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:text="output: "
+        >
+    </TextView>
+
+
+</LinearLayout>
+>>>>>>> a32ba83a0c82ac1300fccbc11d552042e6d8b032
