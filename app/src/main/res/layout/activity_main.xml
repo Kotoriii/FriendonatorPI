@@ -1,29 +1,3 @@
-<<<<<<< HEAD
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity">
-
-    <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/btnPerfil"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
-
-</RelativeLayout>
-=======
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:id="@+id/widget30"
@@ -52,11 +26,18 @@
     <TextView
         android:id="@+id/output"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="185dp"
         android:text="output: "
         >
     </TextView>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Button"
+        android:id="@+id/btnPerfil"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </LinearLayout>
->>>>>>> a32ba83a0c82ac1300fccbc11d552042e6d8b032
+

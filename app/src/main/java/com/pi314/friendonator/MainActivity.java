@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 package com.pi314.friendonator;
 
 import android.app.Activity;
@@ -9,51 +8,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
-
-public class MainActivity extends Activity {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        final Button btnPerfil = (Button)findViewById(R.id.btnPerfil);
-
-        btnPerfil.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create the Intent element
-                Intent intent = new Intent(MainActivity.this,
-                        ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-}
-=======
-package com.pi314.friendonator;
-
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -99,8 +53,17 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        final Button btnPerfil = (Button)findViewById(R.id.btnPerfil);
 
-
+        btnPerfil.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create the Intent element
+                Intent intent = new Intent(MainActivity.this,
+                        ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
 
         output = (TextView) findViewById(R.id.output);
         output.append("\n");
@@ -154,6 +117,24 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onDestroy() {
@@ -161,4 +142,3 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 
     }
 }
->>>>>>> a32ba83a0c82ac1300fccbc11d552042e6d8b032

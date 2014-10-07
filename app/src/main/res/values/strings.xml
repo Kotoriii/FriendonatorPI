@@ -4,5 +4,27 @@
     <string name="app_name">Friendonator</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_profile">Profile</string>
+    <string name="txtProfileName">Name</string>
+    <string name="btnProfileImage">Profile Picture</string>
+    <string name="lblInterests">Interest</string>
+    <string name="lblGetContactedBy">Get contacted by</string>
+    <string name="btnSaveChanges">Save Changes</string>
+    <string name="title_activity_interests">Interests</string>
+    <string name="btnChooseInterest">Edit</string>
+    <string name="btnChooseContact">Edit</string>
+    <string name="title_activity_get_contacted_by">Get Contacted By</string>
+    <string name="lblContact">Contact me</string>
+    <string name="lblCellphone">Cellphone</string>
+    <string name="txtPhone">Phone Number</string>
+    <string name="lblGoogle">Google+</string>
+    <string name="txtGoogle">Google+ Account</string>
+    <string name="lblFacebook">Facebook</string>
+    <string name="txtFacebook">Facebook Account</string>
+    <string name="lblTwitter">Twitter</string>
+    <string name="txtTwitter">Twitter Account</string>
+    <string name="lblFindMeTool">Find me tool!</string>
+    <string name="switchActivateTool">Activate</string>
+    <string name="btnSaveContactMeChanges">Save Changes</string>
 
 </resources>
