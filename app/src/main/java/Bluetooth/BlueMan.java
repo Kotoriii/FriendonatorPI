@@ -136,8 +136,11 @@ public class BlueMan {
                     case BluetoothAdapter.STATE_TURNING_OFF:
                         break;
                     case BluetoothAdapter.STATE_ON:
+                        //
                         setNuevoNombre();
                         setUnlimitedVisibility();
+                        //Se unregister el receiver xq ya no lo vamos a necesitar
+                        mAct.unregisterReceiver(mReceiver);
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
                         break;
