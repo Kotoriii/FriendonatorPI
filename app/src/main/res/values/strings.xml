@@ -26,5 +26,6 @@
     <string name="lblFindMeTool">Find me tool!</string>
     <string name="switchActivateTool">Activate</string>
     <string name="btnSaveContactMeChanges">Save Changes</string>
+    <string name="title_activity_my_settings">MySettings</string>
 
 </resources>
