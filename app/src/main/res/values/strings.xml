@@ -31,16 +31,16 @@
     <string name="title_activity_home">Home</string>
     <string name="lblMatchhome">Female Doge</string>
     <string name="title_activity_login">Login</string>
-
-
     <string name="spnEvent">Choose Event</string>
+
     <string-array name="event_array">
         <item>Concert</item>
         <item>Art</item>
         <item>Literature</item>
         <item>Party</item>
         <item>Hang Out</item>
-
     </string-array>
+
+    <string name="title_activity_history">History</string>
 
 </resources>

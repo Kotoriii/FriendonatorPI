@@ -50,10 +50,14 @@
             android:name=".MySettings"
             android:label="@string/title_activity_my_settings" >
         </activity>
+        <activity
+            android:name=".History"
+            android:label="@string/title_activity_history" >
+        </activity>
     </application>
 
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
