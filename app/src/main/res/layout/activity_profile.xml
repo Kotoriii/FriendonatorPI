@@ -29,9 +29,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:text="@string/txtProfileName"
+                android:hint="@string/txtProfileName"
                 android:ems="10"
                 android:id="@+id/txtProfileName" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/space" />
 
             <FrameLayout
                 android:layout_width="fill_parent"
@@ -44,6 +49,11 @@
                     android:contentDescription="@string/btnProfileImage"
                     android:layout_gravity="center" />
             </FrameLayout>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/space2" />
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -70,10 +80,21 @@
 
             </RelativeLayout>
 
-            <ListView
-                android:layout_width="wrap_content"
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:id="@+id/space4" />
+
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/listView" />
+                android:text="@string/lblInterestsList"
+                android:id="@+id/lblInterestsList" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:id="@+id/space5" />
 
             <RelativeLayout
                 android:layout_width="fill_parent"
@@ -99,10 +120,20 @@
                     android:layout_alignParentEnd="true" />
             </RelativeLayout>
 
-            <ListView
-                android:layout_width="wrap_content"
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="15dp"
+                android:id="@+id/space3" />
+
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/listView2" />
+                android:text="@string/lblContactedByList"
+                android:id="@+id/lblContactedByList" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
 
             <Button
                 android:layout_width="match_parent"
