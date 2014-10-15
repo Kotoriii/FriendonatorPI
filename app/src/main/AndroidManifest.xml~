@@ -37,12 +37,15 @@
             android:label="@string/title_activity_profile" >
         </activity>
         <activity
+<<<<<<< HEAD
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:configChanges="orientation|screenSize"
+=======
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
         <activity
-	    android:windowSoftInputMode="stateHidden|adjustResize"
-            android:configChanges="orientation|screenSize"
+>>>>>>> 1004a918c202ed8d8b808f94203c9bb86e3b966a
             android:name=".InterestsActivity"
             android:label="@string/title_activity_interests" >
         </activity>

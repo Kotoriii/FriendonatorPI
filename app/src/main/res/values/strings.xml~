@@ -49,6 +49,7 @@
     <string name="txtTwitter">Twitter Account</string>
     <string name="lblFindMeTool">Find me tool!</string>
     <string name="switchActivateTool">Activate</string>
+<<<<<<< HEAD
     <string name="btnSaveContactMeChanges">Save Contact Me</string>
 
     <string name="selectInterestMusic">Music</string>
@@ -62,7 +63,9 @@
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
     <string name="textRequired">Selected fields must be filled</string>
-    
+=======
+    <string name="btnSaveContactMeChanges">Save Changes</string>
+    <string name="title_activity_my_settings">MySettings</string>
     <string name="title_activity_home">Home</string>
     <string name="lblMatchhome">Female Doge</string>
     <string name="title_activity_login">Login</string>
@@ -76,7 +79,7 @@
         <item>Hang Out</item>
     </string-array>
 
-    <string name="title_activity_my_settings">MySettings</string>
     <string name="title_activity_history">History</string>
+>>>>>>> 1004a918c202ed8d8b808f94203c9bb86e3b966a
 
 </resources>
