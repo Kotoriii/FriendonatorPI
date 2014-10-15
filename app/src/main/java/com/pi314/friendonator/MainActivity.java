@@ -54,6 +54,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Button btnPerfil = (Button)findViewById(R.id.btnPerfil);
+        final Button btnHome = (Button)findViewById(R.id.btnHome);
 
         btnPerfil.setOnClickListener(new OnClickListener() {
             @Override
@@ -61,6 +62,16 @@ public class MainActivity extends Activity implements Button.OnClickListener{
                 // Create the Intent element
                 Intent intent = new Intent(MainActivity.this,
                         ProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnHome.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create the Intent element
+                Intent intent = new Intent(MainActivity.this,
+                        LoginActivity.class);
                 startActivity(intent);
             }
         });

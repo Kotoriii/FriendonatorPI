@@ -5,6 +5,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_profile">Profile</string>
+    <string name="lblProfileName">Name</string>
     <string name="txtProfileName">Name</string>
     <string name="btnProfileImage">Profile Picture</string>
     <string name="lblInterests">Interest</string>
@@ -27,5 +28,19 @@
     <string name="switchActivateTool">Activate</string>
     <string name="btnSaveContactMeChanges">Save Changes</string>
     <string name="title_activity_my_settings">MySettings</string>
+    <string name="title_activity_home">Home</string>
+    <string name="lblMatchhome">Female Doge</string>
+    <string name="title_activity_login">Login</string>
+
+
+    <string name="spnEvent">Choose Event</string>
+    <string-array name="event_array">
+        <item>Concert</item>
+        <item>Art</item>
+        <item>Literature</item>
+        <item>Party</item>
+        <item>Hang Out</item>
+
+    </string-array>
 
 </resources>
