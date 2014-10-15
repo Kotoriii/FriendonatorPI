@@ -68,6 +68,12 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //necesitamos que el primer activity sea el Login, solo si la persona no ha hecho login
+        //por el momento siempre va a ser login, hasta que tengamos base de datos :D
+        Intent logingAct = new Intent(MainActivity.this, LoginActivity.class);
+        startActivity(logingAct);
+
         setContentView(R.layout.activity_main);
         final Button btnPerfil = (Button)findViewById(R.id.btnPerfil);
         final Button btnHome = (Button)findViewById(R.id.btnHome);
