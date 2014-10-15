@@ -4,15 +4,38 @@
     <string name="app_name">Friendonator</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
     <string name="title_activity_profile">Profile</string>
     <string name="txtProfileName">Name</string>
     <string name="btnProfileImage">Profile Picture</string>
-    <string name="lblInterests">Interest</string>
+    <string name="lblInterests">Interests</string>
     <string name="lblGetContactedBy">Get contacted by</string>
     <string name="btnSaveChanges">Save Changes</string>
-    <string name="title_activity_interests">Interests</string>
     <string name="btnChooseInterest">Edit</string>
+    <string name="lblInterestsList">Interests List</string>
     <string name="btnChooseContact">Edit</string>
+    <string name="lblContactedByList">Get Contacted By List</string>
+
+    <string name="title_activity_interests">Interests</string>
+    <string name="lblInterestsL">Interest</string>
+    <string name="lblMusic">Music</string>
+    <string name="txtMusic">Things you like about music</string>
+    <string name="lblLiterature">Literature</string>
+    <string name="txtLiterature">Things you like about literature</string>
+    <string name="lblMovies">Movies</string>
+    <string name="txtMovies">Things you like about movies</string>
+    <string name="lblArt">Art</string>
+    <string name="txtArt">Things you like about art</string>
+    <string name="lblTvShow">TV Shows</string>
+    <string name="txtTvShow">Things you like about TV</string>
+    <string name="lblSports">Sports</string>
+    <string name="txtSports">Things you like about sports</string>
+    <string name="lblScience">Science</string>
+    <string name="txtScience">Things you like about science</string>
+    <string name="lblLookingFor">Looking For</string>
+    <string name="txtLookingFor">What are you looking for?</string>
+    <string name="btnSaveInterestsChanges">Save Interests</string>
+
     <string name="title_activity_get_contacted_by">Get Contacted By</string>
     <string name="lblContact">Contact me</string>
     <string name="lblCellphone">Cellphone</string>
@@ -25,6 +48,18 @@
     <string name="txtTwitter">Twitter Account</string>
     <string name="lblFindMeTool">Find me tool!</string>
     <string name="switchActivateTool">Activate</string>
-    <string name="btnSaveContactMeChanges">Save Changes</string>
+    <string name="btnSaveContactMeChanges">Save Contact Me</string>
+
+    <string name="selectInterestMusic">Music</string>
+    <string name="selectInterestMovies">Movies</string>
+    <string name="selectInterestLiterature">Literature</string>
+    <string name="selectInterestArt">Art</string>
+    <string name="selectInterestTVShows">TV Shows</string>
+    <string name="selectInterestSports">Sports</string>
+    <string name="selectInterestScience">Science</string>
+    <string name="selectInterestLookingFor">Looking For</string>
+    <string name="accept">Accept</string>
+    <string name="cancel">Cancel</string>
+    <string name="textRequired">Selected fields must be filled</string>
 
 </resources>

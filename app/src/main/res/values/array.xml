@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="movies">
+        <item>Action</item>
+        <item>Thriller</item>
+        <item>Romantic</item>
+        <item>Comedy</item>
+        <item>Fantasy</item>
+        <item>Historical</item>
+        <item>Horror</item>
+        <item>Scy Fy</item>
+    </string-array>
+
+    <string-array name="literature">
+        <item>Novel</item>
+        <item>Drama</item>
+        <item>Poem</item>
+        <item>Romance</item>
+        <item>Comedy</item>
+        <item>Fiction</item>
+        <item>Fantasy</item>
+        <item>Mythology</item>
+    </string-array>
+
+    <string-array name="music">
+        <item>Rock</item>
+        <item>Jazz</item>
+        <item>Blues</item>
+        <item>Classical</item>
+        <item>Hip Hop</item>
+        <item>Electronic</item>
+        <item>Pop</item>
+        <item>Romantic</item>
+    </string-array>
+
+    <string-array name="art">
+        <item>Portrait</item>
+        <item>Landscape</item>
+        <item>Conceptual</item>
+        <item>Modernism</item>
+        <item>Criticism</item>
+        <item>Neoclassic</item>
+        <item>Classic</item>
+        <item>Expressionism</item>
+    </string-array>
+
+    <string-array name="tvShows">
+        <item>Soap Opera</item>
+        <item>Sitcom</item>
+        <item>Sports</item>
+        <item>Documentary</item>
+        <item>News</item>
+        <item>Reality</item>
+        <item>Cookery</item>
+        <item>Drama</item>
+    </string-array>
+
+    <string-array name="sports">
+        <item>Mix Martial Arts</item>
+        <item>Climbing</item>
+        <item>Gymnastics</item>
+        <item>Cycling</item>
+        <item>Jogging</item>
+        <item>Tennis</item>
+        <item>Basketball</item>
+        <item>Soccer</item>
+    </string-array>
+
+    <string-array name="lookingFor">
+        <item>Man</item>
+        <item>Woman</item>
+    </string-array>
+</resources>

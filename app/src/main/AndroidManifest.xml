@@ -17,14 +17,20 @@
         </activity>
         <service android:name="misc.BackgroundService" />
         <activity
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:configChanges="orientation|screenSize"
             android:name=".ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
         <activity
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:configChanges="orientation|screenSize"
             android:name=".InterestsActivity"
             android:label="@string/title_activity_interests" >
         </activity>
         <activity
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:configChanges="orientation|screenSize"
             android:name=".GetContactedByActivity"
             android:label="@string/title_activity_get_contacted_by" >
         </activity>
