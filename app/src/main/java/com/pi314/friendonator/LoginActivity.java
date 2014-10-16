@@ -8,6 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by Christian on 10/14/2014.
  */
@@ -22,10 +25,18 @@ public class LoginActivity extends Activity {
         final EditText txtpassword = (EditText)findViewById(R.id.txtpassword);
         final Button btnlogin = (Button)findViewById(R.id.btnlogin);
 
+        // por el momento
+        final List<String> usuarios = new ArrayList<String>();
+        usuarios.add("DogeMaster666");
+        usuarios.add("1");
+        final List<String> contras =new ArrayList<String>();
+        contras.add("doge");
+        contras.add("1");
+
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (txtusername.getText().toString().equals("DogeMaster666") && txtpassword.getText().toString().equals("doge")){
+                if (usuarios.contains(txtusername.getText().toString()) && contras.contains(txtpassword.getText().toString())){
                     //Create the Intent element
                     Intent intent = new Intent(LoginActivity.this,
                             HomeActivity.class);

@@ -9,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -87,10 +89,93 @@ public class History extends Activity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+        /*int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
         }
-        return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);*/
+        switch (item.getItemId()) {
+            case R.id.menu_new:
+                Toast.makeText(History.this,
+                        "Presionado la opcion order Match",
+                        Toast.LENGTH_SHORT).show();
+                clearAdapter();
+                orderbyMatch();
+                return true;
+            case R.id.menu_save:
+                Toast.makeText(History.this,
+                        "Presionado la opcion order name",
+                        Toast.LENGTH_SHORT).show();
+                clearAdapter();
+                orderByName();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public void orderByName () {
+
+        Collections.sort(datos, new OrderArrayListByName());
+
+        //de nueva la logica para llenar el listView una vez con la lista ordenada :D
+        ListView historyList = (ListView) findViewById(R.id.ListView_listado_history);
+        historyList.setAdapter(new Lista_History(this, R.layout.entrada_history, datos) {
+            @Override
+            public void onEntrada(Object entrada, View view) {
+                if (entrada != null) {
+
+                    TextView txtName = (TextView) view.findViewById(R.id.textView_superior);
+                    if (txtName != null)
+                        txtName.setText(((ListaEntrada_History) entrada).getName());
+
+                    TextView txtPercentage = (TextView) view.findViewById(R.id.textView_inferior);
+                    if (txtPercentage != null)
+                        txtPercentage.setText(((ListaEntrada_History) entrada).getPercentage());
+
+                    ImageView imgProfile = (ImageView) view.findViewById(R.id.imageView_imagen);
+                    if (imgProfile != null)
+                        imgProfile.setImageResource(((ListaEntrada_History) entrada).getImage());
+
+                    ProgressBar progreesMatch = (ProgressBar) findViewById(R.id.progressBarPercentage);
+                }
+            }
+        });
+    }
+
+    public void orderbyMatch(){
+
+        Collections.sort(datos, new OrderArrayListByMatch());
+
+        //de nueva la logica para llenar el listView una vez con la lista ordenada :D
+        ListView historyList = (ListView) findViewById(R.id.ListView_listado_history);
+        historyList.setAdapter(new Lista_History(this, R.layout.entrada_history, datos) {
+            @Override
+            public void onEntrada(Object entrada, View view) {
+                if (entrada != null) {
+
+                    TextView txtName = (TextView) view.findViewById(R.id.textView_superior);
+                    if (txtName != null)
+                        txtName.setText(((ListaEntrada_History) entrada).getName());
+
+                    TextView txtPercentage = (TextView) view.findViewById(R.id.textView_inferior);
+                    if (txtPercentage != null)
+                        txtPercentage.setText(((ListaEntrada_History) entrada).getPercentage());
+
+                    ImageView imgProfile = (ImageView) view.findViewById(R.id.imageView_imagen);
+                    if (imgProfile != null)
+                        imgProfile.setImageResource(((ListaEntrada_History) entrada).getImage());
+
+                    ProgressBar progreesMatch = (ProgressBar) findViewById(R.id.progressBarPercentage);
+                }
+            }
+        });
+    }
+
+
+    public void clearAdapter()
+    {
+        ListView historyList = (ListView) findViewById(R.id.ListView_listado_history);
+        historyList.setAdapter(null);
     }
 }
