@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
 
@@ -315,12 +316,18 @@ public class ProfileActivity extends Activity {
                 }
                 try {
                     Bitmap bitmap;
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
 
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(),
-                            bitmapOptions);
+                   /* BitmapFactory.Options opt = new BitmapFactory.Options();
+                    opt.inDensity = 300;
+                    opt.inTargetDensity = 300;*/
 
-                    viewImage.setImageBitmap(bitmap);
+
+
+                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 600, 600, false);
+                    viewImage.setImageBitmap(resizedBitmap);
+
+
 
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
@@ -331,7 +338,7 @@ public class ProfileActivity extends Activity {
                     File file = new File(path, String.valueOf(System.currentTimeMillis()) + ".jpg");
                     try {
                         outFile = new FileOutputStream(file);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 85, outFile);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outFile);
                         outFile.flush();
                         outFile.close();
                     } catch (FileNotFoundException e) {
@@ -353,9 +360,34 @@ public class ProfileActivity extends Activity {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
-                Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+                /*BitmapFactory.Options opt = new BitmapFactory.Options();
+                opt.inDensity = 300;
+                opt.inTargetDensity = 300;*/
+              //  Bitmap thumbnail = (BitmapFactory.decodeFile(picturePath));
+
+                int targetW = viewImage.getWidth();
+                int targetH = viewImage.getHeight();
+                // Get the dimensions of the bitmap
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                bmOptions.inJustDecodeBounds = true;
+                BitmapFactory.decodeFile(picturePath, bmOptions);
+                int photoW = bmOptions.outWidth;
+                int photoH = bmOptions.outHeight;
+
+                // Determine how much to scale down the image
+                int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+                // Decode the image file into a Bitmap sized to fill the View
+                bmOptions.inJustDecodeBounds = false;
+                bmOptions.inSampleSize = scaleFactor;
+                bmOptions.inPurgeable = true;
+
+                Bitmap bitmap = BitmapFactory.decodeFile(picturePath, bmOptions);
+
+                //Bitmap resizedBitmap = Bitmap.createScaledBitmap(thumbnail, 600, 600, false);
+
                 Log.w("path of image from gallery......******************.........", picturePath + "");
-                viewImage.setImageBitmap(thumbnail);
+                viewImage.setImageBitmap(bitmap);
             }
         }
     }
