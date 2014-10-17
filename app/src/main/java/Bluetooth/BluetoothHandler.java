@@ -291,9 +291,10 @@ public class BluetoothHandler {
                     // Read from the InputStream
                     Log.v("BluetoothFR", "Connected to Client- Device UUID " + mmSocket.getRemoteDevice().getUuids()[0].toString());
                     Log.v("BluetoothFR", "Sending data via ObjectOutputStream");
-                   // ObjectOutputStream oos = new ObjectOutputStream(mmOutStream);
-                    //oos.writeObject(mObj);
 
+                    testSerialize testSera = new testSerialize();
+                    ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
+                    oos.writeObject(testSera);
                     write("potato".getBytes());
 
 
@@ -333,7 +334,9 @@ public class BluetoothHandler {
         }
 
         public void run() {
-            ArrayList<Character> buffer = new ArrayList();
+                testSerialize ts = null;
+
+                ArrayList<Character> buffer = new ArrayList();
                 int _AverageTrasnsferSize = 0;
                 Log.v("BluetoothFR", "Connected to server- Device UUID " + mmSocket.getRemoteDevice().getUuids()[0].toString());
                 Log.v("BluetoothFR", "Connected to server- Starting receiving loop ");
@@ -346,19 +349,20 @@ public class BluetoothHandler {
                         _AverageTrasnsferSize = mmInStream.available();
                         Log.v("BluetoothFR", "Connected to server- Average trasnsfer size: "+ _AverageTrasnsferSize);
 
-
-                        buffer.add((char)mmInStream.read());
+                        ObjectInputStream bjr = new ObjectInputStream(mmInStream);
+                        ts = (testSerialize)bjr.readObject();
+                        //buffer.add((char)mmInStream.read());
 
 
                     } catch (IOException e) {
-                        Log.e("BluetoothFR", "Exception ocurred: \n" +
-                                e.getMessage() + "\n" + e.getCause());
                         break;
 
-                }
+                } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
 
-            }while(_AverageTrasnsferSize != 1);
-            Log.v("BluetoothFR", "Datos recieved!");
+                }while(_AverageTrasnsferSize != 1);
+            Log.v("BluetoothFR", "Datos recieved!" + ts.toString());
             for(char b : buffer){
                 Log.v("BluetoothFR", "for! -> " +b );
             }
