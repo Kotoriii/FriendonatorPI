@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.util.ByteArrayBuffer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -294,8 +295,7 @@ public class BluetoothHandler {
                     //oos.writeObject(mObj);
 
                     write("potato".getBytes());
-                    Log.v("BluetoothFR", "Bytes Sent, closing thread");
-                    this.cancel();
+
 
                 } catch (Exception e) {
 
@@ -333,32 +333,34 @@ public class BluetoothHandler {
         }
 
         public void run() {
-            byte[] buffer = new byte[1024];  // buffer store for the stream
-            int bytes; // bytes returned from read()
-
-            // Keep listening to the InputStream until an exception occurs
-                //ObjectInputStream ois = new ObjectInputStream(mmInStream);
-
-                //String pop = (String) ois.readObject();
+            ArrayList<Character> buffer = new ArrayList();
+                int _AverageTrasnsferSize = 0;
                 Log.v("BluetoothFR", "Connected to server- Device UUID " + mmSocket.getRemoteDevice().getUuids()[0].toString());
                 Log.v("BluetoothFR", "Connected to server- Starting receiving loop ");
-                while (true) {
+                do{
                     try {
                         if(!mmSocket.isConnected()){
                             mmSocket.connect();
+                            Log.v("BluetoothFR", "Connected to server- ****** Conected *****");
                         }
-                        // Read from the InputStream
-                        //bytes = mmInStream.read(buffer);
-                        String str = IOUtils.toString(mmSocket.getInputStream(), "UTF-8");
-                        Log.v("BluetoothFR", "Connected to server- Recieved data: "+str);
+                        _AverageTrasnsferSize = mmInStream.available();
+                        Log.v("BluetoothFR", "Connected to server- Average trasnsfer size: "+ _AverageTrasnsferSize);
 
-                        mmInStream.close();
+
+                        buffer.add((char)mmInStream.read());
+
+
                     } catch (IOException e) {
                         Log.e("BluetoothFR", "Exception ocurred: \n" +
                                 e.getMessage() + "\n" + e.getCause());
                         break;
 
                 }
+
+            }while(_AverageTrasnsferSize != 1);
+            Log.v("BluetoothFR", "Datos recieved!");
+            for(char b : buffer){
+                Log.v("BluetoothFR", "for! -> " +b );
             }
         }
 
