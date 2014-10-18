@@ -1,7 +1,6 @@
 package misc;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import java.io.Serializable;
 import java.util.ArrayList;

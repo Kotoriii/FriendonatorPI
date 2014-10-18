@@ -11,9 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.http.util.ByteArrayBuffer;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
