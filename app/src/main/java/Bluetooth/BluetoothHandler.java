@@ -29,7 +29,7 @@ public class BluetoothHandler {
     BluetoothAdapter mBluetoothAdapter = null;
     BluetoothDevice device;
     private static final int REQUEST_ENABLE_BT = 1;
-    private static final UUID MY_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final UUID MY_UUID = UUID.fromString("f409e1f6-5665-11e4-9e35-164230d1df67");
     private static final String NAME = "Friendonator";
     BluetoothDevice remoteDevice;
     private boolean registered = false;
@@ -344,7 +344,7 @@ public class BluetoothHandler {
 
                         ObjectInputStream bjr = new ObjectInputStream(mmInStream);
                         usuario = (Usuario)bjr.readObject();
-
+                        bjr.close();
                     } catch (IOException e) {
 
 
