@@ -1,8 +1,10 @@
 package misc;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -50,6 +52,10 @@ public class Usuario implements Serializable {
         this.historial = historial;
     }
 
+
+    public static Usuario newTestUsuario(){
+        return new Usuario("nombre", "contra", (new Date()), "correo", "numeroTel", "FacebbokID", "googlePID", "TwitterD", 1, null, new ArrayList<String>(), new ArrayList<Usuario>());
+    }
 
     public String getNombre() {
         return nombre;
@@ -145,5 +151,23 @@ public class Usuario implements Serializable {
 
     public void addHistorial(Usuario usuario) {
         this.historial.add(usuario);
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "nombre='" + nombre + '\'' +
+                ", password='" + password + '\'' +
+                ", fecha_de_nacimiento=" + fecha_de_nacimiento +
+                ", correo='" + correo + '\'' +
+                ", numero_telefono='" + numero_telefono + '\'' +
+                ", facebookID='" + facebookID + '\'' +
+                ", googleP_id='" + googleP_id + '\'' +
+                ", twitter_id='" + twitter_id + '\'' +
+                ", modo_de_cont_favorito=" + modo_de_cont_favorito +
+                ", foto_perfil=" + foto_perfil +
+                ", intereses=" + intereses +
+                ", historial=" + historial +
+                '}';
     }
 }

@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import misc.Usuario;
+
 /**
  * Created by andrea on 30/09/14.
  */
@@ -197,7 +199,7 @@ public class BluetoothHandler {
 
                     //Por el momento este es el objeto que manda, mas adelante va a mandar el
                     //objeto representante al usuario del telefono
-                    Log.v("BluetoothFR", "got connection from client, starting sending 'potato'");
+                    Log.v("BluetoothFR", "got connection from client, starting send");
                              String potato = "potato";
                         ConnectedToClientThread cntCT = new ConnectedToClientThread(socket, potato);
                         cntCT.start();
@@ -288,14 +290,12 @@ public class BluetoothHandler {
         public void run() {
 
                 try {
-                    // Read from the InputStream
-                    Log.v("BluetoothFR", "Connected to Client- Device UUID " + mmSocket.getRemoteDevice().getUuids()[0].toString());
                     Log.v("BluetoothFR", "Sending data via ObjectOutputStream");
 
-                    testSerialize testSera = new testSerialize();
+                    //por el momento se crea un usuario test. mas adelante se va a sacar de la BD
+                    Usuario testUsuario = Usuario.newTestUsuario();
                     ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
-                    oos.writeObject(testSera);
-                    write("potato".getBytes());
+                    oos.writeObject(testUsuario);
 
 
                 } catch (Exception e) {
@@ -334,38 +334,31 @@ public class BluetoothHandler {
         }
 
         public void run() {
-                testSerialize ts = null;
+                Usuario usuario = null ;
 
-                ArrayList<Character> buffer = new ArrayList();
-                int _AverageTrasnsferSize = 0;
-                Log.v("BluetoothFR", "Connected to server- Device UUID " + mmSocket.getRemoteDevice().getUuids()[0].toString());
                 Log.v("BluetoothFR", "Connected to server- Starting receiving loop ");
-                do{
+
                     try {
                         if(!mmSocket.isConnected()){
                             mmSocket.connect();
                             Log.v("BluetoothFR", "Connected to server- ****** Conected *****");
                         }
-                        _AverageTrasnsferSize = mmInStream.available();
-                        Log.v("BluetoothFR", "Connected to server- Average trasnsfer size: "+ _AverageTrasnsferSize);
+                        Log.v("BluetoothFR", "Connected to server- Recibiendo datos ");
 
                         ObjectInputStream bjr = new ObjectInputStream(mmInStream);
-                        ts = (testSerialize)bjr.readObject();
-                        //buffer.add((char)mmInStream.read());
-
+                        usuario = (Usuario)bjr.readObject();
 
                     } catch (IOException e) {
-                        break;
+
 
                 } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
 
-                }while(_AverageTrasnsferSize != 1);
-            Log.v("BluetoothFR", "Datos recieved!" + ts.toString());
-            for(char b : buffer){
-                Log.v("BluetoothFR", "for! -> " +b );
-            }
+
+            Log.v("BluetoothFR", "Datos recieved!");
+                Log.v("BluetoothFR", "for! -> " +usuario.toString() );
+
         }
 
         /* Call this from the main activity to shutdown the connection */
