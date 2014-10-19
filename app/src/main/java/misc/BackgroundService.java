@@ -14,7 +14,6 @@ import com.pi314.friendonator.MainActivity;
 import com.pi314.friendonator.R;
 
 import Bluetooth.BlueMan;
-import Bluetooth.BluetoothHandler;
 
 /**
  * Created by andrea on 01/10/14.

@@ -77,6 +77,13 @@
         <item>Hang Out</item>
     </string-array>
 
+    <array name="navigation_iconos">
+        <item>@drawable/ic_action_user</item>
+        <item>@drawable/ic_action_user</item>
+        <item>@drawable/ic_action_user</item>
+        <item>@drawable/ic_action_settings</item>
+    </array>
+
     <string name="title_activity_my_settings">MySettings</string>
     <string name="title_activity_history">History</string>
 
