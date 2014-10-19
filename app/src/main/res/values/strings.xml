@@ -13,28 +13,28 @@
     <string name="lblGetContactedBy">Get contacted by</string>
     <string name="btnSaveChanges">Save Changes</string>
     <string name="btnChooseInterest">Edit</string>
-    <string name="lblInterestsList">Interests List</string>
+    <string name="lblInterestsList">Set your Interests preferences</string>
     <string name="btnChooseContact">Edit</string>
-    <string name="lblContactedByList">Get Contacted By List</string>
+    <string name="lblContactedByList">Set your Get Contacted By preferences</string>
 
     <string name="title_activity_interests">Interests</string>
     <string name="lblInterestsL">Interest</string>
     <string name="lblMusic">Music</string>
-    <string name="txtMusic">Things you like about music</string>
+    <string name="txtMusic">Bands/Artists</string>
     <string name="lblLiterature">Literature</string>
-    <string name="txtLiterature">Things you like about literature</string>
+    <string name="txtLiterature">Books/Writers</string>
     <string name="lblMovies">Movies</string>
-    <string name="txtMovies">Things you like about movies</string>
+    <string name="txtMovies">Movies/Actors</string>
     <string name="lblArt">Art</string>
-    <string name="txtArt">Things you like about art</string>
+    <string name="txtArt">Painters/Sculptures</string>
     <string name="lblTvShow">TV Shows</string>
-    <string name="txtTvShow">Things you like about TV</string>
+    <string name="txtTvShow">Shows/Hosts</string>
     <string name="lblSports">Sports</string>
-    <string name="txtSports">Things you like about sports</string>
+    <string name="txtSports">Athletes/Competitions</string>
     <string name="lblScience">Science</string>
-    <string name="txtScience">Things you like about science</string>
+    <string name="txtScience">Space/Life</string>
     <string name="lblLookingFor">Looking For</string>
-    <string name="txtLookingFor">What are you looking for?</string>
+    <string name="txtLookingFor">Dating/Friendship</string>
     <string name="btnSaveInterestsChanges">Save Interests</string>
 
     <string name="title_activity_get_contacted_by">Get Contacted By</string>
@@ -47,7 +47,7 @@
     <string name="txtFacebook">Facebook Account</string>
     <string name="lblTwitter">Twitter</string>
     <string name="txtTwitter">Twitter Account</string>
-    <string name="lblFindMeTool">Find me tool!</string>
+    <string name="lblFindMeTool">Find me tool</string>
     <string name="switchActivateTool">Activate</string>
     <string name="btnSaveContactMeChanges">Save Contact Me</string>
 
@@ -61,6 +61,7 @@
     <string name="selectInterestLookingFor">Looking For</string>
     <string name="accept">Accept</string>
     <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
     <string name="textRequired">Selected fields must be filled</string>
     
     <string name="title_activity_home">Home</string>

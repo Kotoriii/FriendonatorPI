@@ -17,8 +17,8 @@ public class SelectInterests extends DialogFragment {
     private List<String> listBySelectedInterest;
     private String tittle;
     private String [] choices;
-    private boolean [] interestsChecked;
     private Person person;
+    private List<String> mirrorListForCancel;
 
     public void setOptions(String tittle, String [] choices, Person person){
         this.tittle = tittle;
@@ -27,11 +27,12 @@ public class SelectInterests extends DialogFragment {
     }
 
     public boolean [] putChecks() {
-        interestsChecked = new boolean[choices.length];
+        boolean[] interestsChecked = new boolean[choices.length];
         for (int i = 0; i < choices.length; i++) {
             interestsChecked[i] = false;
         }
         listBySelectedInterest = new ArrayList<String>();
+        mirrorListForCancel = new ArrayList<String>();
         if (!person.getInterestList().isEmpty()) {
             if (person.interestsValue(tittle) != null) {
                 for (String value : person.interestsValue(tittle)) {
@@ -42,6 +43,9 @@ public class SelectInterests extends DialogFragment {
                     }
                 }
             }
+            for (String s : listBySelectedInterest) {
+                mirrorListForCancel.add(s);
+            }
         }
         return interestsChecked;
     }
@@ -51,7 +55,7 @@ public class SelectInterests extends DialogFragment {
              * Each method passes the DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
         public void onDialogPositiveClick(List<String> listBySelectedInterest, String tittle);
-        public void onDialogNegativeClick(List<String> listBySelectedInterest);
+        public void onDialogNegativeClick(List<String> listBySelectedInterest, String tittle);
     }
 
     // Use this instance of the interface to deliver action events
@@ -105,7 +109,7 @@ public class SelectInterests extends DialogFragment {
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDialogNegativeClick(listBySelectedInterest);
+                        mListener.onDialogNegativeClick(mirrorListForCancel, tittle);
                     }
                 });
 
