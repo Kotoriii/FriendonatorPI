@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="320dp"
+                android:id="@+id/framelayout"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true">
+
+                <ImageView
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:id="@+id/imgviewHomeprofile"
+                    android:background="#ffcecece"
+                    android:layout_marginLeft="40dp"
+                    android:src="@drawable/dogeswag"
+                    android:adjustViewBounds="false"
+                    android:baselineAlignBottom="false"
+                    android:layout_gravity="left|top"
+                    android:layout_marginTop="30dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lblProfileName"
+                    android:layout_toEndOf="@+id/imgviewHomeprofile"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:focusableInTouchMode="true"
+                    android:text="Name"
+                    android:textSize="25dp"
+                    android:layout_gravity="center_horizontal|top"
+                    android:layout_marginRight="175dp"
+                    android:layout_marginTop="55dp" />
+
+                <ProgressBar
+                    style="?android:attr/progressBarStyleHorizontal"
+                    android:layout_width="325dp"
+                    android:layout_height="20dp"
+                    android:id="@+id/progressBar"
+                    android:layout_marginBottom="30dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:progress="75"
+                    android:layout_gravity="left|center_vertical" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Search Signal..."
+                    android:id="@+id/textView"
+                    android:layout_marginLeft="40dp"
+                    android:textColor="#ff4066ff"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
+                    android:layout_gravity="left|bottom"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="120dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/lblMatchhome"
+                    android:id="@+id/textView2"
+                    android:textSize="25dp"
+                    android:layout_toStartOf="@+id/spnEvent"
+                    android:layout_alignBottom="@+id/spnEvent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginBottom="45dp"
+                    android:layout_gravity="left|bottom" />
+
+                <Spinner
+                    android:layout_width="275dp"
+                    android:layout_height="50dp"
+                    android:id="@+id/spnEvent"
+                    android:prompt="@string/spnEvent"
+                    android:entries="@array/event_array"
+                    android:focusable="false"
+                    android:layout_toEndOf="@+id/imgviewMatchhome"
+                    android:layout_gravity="right|bottom"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="28dp"
+                    android:layout_marginBottom="20dp" />
+
+                <ImageView
+                    android:layout_width="300dp"
+                    android:layout_height="225dp"
+                    android:id="@+id/imgviewEventpic"
+                    android:layout_gravity="right|top"
+                    android:layout_marginTop="10dp"
+                    android:background="#ffc7c7c7"
+                    android:layout_marginRight="20dp" />
+
+                <ImageView
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:id="@+id/imgviewMatchhome"
+                    android:background="#ffcecece"
+                    android:layout_gravity="center_horizontal|bottom"
+                    android:src="@drawable/dogemarilyn"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignLeft="@+id/textView2"
+                    android:layout_alignStart="@+id/textView2"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginRight="60dp" />
+
+            </FrameLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
