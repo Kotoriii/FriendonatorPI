@@ -3,13 +3,13 @@ package com.pi314.friendonator;
 /**
  * Created by grecia on 15/10/2014.
  */
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

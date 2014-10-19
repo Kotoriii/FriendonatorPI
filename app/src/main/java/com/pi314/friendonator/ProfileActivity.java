@@ -2,6 +2,7 @@ package com.pi314.friendonator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,35 +10,45 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcel;
 import android.os.Environment;
+import android.os.Parcel;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.TextView;
 
-import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import android.widget.ImageButton;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
 
+import Dialog.InterestInfo;
 
 
 public class ProfileActivity extends Activity {
     User user;
     Person person;
     EditText txtProfileName;
+    List<String> gridInterests;
+    TextView lblInterestsList;
+    TextView getContactedBy;
 
     ImageButton viewImage;
     ImageButton b;
@@ -56,19 +67,38 @@ public class ProfileActivity extends Activity {
         textName();
 
         // Locate the lblInterestsList TextView
-        TextView lblInterestsList = (TextView) findViewById(R.id.lblInterestsList);
+        //lblInterestsList = (TextView) findViewById(R.id.lblInterestsList);
 
         // Build the message to be displayed on lblInterestsList
-        lblInterestsList.setText(getInterestsList());
+        //lblInterestsList.setText(getInterestsList());
 
         // Locate the lblContactedByList TextView
-        TextView getContactedBy = (TextView) findViewById(R.id.lblContactedByList);
+        //getContactedBy = (TextView) findViewById(R.id.lblContactedByList);
 
         // Build the message to be displayed on lblContactedByList
-        getContactedBy.setText(getContactedByList());
+        //getContactedBy.setText(getContactedByList());
 
-        b =(ImageButton)findViewById(R.id.btnProfileImage);
-        viewImage=(ImageButton)findViewById(R.id.btnProfileImage);
+        // Locate the gridViewInterests TextView
+        final GridView gridViewInterests = (GridView) findViewById(R.id.gridViewInterests);
+
+        // Create ArrayAdapterInterests
+        ArrayAdapter<String> adapterInterests = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fillGridViewInterests());
+
+        // Set adapter to gridViewInterests
+        gridViewInterests.setAdapter(adapterInterests);
+
+        // Locate the gridViewInterests TextView
+        GridView gridViewContactedBy = (GridView) findViewById(R.id.gridViewContactedBy);
+
+        // Create ArrayAdapterInterests
+        ArrayAdapter<String> adapterContactedBy = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fillGridViewContactedBy());
+
+        // Set adapter to gridViewInterests
+        gridViewContactedBy.setAdapter(adapterContactedBy);
+
+
+        b =(ImageButton) findViewById(R.id.btnProfileImage);
+        viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,7 +114,7 @@ public class ProfileActivity extends Activity {
                 // Create intent to open interests activity
                 Intent intent = new Intent(ProfileActivity.this, InterestsActivity.class);
 
-                // Set bundle inside intent
+                // Set person inside intent
                 //intent.putExtra("USER", user);
                 intent.putExtra("PERSON", person);
 
@@ -124,11 +154,24 @@ public class ProfileActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // Create intent
-                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
+
+                // Set person inside intent
+                intent.putExtra("PERSON", person);
+
                 startActivity(intent);
 
                 // Finish activity
                 finish();
+            }
+        });
+
+        gridViewInterests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String title = getTitle(position);
+                if (!title.isEmpty() && person.textValue(title) != null)
+                    showInterestInfoDialog(textFavoriteType(title), person.textValue(title));
             }
         });
 
@@ -150,7 +193,7 @@ public class ProfileActivity extends Activity {
 
     public void setName() {
         String name = txtProfileName.getText().toString();
-        if (person.getName() == null)
+        if (!txtProfileName.getText().toString().isEmpty())
             person.setName(name);
     }
 
@@ -158,72 +201,82 @@ public class ProfileActivity extends Activity {
         if (person.getName() != null)
             txtProfileName.setText(person.getName());
     }
-/*
-    public Bundle bundleProfile() {
-        Bundle bundle = this.getIntent().getExtras();
 
-        if (bundle != null){
-            User user = bundle.getParcelable("USER");
-            if (user == null)
-                user = new User(Parcel.obtain());
-            bundle.putParcelable("USER", user);
-        } else
-            bundle = new Bundle();
-
-        return bundle;
-    }
-*/
     public String getInterestsList() {
-        // Retrieve the info passed through the intent
-        //Bundle bundle = this.getIntent().getExtras();
         String interestList = "Set your Interests preferences...";
-        /*
-        if (bundle != null) {
-            List<String> interests = bundle.getStringArrayList("INTERESTS");
-            if (interests != null) {
-                interestList = "";
-                for (String s : interests) {
-                    interestList += s + "\n";
-                }
-            }
-        }
-        */
+
         if (person != null && !person.getInterestList().isEmpty()) {
             interestList = "";
-            int count;
-
             for (Map.Entry<String, List<String>> entry : person.getInterestList().entrySet()) {
                 interestList += entry.getKey() + "\n";
-                interestList += entry.getValue() + "\n\n";
-                /*count = 0;
-                for (String value : entry.getValue()) {
-                    if (count <= entry.getValue().size()-1) {
-                        interestList += value + ", ";
-                        count += 1;
-                    } else
-                        interestList += value + "\n\n";
-                }*/
+                if (entry.getKey().equals("Science"))
+                    interestList += "\n";
+                else
+                    interestList += entry.getValue() + "\n";
+                if (!person.textValue(entry.getKey()).isEmpty())
+                    interestList += textFavoriteType(entry.getKey()) + "\n" + person.textValue(entry.getKey()) + "\n\n";
+                else
+                    interestList += "\n";
             }
         }
 
         return interestList;
     }
 
-    public String getContactedByList() {
-        // Retrieve the info passed through the intent
-        //Bundle bundle = this.getIntent().getExtras();
-        String contactedByList = "Set your Get Contacted By preferences...";
-        /*
-        if (bundle != null) {
-            List<String> contact = bundle.getStringArrayList("CONTACTEDBY");
-            if (contact != null) {
-                contactedByList = "";
-                for (String s : contact) {
-                    contactedByList += s + "\n";
+    public String textFavoriteType(String title) {
+        String favorite = "";
+        if (title.equals(getResources().getString(R.string.selectInterestMusic)))
+            favorite = getResources().getString(R.string.txtMusic);
+        if (title.equals(getResources().getString(R.string.selectInterestLiterature)))
+            favorite = getResources().getString(R.string.txtLiterature);
+        if (title.equals(getResources().getString(R.string.selectInterestMovies)))
+            favorite = getResources().getString(R.string.txtMovies);
+        if (title.equals(getResources().getString(R.string.selectInterestArt)))
+            favorite = getResources().getString(R.string.txtArt);
+        if (title.equals(getResources().getString(R.string.selectInterestTVShows)))
+            favorite = getResources().getString(R.string.txtTvShow);
+        if (title.equals(getResources().getString(R.string.selectInterestSports)))
+            favorite = getResources().getString(R.string.txtSports);
+        if (title.equals(getResources().getString(R.string.selectInterestScience)))
+            favorite = getResources().getString(R.string.txtScience);
+        if (title.equals(getResources().getString(R.string.selectInterestLookingFor)))
+            favorite = getResources().getString(R.string.txtLookingFor);
+        return favorite;
+    }
+
+    public List<String> fillGridViewInterests() {
+        gridInterests = new ArrayList<String>();
+        String interests = getResources().getString(R.string.lblInterestsList);
+
+        if (person != null && !person.getInterestList().isEmpty()) {
+            for (Map.Entry<String, List<String>> entry : person.getInterestList().entrySet()) {
+                interests = "";
+                interests += entry.getKey();
+                if (!person.interestsValue(entry.getKey()).isEmpty()) {
+                    String value = "";
+                    int count = 0;
+                    for (String v : entry.getValue()) {
+                        if(count < entry.getValue().size()-1) {
+                            value += v + ", ";
+                            count += 1;
+                        } else
+                            value += v + ".";
+                    }
+                    interests += "\n" + value;
                 }
+                //if (person.textValue(entry.getKey()) != null)
+                //    interests += "\n" + textFavoriteType(entry.getKey()) + "\n" + person.textValue(entry.getKey());
+                gridInterests.add(interests);
             }
-        }
-        */
+        } else
+            gridInterests.add(interests);
+
+        return gridInterests;
+    }
+
+    public String getContactedByList() {
+        String contactedByList = "Set your Get Contacted By preferences...";
+
         if (person != null && !person.getGetContactedByList().isEmpty()) {
             contactedByList = "";
             for (Map.Entry<String, String> entry : person.getGetContactedByList().entrySet()) {
@@ -234,21 +287,64 @@ public class ProfileActivity extends Activity {
 
         return contactedByList;
     }
-/*
-    public String toggleOnOff() {
-        // Retrieve the info passed through the intent
-        Bundle bundle = this.getIntent().getExtras();
-        String toggle = "Look for me tool is off";
-        if(bundle != null){
-            int onOff = bundle.getInt("TOGGLETOOL");
-            if (onOff == 1)
-                toggle = "Look for me tool is on";
-            else
-                toggle = "Look for me tool is off";
-        }
-        return toggle;
+
+    public List<String> fillGridViewContactedBy() {
+        List<String> gridContactedBy = new ArrayList<String>();
+        String contactedByList = getResources().getString(R.string.lblContactedByList);
+        if (person != null && !person.getGetContactedByList().isEmpty()) {
+            for (Map.Entry<String, String> entry : person.getGetContactedByList().entrySet()) {
+                contactedByList = "";
+                contactedByList += entry.getKey() + "\n";
+                contactedByList += entry.getValue();
+                gridContactedBy.add(contactedByList);
+            }
+        } else
+            gridContactedBy.add(contactedByList);
+        return gridContactedBy;
     }
-*/
+
+    public void showInterestInfoDialog(String tittle, String message) {
+        InterestInfo dialogInterestInfo = new InterestInfo();
+        dialogInterestInfo.setInfo(tittle, message);
+        dialogInterestInfo.show(getFragmentManager(), "InterestInfo");
+    }
+
+    public String getTitle(int position) {
+        String check = gridInterests.get(position);
+        String title = "";
+        char letter = ' ';
+        for (int c = 0; c < check.length(); c++) {
+            letter = check.charAt(c);
+            if (title.equals(getResources().getString(R.string.selectInterestMusic))) {
+                title = getResources().getString(R.string.selectInterestMusic);
+            } else if (title.equals(getResources().getString(R.string.selectInterestLiterature))) {
+                title = getResources().getString(R.string.selectInterestLiterature);
+                break;
+            } else if (title.equals(getResources().getString(R.string.selectInterestMovies))) {
+                title = getResources().getString(R.string.selectInterestMovies);
+                break;
+            } else if (title.equals(getResources().getString(R.string.selectInterestArt))) {
+                title = getResources().getString(R.string.selectInterestArt);
+                break;
+            } else if (title.equals(getResources().getString(R.string.selectInterestTVShows).substring(0,1))) {
+                title = getResources().getString(R.string.selectInterestTVShows);
+                break;
+            } else if (title.equals(getResources().getString(R.string.selectInterestSports))) {
+                title = getResources().getString(R.string.selectInterestSports);
+                break;
+            } else if (title.equals(getResources().getString(R.string.selectInterestScience))) {
+                title = getResources().getString(R.string.selectInterestScience);
+                break;
+            } else if (title.equals(getResources().getString(R.string.selectInterestLookingFor))) {
+                title = getResources().getString(R.string.selectInterestLookingFor);
+                break;
+            } else {
+                title += letter;
+            }
+        }
+        return title;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -268,6 +364,11 @@ public class ProfileActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        //this.finish();
+    }
 
     //cosas de imagen
 

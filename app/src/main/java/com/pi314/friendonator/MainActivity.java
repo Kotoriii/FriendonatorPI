@@ -1,42 +1,25 @@
 package com.pi314.friendonator;
 
-import android.app.ActionBar;
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.app.AlertDialog;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
-import android.bluetooth.BluetoothSocket;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.UUID;
 
 import Bluetooth.BlueMan;
@@ -52,7 +35,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     private static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
     private static final String NAME = "BluetoothDemo";
     TextView output;
-    Button btnServer, btnScan, btnClient, startservice;
+    Button btnServer, btnScan, btnClient, startservice, startServer, startClientTest;
     BluetoothHandler bth;
     BlueMan bMan = null;
     /** Called when the activity is first created. */
@@ -68,12 +51,6 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //necesitamos que el primer activity sea el Login, solo si la persona no ha hecho login
-        //por el momento siempre va a ser login, hasta que tengamos base de datos :D
-        Intent logingAct = new Intent(MainActivity.this, LoginActivity.class);
-        startActivity(logingAct);
-
         setContentView(R.layout.activity_main);
         final Button btnPerfil = (Button)findViewById(R.id.btnPerfil);
         final Button btnHome = (Button)findViewById(R.id.btnHome);
@@ -106,7 +83,10 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         btnClient.setOnClickListener(this);
         btnScan = (Button) findViewById(R.id.btnScan);
         btnScan.setOnClickListener(this);
-
+        startServer = (Button) findViewById(R.id.StrtServer);
+        startServer.setOnClickListener(this);
+        startClientTest = (Button) findViewById(R.id.clntTest);
+        startClientTest.setOnClickListener(this);
         //////
         startservice = (Button) findViewById(R.id.startservice);
         startservice.setOnClickListener(this);
@@ -118,8 +98,8 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         output.setText("Orig: 1193434 \n" +
                 "Encripted: " + enc +"\n" +
                 "Desencript: " + desenc  );
-
-
+        Log.d("TAG", "Message");
+        bth = bMan.getHandler();
         //Logica para el menu
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -177,9 +157,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     @Override
     public void onClick(View v) {
         if ( (Button)v == btnServer) {
-          //  bth.startServer();
-            ((Button) v).setText("disabe BT");
-            bMan.getHandler().stopBlueTooth();
+          //
         } else if ( (Button)v == btnClient) {
             if (device != null) {
                // output.append("button client\n");
@@ -199,6 +177,12 @@ public class MainActivity extends Activity implements Button.OnClickListener{
             t.show();
             Intent in = new Intent(this, BackgroundService.class);
             startService(in);
+        }
+        else if ((Button)v == startServer){
+            bth.startBluetoothServer();
+        }
+        else if ((Button)v == startClientTest){
+            bth.ClientTest();
         }
 
     }

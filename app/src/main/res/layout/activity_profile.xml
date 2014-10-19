@@ -28,7 +28,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPersonName"
+                android:inputType="textPersonName|textCapSentences"
                 android:hint="@string/txtProfileName"
                 android:ems="10"
                 android:id="@+id/txtProfileName" />
@@ -66,7 +66,8 @@
                     android:id="@+id/lblInterests"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:textSize="17sp" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
@@ -89,7 +90,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/lblInterestsList"
-                android:id="@+id/lblInterestsList" />
+                android:id="@+id/lblInterestsList"
+                android:visibility="gone"
+                android:textSize="15sp" />
+
+            <com.pi314.friendonator.CustomGridView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:columnWidth="100dp"
+                android:gravity="center"
+                android:numColumns="1"
+                android:verticalSpacing="10dp"
+                android:horizontalSpacing="10dp"
+                android:id="@+id/gridViewInterests"
+                android:background="@drawable/custom_gridbackground" />
 
             <Space
                 android:layout_width="20dp"
@@ -107,7 +122,8 @@
                     android:id="@+id/lblGetContactedBy"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
-                    android:layout_alignParentStart="true" />
+                    android:layout_alignParentStart="true"
+                    android:textSize="17sp" />
 
                 <Button
                     style="?android:attr/buttonStyleSmall"
@@ -129,7 +145,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/lblContactedByList"
-                android:id="@+id/lblContactedByList" />
+                android:id="@+id/lblContactedByList"
+                android:visibility="gone"
+                android:textSize="15sp" />
+
+            <com.pi314.friendonator.CustomGridView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:columnWidth="100dp"
+                android:gravity="center"
+                android:numColumns="1"
+                android:verticalSpacing="10dp"
+                android:horizontalSpacing="10dp"
+                android:id="@+id/gridViewContactedBy"
+                android:background="@drawable/custom_gridbackground"
+                android:listSelector="@android:color/transparent" />
 
             <Space
                 android:layout_width="20dp"

@@ -3,7 +3,6 @@ package com.pi314.friendonator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,7 +25,15 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
     EditText txtSports;
     EditText txtScience;
     EditText txtLookingFor;
-    String newTittle;
+    CheckBox music;
+    CheckBox literature;
+    CheckBox movies;
+    CheckBox art;
+    CheckBox tvShow;
+    CheckBox sports;
+    CheckBox science;
+    CheckBox lookingFor;
+    String newTitle;
     String [] newChoices;
     User user;
     Person person;
@@ -44,6 +51,14 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
         txtSports = (EditText) findViewById(R.id.txtSports);
         txtScience = (EditText) findViewById(R.id.txtScience);
         txtLookingFor =(EditText) findViewById(R.id.txtLookingFor);
+        music = (CheckBox) findViewById(R.id.checkBoxMusic);
+        literature = (CheckBox) findViewById(R.id.checkBoxLiterature);
+        movies = (CheckBox) findViewById(R.id.checkBoxMovies);
+        art = (CheckBox) findViewById(R.id.checkBoxArt);
+        tvShow = (CheckBox) findViewById(R.id.checkBoxTvShow);
+        sports = (CheckBox) findViewById(R.id.checkBoxSports);
+        science = (CheckBox) findViewById(R.id.checkBoxScience);
+        lookingFor = (CheckBox) findViewById(R.id.checkBoxLookingFor);
 
         //setUser();
         setPerson();
@@ -80,101 +95,67 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
         person = (Person) this.getIntent().getSerializableExtra("PERSON");
     }
 
-/*
-    public Bundle bundleActivities () {
-        Bundle bundle = this.getIntent().getExtras();
-
-        // Checks for empty bundle
-        if (bundle != null) {
-            if (user == null)
-                user = new User(Parcel.obtain());
-            bundle.putParcelable("USER", user);
-        } else
-            bundle = new Bundle();
-
-        // Set bundle with interest list
-        //bundle.putStringArrayList("INTERESTS", (ArrayList<String>) listByInterest);
-
-        return bundle;
-    }
-*/
     public void fillCheckBox() {
         for (String key : person.getInterestList().keySet()) {
-            if (key.equals("Music")) {
-                CheckBox music = (CheckBox) findViewById(R.id.checkBoxMusic);
+            if (key.equals(getResources().getString(R.string.selectInterestMusic))) {
                 music.setChecked(true);
                 TextView lblMusic = (TextView) findViewById(R.id.lblMusic);
                 lblMusic.setClickable(true);
                 txtMusic.setVisibility(View.VISIBLE);
-                txtMusic.setText(person.interestsValue("Music").get(person.interestsValue("Music").size()-1));
+                txtMusic.setText(person.textValue(key));
             }
-            else if (key.equals("Literature")) {
-                CheckBox literature = (CheckBox) findViewById(R.id.checkBoxLiterature);
+            else if (key.equals(getResources().getString(R.string.selectInterestLiterature))) {
                 literature.setChecked(true);
                 TextView lblLiterature = (TextView) findViewById(R.id.lblLiterature);
                 lblLiterature.setClickable(true);
                 txtLiterature.setVisibility(View.VISIBLE);
-                txtLiterature.setText(person.interestsValue("Literature").get(person.interestsValue("Literature").size()-1));
+                txtLiterature.setText(person.textValue(key));
             }
-            else if (key.equals("Movies")) {
-                CheckBox movies = (CheckBox) findViewById(R.id.checkBoxMovies);
+            else if (key.equals(getResources().getString(R.string.selectInterestMovies))) {
                 movies.setChecked(true);
                 TextView lblMovies = (TextView) findViewById(R.id.lblMovies);
                 lblMovies.setClickable(true);
                 txtMovies.setVisibility(View.VISIBLE);
-                txtMovies.setText(person.interestsValue("Movies").get(person.interestsValue("Movies").size()-1));
+                txtMovies.setText(person.textValue(key));
             }
-            else if (key.equals("Art")) {
-                CheckBox art = (CheckBox) findViewById(R.id.checkBoxArt);
+            else if (key.equals(getResources().getString(R.string.selectInterestArt))) {
                 art.setChecked(true);
                 TextView lblArt = (TextView) findViewById(R.id.lblArt);
                 lblArt.setClickable(true);
                 txtArt.setVisibility(View.VISIBLE);
-                txtArt.setText(person.interestsValue("Art").get(person.interestsValue("Art").size()-1));
+                txtArt.setText(person.textValue(key));
             }
-            else if (key.equals("TV Shows")) {
-                CheckBox tvShow = (CheckBox) findViewById(R.id.checkBoxTvShow);
+            else if (key.equals(getResources().getString(R.string.selectInterestTVShows))) {
                 tvShow.setChecked(true);
                 TextView lblTvShow = (TextView) findViewById(R.id.lblTvShow);
                 lblTvShow.setClickable(true);
                 txtTvShow.setVisibility(View.VISIBLE);
-                txtTvShow.setText(person.interestsValue("TV Shows").get(person.interestsValue("TV Shows").size()-1));
+                txtTvShow.setText(person.textValue(key));
             }
-            else if (key.equals("Sports")) {
-                CheckBox sports = (CheckBox) findViewById(R.id.checkBoxSports);
+            else if (key.equals(getResources().getString(R.string.selectInterestSports))) {
                 sports.setChecked(true);
                 TextView lblSports = (TextView) findViewById(R.id.lblSports);
                 lblSports.setClickable(true);
                 txtSports.setVisibility(View.VISIBLE);
-                txtSports.setText(person.interestsValue("Sports").get(person.interestsValue("Sports").size()-1));
+                txtSports.setText(person.textValue(key));
             }
-            else if (key.equals("Science")) {
-                CheckBox science = (CheckBox) findViewById(R.id.checkBoxScience);
+            else if (key.equals(getResources().getString(R.string.selectInterestScience))) {
                 science.setChecked(true);
                 txtScience.setVisibility(View.VISIBLE);
-                txtScience.setText(person.interestsValue("Science").get(0));
+                txtScience.setText(person.textValue(key));
             }
-            else if (key.equals("Looking For")) {
-                CheckBox lookingFor = (CheckBox) findViewById(R.id.checkBoxLookingFor);
+            else if (key.equals(getResources().getString(R.string.selectInterestLookingFor))) {
                 lookingFor.setChecked(true);
                 TextView lblLookingFor = (TextView) findViewById(R.id.lblLookingFor);
                 lblLookingFor.setClickable(true);
                 txtLookingFor.setVisibility(View.VISIBLE);
-                txtLookingFor.setText(person.interestsValue("Looking For").get(person.interestsValue("Looking For").size()-1));
+                txtLookingFor.setText(person.textValue(key));
             }
         }
     }
 
     public void onCheckBoxInterestClicked(View v) {
         boolean checked = ((CheckBox) v).isChecked();
-        EditText txtMusic = (EditText) findViewById(R.id.txtMusic);
-        EditText txtLiterature = (EditText) findViewById(R.id.txtLiterature);
-        EditText txtMovies = (EditText) findViewById(R.id.txtMovies);
-        EditText txtArt = (EditText) findViewById(R.id.txtArt);
-        EditText txtTvShow = (EditText) findViewById(R.id.txtTvShow);
-        EditText txtSports = (EditText) findViewById(R.id.txtSports);
-        EditText txtScience = (EditText) findViewById(R.id.txtScience);
-        EditText txtLookingFor =(EditText) findViewById(R.id.txtLookingFor);
         TextView lblMusic = (TextView) findViewById(R.id.lblMusic);
         TextView lblLiterature = (TextView) findViewById(R.id.lblLiterature);
         TextView lblMovies = (TextView) findViewById(R.id.lblMovies);
@@ -188,89 +169,89 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
             case R.id.checkBoxMusic:
                 if (checked) {
                     lblMusic.setClickable(true);
-                    newTittle = (String) getResources().getText(R.string.selectInterestMusic);
+                    newTitle = (String) getResources().getText(R.string.selectInterestMusic);
                     newChoices = getResources().getStringArray(R.array.music);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                     txtMusic.setVisibility(View.VISIBLE);
                 } else {
                     txtMusic.setVisibility(View.GONE);
                     lblMusic.setClickable(false);
-                    person.getInterestList().remove("Music");
+                    person.getInterestList().remove(getResources().getString(R.string.selectInterestMusic));
                 }
                 break;
             case R.id.checkBoxLiterature:
                 if (checked) {
                     lblLiterature.setClickable(true);
-                    newTittle = (String) getResources().getText(R.string.selectInterestLiterature);
+                    newTitle = (String) getResources().getText(R.string.selectInterestLiterature);
                     newChoices = getResources().getStringArray(R.array.literature);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                     txtLiterature.setVisibility(View.VISIBLE);
                 } else {
                     txtLiterature.setVisibility(View.GONE);
                     lblLiterature.setClickable(false);
-                    person.getInterestList().remove("Literature");
+                    person.getInterestList().remove(getResources().getString(R.string.selectInterestLiterature));
                 }
                 break;
             case R.id.checkBoxMovies:
                 if (checked) {
                     lblMovies.setClickable(true);
-                    newTittle = (String) getResources().getText(R.string.selectInterestMovies);
+                    newTitle = (String) getResources().getText(R.string.selectInterestMovies);
                     newChoices = getResources().getStringArray(R.array.movies);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                     txtMovies.setVisibility(View.VISIBLE);
                 } else {
                     txtMovies.setVisibility(View.GONE);
                     lblMovies.setClickable(false);
-                    person.getInterestList().remove("Movies");
+                    person.getInterestList().remove(getResources().getString(R.string.selectInterestMovies));
                 }
                 break;
             case R.id.checkBoxArt:
                 if (checked) {
                     lblArt.setClickable(true);
-                    newTittle = (String) getResources().getText(R.string.selectInterestArt);
+                    newTitle = (String) getResources().getText(R.string.selectInterestArt);
                     newChoices = getResources().getStringArray(R.array.art);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                     txtArt.setVisibility(View.VISIBLE);
                 } else {
                     txtArt.setVisibility(View.GONE);
                     lblArt.setClickable(false);
-                    person.getInterestList().remove("Art");
+                    person.getInterestList().remove(getResources().getString(R.string.selectInterestArt));
                 }
                 break;
             case R.id.checkBoxTvShow:
                 if (checked) {
                     lblTvShow.setClickable(true);
-                    newTittle = (String) getResources().getText(R.string.selectInterestTVShows);
+                    newTitle = (String) getResources().getText(R.string.selectInterestTVShows);
                     newChoices = getResources().getStringArray(R.array.tvShows);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                     txtTvShow.setVisibility(View.VISIBLE);
                 } else {
                     txtTvShow.setVisibility(View.GONE);
                     lblTvShow.setClickable(false);
-                    person.getInterestList().remove("TV Shows");
+                    person.getInterestList().remove(getResources().getString(R.string.selectInterestTVShows));
                 }
                 break;
             case R.id.checkBoxSports:
                 if (checked) {
                     lblSports.setClickable(true);
-                    newTittle = (String) getResources().getText(R.string.selectInterestSports);
+                    newTitle = (String) getResources().getText(R.string.selectInterestSports);
                     newChoices = getResources().getStringArray(R.array.sports);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                     txtSports.setVisibility(View.VISIBLE);
                 } else {
                     txtSports.setVisibility(View.GONE);
                     lblSports.setClickable(false);
-                    person.getInterestList().remove("Sports");
+                    person.getInterestList().remove(getResources().getString(R.string.selectInterestSports));
                 }
                 break;
             case R.id.checkBoxScience:
                 if (checked) {
                     txtScience.setVisibility(View.VISIBLE);
-                    person.fillInterestList("Science", new ArrayList<String>());
+                    person.fillInterestList(getResources().getString(R.string.selectInterestScience), new ArrayList<String>());
                     //listByInterest.add(txtScience.getText().toString());
                 } else {
                     txtScience.setVisibility(View.GONE);
-                    person.getInterestList().remove("Science");
+                    person.getInterestList().remove(getResources().getString(R.string.selectInterestScience));
                     //listByInterest.remove(listByInterest.indexOf(txtScience.getText().toString()));
                 }
                 break;
@@ -278,14 +259,14 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                 if (checked) {
                     lblLookingFor.setClickable(true);
 
-                    newTittle = (String) getResources().getText(R.string.selectInterestLookingFor);
+                    newTitle = (String) getResources().getText(R.string.selectInterestLookingFor);
                     newChoices = getResources().getStringArray(R.array.lookingFor);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                     txtLookingFor.setVisibility(View.VISIBLE);
                 } else {
                     txtLookingFor.setVisibility(View.GONE);
                     lblLookingFor.setClickable(false);
-                    person.getInterestList().remove("Looking For");
+                    person.getInterestList().remove(getResources().getString(R.string.selectInterestLookingFor));
                 }
                 break;
         }
@@ -293,62 +274,55 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
 
     public void onLabelInterestClicked(View v) {
         Boolean clicked = v.isClickable();
-        CheckBox music = (CheckBox) findViewById(R.id.checkBoxMusic);
-        CheckBox literature = (CheckBox) findViewById(R.id.checkBoxLiterature);
-        CheckBox movies = (CheckBox) findViewById(R.id.checkBoxMovies);
-        CheckBox art = (CheckBox) findViewById(R.id.checkBoxArt);
-        CheckBox tvShow = (CheckBox) findViewById(R.id.checkBoxTvShow);
-        CheckBox sports = (CheckBox) findViewById(R.id.checkBoxSports);
-        CheckBox lookingFor = (CheckBox) findViewById(R.id.checkBoxLookingFor);
 
         switch (v.getId()){
             case R.id.lblMusic:
                 if (clicked && music.isChecked()) {
-                    newTittle = (String) getResources().getText(R.string.selectInterestMusic);
+                    newTitle = (String) getResources().getText(R.string.selectInterestMusic);
                     newChoices = getResources().getStringArray(R.array.music);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                 }
                 break;
             case R.id.lblLiterature:
                 if (clicked && literature.isChecked()) {
-                    newTittle = (String) getResources().getText(R.string.selectInterestLiterature);
+                    newTitle = (String) getResources().getText(R.string.selectInterestLiterature);
                     newChoices = getResources().getStringArray(R.array.literature);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                 }
                 break;
             case R.id.lblMovies:
                 if (clicked && movies.isChecked()) {
-                    newTittle = (String) getResources().getText(R.string.selectInterestMovies);
+                    newTitle = (String) getResources().getText(R.string.selectInterestMovies);
                     newChoices = getResources().getStringArray(R.array.movies);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                 }
                 break;
             case R.id.lblArt:
                 if (clicked && art.isChecked()) {
-                    newTittle = (String) getResources().getText(R.string.selectInterestArt);
+                    newTitle = (String) getResources().getText(R.string.selectInterestArt);
                     newChoices = getResources().getStringArray(R.array.art);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                 }
                 break;
             case R.id.lblTvShow:
                 if (clicked && tvShow.isChecked()) {
-                    newTittle = (String) getResources().getText(R.string.selectInterestTVShows);
+                    newTitle = (String) getResources().getText(R.string.selectInterestTVShows);
                     newChoices = getResources().getStringArray(R.array.tvShows);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                 }
                 break;
             case R.id.lblSports:
                 if (clicked && sports.isChecked()) {
-                    newTittle = (String) getResources().getText(R.string.selectInterestSports);
+                    newTitle = (String) getResources().getText(R.string.selectInterestSports);
                     newChoices = getResources().getStringArray(R.array.sports);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                 }
                 break;
             case R.id.lblLookingFor:
                 if (clicked && lookingFor.isChecked()) {
-                    newTittle = (String) getResources().getText(R.string.selectInterestLookingFor);
+                    newTitle = (String) getResources().getText(R.string.selectInterestLookingFor);
                     newChoices = getResources().getStringArray(R.array.lookingFor);
-                    showNoticeDialog(newTittle, newChoices);
+                    showNoticeDialog(newTitle, newChoices);
                 }
                 break;
         }
@@ -363,74 +337,50 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
         String sSports = txtSports.getText().toString();
         String sScience = txtScience.getText().toString();
         String sLookingFor = txtLookingFor.getText().toString();
-        CheckBox music = (CheckBox) findViewById(R.id.checkBoxMusic);
-        CheckBox literature = (CheckBox) findViewById(R.id.checkBoxLiterature);
-        CheckBox movies = (CheckBox) findViewById(R.id.checkBoxMovies);
-        CheckBox art = (CheckBox) findViewById(R.id.checkBoxArt);
-        CheckBox tvShow = (CheckBox) findViewById(R.id.checkBoxTvShow);
-        CheckBox sports = (CheckBox) findViewById(R.id.checkBoxSports);
-        CheckBox science = (CheckBox) findViewById(R.id.checkBoxScience);
-        CheckBox lookingFor = (CheckBox) findViewById(R.id.checkBoxLookingFor);
 
         if (!sMusic.isEmpty() && music.isChecked())
-            person.interestsValue("Music").add(sMusic);
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestMusic), sMusic);
         if (!sLiterature.isEmpty() && literature.isChecked())
-            person.interestsValue("Literature").add(sLiterature);
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestLiterature), sLiterature);
         if (!sMovies.isEmpty() && movies.isChecked())
-            person.interestsValue("Movies").add(sMovies);
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestMovies), sMovies);
         if (!sArt.isEmpty() && art.isChecked())
-            person.interestsValue("Art").add(sArt);
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestArt), sArt);
         if (!sTvShow.isEmpty() && tvShow.isChecked())
-            person.interestsValue("TV Shows").add(sTvShow);
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestTVShows), sTvShow);
         if (!sSports.isEmpty() && sports.isChecked())
-            person.interestsValue("Sports").add(sSports);
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestSports), sSports);
         if (!sScience.isEmpty() && science.isChecked())
-            person.interestsValue("Science").add(sScience);
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestScience), sScience);
         if (!sLookingFor.isEmpty() && lookingFor.isChecked())
-            person.interestsValue("Looking For").add(sLookingFor);
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestLookingFor), sLookingFor);
     }
 
-    public void showNoticeDialog(String tittle, String[] choices) {
+    public void showNoticeDialog(String title, String[] choices) {
         // Create an instance of the SelectInterests
         SelectInterests dialogInterests = new SelectInterests();
         // Set tittle and choices
-        dialogInterests.setOptions(tittle, choices, person);
+        dialogInterests.setOptions(title, choices, person);
+        // Cancelable false, user can only close the dialog by Accept or Cancel buttons
+        dialogInterests.setCancelable(false);
         // Show SelectInterest instance
         dialogInterests.show(getFragmentManager(), "SelectInterests");
     }
 
     @Override
-    public void onDialogPositiveClick(List<String> listBySelectedInterest, String tittle) {
-        /*
-        if (listByInterest == null && listBySelectedInterest != null) {
-            listByInterest = new ArrayList<String>();
-            for (String s : listBySelectedInterest){
-                listByInterest.add(s);
-            }
-        } else if (listByInterest != null && listBySelectedInterest != null) {
-            for (String s : listBySelectedInterest){
-                listByInterest.add(s);
-            }
+    public void onDialogPositiveClick(List<String> listBySelectedInterest, String title) {
+        if (title.equals(getResources().getString(R.string.selectInterestLookingFor)) && listBySelectedInterest.isEmpty()) {
         }
-        */
-
-        if (person != null) {
-            String interestTittle;
-            List<String> listByInterest;
-            if (listBySelectedInterest != null) {
-                listByInterest = new ArrayList<String>();
-                for (String interest : listBySelectedInterest) {
-                    listByInterest.add(interest);
-                }
-                interestTittle = tittle;
-                person.fillInterestList(interestTittle, listByInterest);
-            }
-        }
+        else
+            person.fillInterestList(title, listBySelectedInterest);
     }
 
     @Override
-    public void onDialogNegativeClick(List<String> listBySelectedInterest) {
-
+    public void onDialogNegativeClick(List<String> mirrorList,  String title) {
+        if (title.equals(getResources().getString(R.string.selectInterestLookingFor)) && mirrorList.isEmpty()) {
+        }
+        else
+            person.fillInterestList(title, mirrorList);
     }
 
     @Override
@@ -455,9 +405,11 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
     @Override
     public void onBackPressed()
     {
+        /*
         this.finish();
         //Exit with slide animation
         this.overridePendingTransition (R.anim.left_to_right, R.anim.right_to_left);
+        */
     }
 
 }

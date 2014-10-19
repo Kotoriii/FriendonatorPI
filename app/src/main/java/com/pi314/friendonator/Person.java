@@ -7,6 +7,7 @@ import java.util.List;
 public class Person implements Serializable {
     private HashMap<String, List<String>> interestList = new HashMap<String, List<String>>();
     private HashMap<String, String> getContactedByList = new HashMap<String, String>();
+    private HashMap<String, String> textFieldInfo = new HashMap<String, String>();
     private String name;
 
     public String getName() {
@@ -29,6 +30,14 @@ public class Person implements Serializable {
         return getContactedByList;
     }
 
+    public HashMap<String, String> getTextFieldInfo() {
+        return textFieldInfo;
+    }
+
+    public void setGetTextFieldInfo(HashMap<String, String> textFieldInfo) {
+        this.textFieldInfo = textFieldInfo;
+    }
+
     public void setGetContactedByList(HashMap<String, String> getContactedByList) {
         this.getContactedByList = getContactedByList;
     }
@@ -41,11 +50,19 @@ public class Person implements Serializable {
         this.getContactedByList.put(tittle, contact);
     }
 
+    public void fillTextFieldInfo(String tittle, String text) {
+        this.textFieldInfo.put(tittle, text);
+    }
+
     public List<String> interestsValue(String key) {
         return interestList.get(key);
     }
 
     public String contactedByValue(String key) {
         return getContactedByList.get(key);
+    }
+
+    public String textValue(String key) {
+        return textFieldInfo.get(key);
     }
 }

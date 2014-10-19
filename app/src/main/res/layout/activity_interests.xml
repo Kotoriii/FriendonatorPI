@@ -61,7 +61,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:ems="10"
                 android:visibility="gone"
                 android:hint="@string/txtMusic"
@@ -103,7 +103,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:ems="10"
                 android:visibility="gone"
                 android:hint="@string/txtLiterature"
@@ -145,7 +145,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:ems="10"
                 android:visibility="gone"
                 android:hint="@string/txtMovies"
@@ -187,7 +187,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:ems="10"
                 android:visibility="gone"
                 android:hint="@string/txtArt"
@@ -229,7 +229,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:ems="10"
                 android:visibility="gone"
                 android:hint="@string/txtTvShow"
@@ -271,7 +271,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:ems="10"
                 android:visibility="gone"
                 android:hint="@string/txtSports"
@@ -311,7 +311,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:ems="10"
                 android:visibility="gone"
                 android:hint="@string/txtScience"
@@ -353,7 +353,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textMultiLine"
+                android:inputType="textMultiLine|textCapSentences"
                 android:ems="10"
                 android:visibility="gone"
                 android:hint="@string/txtLookingFor"

@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import misc.Usuario;
+
 /**
  * Created by andrea on 30/09/14.
  */
@@ -26,7 +29,7 @@ public class BluetoothHandler {
     BluetoothAdapter mBluetoothAdapter = null;
     BluetoothDevice device;
     private static final int REQUEST_ENABLE_BT = 1;
-    private static final UUID MY_UUID = UUID.fromString("1aa3e4a8-54c5-11e4-9e35-164230d1df67");
+    private static final UUID MY_UUID = UUID.fromString("f409e1f6-5665-11e4-9e35-164230d1df67");
     private static final String NAME = "Friendonator";
     BluetoothDevice remoteDevice;
     private boolean registered = false;
@@ -43,24 +46,16 @@ public class BluetoothHandler {
 
     //////////////////
     public BluetoothAdapter getAdapter() {
+        if (mBluetoothAdapter == null) {
+            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        }
         return mBluetoothAdapter;
     }
 
     public List<BluetoothDevice> getListVisibleDevices() {
         return lstDisptV;
     }
-///////////////////
 
-    public void startServer() {
-        new Thread(new ServerThread()).start();
-
-    }
-
-    public void startClient() {
-        if (device != null) {
-            new Thread(new ClientThread(device)).start();
-        }
-    }
 
     private void registerAdapter() {
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
@@ -135,6 +130,11 @@ public class BluetoothHandler {
         return true;
     }
 
+    public void startBluetoothServer(){
+        ServerThread SV = new ServerThread();
+        SV.start();
+    }
+
     public void stopBlueTooth(){
        mBluetoothAdapter.disable();
     }
@@ -176,7 +176,7 @@ public class BluetoothHandler {
             BluetoothServerSocket tmp = null;
             try {
                 // MY_UUID is the app's UUID string, also used by the client code
-                tmp = mBluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(NAME, MY_UUID);
+                tmp = getAdapter().listenUsingInsecureRfcommWithServiceRecord(NAME, MY_UUID);
             } catch (IOException e) { }
             mmServerSocket = tmp;
         }
@@ -196,7 +196,8 @@ public class BluetoothHandler {
 
                     //Por el momento este es el objeto que manda, mas adelante va a mandar el
                     //objeto representante al usuario del telefono
-                        String potato = "potato";
+                    Log.v("BluetoothFR", "got connection from client, starting send");
+                             String potato = "potato";
                         ConnectedToClientThread cntCT = new ConnectedToClientThread(socket, potato);
                         cntCT.start();
 
@@ -241,20 +242,14 @@ public class BluetoothHandler {
         public void run() {
             // Cancel discovery because it will slow down the connection
             // temporalmente
-            mBluetoothAdapter.cancelDiscovery();
+            getAdapter().cancelDiscovery();
 
-            try {
-                // Connect the device through the socket. This will block
-                // until it succeeds or throws an exception
-                mmSocket.connect();
-                ConnectedToServerThread coTST = new ConnectedToServerThread(mmSocket);
-            } catch (IOException connectException) {
-                // Unable to connect; close the socket and get out
-                try {
-                    mmSocket.close();
-                } catch (IOException closeException) { }
-                return;
-            }
+            // Connect the device through the socket. This will block
+            // until it succeeds or throws an exception
+            //mmSocket.connect();
+            Log.v("BluetoothFR", "Connected to Server, starting data reciever'");
+            ConnectedToServerThread coTST = new ConnectedToServerThread(mmSocket);
+            coTST.start();
 
         }
 
@@ -292,14 +287,22 @@ public class BluetoothHandler {
         public void run() {
 
                 try {
-                    // Read from the InputStream
-                    ObjectOutputStream oos = new ObjectOutputStream(mmOutStream);
-                    oos.writeObject(mObj);
-                    this.cancel();
+                    Log.v("BluetoothFR", "Sending data via ObjectOutputStream");
+
+                    //por el momento se crea un usuario test. mas adelante se va a sacar de la BD
+                    Usuario testUsuario = Usuario.newTestUsuario();
+                    ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
+                    oos.writeObject(testUsuario);
+
 
                 } catch (Exception e) {
 
                 }
+        }
+        public void write(byte[] bytes) {
+            try {
+                mmOutStream.write(bytes);
+            } catch (IOException e) { }
         }
 
         /* Call this from the main activity to shutdown the connection */
@@ -328,24 +331,31 @@ public class BluetoothHandler {
         }
 
         public void run() {
-            byte[] buffer = new byte[1024];  // buffer store for the stream
-            int bytes; // bytes returned from read()
+                Usuario usuario = null ;
 
-            // Keep listening to the InputStream until an exception occurs
-            while (true) {
-                try {
-                    ObjectInputStream ois = new ObjectInputStream(mmInStream);
+                Log.v("BluetoothFR", "Connected to server- Starting receiving loop ");
+
                     try {
-                        String pop = (String) ois.readObject();
-                    } catch (ClassNotFoundException e) {
+                        if(!mmSocket.isConnected()){
+                            mmSocket.connect();
+                            Log.v("BluetoothFR", "Connected to server- ****** Conected *****");
+                        }
+                        Log.v("BluetoothFR", "Connected to server- Recibiendo datos ");
+
+                        ObjectInputStream bjr = new ObjectInputStream(mmInStream);
+                        usuario = (Usuario)bjr.readObject();
+                        bjr.close();
+                    } catch (IOException e) {
+
+
+                } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }
-                    // Read from the InputStream
 
-                } catch (IOException e) {
-                    break;
-                }
-            }
+
+            Log.v("BluetoothFR", "Datos recieved!");
+                Log.v("BluetoothFR", "for! -> " +usuario.toString() );
+
         }
 
         /* Call this from the main activity to shutdown the connection */
@@ -357,5 +367,10 @@ public class BluetoothHandler {
     }
 
 
+    public void ClientTest(){
+        BluetoothDevice btd = lstDisptV.get(0);
+        ClientThread CT = new ClientThread(btd);
+        CT.start();
+    }
 
 }

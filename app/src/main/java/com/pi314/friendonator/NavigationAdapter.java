@@ -3,11 +3,6 @@ package com.pi314.friendonator;
 /**
  * Created by grecia on 15/10/2014.
  */
-import java.util.ArrayList;
-
-import com.pi314.friendonator.Item_objct;
-import com.pi314.friendonator.R;
-import com.pi314.friendonator.NavigationAdapter.Fila;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -16,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class NavigationAdapter extends BaseAdapter {
     private Activity activity;
