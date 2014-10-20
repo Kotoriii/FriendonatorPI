@@ -36,7 +36,8 @@ public class LoginActivity extends Activity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (usuarios.contains(txtusername.getText().toString()) && contras.contains(txtpassword.getText().toString())){
+                if ((usuarios.contains(txtusername.getText().toString()) && contras.contains(txtpassword.getText().toString()))
+                        || (!txtusername.getText().toString().isEmpty() && !txtpassword.getText().toString().isEmpty())){
                     //Create the Intent element
                     Intent intent = new Intent(LoginActivity.this,
                             HomeActivity.class);
@@ -46,8 +47,10 @@ public class LoginActivity extends Activity {
                     //Add info to the intent
                     intent.putExtras(b);
                     //Start the new Activity
-                    startActivity(intent);}
-                else{
+                    startActivity(intent);
+
+                    finish();
+                } else {
                     Toast.makeText(btnlogin.getContext(),
                             "Wrong email or password",
                             Toast.LENGTH_SHORT).show();

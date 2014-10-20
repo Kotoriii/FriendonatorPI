@@ -2,7 +2,6 @@ package com.pi314.friendonator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,13 +18,14 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -36,10 +36,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
-import java.util.Map;
 
 import Dialog.InterestInfo;
+import GridView.GridObject;
+import GridView.GridCustomAdapter;
 
 
 public class ProfileActivity extends Activity {
@@ -47,6 +47,7 @@ public class ProfileActivity extends Activity {
     Person person;
     EditText txtProfileName;
     List<String> gridInterests;
+    ArrayList<GridObject> gridList;
     TextView lblInterestsList;
     TextView getContactedBy;
 
@@ -66,23 +67,11 @@ public class ProfileActivity extends Activity {
         getSetPerson();
         textName();
 
-        // Locate the lblInterestsList TextView
-        //lblInterestsList = (TextView) findViewById(R.id.lblInterestsList);
-
-        // Build the message to be displayed on lblInterestsList
-        //lblInterestsList.setText(getInterestsList());
-
-        // Locate the lblContactedByList TextView
-        //getContactedBy = (TextView) findViewById(R.id.lblContactedByList);
-
-        // Build the message to be displayed on lblContactedByList
-        //getContactedBy.setText(getContactedByList());
-
         // Locate the gridViewInterests TextView
         final GridView gridViewInterests = (GridView) findViewById(R.id.gridViewInterests);
 
         // Create ArrayAdapterInterests
-        ArrayAdapter<String> adapterInterests = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fillGridViewInterests());
+        GridCustomAdapter adapterInterests = new GridCustomAdapter(this, fillGridViewInterests());
 
         // Set adapter to gridViewInterests
         gridViewInterests.setAdapter(adapterInterests);
@@ -91,7 +80,7 @@ public class ProfileActivity extends Activity {
         GridView gridViewContactedBy = (GridView) findViewById(R.id.gridViewContactedBy);
 
         // Create ArrayAdapterInterests
-        ArrayAdapter<String> adapterContactedBy = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fillGridViewContactedBy());
+        GridCustomAdapter adapterContactedBy = new GridCustomAdapter(this, fillGridViewContactedBy());
 
         // Set adapter to gridViewInterests
         gridViewContactedBy.setAdapter(adapterContactedBy);
@@ -153,6 +142,8 @@ public class ProfileActivity extends Activity {
         btnSaveChanges.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                setName();
+
                 // Create intent
                 Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
 
@@ -169,9 +160,12 @@ public class ProfileActivity extends Activity {
         gridViewInterests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String title = getTitle(position);
+                /*String title = getTitle(position);
                 if (!title.isEmpty() && person.textValue(title) != null)
-                    showInterestInfoDialog(textFavoriteType(title), person.textValue(title));
+                    showInterestInfoDialog(textFavoriteType(title), person.textValue(title));*/
+                GridObject forDialog = gridList.get(position);
+                if (!forDialog.getTitle().isEmpty() && person.textValue(forDialog.getTitle()) != null)
+                    showInterestInfoDialog(textFavoriteType(forDialog.getTitle()), person.textValue(forDialog.getTitle()));
             }
         });
 
@@ -244,14 +238,16 @@ public class ProfileActivity extends Activity {
         return favorite;
     }
 
-    public List<String> fillGridViewInterests() {
-        gridInterests = new ArrayList<String>();
-        String interests = getResources().getString(R.string.lblInterestsList);
+    public ArrayList<GridObject> fillGridViewInterests() {
+        gridList = new ArrayList<GridObject>();
+        GridObject object = new GridObject();
+        String interestTitle = getResources().getString(R.string.lblInterestsList);
+        String interestGenres = "";
 
         if (person != null && !person.getInterestList().isEmpty()) {
             for (Map.Entry<String, List<String>> entry : person.getInterestList().entrySet()) {
-                interests = "";
-                interests += entry.getKey();
+                interestTitle = entry.getKey();
+                object.setTitle(interestTitle);
                 if (!person.interestsValue(entry.getKey()).isEmpty()) {
                     String value = "";
                     int count = 0;
@@ -262,16 +258,26 @@ public class ProfileActivity extends Activity {
                         } else
                             value += v + ".";
                     }
-                    interests += "\n" + value;
+                    interestGenres = value;
+                    object.setGenres(interestGenres);
                 }
-                //if (person.textValue(entry.getKey()) != null)
-                //    interests += "\n" + textFavoriteType(entry.getKey()) + "\n" + person.textValue(entry.getKey());
-                gridInterests.add(interests);
+                gridList.add(object);
+                object = new GridObject();
             }
-        } else
-            gridInterests.add(interests);
+        } else {
+            object.setTitle(interestTitle);
+            object.setGenres(interestGenres);
+            gridList.add(object);
+        }
 
-        return gridInterests;
+        Collections.sort(gridList, new Comparator<GridObject>() {
+            @Override
+            public int compare(GridObject lhs, GridObject rhs) {
+                return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+            }
+        });
+
+        return gridList;
     }
 
     public String getContactedByList() {
@@ -288,19 +294,35 @@ public class ProfileActivity extends Activity {
         return contactedByList;
     }
 
-    public List<String> fillGridViewContactedBy() {
-        List<String> gridContactedBy = new ArrayList<String>();
+    public ArrayList<GridObject> fillGridViewContactedBy() {
+        ArrayList<GridObject> contactedBy = new ArrayList<GridObject>();
         String contactedByList = getResources().getString(R.string.lblContactedByList);
+        GridObject object = new GridObject();
+
         if (person != null && !person.getGetContactedByList().isEmpty()) {
             for (Map.Entry<String, String> entry : person.getGetContactedByList().entrySet()) {
                 contactedByList = "";
-                contactedByList += entry.getKey() + "\n";
-                contactedByList += entry.getValue();
-                gridContactedBy.add(contactedByList);
+                object = new GridObject();
+                contactedByList = entry.getKey();
+                object.setTitle(contactedByList);
+                contactedByList = entry.getValue();
+                object.setGenres(contactedByList);
+                contactedBy.add(object);
             }
-        } else
-            gridContactedBy.add(contactedByList);
-        return gridContactedBy;
+        } else {
+            object.setTitle(contactedByList);
+            object.setGenres("");
+            contactedBy.add(object);
+        }
+
+        Collections.sort(contactedBy, new Comparator<GridObject>() {
+            @Override
+            public int compare(GridObject lhs, GridObject rhs) {
+                return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+            }
+        });
+
+        return contactedBy;
     }
 
     public void showInterestInfoDialog(String tittle, String message) {

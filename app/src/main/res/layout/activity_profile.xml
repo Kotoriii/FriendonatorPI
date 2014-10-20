@@ -94,7 +94,7 @@
                 android:visibility="gone"
                 android:textSize="15sp" />
 
-            <com.pi314.friendonator.CustomGridView
+            <GridView.CustomGridView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -149,7 +149,7 @@
                 android:visibility="gone"
                 android:textSize="15sp" />
 
-            <com.pi314.friendonator.CustomGridView
+            <GridView.CustomGridView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

@@ -66,8 +66,11 @@
     
     <string name="title_activity_home">Home</string>
     <string name="lblMatchhome">Female Doge</string>
-    <string name="title_activity_login">Login</string>
     <string name="spnEvent">Choose Event</string>
+
+    <string name="title_activity_login">Login</string>
+    <string name="txtLoginUserName">Username</string>
+    <string name="txtLoginPassword">Password</string>
 
     <string-array name="event_array">
         <item>Concert</item>

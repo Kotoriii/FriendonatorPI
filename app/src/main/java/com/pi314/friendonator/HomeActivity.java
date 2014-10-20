@@ -22,6 +22,8 @@ public class HomeActivity extends Activity {
     ImageView iv;
     Bitmap image;
     ProgressDialog pd;
+    Person person;
+    TextView lblprofilename;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,10 +33,12 @@ public class HomeActivity extends Activity {
         iv = (ImageView) findViewById(R.id.imgviewEventpic);
         final String txtSpinner = spnEvent.getSelectedItem().toString();
 
-        Bundle bundle = this.getIntent().getExtras();
+
         //addItemsOnEventSpinner();
-        TextView lblprofilename = (TextView)findViewById(R.id.lblProfileName);
-        lblprofilename.setText(""+ bundle.getString("NAME"));
+        lblprofilename = (TextView)findViewById(R.id.lblProfileName);
+        getSetPerson();
+        textName();
+
         //onItemSelected();
 
         final TextView btnprofile = (TextView)findViewById(R.id.lblProfileName);
@@ -42,10 +46,18 @@ public class HomeActivity extends Activity {
         btnprofile.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                setName();
+
                 // Create the Intent element
-                Intent intent = new Intent(HomeActivity.this,
-                        ProfileActivity.class);
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+
+                // Set person inside intent
+                intent.putExtra("PERSON", person);
+
                 startActivity(intent);
+
+                // Finish activity
+                finish();
             }
         });
 
@@ -84,6 +96,31 @@ public class HomeActivity extends Activity {
             }
 
         });
+    }
+
+    public void getSetPerson() {
+        person = (Person) this.getIntent().getSerializableExtra("PERSON");
+
+        if (person == null)
+            person = new Person();
+    }
+
+    public void setName() {
+        String name = lblprofilename.getText().toString();
+        if (!lblprofilename.getText().toString().isEmpty())
+            person.setName(name);
+    }
+
+    public void textName() {
+        Bundle bundle = this.getIntent().getExtras();
+        if (person.getName() != null)
+            lblprofilename.setText(person.getName());
+        else if (bundle != null){
+            String name = bundle.getString("NAME");
+            if (name != null){
+                lblprofilename.setText(name);
+            }
+        }
     }
 
    /* public void onItemSelected(){

@@ -1,4 +1,4 @@
-package com.pi314.friendonator;
+package GridView;
 
 import android.content.Context;
 import android.util.AttributeSet;

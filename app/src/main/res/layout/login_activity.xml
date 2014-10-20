@@ -26,7 +26,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="20dp"
                 android:background="@drawable/custom_border_view"
-                android:text="Name"
+                android:hint="@string/txtLoginUserName"
                 android:textStyle="italic" />
 
             <EditText
@@ -37,7 +37,7 @@
                 android:id="@+id/txtpassword"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="25dp"
-                android:text="Password"
+                android:hint="@string/txtLoginPassword"
                 android:textStyle="italic"
                 android:background="@drawable/custom_border_view"
                 />
