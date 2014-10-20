@@ -1,0 +1,397 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.pi314.friendonator.InterestsActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/lblInterestsL"
+                android:id="@+id/lblInterestsL" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="15dp" />
+
+            <RelativeLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:id="@+id/linearLayout">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblMusic"
+                            android:id="@+id/lblMusic"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:clickable="false"
+                            android:onClick="onLabelInterestClicked" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:checked="false"
+                            android:id="@+id/checkBoxMusic"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxInterestClicked" />
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:ems="10"
+                        android:visibility="gone"
+                        android:hint="@string/txtMusic"
+                        android:id="@+id/txtMusic" />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="15dp"
+                        android:id="@+id/space" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblLiterature"
+                            android:id="@+id/lblLiterature"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:clickable="false"
+                            android:onClick="onLabelInterestClicked" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:checked="false"
+                            android:id="@+id/checkBoxLiterature"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxInterestClicked" />
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:ems="10"
+                        android:visibility="gone"
+                        android:hint="@string/txtLiterature"
+                        android:id="@+id/txtLiterature" />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="15dp"
+                        android:id="@+id/space2" />
+
+                    <RelativeLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblMovies"
+                            android:id="@+id/lblMovies"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:clickable="false"
+                            android:onClick="onLabelInterestClicked" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:checked="false"
+                            android:id="@+id/checkBoxMovies"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxInterestClicked" />
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:ems="10"
+                        android:visibility="gone"
+                        android:hint="@string/txtMovies"
+                        android:id="@+id/txtMovies" />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="15dp"
+                        android:id="@+id/space3" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblArt"
+                            android:id="@+id/lblArt"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:clickable="false"
+                            android:onClick="onLabelInterestClicked" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:checked="false"
+                            android:id="@+id/checkBoxArt"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxInterestClicked" />
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:ems="10"
+                        android:visibility="gone"
+                        android:hint="@string/txtArt"
+                        android:id="@+id/txtArt" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblTvShow"
+                            android:id="@+id/lblTvShow"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:clickable="false"
+                            android:onClick="onLabelInterestClicked" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:checked="false"
+                            android:id="@+id/checkBoxTvShow"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxInterestClicked" />
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:ems="10"
+                        android:visibility="gone"
+                        android:hint="@string/txtTvShow"
+                        android:id="@+id/txtTvShow" />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="15dp"
+                        android:id="@+id/space6" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblSports"
+                            android:id="@+id/lblSports"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:clickable="false"
+                            android:onClick="onLabelInterestClicked" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:checked="false"
+                            android:id="@+id/checkBoxSports"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxInterestClicked" />
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:ems="10"
+                        android:visibility="gone"
+                        android:hint="@string/txtSports"
+                        android:id="@+id/txtSports" />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="15dp"
+                        android:id="@+id/space7" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblScience"
+                            android:id="@+id/lblScience"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:checked="false"
+                            android:id="@+id/checkBoxScience"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxInterestClicked" />
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:ems="10"
+                        android:visibility="gone"
+                        android:hint="@string/txtScience"
+                        android:id="@+id/txtScience" />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="15dp"
+                        android:id="@+id/space8" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblLookingFor"
+                            android:id="@+id/lblLookingFor"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
+                            android:clickable="false"
+                            android:onClick="onLabelInterestClicked" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:checked="false"
+                            android:id="@+id/checkBoxLookingFor"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxInterestClicked" />
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textMultiLine|textCapSentences"
+                        android:ems="10"
+                        android:visibility="gone"
+                        android:hint="@string/txtLookingFor"
+                        android:id="@+id/txtLookingFor" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/space5" />
+
+            <Button
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:text="@string/btnSaveInterestsChanges"
+                android:id="@+id/btnSaveInterestsChanges"
+                android:layout_gravity="center" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

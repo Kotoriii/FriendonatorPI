@@ -1,0 +1,241 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="com.pi314.friendonator.GetContactedByActivity">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/lblContact"
+                android:id="@+id/lblContact" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp" />
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true">
+
+                    <RelativeLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblCellphone"
+                            android:id="@+id/lblCellphone"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:id="@+id/checkBoxCellPhone"
+                            android:checked="false"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxClicked" />
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txtPhone"
+                        android:inputType="phone"
+                        android:ems="10"
+                        android:id="@+id/txtPhone"
+                        android:visibility="gone" />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="15dp"
+                        android:id="@+id/space6" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblGoogle"
+                            android:id="@+id/lblGoogle"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:id="@+id/checkBoxGoogle"
+                            android:checked="false"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxClicked" />
+
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txtGoogle"
+                        android:id="@+id/txtGoogle"
+                        android:inputType="textEmailAddress"
+                        android:visibility="gone" />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="15dp"
+                        android:id="@+id/space7" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblFacebook"
+                            android:id="@+id/lblFacebook"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:id="@+id/checkBoxFacebook"
+                            android:checked="false"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxClicked" />
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txtFacebook"
+                        android:id="@+id/txtFacebook"
+                        android:inputType="textEmailAddress"
+                        android:visibility="gone" />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="15dp"
+                        android:id="@+id/space8" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="280dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/lblTwitter"
+                            android:id="@+id/lblTwitter"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true" />
+
+                        <CheckBox
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:id="@+id/checkBoxTwitter"
+                            android:checked="false"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="20dp"
+                            android:onClick="onCheckBoxClicked" />
+                    </RelativeLayout>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/txtTwitter"
+                        android:id="@+id/txtTwitter"
+                        android:inputType="textEmailAddress"
+                        android:visibility="gone" />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="25dp"
+                        android:id="@+id/space9" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/lblFindMeTool"
+                        android:id="@+id/lblFindMeTool" />
+
+                    <Space
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:id="@+id/space10" />
+
+                    <Switch
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/switchActivateTool"
+                        android:id="@+id/switchActivateTool" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/space11" />
+
+            <Button
+                android:layout_width="350dp"
+                android:layout_height="wrap_content"
+                android:text="@string/btnSaveContactMeChanges"
+                android:id="@+id/btnSaveContactMeChanges"
+                android:layout_gravity="center" />
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
