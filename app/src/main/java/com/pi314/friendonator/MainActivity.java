@@ -44,7 +44,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     private ListView NavList;
     private ArrayList<Item_objct> NavItms;
     private ActionBarDrawerToggle toggle;
-    private static final String[] opciones = {"Profile", "History", "Match", "My settings"};
+    private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
     private TypedArray NavIcons;
     NavigationAdapter NavAdapter;
 
@@ -100,6 +100,8 @@ public class MainActivity extends Activity implements Button.OnClickListener{
                 "Desencript: " + desenc  );
         Log.d("TAG", "Message");
         bth = bMan.getHandler();
+
+
         //Logica para el menu
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -123,6 +125,8 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         NavItms.add(new Item_objct(opciones[1], NavIcons.getResourceId(1, -1)));
         NavItms.add(new Item_objct(opciones[2], NavIcons.getResourceId(2, -1)));
         NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(3, -1)));
+        NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
+        NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
         //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
         NavAdapter = new NavigationAdapter(this,NavItms);
         NavList.setAdapter(NavAdapter);
@@ -257,6 +261,25 @@ public class MainActivity extends Activity implements Button.OnClickListener{
                 startActivity(intentHistory);
                 break;
             case 3:
+                //aqui se abrira la actividad Home
+                Intent intentHome = new Intent(MainActivity.this, HomeActivity.class);
+                //Create the Intent element
+                Bundle bHome = new Bundle();
+                intentHome.putExtras(bHome);
+                //Start the new Activity
+                startActivity(intentHome);
+                break;
+            case 4:
+               /* //aqui se abrira la actividad MainActivity
+                Intent intentMain = new Intent(MainActivity.this, MainActivity.class);
+                //Create the Intent element
+                Bundle bMain = new Bundle();
+                intentMain.putExtras(bMain);
+                //Start the new Activity
+                startActivity(intentMain);
+                break;*/
+                break;
+            case 5:
                /* //aqui se abrira la actividad Match
                 Intent intentMatch = new Intent(MainActivity.this, Match.class);
                 //Create the Intent element
@@ -264,9 +287,11 @@ public class MainActivity extends Activity implements Button.OnClickListener{
                 intentMatch.putExtras(bMatch);
                 //Start the new Activity
                 startActivity(intentMatch);*/
-
+                Toast.makeText(MainActivity.this,
+                        "Maintenance",
+                        Toast.LENGTH_SHORT).show();
                 break;
-            case 4:
+            case 6:
                 //aqui se abrira la actividad MySettings
                 Intent intentMySettings = new Intent(MainActivity.this, MySettings.class);
                 //Create the Intent element
