@@ -434,7 +434,7 @@ public class BluetoothHandler {
     }
 
 
-    
+
     public void ClientTest(){
         BluetoothDevice btd = lstDisptV.get(0);
         ClientThread CT = new ClientThread(btd);
