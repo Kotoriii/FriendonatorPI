@@ -22,7 +22,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import Bluetooth.BlueMan;
 import Bluetooth.BluetoothHandler;
 import Bluetooth.DeviceValidator;
 import misc.BackgroundService;
@@ -36,8 +35,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     private static final String NAME = "BluetoothDemo";
     TextView output;
     Button btnServer, btnScan, btnClient, startservice, startServer, startClientTest;
-    BluetoothHandler bth;
-    BlueMan bMan = null;
+    BluetoothHandler mBHand;
     /** Called when the activity is first created. */
 
     //Elementos del menu
@@ -91,15 +89,14 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         startservice = (Button) findViewById(R.id.startservice);
         startservice.setOnClickListener(this);
 
-        bMan = BlueMan.getInstance(this);
+        mBHand = new BluetoothHandler(this);
         DeviceValidator dv = new DeviceValidator();
         String enc = dv.encrypt("1193434");
         String desenc = dv.decrypt(enc);
         output.setText("Orig: 1193434 \n" +
-                "Encripted: " + enc +"\n" +
-                "Desencript: " + desenc  );
+                "Encripted: " + enc + "\n" +
+                "Desencript: " + desenc);
         Log.d("TAG", "Message");
-        bth = bMan.getHandler();
 
 
         //Logica para el menu
@@ -163,15 +160,11 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         if ( (Button)v == btnServer) {
           //
         } else if ( (Button)v == btnClient) {
-            if (device != null) {
-               // output.append("button client\n");
-                //bth.startClient();
-            }
-            bMan.startScan();
+            mBHand.StartScan();
 
         } else if ( (Button)v == btnScan) {
             output.setText("");
-                for (BluetoothDevice b : bMan.getDeviceList()) {
+                for (BluetoothDevice b : mBHand.getDevicesList()) {
                     output.append(b.getName() + "\n");
                 }
 
@@ -183,10 +176,10 @@ public class MainActivity extends Activity implements Button.OnClickListener{
             startService(in);
         }
         else if ((Button)v == startServer){
-            bth.startBluetoothServer();
+            mBHand.startBluetoothServer();
         }
         else if ((Button)v == startClientTest){
-            bth.ClientTest();
+            mBHand.ClientTest();
         }
 
     }

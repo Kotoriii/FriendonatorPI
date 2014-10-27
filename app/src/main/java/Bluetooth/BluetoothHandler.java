@@ -18,6 +18,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 import misc.Usuario;
@@ -38,6 +39,7 @@ public class BluetoothHandler {
     Activity mAct = null;
     public BluetoothHandler(Activity act) {
         this.mAct=act;
+
         mValidator = new DeviceValidator();
         if(!this.isBluetoothEnabled()) {
             StartBlueTooth();
@@ -52,13 +54,14 @@ public class BluetoothHandler {
         return mBluetoothAdapter;
     }
 
-    public List<BluetoothDevice> getListVisibleDevices() {
+    public List<BluetoothDevice> getDevicesList() {
         return lstDisptV;
     }
 
 
     private void registerAdapter() {
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+        filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         mAct.registerReceiver(getReceiver(), filter);
         registered = true;
     }
@@ -76,7 +79,7 @@ public class BluetoothHandler {
      *
      * @param name
      */
-    public void setLocalBluetoothName(String name) {
+    private void setLocalBluetoothName(String name) {
         if (mBluetoothAdapter == null) {
             mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         }
@@ -91,18 +94,18 @@ public class BluetoothHandler {
      * Hay que tener en cuenta que la informacion de cada dispositivo (ej: fuerza de se_al, nombre y
      * direccion) son los que se obtienen a la hora de hacer el scan y no son constantemente actualizados.
      */
-    public void Scan() {
+    public void StartScan() {
         if (!registered) {
             registerAdapter();
         }
-        getListVisibleDevices().clear();
+        getDevicesList().clear();
         getAdapter().startDiscovery();
     }
 
     /**
      * Devuelve el nombre actual del dispositivo para bluetooth
      */
-    public String getLocalBluetoothName() {
+    private String getLocalBluetoothName() {
         if (mBluetoothAdapter == null) {
             mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         }
@@ -114,6 +117,10 @@ public class BluetoothHandler {
         return name;
     }
 
+    /**
+     * Starts the actual bluetooth.
+     * @return
+     */
     public boolean StartBlueTooth() {
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 
@@ -144,8 +151,11 @@ public class BluetoothHandler {
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
+            final String action = intent.getAction();
+
+
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (!lstDisptV.contains(device) &&
@@ -153,8 +163,65 @@ public class BluetoothHandler {
                     lstDisptV.add(device);
                 }
             }
+
+            if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
+                final int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE,
+                        BluetoothAdapter.ERROR);
+                switch (state) {
+                    case BluetoothAdapter.STATE_OFF:
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_OFF:
+                        break;
+                    case BluetoothAdapter.STATE_ON:
+                        //
+                        setNuevoNombre();
+                        SetUnlimitedVisibility();
+                        //Se unregister el receiver xq ya no lo vamos a necesitar
+                        mAct.unregisterReceiver(mReceiver);
+                        break;
+                    case BluetoothAdapter.STATE_TURNING_ON:
+                        break;
+                }
+            }
         }
     };
+
+    /**
+     * Calcula un nombre numerico Random, lo encripta y se lo asigna como
+     * nuevo nombre Bluetooth al telefono
+     */
+    public void setNuevoNombre() {
+        String nuevoNombre = "";
+        int cont = 0;
+        while (cont <= this.getRandomLenght()) {
+            cont++;
+            nuevoNombre += this.getRandomNumber();
+        }
+        nuevoNombre = mValidator.encrypt(nuevoNombre);
+        setLocalBluetoothName(nuevoNombre);
+    }
+
+    private int getRandomLenght() {
+        Random ran = new Random();
+        int[] opciones = {
+                3, 4, 5
+        };
+        return opciones[ran.nextInt(3)];
+    }
+
+    /**
+     * Retorna un numero random del 1 al 9
+     *
+     * @return
+     */
+    private int getRandomNumber() {
+        Random ran = new Random();
+        int[] opciones = {
+                1, 2, 3, 4, 5, 6, 7, 8, 9
+        };
+        return opciones[ran.nextInt(8)];
+    }
+
 
 
     public boolean isBluetoothEnabled()
@@ -367,6 +434,7 @@ public class BluetoothHandler {
     }
 
 
+    
     public void ClientTest(){
         BluetoothDevice btd = lstDisptV.get(0);
         ClientThread CT = new ClientThread(btd);

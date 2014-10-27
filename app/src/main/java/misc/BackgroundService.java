@@ -97,7 +97,7 @@ public class BackgroundService extends IntentService {
     }
 
     public void ScanEveryX(final int x, final Activity activity){
-        final BlueMan bMan = BlueMan.getInstance(activity);
+        final BlueMan bMan = BlueMan.getInstance();
         Thread scanner = new Thread(){
             public void run(){
                 try{
