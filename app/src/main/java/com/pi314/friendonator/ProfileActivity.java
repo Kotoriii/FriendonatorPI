@@ -103,6 +103,11 @@ public class ProfileActivity extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+
+
                 selectImage();
             }
         });
