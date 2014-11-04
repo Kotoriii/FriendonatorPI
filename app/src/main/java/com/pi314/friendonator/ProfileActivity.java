@@ -469,6 +469,8 @@ public class ProfileActivity extends Activity {
 
     private void selectImage() {
 
+        //recordar cambiar strings xml con esto
+
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);

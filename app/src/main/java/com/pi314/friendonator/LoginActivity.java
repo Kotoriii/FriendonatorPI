@@ -90,21 +90,13 @@ public class LoginActivity extends Activity {
                         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
                     }
 
-                    public List getUserEmail() {
 
-                        List<String> UserArray = new ArrayList<String>();
-                        final SQLiteHelper baseDataUsers =
-                                new SQLiteHelper(getApplicationContext(), "BaseFriendonator", null, 1);
-
-                        for (Usuario u : baseDataUsers.getAllUsuarios()) {
-                            UserArray.add(u.getCorreo());
-                        }
-
-                        return UserArray;
-                    }
 
                     public void onClick(View v) {
                         // TODO Auto-generated method stub
+
+                        final SQLiteHelper baseDataUsers =
+                                new SQLiteHelper(getApplicationContext(), "BaseFriendonator", null, 1);
 
                         String userName = editTextUserName.getText().toString();
                         String password = editTextPassword.getText().toString();
@@ -120,7 +112,7 @@ public class LoginActivity extends Activity {
                             Toast.makeText(getApplicationContext(), "Password does not match", Toast.LENGTH_LONG).show();
                             return;
                         }
-                        if (getUserEmail().contains(userName)) {
+                        if (baseDataUsers.getUser(userName).getCorreo().equals(userName)) {
                             Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_LONG).show();
                             return;
                         }

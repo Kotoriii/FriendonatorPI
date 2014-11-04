@@ -15,6 +15,7 @@ public class Usuario {
     String modfav;
     String foto;
     String password;
+    String matchp;
 
     public Usuario() {
     }
@@ -97,5 +98,13 @@ public class Usuario {
 
     public void setFoto(String foto) {
         this.foto = foto;
+    }
+
+    public String getMatchp() {
+        return matchp;
+    }
+
+    public void setMatchp(String matchp) {
+        this.matchp = matchp;
     }
 }

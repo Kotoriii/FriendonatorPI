@@ -57,6 +57,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             "Twitter varchar(45)," +
             "modo_favorito varchar(45)," +
             "foto_perfil varchar(45)," +
+            "match_percentage varchar(45)" +
             ")";
 
     String createUserinter = "CREATE TABLE usuariointereses (" +
@@ -170,6 +171,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         values.put("Twitter", user.getTwitter());
         values.put("modo_favorito", user.getModfav());
         values.put("foto_perfil", user.getFoto());
+        values.put("match_percentage", user.getMatchp());
 
         db.insert("usuario", null, values);
         db.close();
@@ -228,6 +230,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         values.put("Twitter", user.getTwitter());
         values.put("modo_favorito", user.getModfav());
         values.put("foto_perfil", user.getFoto());
+        values.put("match_percentage", user.getMatchp());
 
         return db.update("usuario", values, "idUsuario=?", new String[] { user.getId() });
     }
@@ -309,12 +312,36 @@ public class SQLiteHelper extends SQLiteOpenHelper{
                 usuario.setTwitter(cursor.getString(7));
                 usuario.setModfav(cursor.getString(8));
                 usuario.setFoto(cursor.getString(9));
+                usuario.setMatchp(cursor.getString(10));
                 usuarioList.add(usuario);
             } while (cursor.moveToNext());
         }
 
         return usuarioList;
     }
+
+    public Usuario getUser(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor=db.query("usuario", null, " correo=?", new String[]{email}, null, null, null);
+
+        cursor.moveToFirst();
+        Usuario usuario = new Usuario();
+        usuario.setId(cursor.getString(0));
+        usuario.setDob(cursor.getString(1));
+        usuario.setCorreo(cursor.getString(2));
+        usuario.setPassword(cursor.getString(3));
+        usuario.setNum(cursor.getString(4));
+        usuario.setFb(cursor.getString(5));
+        usuario.setGplus(cursor.getString(6));
+        usuario.setTwitter(cursor.getString(7));
+        usuario.setModfav(cursor.getString(8));
+        usuario.setFoto(cursor.getString(9));
+        usuario.setMatchp(cursor.getString(10));
+        cursor.close();
+        return usuario;
+    }
+
 
 
 

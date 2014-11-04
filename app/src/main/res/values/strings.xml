@@ -66,13 +66,6 @@
     <string name="txtLoginUserName">Username</string>
     <string name="txtLoginPassword">Password</string>
 
-    <string-array name="event_array">
-        <item>Concert</item>
-        <item>Art</item>
-        <item>Literature</item>
-        <item>Party</item>
-        <item>Hang Out</item>
-    </string-array>
 
     <array name="navigation_iconos">
         <item>@drawable/ic_action_user</item>
