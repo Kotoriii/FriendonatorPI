@@ -16,7 +16,14 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
     private static SQLiteHelper sInstance;
 
-    public SQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    public static SQLiteHelper getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new SQLiteHelper(context, "BaseFriendonator", null, 1);
+        }
+        return sInstance;
+    }
+
+    private SQLiteHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
     }
 
@@ -66,11 +73,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             "PRIMARY KEY (idInteres,idUsuario)" +
             ")";
 
-
-
     // ALTERS
-
-
 
     String alterHist = "ALTER TABLE historial" +
             "ADD FOREIGN KEY (idUsuario) " +
@@ -83,16 +86,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     String alterUsuariointer = "ALTER TABLE usuariointereses" +
             "ADD FOREIGN KEY (idInteres)" +
             "REFERENCES intereses (idIntereses)";
-
-
-
-    public static SQLiteHelper getInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = new SQLiteHelper(context, "BaseFriendonator", null, 1);
-        }
-        return sInstance;
-    }
-
 
     @Override
     public void onCreate(SQLiteDatabase db) {
@@ -292,6 +285,41 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         return superinterList;
     }
 
+    public List<Usuariointereses> getAllUsuarioIntereses() {
+        List<Usuariointereses> intereses = new ArrayList<Usuariointereses>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM usuariointereses", null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                Usuariointereses uInteres = new Usuariointereses();
+                uInteres.setIdinteres(cursor.getString(0));
+                uInteres.setIdusuario(cursor.getString(1));
+            } while (cursor.moveToNext());
+        }
+
+        return intereses;
+    }
+
+    public List<Superinteres> getAllUserSuperInterest() {
+        List<Superinteres> userInterests = new ArrayList<Superinteres>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * si FROM usuariointereses ui, intereses i, superinteres si " +
+                                    "WHERE ui.idInteres = i.idIntereses AND i.idSuperInteres = si.idSuperInteres", null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                Superinteres interests = new Superinteres();
+                interests.setId(cursor.getString(0));
+                interests.setDescripcion((cursor.getString(1)));
+                userInterests.add(interests);
+            } while(cursor.moveToNext());
+        }
+
+        return userInterests;
+    }
 
     public List<Usuario> getAllUsuarios() {
         List<Usuario> usuarioList = new ArrayList<Usuario>();
@@ -322,29 +350,27 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
     public Usuario getUser(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
+        Usuario usuario = new Usuario();
 
         Cursor cursor=db.query("usuario", null, " correo=?", new String[]{email}, null, null, null);
 
-        cursor.moveToFirst();
-        Usuario usuario = new Usuario();
-        usuario.setId(cursor.getString(0));
-        usuario.setDob(cursor.getString(1));
-        usuario.setCorreo(cursor.getString(2));
-        usuario.setPassword(cursor.getString(3));
-        usuario.setNum(cursor.getString(4));
-        usuario.setFb(cursor.getString(5));
-        usuario.setGplus(cursor.getString(6));
-        usuario.setTwitter(cursor.getString(7));
-        usuario.setModfav(cursor.getString(8));
-        usuario.setFoto(cursor.getString(9));
-        usuario.setMatchp(cursor.getString(10));
+        if(cursor.moveToFirst()){
+            usuario.setId(cursor.getString(0));
+            usuario.setDob(cursor.getString(1));
+            usuario.setCorreo(cursor.getString(2));
+            usuario.setPassword(cursor.getString(3));
+            usuario.setNum(cursor.getString(4));
+            usuario.setFb(cursor.getString(5));
+            usuario.setGplus(cursor.getString(6));
+            usuario.setTwitter(cursor.getString(7));
+            usuario.setModfav(cursor.getString(8));
+            usuario.setFoto(cursor.getString(9));
+            usuario.setMatchp(cursor.getString(10));
+        }
+
         cursor.close();
+
         return usuario;
     }
-
-
-
-
-
 
 }

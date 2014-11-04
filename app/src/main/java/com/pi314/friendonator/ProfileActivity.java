@@ -114,6 +114,7 @@ public class ProfileActivity extends Activity {
 
         b =(ImageButton) findViewById(R.id.btnProfileImage);
         viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
+
         Usuario usuario = new Usuario();
         usuario.setId(person.getId());
         if(!usuario.getFoto().equals("")) {
@@ -131,7 +132,6 @@ public class ProfileActivity extends Activity {
                     selectImage();
                 }
             });
-
 
 
         btnChooseInterest.setOnClickListener(new OnClickListener() {
@@ -189,6 +189,7 @@ public class ProfileActivity extends Activity {
                 // Set person inside intent
                 intent.putExtra("PERSON", person);
 
+                // Start change to a new layout
                 startActivity(intent);
 
                 // Finish activity

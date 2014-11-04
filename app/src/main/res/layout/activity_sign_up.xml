@@ -1,17 +1,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_vertical" >
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
 
     <EditText
         android:id="@+id/editTextUserName"
-        android:hint="User Name"
+        android:hint="@string/editTextUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp">
-
+        android:layout_marginRight="50dp"
+        android:inputType="textEmailAddress"
+        android:layout_marginTop="30dp">
         <requestFocus />
     </EditText>
 
@@ -19,27 +19,38 @@
         android:id="@+id/editTextPassword"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Password"
+        android:hint="@string/editTextPassword"
         android:inputType="textPassword"
         android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp" />
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="10dp" />
 
     <EditText
         android:id="@+id/editTextConfirmPassword"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Confirm Password"
+        android:hint="@string/editTextConfirmPassword"
         android:inputType="textPassword"
         android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp" />
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="10dp" />
 
     <Button
-        android:id="@+id/buttonCreateAccount"
-        android:layout_width="fill_parent"
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Create Account"
-        android:layout_marginBottom="60dp"
+        android:text="@string/btnCreateAccount"
         android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp" />
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="30dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/btnCancelSignUp"
+        android:id="@+id/btnCancelSignUp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="30dp" />
 
 </LinearLayout>

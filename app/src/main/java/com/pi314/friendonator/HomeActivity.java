@@ -80,25 +80,22 @@ public class HomeActivity extends Activity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-
                 switch(position) {
                     case 0:
-                        iv.setImageResource(R.drawable.snoopdoge);
+                        iv.setImageResource(R.drawable.dogehangout);
                         break;
                     case 1:
-                        iv.setImageResource(R.drawable.dogeart);
-                    break;
+                        iv.setImageResource(R.drawable.snoopdoge);
+                        break;
                     case 2:
-                        iv.setImageResource(R.drawable.dogepotter);
-                    break;
+                        iv.setImageResource(R.drawable.dogeart);
+                        break;
                     case 3:
-                        iv.setImageResource(R.drawable.dogeparty);
-                    break;
+                        iv.setImageResource(R.drawable.dogepotter);
+                        break;
                     case 4:
-                        iv.setImageResource(R.drawable.dogehangout);
-                    break;
-
-
+                        iv.setImageResource(R.drawable.dogeparty);
+                        break;
                 }
                 Toast.makeText(spnEvent.getContext(),
                         "Selected Event: " + spnEvent.getItemAtPosition(position).toString(),
