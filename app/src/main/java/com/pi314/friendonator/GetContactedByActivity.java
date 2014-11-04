@@ -24,7 +24,6 @@ public class GetContactedByActivity extends Activity {
     CheckBox checkBoxFacebook;
     CheckBox checkBoxTwitter;
     String toggleOnOff;
-    User user;
     Person person;
 
     @Override
@@ -42,9 +41,10 @@ public class GetContactedByActivity extends Activity {
         checkBoxFacebook = (CheckBox) findViewById(R.id.checkBoxFacebook);
         checkBoxTwitter = (CheckBox) findViewById(R.id.checkBoxTwitter);
 
-        //setUserCont();
+        // Get object person from intent extras
         setPersonCont();
 
+        // Fill checkboxes previously set
         fillCheckBoxContactedBy();
 
         btnSaveContactMeChanges.setOnClickListener(new View.OnClickListener() {
@@ -55,17 +55,19 @@ public class GetContactedByActivity extends Activity {
                 String facebook = txtFacebook.getText().toString();
                 String twitter = txtTwitter.getText().toString();
 
-
+                // Verify is every text from selections are filled
                 if (validateSave()) {
+
+                    // Set contacted by list into person
                     createContactedByList(phone, google, facebook, twitter);
-                    validateSave();
+
+                    // Update user contact fields in data base
+                    // db.updateUsuario(user);
 
                     // Create intent to open interests activity
                     Intent intent = new Intent(GetContactedByActivity.this, ProfileActivity.class);
 
                     // Put bundle inside intent
-                    //intent.putExtras(bundle());
-                    //intent.putExtra("USER", user);
                     intent.putExtra("PERSON", person);
 
                     // Start change to a new layout
@@ -79,10 +81,6 @@ public class GetContactedByActivity extends Activity {
             }
         });
 
-    }
-
-    public void setUserCont() {
-        user = this.getIntent().getParcelableExtra("USER");
     }
 
     public void setPersonCont() {

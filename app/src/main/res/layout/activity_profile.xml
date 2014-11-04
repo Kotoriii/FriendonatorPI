@@ -70,8 +70,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/lblInterests"
+                    android:text="@string/lblInterestsList"
                     android:id="@+id/lblInterests"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -83,6 +84,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/btnChooseInterest"
                     android:id="@+id/btnChooseInterest"
+                    android:textColor="@android:color/white"
+                    android:background="@android:color/holo_blue_dark"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
@@ -93,14 +96,6 @@
                 android:layout_width="20dp"
                 android:layout_height="15dp"
                 android:id="@+id/space4" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/lblInterestsList"
-                android:id="@+id/lblInterestsList"
-                android:visibility="gone"
-                android:textSize="15sp" />
 
             <GridView.CustomGridView
                 android:layout_width="match_parent"
@@ -126,8 +121,9 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/lblGetContactedBy"
+                    android:text="@string/lblContactedByList"
                     android:id="@+id/lblGetContactedBy"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -139,6 +135,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/btnChooseContact"
                     android:id="@+id/btnChooseContact"
+                    android:textColor="@android:color/white"
+                    android:background="@android:color/holo_blue_dark"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
@@ -148,14 +146,6 @@
                 android:layout_width="20dp"
                 android:layout_height="15dp"
                 android:id="@+id/space3" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/lblContactedByList"
-                android:id="@+id/lblContactedByList"
-                android:visibility="gone"
-                android:textSize="15sp" />
 
             <GridView.CustomGridView
                 android:layout_width="match_parent"
@@ -178,7 +168,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btnSaveChanges"
-                android:id="@+id/btnSaveChanges" />
+                android:id="@+id/btnSaveChanges"
+                android:textColor="@android:color/white"
+                android:background="@android:color/holo_blue_dark" />
 
         </LinearLayout>
     </ScrollView>

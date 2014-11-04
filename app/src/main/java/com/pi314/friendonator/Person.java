@@ -8,14 +8,25 @@ public class Person implements Serializable {
     private HashMap<String, List<String>> interestList = new HashMap<String, List<String>>();
     private HashMap<String, String> getContactedByList = new HashMap<String, String>();
     private HashMap<String, String> textFieldInfo = new HashMap<String, String>();
+    private HashMap<Integer,List<Integer>> dataBaseInterest = new HashMap<Integer, List<Integer>>();
     private String name;
+    private String id;
 
+    // Getters and setters
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public HashMap<String, List<String>> getInterestList() {
@@ -42,6 +53,15 @@ public class Person implements Serializable {
         this.getContactedByList = getContactedByList;
     }
 
+    public HashMap<Integer, List<Integer>> getDataBaseInterest() {
+        return dataBaseInterest;
+    }
+
+    public void setDataBaseInterest(HashMap<Integer, List<Integer>> dataBaseInterest) {
+        this.dataBaseInterest = dataBaseInterest;
+    }
+
+    // Fill hash map
     public void fillInterestList(String tittle, List<String> interests) {
         this.interestList.put(tittle, interests);
     }
@@ -54,6 +74,11 @@ public class Person implements Serializable {
         this.textFieldInfo.put(tittle, text);
     }
 
+    public void fillDataBaseInterests(Integer tittle, List<Integer> interests) {
+        this.dataBaseInterest.put(tittle, interests);
+    }
+
+    // Get hash map values
     public List<String> interestsValue(String key) {
         return interestList.get(key);
     }
@@ -65,4 +90,9 @@ public class Person implements Serializable {
     public String textValue(String key) {
         return textFieldInfo.get(key);
     }
+
+    public List<Integer> dataBaseValues(Integer key) {
+        return dataBaseInterest.get(key);
+    }
+
 }
