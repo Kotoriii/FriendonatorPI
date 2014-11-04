@@ -28,6 +28,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -50,13 +51,12 @@ import GridView.GridCustomAdapter;
 
 
 public class ProfileActivity extends Activity {
-    User user;
     Person person;
     EditText txtProfileName;
-    List<String> gridInterests;
     ArrayList<GridObject> gridList;
-    TextView lblInterestsList;
-    TextView getContactedBy;
+    ArrayList<GridObject> contactedBy;
+    TextView lblInterests;
+    TextView lblGetContactedBy;
 
     ImageButton viewImage;
     ImageButton b;
@@ -77,29 +77,40 @@ public class ProfileActivity extends Activity {
         final Button btnChooseContact = (Button) findViewById(R.id.btnChooseContact);
         final Button btnSaveChanges = (Button) findViewById(R.id.btnSaveChanges);
         txtProfileName = (EditText) findViewById(R.id.txtProfileName);
+        lblInterests = (TextView) findViewById(R.id.lblInterests);
+        lblGetContactedBy = (TextView) findViewById(R.id.lblGetContactedBy);
 
-        //getSetUser();
+        // Get object person from intent extras
         getSetPerson();
+
+        // Set user name
         textName();
 
         // Locate the gridViewInterests TextView
         final GridView gridViewInterests = (GridView) findViewById(R.id.gridViewInterests);
 
-        // Create ArrayAdapterInterests
-        GridCustomAdapter adapterInterests = new GridCustomAdapter(this, fillGridViewInterests());
+        if (!fillGridViewInterests().isEmpty()) {
+            // Create ArrayAdapterInterests
+            GridCustomAdapter adapterInterests = new GridCustomAdapter(this, gridList);
 
-        // Set adapter to gridViewInterests
-        gridViewInterests.setAdapter(adapterInterests);
+            // Set adapter to gridViewInterests
+            gridViewInterests.setAdapter(adapterInterests);
 
-        // Locate the gridViewInterests TextView
+            lblInterests.setText(getResources().getString(R.string.lblInterests));
+        }
+
+        // Locate the gridViewContactedBy TextView
         GridView gridViewContactedBy = (GridView) findViewById(R.id.gridViewContactedBy);
 
-        // Create ArrayAdapterInterests
-        GridCustomAdapter adapterContactedBy = new GridCustomAdapter(this, fillGridViewContactedBy());
+        if (!fillGridViewContactedBy().isEmpty()) {
+            // Create ArrayAdapterContactedBy
+            GridCustomAdapter adapterContactedBy = new GridCustomAdapter(this, contactedBy);
 
-        // Set adapter to gridViewInterests
-        gridViewContactedBy.setAdapter(adapterContactedBy);
+            // Set adapter to gridViewContactedBy
+            gridViewContactedBy.setAdapter(adapterContactedBy);
 
+            lblGetContactedBy.setText(getResources().getString(R.string.lblGetContactedBy));
+        }
 
         b =(ImageButton) findViewById(R.id.btnProfileImage);
         viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
@@ -124,9 +135,9 @@ public class ProfileActivity extends Activity {
                 Intent intent = new Intent(ProfileActivity.this, InterestsActivity.class);
 
                 // Set person inside intent
-                //intent.putExtra("USER", user);
                 intent.putExtra("PERSON", person);
 
+                // Start change to a new layout
                 startActivity(intent);
 
                 // Finish activity
@@ -146,9 +157,9 @@ public class ProfileActivity extends Activity {
                 Intent intent = new Intent(ProfileActivity.this, GetContactedByActivity.class);
 
                 // Set bundle inside intent
-                //intent.putExtras(bundleProfile());
                 intent.putExtra("PERSON", person);
 
+                // Start change to a new layout
                 startActivity(intent);
 
                 // Finish activity
@@ -189,7 +200,7 @@ public class ProfileActivity extends Activity {
             }
         });
 
-
+/*
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
@@ -242,15 +253,8 @@ public class ProfileActivity extends Activity {
         };
 
         drawerLayout.setDrawerListener(toggle);
+*/
 
-
-    }
-
-    public void getSetUser() {
-        user = this.getIntent().getParcelableExtra("USER");
-
-        if (user == null)
-            user = new User(Parcel.obtain());
     }
 
     public void getSetPerson() {
@@ -269,27 +273,6 @@ public class ProfileActivity extends Activity {
     public void textName() {
         if (person.getName() != null)
             txtProfileName.setText(person.getName());
-    }
-
-    public String getInterestsList() {
-        String interestList = "Set your Interests preferences...";
-
-        if (person != null && !person.getInterestList().isEmpty()) {
-            interestList = "";
-            for (Map.Entry<String, List<String>> entry : person.getInterestList().entrySet()) {
-                interestList += entry.getKey() + "\n";
-                if (entry.getKey().equals("Science"))
-                    interestList += "\n";
-                else
-                    interestList += entry.getValue() + "\n";
-                if (!person.textValue(entry.getKey()).isEmpty())
-                    interestList += textFavoriteType(entry.getKey()) + "\n" + person.textValue(entry.getKey()) + "\n\n";
-                else
-                    interestList += "\n";
-            }
-        }
-
-        return interestList;
     }
 
     public String textFavoriteType(String title) {
@@ -316,7 +299,7 @@ public class ProfileActivity extends Activity {
     public ArrayList<GridObject> fillGridViewInterests() {
         gridList = new ArrayList<GridObject>();
         GridObject object = new GridObject();
-        String interestTitle = getResources().getString(R.string.lblInterestsList);
+        String interestTitle = "";
         String interestGenres = "";
 
         if (person != null && !person.getInterestList().isEmpty()) {
@@ -339,10 +322,6 @@ public class ProfileActivity extends Activity {
                 gridList.add(object);
                 object = new GridObject();
             }
-        } else {
-            object.setTitle(interestTitle);
-            object.setGenres(interestGenres);
-            gridList.add(object);
         }
 
         Collections.sort(gridList, new Comparator<GridObject>() {
@@ -355,22 +334,8 @@ public class ProfileActivity extends Activity {
         return gridList;
     }
 
-    public String getContactedByList() {
-        String contactedByList = "Set your Get Contacted By preferences...";
-
-        if (person != null && !person.getGetContactedByList().isEmpty()) {
-            contactedByList = "";
-            for (Map.Entry<String, String> entry : person.getGetContactedByList().entrySet()) {
-                contactedByList += entry.getKey() + "\n";
-                contactedByList += entry.getValue() + "\n\n";
-            }
-        }
-
-        return contactedByList;
-    }
-
     public ArrayList<GridObject> fillGridViewContactedBy() {
-        ArrayList<GridObject> contactedBy = new ArrayList<GridObject>();
+        contactedBy = new ArrayList<GridObject>();
         String contactedByList = getResources().getString(R.string.lblContactedByList);
         GridObject object = new GridObject();
 
@@ -384,10 +349,6 @@ public class ProfileActivity extends Activity {
                 object.setGenres(contactedByList);
                 contactedBy.add(object);
             }
-        } else {
-            object.setTitle(contactedByList);
-            object.setGenres("");
-            contactedBy.add(object);
         }
 
         Collections.sort(contactedBy, new Comparator<GridObject>() {
@@ -401,46 +362,15 @@ public class ProfileActivity extends Activity {
     }
 
     public void showInterestInfoDialog(String tittle, String message) {
+        // Create an instance of dialogInterestInfo
         InterestInfo dialogInterestInfo = new InterestInfo();
+        // Set tittle and description
         dialogInterestInfo.setInfo(tittle, message);
+        // Show SelectInterest instance
         dialogInterestInfo.show(getFragmentManager(), "InterestInfo");
     }
 
-    public String getTitle(int position) {
-        String check = gridInterests.get(position);
-        String title = "";
-        char letter = ' ';
-        for (int c = 0; c < check.length(); c++) {
-            letter = check.charAt(c);
-            if (title.equals(getResources().getString(R.string.selectInterestMusic))) {
-                title = getResources().getString(R.string.selectInterestMusic);
-            } else if (title.equals(getResources().getString(R.string.selectInterestLiterature))) {
-                title = getResources().getString(R.string.selectInterestLiterature);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestMovies))) {
-                title = getResources().getString(R.string.selectInterestMovies);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestArt))) {
-                title = getResources().getString(R.string.selectInterestArt);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestTVShows).substring(0,1))) {
-                title = getResources().getString(R.string.selectInterestTVShows);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestSports))) {
-                title = getResources().getString(R.string.selectInterestSports);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestScience))) {
-                title = getResources().getString(R.string.selectInterestScience);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestLookingFor))) {
-                title = getResources().getString(R.string.selectInterestLookingFor);
-                break;
-            } else {
-                title += letter;
-            }
-        }
-        return title;
-    }
+
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -603,14 +533,14 @@ public class ProfileActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+/*
     // Activamos el toggle con el icono
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         toggle.syncState();
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.

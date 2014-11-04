@@ -89,14 +89,6 @@
                 android:layout_height="15dp"
                 android:id="@+id/space4" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/lblInterestsList"
-                android:id="@+id/lblInterestsList"
-                android:visibility="gone"
-                android:textSize="15sp" />
-
             <GridView.CustomGridView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -147,14 +139,6 @@
                 android:layout_width="20dp"
                 android:layout_height="15dp"
                 android:id="@+id/space3" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/lblContactedByList"
-                android:id="@+id/lblContactedByList"
-                android:visibility="gone"
-                android:textSize="15sp" />
 
             <GridView.CustomGridView
                 android:layout_width="match_parent"

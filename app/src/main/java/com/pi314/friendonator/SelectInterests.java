@@ -25,6 +25,7 @@ public class SelectInterests extends DialogFragment {
         this.person = person;
     }
 
+    // Set boolean array to fill checkbox
     public boolean [] putChecks() {
         boolean[] interestsChecked = new boolean[choices.length];
         for (int i = 0; i < choices.length; i++) {
@@ -50,8 +51,8 @@ public class SelectInterests extends DialogFragment {
     }
 
     /* The activity that creates an instance of this dialog fragment must
-             * implement this interface in order to receive event callbacks.
-             * Each method passes the DialogFragment in case the host needs to query it. */
+       implement this interface in order to receive event callbacks.
+       Each method passes the DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
         public void onDialogPositiveClick(List<String> listBySelectedInterest, String tittle);
         public void onDialogNegativeClick(List<String> listBySelectedInterest, String tittle);
@@ -100,8 +101,7 @@ public class SelectInterests extends DialogFragment {
                 .setPositiveButton(R.string.accept, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        // User clicked accept, so save the mSelectedItems results somewhere
-                        // or return them to the component that opened the dialog
+                        // Return selected interest to the component that opened the dialog
                         mListener.onDialogPositiveClick(listBySelectedInterest, tittle);
                     }
                 })

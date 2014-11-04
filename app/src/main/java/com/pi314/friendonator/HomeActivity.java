@@ -111,7 +111,7 @@ public class HomeActivity extends Activity {
             }
 
         });
-
+/*
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
@@ -163,7 +163,7 @@ public class HomeActivity extends Activity {
             }
         };
 
-        drawerLayout.setDrawerListener(toggle);
+        drawerLayout.setDrawerListener(toggle);*/
     }
 
     public void getSetPerson() {
@@ -345,14 +345,14 @@ public class HomeActivity extends Activity {
        }
        return super.onOptionsItemSelected(item);
    }
-
+/*
     // Activamos el toggle con el icono
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         toggle.syncState();
     }
-
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
