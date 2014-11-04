@@ -42,6 +42,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import Database.SQLiteHelper;
+import Database.Usuario;
 import Dialog.InterestInfo;
 import GridView.GridObject;
 import GridView.GridCustomAdapter;
@@ -58,6 +60,7 @@ public class ProfileActivity extends Activity {
 
     ImageButton viewImage;
     ImageButton b;
+    SQLiteHelper db;
 
     private ListView NavList;
     private ArrayList<Item_objct> NavItms;
@@ -557,6 +560,10 @@ public class ProfileActivity extends Activity {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
+                Usuario usuario = new Usuario();
+                usuario.setId(person.getId);
+                usuario.setFoto(picturePath);
+                db.insertUsuario(usuario);
                 /*BitmapFactory.Options opt = new BitmapFactory.Options();
                 opt.inDensity = 300;
                 opt.inTargetDensity = 300;*/
