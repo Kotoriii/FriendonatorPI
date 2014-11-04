@@ -114,17 +114,25 @@ public class ProfileActivity extends Activity {
 
         b =(ImageButton) findViewById(R.id.btnProfileImage);
         viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
-        b.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        Usuario usuario = new Usuario();
+        usuario.setId(person.getId());
+        if(!usuario.getFoto().equals("")) {
 
 
+            Bitmap bitmap = BitmapFactory.decodeFile(usuario.getFoto());
+            viewImage.setImageBitmap(bitmap);
+
+        }
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
 
+                    selectImage();
+                }
+            });
 
-                selectImage();
-            }
-        });
+
 
         btnChooseInterest.setOnClickListener(new OnClickListener() {
             @Override
@@ -411,20 +419,16 @@ public class ProfileActivity extends Activity {
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo"))
-                {
+                if (options[item].equals("Take Photo")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
-                }
-                else if (options[item].equals("Choose from Gallery"))
-                {
-                    Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
 
-                }
-                else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
@@ -491,7 +495,7 @@ public class ProfileActivity extends Activity {
                 String picturePath = c.getString(columnIndex);
                 c.close();
                 Usuario usuario = new Usuario();
-                usuario.setId(person.getId);
+                usuario.setId(person.getId());
                 usuario.setFoto(picturePath);
                 db.insertUsuario(usuario);
                 /*BitmapFactory.Options opt = new BitmapFactory.Options();
