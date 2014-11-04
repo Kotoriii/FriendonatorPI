@@ -28,29 +28,30 @@
 
         <activity
             android:name=".LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:label="@string/title_activity_login"
+            android:windowSoftInputMode="adjustResize" >
         </activity>
         <activity
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:configChanges="screenSize"
             android:name=".ProfileActivity"
-            android:label="@string/title_activity_profile" >
+            android:configChanges="screenSize"
+            android:label="@string/title_activity_profile"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" >
         </activity>
         <activity
-	    android:windowSoftInputMode="stateHidden|adjustResize"
-            android:configChanges="screenSize"
             android:name=".InterestsActivity"
-            android:label="@string/title_activity_interests" >
+            android:configChanges="screenSize"
+            android:label="@string/title_activity_interests"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
-            android:windowSoftInputMode="stateHidden|adjustResize"
-            android:configChanges="screenSize"
             android:name=".GetContactedByActivity"
-            android:label="@string/title_activity_get_contacted_by" >
+            android:configChanges="screenSize"
+            android:label="@string/title_activity_get_contacted_by"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name=".MySettings"
@@ -59,6 +60,10 @@
         <activity
             android:name=".History"
             android:label="@string/title_activity_history" >
+        </activity>
+        <activity
+            android:name=".SignUp"
+            android:label="@string/title_activity_sign_up" >
         </activity>
     </application>
 

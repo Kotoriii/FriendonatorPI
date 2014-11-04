@@ -13,7 +13,8 @@ import android.widget.Toast;
 import com.pi314.friendonator.MainActivity;
 import com.pi314.friendonator.R;
 
-import Bluetooth.BlueMan;
+import Bluetooth.BluetoothHandler;
+
 
 /**
  * Created by andrea on 01/10/14.
@@ -97,13 +98,13 @@ public class BackgroundService extends IntentService {
     }
 
     public void ScanEveryX(final int x, final Activity activity){
-        final BlueMan bMan = BlueMan.getInstance(activity);
+        final BluetoothHandler bMan = new BluetoothHandler(activity);
         Thread scanner = new Thread(){
             public void run(){
                 try{
                     while (true){
                         synchronized (this) {
-                            bMan.startScan();
+                            bMan.StartScan();
                         }
                         this.sleep(x);
                     }

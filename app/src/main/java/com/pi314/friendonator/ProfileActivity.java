@@ -114,6 +114,11 @@ public class ProfileActivity extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
+
+
                 selectImage();
             }
         });
@@ -393,6 +398,8 @@ public class ProfileActivity extends Activity {
 
 
     private void selectImage() {
+
+        //recordar cambiar strings xml con esto
 
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 

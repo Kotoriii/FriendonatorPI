@@ -56,7 +56,7 @@
                 android:layout_width="100dp"
                 android:layout_height="wrap_content"
                 android:text="Register"
-                android:id="@+id/button2"
+                android:id="@+id/btnRegister"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
                 android:background="@drawable/custom_border_button" />
