@@ -19,14 +19,14 @@ import Database.Usuario;
  * Created by Christian on 10/14/2014.
  */
 public class LoginActivity extends Activity {
+
     SQLiteHelper db;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
-        db = SQLiteHelper.getInstance(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_activity);
-
+        db = SQLiteHelper.getInstance(getApplicationContext());
         final EditText txtusername = (EditText) findViewById(R.id.txtusername);
         final EditText txtpassword = (EditText) findViewById(R.id.txtpassword);
         final Button btnlogin = (Button) findViewById(R.id.btnlogin);
@@ -59,9 +59,7 @@ public class LoginActivity extends Activity {
 
                     finish();
                 } else {
-                    Toast.makeText(btnlogin.getContext(),
-                            "Wrong email or password",
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(btnlogin.getContext(), "Wrong email or password", Toast.LENGTH_SHORT).show();
 
                 }
             }
@@ -72,73 +70,15 @@ public class LoginActivity extends Activity {
         btnregister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Dialog dialog = new Dialog(LoginActivity.this);
-                dialog.setContentView(R.layout.activity_sign_up);
-                dialog.setTitle("Register");
-
-                final EditText editTextUserName, editTextPassword, editTextConfirmPassword;
-                final Button btnCreateAccount;
-
-                editTextUserName = (EditText) findViewById(R.id.editTextUserName);
-                editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-                editTextConfirmPassword = (EditText) findViewById(R.id.editTextConfirmPassword);
-
-                btnCreateAccount = (Button) findViewById(R.id.buttonCreateAccount);
-                btnCreateAccount.setOnClickListener(new View.OnClickListener() {
-
-                    public boolean isEmail(CharSequence email) {
-                        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
-                    }
-
-
-
-                    public void onClick(View v) {
-                        // TODO Auto-generated method stub
-
-                        final SQLiteHelper baseDataUsers =
-                                new SQLiteHelper(getApplicationContext(), "BaseFriendonator", null, 1);
-
-                        String userName = editTextUserName.getText().toString();
-                        String password = editTextPassword.getText().toString();
-                        String confirmPassword = editTextConfirmPassword.getText().toString();
-
-
-                        if (userName.equals("") || password.equals("") || confirmPassword.equals("")) {
-                            Toast.makeText(getApplicationContext(), "Empty field", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        // check if both password matches
-                        if (!password.equals(confirmPassword)) {
-                            Toast.makeText(getApplicationContext(), "Password does not match", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        if (baseDataUsers.getUser(userName).getCorreo().equals(userName)) {
-                            Toast.makeText(getApplicationContext(), "Email already exists", Toast.LENGTH_LONG).show();
-                            return;
-                        }
-                        if (!isEmail(userName)) {
-                            Toast.makeText(getApplicationContext(), "Please provide a valid email address", Toast.LENGTH_LONG).show();
-                            return;
-                        } else {
-                            Usuario usuario = new Usuario();
-                            usuario.setCorreo(userName);
-                            usuario.setPassword(password);
-
-                            db.insertUsuario(usuario);
-                            editTextUserName.setText("");
-                            editTextPassword.setText("");
-                            editTextConfirmPassword.setText("");
-                            // Save the Data in Database
-                            Toast.makeText(getApplicationContext(), "Account Successfully Created ", Toast.LENGTH_LONG).show();
-                        }
-                    }
-
-                });
-
+                // Create sign up intent
+                Intent intent = new Intent(LoginActivity.this, SignUp.class);
+                // Start the new activity
+                startActivity(intent);
             }
         });
     }
-    }
+
+}
 
 
 

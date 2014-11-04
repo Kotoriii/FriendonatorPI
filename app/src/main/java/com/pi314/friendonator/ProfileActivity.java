@@ -114,11 +114,6 @@ public class ProfileActivity extends Activity {
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-
-
                 selectImage();
             }
         });
@@ -178,6 +173,7 @@ public class ProfileActivity extends Activity {
                 // Set person inside intent
                 intent.putExtra("PERSON", person);
 
+                // Start change to a new layout
                 startActivity(intent);
 
                 // Finish activity

@@ -7,14 +7,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import Database.SQLiteHelper;
+import Database.Superinteres;
+
 public class InterestsMethods {
 
-    public HashMap<String, List<String>> getInterestFromDataBases(String [] interest, Person user) {
+    public HashMap<String, List<String>> getInterestFromDataBase(String [] interest, SQLiteHelper db) {
         // Data base should be a parameter, will be included on project update
         List<Integer> interestId = new ArrayList<Integer>(); // From data base, can be received by parameter
         List<Integer> valuesId = new ArrayList<Integer>(); // From data base, can be received by parameter
         List<String> interestsList = new ArrayList<String>();
         HashMap<String, List<String>> userInterests = new HashMap<String, List<String>>();
+
+        for (Superinteres spi : db.getAllSuperinter()) {
+            interestId.add(Integer.parseInt(spi.getId()));
+        }
 
         int count = 0;
         while (count < interestId.size()) {
