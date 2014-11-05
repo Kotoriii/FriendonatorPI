@@ -12,6 +12,10 @@ import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.pi314.interests.InterestsMethods;
+
+import Database.SQLiteHelper;
+
 
 public class GetContactedByActivity extends Activity {
 
@@ -25,6 +29,7 @@ public class GetContactedByActivity extends Activity {
     CheckBox checkBoxTwitter;
     String toggleOnOff;
     Person person;
+    SQLiteHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +45,9 @@ public class GetContactedByActivity extends Activity {
         checkBoxGoogle = (CheckBox) findViewById(R.id.checkBoxGoogle);
         checkBoxFacebook = (CheckBox) findViewById(R.id.checkBoxFacebook);
         checkBoxTwitter = (CheckBox) findViewById(R.id.checkBoxTwitter);
+
+        // Set Data Base
+        db = SQLiteHelper.getInstance(getApplicationContext());
 
         // Get object person from intent extras
         setPersonCont();
@@ -62,7 +70,8 @@ public class GetContactedByActivity extends Activity {
                     createContactedByList(phone, google, facebook, twitter);
 
                     // Update user contact fields in data base
-                    // db.updateUsuario(user);
+                    InterestsMethods insertContactedBy = new InterestsMethods();
+
 
                     // Create intent to open interests activity
                     Intent intent = new Intent(GetContactedByActivity.this, ProfileActivity.class);

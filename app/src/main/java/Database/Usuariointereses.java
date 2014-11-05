@@ -11,6 +11,11 @@ public class Usuariointereses {
     public Usuariointereses() {
     }
 
+    public Usuariointereses(String idinteres, String idusuario) {
+        this.idinteres = idinteres;
+        this.idusuario = idusuario;
+    }
+
     public String getIdinteres() {
         return idinteres;
     }

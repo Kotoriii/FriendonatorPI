@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
@@ -28,81 +29,79 @@ public class SQLiteHelper extends SQLiteOpenHelper{
     }
 
     String createAuth = "CREATE TABLE autenticacion (" +
-            "passwordUS varchar(50) NOT NULL," +
+            "passwordUS VARCHAR," +
             "PRIMARY KEY (passwordUS)" +
             ")";
 
     String createHist = "CREATE TABLE historial (" +
-            "idUsuario integer NOT NULL," +
-            "latitud varchar(45)," +
-            "longitud varchar(45)," +
+            "idUsuario INTEGER," +
+            "latitud VARCHAR," +
+            "longitud VARCHAR," +
             "PRIMARY KEY (idUsuario)" +
+            "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)" +
             ")";
 
     String createInter = "CREATE TABLE intereses (" +
-            "idIntereses integer NOT NULL," +
-            "idSuperInteres integer NOT NULL," +
-            "Descripcion varchar(45)," +
-            "PRIMARY KEY (idIntereses)" +
+            "idIntereses INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "idSuperInteres INTEGER," +
+            "Descripcion VARCHAR," +
+            "FOREIGN KEY(idSuperInteres) REFERENCES superinteres(idSuperInteres)" +
             ")";
 
     String createSuperinter = "CREATE TABLE superinteres (" +
-            "idSuperInteres integer NOT NULL," +
-            "Descripcion varchar(45)," +
-            "PRIMARY KEY (idSuperInteres)" +
+            "idSuperInteres INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "Descripcion VARCHAR" +
             ")";
 
     String createUsuario = "CREATE TABLE usuario (" +
-            "idUsuario INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-            "fecha_de_nacimiento varchar(45)," +
-            "correo varchar(45) NOT NULL UNIQUE," +
+            "idUsuario INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "fecha_de_nacimiento VARCHAR," +
+            "correo VARCHAR," +
             //agregado password hasta resolver asunto ese
-            "password varchar(45) NOT NULL," +
-            "numero_telefono varchar(45)," +
-            "facebook varchar(45)," +
-            "google_p varchar(45)," +
-            "Twitter varchar(45)," +
-            "modo_favorito varchar(45)," +
-            "foto_perfil varchar(45)," +
-            "match_percentage varchar(45)" +
+            "password VARCHAR," +
+            "numero_telefono VARCHAR," +
+            "facebook VARCHAR," +
+            "google_p VARCHAR," +
+            "Twitter VARCHAR," +
+            "modo_favorito VARCHAR," +
+            "foto_perfil VARCHAR," +
+            "match_percentage VARCHAR" +
             ")";
 
     String createUserinter = "CREATE TABLE usuariointereses (" +
-            "idInteres integer NOT NULL," +
-            "idUsuario integer NOT NULL," +
+            "idInteres INTEGER," +
+            "idUsuario INTEGER," +
             "PRIMARY KEY (idInteres,idUsuario)" +
+            "FOREIGN KEY(idInteres) REFERENCES intereses(idIntereses), " +
+            "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)" +
             ")";
-
-    // ALTERS
-
-    String alterHist = "ALTER TABLE historial" +
-            "ADD FOREIGN KEY (idUsuario) " +
-            "REFERENCES usuario (idUsuario)";
-
-    String alterInter = "ALTER TABLE intereses" +
-            "ADD FOREIGN KEY (idSuperInteres) " +
-            "REFERENCES superinteres (idSuperInteres)";
-
-    String alterUsuariointer = "ALTER TABLE usuariointereses" +
-            "ADD FOREIGN KEY (idInteres)" +
-            "REFERENCES intereses (idIntereses)";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createAuth);
-        db.execSQL(createHist);
-        db.execSQL(createInter);
-        db.execSQL(createSuperinter);
-        db.execSQL(createUserinter);
         db.execSQL(createUsuario);
-        db.execSQL(alterHist);
-        db.execSQL(alterInter);
-        db.execSQL(alterUsuariointer);
+        db.execSQL(createHist);
+        db.execSQL(createSuperinter);
+        db.execSQL(createInter);
+        db.execSQL(createUserinter);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+    public Boolean checkDataBase() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Boolean emptyTable = true;
+
+        try {
+            Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM superinteres", null);
+        } catch (SQLiteException sqlE) {
+            emptyTable = false;
+        }
+
+        return emptyTable;
     }
 
     public void insertAuth(Autenticacion auth) {
@@ -132,7 +131,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
         ContentValues values = new ContentValues();
         //values.put("idIntereses", inter.getId());
-        //values.put("idSuperInteres", inter.getIdsuperinteres());
+        values.put("idSuperInteres", inter.getIdsuperinteres());
         values.put("Descripcion", inter.getDescripcion());
 
         db.insert("intereses", null, values);

@@ -10,10 +10,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
+
+import com.pi314.interests.InterestsMethods;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import Database.SQLiteHelper;
 
 
 public class InterestsActivity extends Activity implements SelectInterests.NoticeDialogListener {
@@ -44,6 +47,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
     String newTitle;
     String [] newChoices;
     Person person;
+    SQLiteHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +78,9 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
         btnEditSports = (ImageButton) findViewById(R.id.btnEditSports);
         btnEditLookingFor = (ImageButton) findViewById(R.id.btnEditLookingFor);
 
+        // Set Data Base
+        db = SQLiteHelper.getInstance(getApplicationContext());
+
         // Get object person from intent extras
         setPerson();
 
@@ -85,6 +92,10 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
             public void onClick(View v) {
                 // Set optional fields into person
                 addTextToInterest();
+
+                // Insert interests to users
+                InterestsMethods insertInterests = new InterestsMethods();
+                insertInterests.insertInterests(db, person);
 
                 // Create intent to open interests activity
                 Intent intent = new Intent(InterestsActivity.this, ProfileActivity.class);

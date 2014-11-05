@@ -21,6 +21,7 @@ import Database.Usuario;
 public class LoginActivity extends Activity {
 
     SQLiteHelper db;
+    Person person;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,39 +33,33 @@ public class LoginActivity extends Activity {
         final Button btnlogin = (Button) findViewById(R.id.btnlogin);
         final Button btnregister = (Button) findViewById(R.id.btnRegister);
 
-
-        // por el momento
-        final List<String> usuarios = new ArrayList<String>();
-        usuarios.add("DogeMaster666");
-        usuarios.add("1");
-        final List<String> contras = new ArrayList<String>();
-        contras.add("doge");
-        contras.add("1");
-
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if ((usuarios.contains(txtusername.getText().toString()) && contras.contains(txtpassword.getText().toString()))
-                        || (!txtusername.getText().toString().isEmpty() && !txtpassword.getText().toString().isEmpty())) {
-                    //Create the Intent element
-                    Intent intent = new Intent(LoginActivity.this,
-                            HomeActivity.class);
-                    //Create the info to pass from one activity to another
-                    Bundle b = new Bundle();
-                    b.putString("NAME", txtusername.getText().toString());
-                    //Add info to the intent
-                    intent.putExtras(b);
-                    //Start the new Activity
+                String userName = txtusername.getText().toString();
+                String password = txtpassword.getText().toString();
+                Usuario userLogin = db.getUser(userName);
+
+                if (password.equals(userLogin.getPassword())) {
+                    // Create intent to open interests activity
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+
+                    if (person.getName() != null) {
+                        // Create intent to open interests activity
+                        intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                    }
+
+                    // Set person inside intent
+                    intent.putExtra("PERSON", person);
+
+                    // Start change to a new layout
                     startActivity(intent);
 
+                    // Finish activity
                     finish();
-                } else {
-                    Toast.makeText(btnlogin.getContext(), "Wrong email or password", Toast.LENGTH_SHORT).show();
-
-                }
+                } else
+                    Toast.makeText(btnlogin.getContext(), R.string.toastWrongLogIn, Toast.LENGTH_SHORT).show();
             }
-
-
         });
 
         btnregister.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +71,13 @@ public class LoginActivity extends Activity {
                 startActivity(intent);
             }
         });
+    }
+
+    public void getSetPerson() {
+        person = (Person) this.getIntent().getSerializableExtra("PERSON");
+
+        if (person == null)
+            person = new Person();
     }
 
 }

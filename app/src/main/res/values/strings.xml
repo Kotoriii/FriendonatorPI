@@ -42,6 +42,7 @@
     <string name="lblLookingFor">Looking For</string>
     <string name="txtLookingFor">Type your aim to find (optional)</string>
     <string name="btnSaveInterestsChanges">Save Interests</string>
+    <string name="whatILike">What I like about</string>
 
     <string name="title_activity_get_contacted_by">Get Contacted By</string>
     <string name="lblContact">Contact me</string>
@@ -77,6 +78,7 @@
     <string name="title_activity_login">Login</string>
     <string name="txtLoginUserName">Username</string>
     <string name="txtLoginPassword">Password</string>
+    <string name="toastWrongLogIn">Wrong email or password</string>
 
 
     <array name="navigation_iconos">

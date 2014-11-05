@@ -51,7 +51,11 @@ public class HomeActivity extends Activity {
 
         //addItemsOnEventSpinner();
         lblprofilename = (TextView)findViewById(R.id.lblProfileName);
+
+        // Get object person from intent extras
         getSetPerson();
+
+        // Set user name
         textName();
 
         //onItemSelected();
@@ -177,15 +181,8 @@ public class HomeActivity extends Activity {
     }
 
     public void textName() {
-        Bundle bundle = this.getIntent().getExtras();
         if (person.getName() != null)
             lblprofilename.setText(person.getName());
-        else if (bundle != null){
-            String name = bundle.getString("NAME");
-            if (name != null){
-                lblprofilename.setText(name);
-            }
-        }
     }
 
    /* public void onItemSelected(){

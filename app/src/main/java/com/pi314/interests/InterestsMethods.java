@@ -6,9 +6,13 @@ import com.pi314.friendonator.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Database.SQLiteHelper;
 import Database.Superinteres;
+import Database.Usuario;
+import Database.Usuariointereses;
+import GridView.GridObject;
 
 public class InterestsMethods {
 
@@ -115,4 +119,21 @@ public class InterestsMethods {
         return resultInterest;
     }
 
+    public void insertInterests(SQLiteHelper db, Person person) {
+        if (!person.getInterestList().isEmpty()) {
+            for (String interest : person.getInterestList().keySet())
+                for (String value : person.getInterestList().get(interest))
+                    db.insertUserint(new Usuariointereses(value, person.getId()));
+        }
+    }
+
+    public void insertContactedByInfo(SQLiteHelper db, Person person) {
+        if (!person.getGetContactedByList().isEmpty()) {
+            Usuario user = new Usuario();
+            for (Map.Entry<String, String> entry : person.getGetContactedByList().entrySet()) {
+
+            }
+
+        }
+    }
 }

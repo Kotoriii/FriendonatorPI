@@ -11,7 +11,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcel;
 import android.provider.MediaStore;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -109,8 +108,8 @@ public class ProfileActivity extends Activity {
             lblGetContactedBy.setText(getResources().getString(R.string.lblGetContactedBy));
         }
 
-        b =(ImageButton) findViewById(R.id.btnProfileImage);
-        viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
+        b = (ImageButton) findViewById(R.id.btnProfileImage);
+        viewImage= (ImageButton) findViewById(R.id.btnProfileImage);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +120,7 @@ public class ProfileActivity extends Activity {
         btnChooseInterest.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Set name to person object
                 setName();
 
                 // Create intent to open interests activity
@@ -143,6 +143,7 @@ public class ProfileActivity extends Activity {
         btnChooseContact.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Set name to person object
                 setName();
 
                 // Create intent to open get contacted by activity
@@ -165,7 +166,11 @@ public class ProfileActivity extends Activity {
         btnSaveChanges.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Set name to person object
                 setName();
+
+                // Save picture and name into data base
+                // method here
 
                 // Create intent
                 Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
@@ -189,7 +194,7 @@ public class ProfileActivity extends Activity {
                     showInterestInfoDialog(textFavoriteType(title), person.textValue(title));*/
                 GridObject forDialog = gridList.get(position);
                 if (!forDialog.getTitle().isEmpty() && person.textValue(forDialog.getTitle()) != null)
-                    showInterestInfoDialog(textFavoriteType(forDialog.getTitle()), person.textValue(forDialog.getTitle()));
+                    showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), person.textValue(forDialog.getTitle()));
             }
         });
 
@@ -266,27 +271,6 @@ public class ProfileActivity extends Activity {
     public void textName() {
         if (person.getName() != null)
             txtProfileName.setText(person.getName());
-    }
-
-    public String textFavoriteType(String title) {
-        String favorite = "";
-        if (title.equals(getResources().getString(R.string.selectInterestMusic)))
-            favorite = getResources().getString(R.string.txtMusic);
-        if (title.equals(getResources().getString(R.string.selectInterestLiterature)))
-            favorite = getResources().getString(R.string.txtLiterature);
-        if (title.equals(getResources().getString(R.string.selectInterestMovies)))
-            favorite = getResources().getString(R.string.txtMovies);
-        if (title.equals(getResources().getString(R.string.selectInterestArt)))
-            favorite = getResources().getString(R.string.txtArt);
-        if (title.equals(getResources().getString(R.string.selectInterestTVShows)))
-            favorite = getResources().getString(R.string.txtTvShow);
-        if (title.equals(getResources().getString(R.string.selectInterestSports)))
-            favorite = getResources().getString(R.string.txtSports);
-        if (title.equals(getResources().getString(R.string.selectInterestScience)))
-            favorite = getResources().getString(R.string.txtScience);
-        if (title.equals(getResources().getString(R.string.selectInterestLookingFor)))
-            favorite = getResources().getString(R.string.txtLookingFor);
-        return favorite;
     }
 
     public ArrayList<GridObject> fillGridViewInterests() {

@@ -24,6 +24,9 @@ import java.util.UUID;
 
 import Bluetooth.BluetoothHandler;
 import Bluetooth.DeviceValidator;
+import Database.Intereses;
+import Database.SQLiteHelper;
+import Database.Superinteres;
 import misc.BackgroundService;
 
 
@@ -46,12 +49,19 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     private TypedArray NavIcons;
     NavigationAdapter NavAdapter;
 
+    SQLiteHelper db;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Button btnPerfil = (Button)findViewById(R.id.btnPerfil);
         final Button btnHome = (Button)findViewById(R.id.btnHome);
+
+        db = SQLiteHelper.getInstance(getApplicationContext());
+
+        // Insert of all interests for the first time
+        initialDataBaseInserts();
 
         btnPerfil.setOnClickListener(new OnClickListener() {
             @Override
@@ -153,6 +163,80 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 
         drawerLayout.setDrawerListener(toggle);
 
+    }
+
+    public void initialDataBaseInserts() {
+        if (db.checkDataBase()) {
+            // Insert Superintereses
+            db.insertSuperinter(new Superinteres("Music"));
+            db.insertSuperinter(new Superinteres("Literature"));
+            db.insertSuperinter(new Superinteres("Movies"));
+            db.insertSuperinter(new Superinteres("Art"));
+            db.insertSuperinter(new Superinteres("TV Shows"));
+            db.insertSuperinter(new Superinteres("Sports"));
+            db.insertSuperinter(new Superinteres("Science"));
+            db.insertSuperinter(new Superinteres("Looking For"));
+
+            // Insert intereses
+            db.insertInteres(new Intereses("1", "Rock"));
+            db.insertInteres(new Intereses("1", "Jazz"));
+            db.insertInteres(new Intereses("1", "Blues"));
+            db.insertInteres(new Intereses("1", "Classical"));
+            db.insertInteres(new Intereses("1", "Hip Hop"));
+            db.insertInteres(new Intereses("1", "Electronic"));
+            db.insertInteres(new Intereses("1", "Pop"));
+            db.insertInteres(new Intereses("1", "Romantic"));
+
+            db.insertInteres(new Intereses("2", "Novel"));
+            db.insertInteres(new Intereses("2", "Drama"));
+            db.insertInteres(new Intereses("2", "Poetry"));
+            db.insertInteres(new Intereses("2", "Romance"));
+            db.insertInteres(new Intereses("2", "Comedy"));
+            db.insertInteres(new Intereses("2", "Fiction"));
+            db.insertInteres(new Intereses("2", "Fantasy"));
+            db.insertInteres(new Intereses("2", "Mythology"));
+
+            db.insertInteres(new Intereses("3", "Action"));
+            db.insertInteres(new Intereses("3", "Thriller"));
+            db.insertInteres(new Intereses("3", "Romantic"));
+            db.insertInteres(new Intereses("3", "Comedy"));
+            db.insertInteres(new Intereses("3", "Fantasy"));
+            db.insertInteres(new Intereses("3", "Historical"));
+            db.insertInteres(new Intereses("3", "Horror"));
+            db.insertInteres(new Intereses("3", "Scy Fy"));
+
+            db.insertInteres(new Intereses("4", "Portrait"));
+            db.insertInteres(new Intereses("4", "Landscape"));
+            db.insertInteres(new Intereses("4", "Conceptual"));
+            db.insertInteres(new Intereses("4", "Modernism"));
+            db.insertInteres(new Intereses("4", "Criticism"));
+            db.insertInteres(new Intereses("4", "Neoclassic"));
+            db.insertInteres(new Intereses("4", "Classic"));
+            db.insertInteres(new Intereses("4", "Expressionism"));
+
+            db.insertInteres(new Intereses("5", "Soap Opera"));
+            db.insertInteres(new Intereses("5", "Sitcom"));
+            db.insertInteres(new Intereses("5", "Sports"));
+            db.insertInteres(new Intereses("5", "Documentary"));
+            db.insertInteres(new Intereses("5", "News"));
+            db.insertInteres(new Intereses("5", "Reality"));
+            db.insertInteres(new Intereses("5", "Cookery"));
+            db.insertInteres(new Intereses("5", "Drama"));
+
+            db.insertInteres(new Intereses("6", "Mix Martial Arts"));
+            db.insertInteres(new Intereses("6", "Climbing"));
+            db.insertInteres(new Intereses("6", "Gymnastic"));
+            db.insertInteres(new Intereses("6", "Cycling"));
+            db.insertInteres(new Intereses("6", "Jogging"));
+            db.insertInteres(new Intereses("6", "Tennis"));
+            db.insertInteres(new Intereses("6", "Basketball"));
+            db.insertInteres(new Intereses("6", "Soccer"));
+
+            db.insertInteres(new Intereses("7", "Science"));
+
+            db.insertInteres(new Intereses("8", "Man"));
+            db.insertInteres(new Intereses("8", "Woman"));
+        }
     }
 
     @Override

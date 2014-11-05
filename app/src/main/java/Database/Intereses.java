@@ -13,6 +13,11 @@ public class Intereses {
     public Intereses() {
     }
 
+    public Intereses(String idsuperinteres, String descripcion) {
+        this.idsuperinteres = idsuperinteres;
+        this.descripcion = descripcion;
+    }
+
     public String getId() {
         return id;
     }

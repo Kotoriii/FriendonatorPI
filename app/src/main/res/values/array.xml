@@ -14,7 +14,7 @@
     <string-array name="literature">
         <item>Novel</item>
         <item>Drama</item>
-        <item>Poem</item>
+        <item>Poetry</item>
         <item>Romance</item>
         <item>Comedy</item>
         <item>Fiction</item>
@@ -86,6 +86,7 @@
         <item>Art</item>
         <item>TV Shows</item>
         <item>Sports</item>
+        <item>Science</item>
         <item>Looking For</item>
     </string-array>
 </resources>

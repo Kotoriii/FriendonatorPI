@@ -11,6 +11,10 @@ public class Superinteres {
     public Superinteres() {
     }
 
+    public Superinteres(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
     public String getId() {
         return id;
     }
