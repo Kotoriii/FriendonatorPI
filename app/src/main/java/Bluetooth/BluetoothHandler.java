@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
+import com.pi314.friendonator.Person;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -21,7 +23,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import misc.Usuario;
 
 /**
  * Created by andrea on 30/09/14.
@@ -357,7 +358,12 @@ public class BluetoothHandler {
                     Log.v("BluetoothFR", "Sending data via ObjectOutputStream");
 
                     //por el momento se crea un usuario test. mas adelante se va a sacar de la BD
-                    Usuario testUsuario = Usuario.newTestUsuario();
+                    Person testUsuario = new Person();
+                    testUsuario
+                            .setId("1");
+                    testUsuario
+                            .setName("Test Usuario Cambiar");
+
                     ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
                     oos.writeObject(testUsuario);
 
@@ -398,7 +404,7 @@ public class BluetoothHandler {
         }
 
         public void run() {
-                Usuario usuario = null ;
+                Person usuario = null ;
 
                 Log.v("BluetoothFR", "Connected to server- Starting receiving loop ");
 
@@ -410,7 +416,7 @@ public class BluetoothHandler {
                         Log.v("BluetoothFR", "Connected to server- Recibiendo datos ");
 
                         ObjectInputStream bjr = new ObjectInputStream(mmInStream);
-                        usuario = (Usuario)bjr.readObject();
+                        usuario = (Person)bjr.readObject();
                         bjr.close();
                     } catch (IOException e) {
 

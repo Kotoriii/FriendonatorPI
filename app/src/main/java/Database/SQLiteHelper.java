@@ -347,6 +347,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         return usuarioList;
     }
 
+
+
     public Usuario getUser(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Usuario usuario = new Usuario();

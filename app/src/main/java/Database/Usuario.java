@@ -1,5 +1,7 @@
 package Database;
 
+import java.io.Serializable;
+
 /**
  * Created by Christian on 10/30/2014.
  */
