@@ -1,6 +1,9 @@
 package com.pi314.friendonator;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -9,8 +12,33 @@ public class Person implements Serializable {
     private HashMap<String, String> getContactedByList = new HashMap<String, String>();
     private HashMap<String, String> textFieldInfo = new HashMap<String, String>();
     private HashMap<Integer,List<Integer>> dataBaseInterest = new HashMap<Integer, List<Integer>>();
+
     private String name;
     private String id;
+    private Date fecha_de_nacimiento = null;
+    private int modo_de_cont_favorito;
+    private Bitmap foto_perfil = null;
+    private List<Person> historial = null;
+
+    public Person() {
+    }
+
+    public Person(HashMap<String, List<String>> interestList, HashMap<String, String> getContactedByList,
+                  HashMap<String, String> textFieldInfo, HashMap<Integer, List<Integer>> dataBaseInterest,
+                  String name, String id, Date fecha_de_nacimiento, int modo_de_cont_favorito,
+                  Bitmap foto_perfil, List<Person> historial) {
+
+        this.interestList = interestList;
+        this.getContactedByList = getContactedByList;
+        this.textFieldInfo = textFieldInfo;
+        this.dataBaseInterest = dataBaseInterest;
+        this.name = name;
+        this.id = id;
+        this.fecha_de_nacimiento = fecha_de_nacimiento;
+        this.modo_de_cont_favorito = modo_de_cont_favorito;
+        this.foto_perfil = foto_perfil;
+        this.historial = historial;
+    }
 
     // Getters and setters
     public String getName() {
@@ -93,6 +121,20 @@ public class Person implements Serializable {
 
     public List<Integer> dataBaseValues(Integer key) {
         return dataBaseInterest.get(key);
+    }
+
+    //temporal to String
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "nombre='" + this.name + '\'' +
+                ", fecha_de_nacimiento=" + fecha_de_nacimiento +
+                ", modo_de_cont_favorito=" + modo_de_cont_favorito +
+                ", foto_perfil=" + foto_perfil +
+                ", intereses=" + interestList +
+                ", historial=" + historial +
+                "Modos de contactol= " + getContactedByList +
+                '}';
     }
 
 }

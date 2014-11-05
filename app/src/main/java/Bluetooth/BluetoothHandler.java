@@ -11,6 +11,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
+import com.pi314.friendonator.Person;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -21,7 +23,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
-import misc.Usuario;
 
 /**
  * Created by andrea on 30/09/14.
@@ -37,16 +38,21 @@ public class BluetoothHandler {
     private DeviceValidator mValidator = null;
     List<BluetoothDevice> lstDisptV = new ArrayList<BluetoothDevice>();
     Activity mAct = null;
+
+
     public BluetoothHandler(Activity act) {
         this.mAct=act;
-
         mValidator = new DeviceValidator();
+
+        //primero se registra el listener y luego se prende el bluetooth
+        if (!registered) {
+            registerAdapter();
+        }
         if(!this.isBluetoothEnabled()) {
             StartBlueTooth();
         }
     }
 
-    //////////////////
     public BluetoothAdapter getAdapter() {
         if (mBluetoothAdapter == null) {
             mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -66,7 +72,7 @@ public class BluetoothHandler {
         registered = true;
     }
 
-    public void SetUnlimitedVisibility() {
+    public void setUnlimitedVisibility() {
         Intent discoverableIntent = new
                 Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
         discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
@@ -95,9 +101,6 @@ public class BluetoothHandler {
      * direccion) son los que se obtienen a la hora de hacer el scan y no son constantemente actualizados.
      */
     public void StartScan() {
-        if (!registered) {
-            registerAdapter();
-        }
         getDevicesList().clear();
         getAdapter().startDiscovery();
     }
@@ -156,10 +159,16 @@ public class BluetoothHandler {
             final String action = intent.getAction();
 
 
+            //minimo por el momento -24 max -85
+            BluetoothDevice ss = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            int  rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
+            Log.v("BluetoothFR", "Device RSSI: " + rssi + "\n Name: " + ss.getName() );
+
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (!lstDisptV.contains(device) &&
                         mValidator.isValidDevice(device)) {
+
                     lstDisptV.add(device);
                 }
             }
@@ -175,9 +184,7 @@ public class BluetoothHandler {
                     case BluetoothAdapter.STATE_ON:
                         //
                         setNuevoNombre();
-                        SetUnlimitedVisibility();
-                        //Se unregister el receiver xq ya no lo vamos a necesitar
-                        mAct.unregisterReceiver(mReceiver);
+                        setUnlimitedVisibility();
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
                         break;
@@ -357,7 +364,12 @@ public class BluetoothHandler {
                     Log.v("BluetoothFR", "Sending data via ObjectOutputStream");
 
                     //por el momento se crea un usuario test. mas adelante se va a sacar de la BD
-                    Usuario testUsuario = Usuario.newTestUsuario();
+                    Person testUsuario = new Person();
+                    testUsuario
+                            .setId("1");
+                    testUsuario
+                            .setName("Test Usuario Cambiar");
+
                     ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
                     oos.writeObject(testUsuario);
 
@@ -398,7 +410,7 @@ public class BluetoothHandler {
         }
 
         public void run() {
-                Usuario usuario = null ;
+                Person usuario = null ;
 
                 Log.v("BluetoothFR", "Connected to server- Starting receiving loop ");
 
@@ -410,7 +422,7 @@ public class BluetoothHandler {
                         Log.v("BluetoothFR", "Connected to server- Recibiendo datos ");
 
                         ObjectInputStream bjr = new ObjectInputStream(mmInStream);
-                        usuario = (Usuario)bjr.readObject();
+                        usuario = (Person)bjr.readObject();
                         bjr.close();
                     } catch (IOException e) {
 

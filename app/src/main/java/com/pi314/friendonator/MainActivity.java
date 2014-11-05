@@ -244,6 +244,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         if ( (Button)v == btnServer) {
           //
         } else if ( (Button)v == btnClient) {
+            Log.v("BluetoothFR", "******** start new scan *******" );
             mBHand.StartScan();
 
         } else if ( (Button)v == btnScan) {
