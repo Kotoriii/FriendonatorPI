@@ -8,6 +8,7 @@ public class Historial {
     String idusuario;
     String latitud;
     String longitud;
+    String fecha;
 
 
     public Historial() {
@@ -35,6 +36,14 @@ public class Historial {
 
     public void setLongitud(String longitud) {
         this.longitud = longitud;
+    }
+
+    public String getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(String fecha) {
+        this.fecha = fecha;
     }
 }
 

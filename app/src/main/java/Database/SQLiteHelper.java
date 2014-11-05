@@ -28,15 +28,17 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         super(context, name, factory, version);
     }
 
-    String createAuth = "CREATE TABLE autenticacion (" +
-            "passwordUS VARCHAR," +
-            "PRIMARY KEY (passwordUS)" +
+    String createAuth = "CREATE TABLE limbo (" +
+            "idUsuario INTEGER," +
+            "password VARCHAR," +
+            "PRIMARY KEY (idUsuario)" +
             ")";
 
     String createHist = "CREATE TABLE historial (" +
             "idUsuario INTEGER," +
             "latitud VARCHAR," +
             "longitud VARCHAR," +
+            "fecha VARCHAR," +
             "PRIMARY KEY (idUsuario)" +
             "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)" +
             ")";
@@ -104,13 +106,14 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         return emptyTable;
     }
 
-    public void insertAuth(Autenticacion auth) {
+    public void insertAuth(Limbo auth) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("passwordUS", auth.getPasswordUS());
+        values.put("idUsuario", auth.getId());
+        values.put("password", auth.getPassword());
 
-        db.insert("autenticacion", null, values);
+        db.insert("limbo", null, values);
         db.close();
     }
 
@@ -119,6 +122,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
         ContentValues values = new ContentValues();
         //values.put("idUsuario", hist.getIdusuario());
+        values.put("fecha", hist.getFecha());
         values.put("latitud", hist.getLatitud());
         values.put("longitud", hist.getLongitud());
 
@@ -184,6 +188,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("fecha", hist.getFecha());
         values.put("latitud", hist.getLatitud());
         values.put("longitud", hist.getLongitud());
 
@@ -238,8 +243,9 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             do {
                 Historial historial = new Historial();
                 historial.setIdusuario(cursor.getString(0));
-                historial.setLatitud(cursor.getString(1));
-                historial.setLongitud(cursor.getString(2));
+                historial.setFecha(cursor.getString(1));
+                historial.setLatitud(cursor.getString(2));
+                historial.setLongitud(cursor.getString(3));
                 historialList.add(historial);
             } while (cursor.moveToNext());
         }
