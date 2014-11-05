@@ -1,6 +1,7 @@
 package Bluetooth;
 
 import android.bluetooth.BluetoothDevice;
+import android.util.Log;
 
 import java.security.GeneralSecurityException;
 
@@ -36,13 +37,15 @@ public class DeviceValidator {
      * @return
      */
     public boolean isValidDevice(BluetoothDevice device){
-        String realName = decrypt(device.getName());
-        if(this.isInteger(realName)){
-            return true;
+        try {
+            String realName = decrypt(device.getName());
+            if (this.isInteger(realName)) {
+                return true;
+            }
+        }catch (Exception e){
+            Log.e("BluetoothFR","Name not valid "+ e.getMessage());
         }
-        else{
-            return false;
-        }
+        return false;
     }
 
     public String encrypt(String dato){
