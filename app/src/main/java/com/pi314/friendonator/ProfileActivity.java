@@ -8,6 +8,7 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -60,7 +61,6 @@ public class ProfileActivity extends Activity {
     TextView lblGetContactedBy;
 
     ImageButton viewImage;
-    ImageButton b;
     SQLiteHelper db;
 
     private ListView NavList;
@@ -113,23 +113,16 @@ public class ProfileActivity extends Activity {
             lblGetContactedBy.setText(getResources().getString(R.string.lblGetContactedBy));
         }
 
-        b =(ImageButton) findViewById(R.id.btnProfileImage);
         viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
 
         Usuario usuario = new Usuario();
-        usuario.setId(person.getId());
-        if(!usuario.getFoto().equals("")) {
-
-
-            Bitmap bitmap = BitmapFactory.decodeFile(usuario.getFoto());
-            viewImage.setImageBitmap(bitmap);
-
+        usuario.setId("1");
+        if(usuario.getFoto() != null) {
+            viewImage.setImageBitmap(StringToBitMap(usuario.getFoto()));
         }
-            b.setOnClickListener(new View.OnClickListener() {
+            viewImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-
                     selectImage();
                 }
             });
@@ -270,6 +263,8 @@ public class ProfileActivity extends Activity {
         drawerLayout.setDrawerListener(toggle);
 */
 
+
+
     }
 
     public String BitMapToString(Bitmap bitmap){
@@ -278,6 +273,17 @@ public class ProfileActivity extends Activity {
         byte [] b=baos.toByteArray();
         String temp= Base64.encodeToString(b, Base64.DEFAULT);
         return temp;
+    }
+
+    public Bitmap StringToBitMap(String encodedString){
+        try{
+            byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 
     public void getSetPerson() {
@@ -393,6 +399,8 @@ public class ProfileActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 */
+
+
     @Override
     public void onBackPressed()
     {
@@ -431,7 +439,7 @@ public class ProfileActivity extends Activity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
@@ -443,28 +451,45 @@ public class ProfileActivity extends Activity {
                     }
                 }
                 try {
+
+
                     Bitmap bitmap;
 
-                   /* BitmapFactory.Options opt = new BitmapFactory.Options();
-                    opt.inDensity = 300;
-                    opt.inTargetDensity = 300;*/
+                    int targetW = viewImage.getWidth();
+                    int targetH = viewImage.getHeight();
+                    // Get the dimensions of the bitmap
+                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                    bmOptions.inJustDecodeBounds = true;
+                    BitmapFactory.decodeFile(f.getAbsolutePath(), bmOptions);
+                    int photoW = bmOptions.outWidth;
+                    int photoH = bmOptions.outHeight;
+
+                    // Determine how much to scale down the image
+                    int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+                    // Decode the image file into a Bitmap sized to fill the View
+                    bmOptions.inJustDecodeBounds = false;
+                    bmOptions.inSampleSize = scaleFactor;
+                    bmOptions.inPurgeable = true;
+
+                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath(), bmOptions);
 
 
 
-                    bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
-                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 600, 600, false);
-                    viewImage.setImageBitmap(resizedBitmap);
+                   /* bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+                    Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 600, 600, false);*/
+                    viewImage.setImageBitmap(bitmap);
 
                     Usuario usuario = new Usuario();
 
-                    if(usuario.getFoto().equals("")) {
-                        usuario.setId(person.getId());
-                        usuario.setFoto(BitMapToString(resizedBitmap));
-                        db.insertUsuario(usuario);
+                    if(usuario.getFoto() == null) {
+                        usuario.setId("1");
+                        usuario.setFoto(BitMapToString(bitmap));
+                        db.updateUsuario(usuario);
                     }
                     else{
-                        usuario.setId(person.getId());
-                        usuario.setFoto(BitMapToString(resizedBitmap));
+                        usuario.setId("1");
+                        usuario.setFoto(BitMapToString(bitmap));
                         db.updateUsuario(usuario);
                     }
 
@@ -528,14 +553,13 @@ public class ProfileActivity extends Activity {
 
 
                 Usuario usuario = new Usuario();
+                usuario.setId("1");
 
-                if(usuario.getFoto().equals("")) {
-                    usuario.setId(person.getId());
+                if(usuario.getFoto() == null) {
                     usuario.setFoto(BitMapToString(bitmap));
-                    db.insertUsuario(usuario);
+                    db.updateUsuario(usuario);
                 }
                 else{
-                    usuario.setId(person.getId());
                     usuario.setFoto(BitMapToString(bitmap));
                     db.updateUsuario(usuario);
                 }

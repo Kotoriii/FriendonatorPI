@@ -40,7 +40,7 @@ public class SignUp extends Activity {
 
                 if (userName.equals("") || password.equals("") || confirmPassword.equals("")) {
                     Toast.makeText(getApplicationContext(), R.string.toastEmptyField, Toast.LENGTH_LONG).show();
-                } else if (db.getUser(userName).getCorreo().equals(userName)) {
+                } else if (db.getUser(userName).getCorreo() != null) {
                     Toast.makeText(getApplicationContext(), R.string.toastEmail, Toast.LENGTH_LONG).show();
                 } else if (!password.equals(confirmPassword)) {
                     // check if both password matches
