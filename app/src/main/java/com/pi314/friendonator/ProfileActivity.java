@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +27,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -270,6 +272,14 @@ public class ProfileActivity extends Activity {
 
     }
 
+    public String BitMapToString(Bitmap bitmap){
+        ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+        byte [] b=baos.toByteArray();
+        String temp= Base64.encodeToString(b, Base64.DEFAULT);
+        return temp;
+    }
+
     public void getSetPerson() {
         person = (Person) this.getIntent().getSerializableExtra("PERSON");
 
@@ -445,6 +455,19 @@ public class ProfileActivity extends Activity {
                     Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 600, 600, false);
                     viewImage.setImageBitmap(resizedBitmap);
 
+                    Usuario usuario = new Usuario();
+
+                    if(usuario.getFoto().equals("")) {
+                        usuario.setId(person.getId());
+                        usuario.setFoto(BitMapToString(resizedBitmap));
+                        db.insertUsuario(usuario);
+                    }
+                    else{
+                        usuario.setId(person.getId());
+                        usuario.setFoto(BitMapToString(resizedBitmap));
+                        db.updateUsuario(usuario);
+                    }
+
 
 
                     String path = android.os.Environment
@@ -478,10 +501,7 @@ public class ProfileActivity extends Activity {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
-                Usuario usuario = new Usuario();
-                usuario.setId(person.getId());
-                usuario.setFoto(picturePath);
-                db.insertUsuario(usuario);
+
                 /*BitmapFactory.Options opt = new BitmapFactory.Options();
                 opt.inDensity = 300;
                 opt.inTargetDensity = 300;*/
@@ -505,6 +525,21 @@ public class ProfileActivity extends Activity {
                 bmOptions.inPurgeable = true;
 
                 Bitmap bitmap = BitmapFactory.decodeFile(picturePath, bmOptions);
+
+
+                Usuario usuario = new Usuario();
+
+                if(usuario.getFoto().equals("")) {
+                    usuario.setId(person.getId());
+                    usuario.setFoto(BitMapToString(bitmap));
+                    db.insertUsuario(usuario);
+                }
+                else{
+                    usuario.setId(person.getId());
+                    usuario.setFoto(BitMapToString(bitmap));
+                    db.updateUsuario(usuario);
+                }
+
 
                 //Bitmap resizedBitmap = Bitmap.createScaledBitmap(thumbnail, 600, 600, false);
 
