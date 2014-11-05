@@ -2,61 +2,71 @@ package com.pi314.friendonator;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcel;
 import android.provider.MediaStore;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-<<<<<<< HEAD
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 import android.widget.ImageButton;
-=======
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.Toast;
 
->>>>>>> 342bdd594167a8ea787b7d0c73847d64cb555036
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
-import java.util.Map;
 
+import Database.SQLiteHelper;
+import Database.Usuario;
 import Dialog.InterestInfo;
+import GridView.GridObject;
+import GridView.GridCustomAdapter;
 
 
 public class ProfileActivity extends Activity {
-    User user;
     Person person;
     EditText txtProfileName;
-    List<String> gridInterests;
-    TextView lblInterestsList;
-    TextView getContactedBy;
+    ArrayList<GridObject> gridList;
+    ArrayList<GridObject> contactedBy;
+    TextView lblInterests;
+    TextView lblGetContactedBy;
 
     ImageButton viewImage;
     ImageButton b;
+    SQLiteHelper db;
+
+    private ListView NavList;
+    private ArrayList<Item_objct> NavItms;
+    private ActionBarDrawerToggle toggle;
+    private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
+    private TypedArray NavIcons;
+    NavigationAdapter NavAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,63 +76,87 @@ public class ProfileActivity extends Activity {
         final Button btnChooseContact = (Button) findViewById(R.id.btnChooseContact);
         final Button btnSaveChanges = (Button) findViewById(R.id.btnSaveChanges);
         txtProfileName = (EditText) findViewById(R.id.txtProfileName);
+        lblInterests = (TextView) findViewById(R.id.lblInterests);
+        lblGetContactedBy = (TextView) findViewById(R.id.lblGetContactedBy);
 
-        //getSetUser();
+        // Get object person from intent extras
         getSetPerson();
+
+        // Set user name
         textName();
-
-        // Locate the lblInterestsList TextView
-        //lblInterestsList = (TextView) findViewById(R.id.lblInterestsList);
-
-        // Build the message to be displayed on lblInterestsList
-        //lblInterestsList.setText(getInterestsList());
-
-        // Locate the lblContactedByList TextView
-        //getContactedBy = (TextView) findViewById(R.id.lblContactedByList);
-
-        // Build the message to be displayed on lblContactedByList
-        //getContactedBy.setText(getContactedByList());
 
         // Locate the gridViewInterests TextView
         final GridView gridViewInterests = (GridView) findViewById(R.id.gridViewInterests);
 
-        // Create ArrayAdapterInterests
-        ArrayAdapter<String> adapterInterests = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fillGridViewInterests());
+        if (!fillGridViewInterests().isEmpty()) {
+            // Create ArrayAdapterInterests
+            GridCustomAdapter adapterInterests = new GridCustomAdapter(this, gridList);
 
-        // Set adapter to gridViewInterests
-        gridViewInterests.setAdapter(adapterInterests);
+            // Set adapter to gridViewInterests
+            gridViewInterests.setAdapter(adapterInterests);
 
-        // Locate the gridViewInterests TextView
+            lblInterests.setText(getResources().getString(R.string.lblInterests));
+        }
+
+        // Locate the gridViewContactedBy TextView
         GridView gridViewContactedBy = (GridView) findViewById(R.id.gridViewContactedBy);
 
-        // Create ArrayAdapterInterests
-        ArrayAdapter<String> adapterContactedBy = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, fillGridViewContactedBy());
+        if (!fillGridViewContactedBy().isEmpty()) {
+            // Create ArrayAdapterContactedBy
+            GridCustomAdapter adapterContactedBy = new GridCustomAdapter(this, contactedBy);
 
-        // Set adapter to gridViewInterests
-        gridViewContactedBy.setAdapter(adapterContactedBy);
+            // Set adapter to gridViewContactedBy
+            gridViewContactedBy.setAdapter(adapterContactedBy);
 
+            lblGetContactedBy.setText(getResources().getString(R.string.lblGetContactedBy));
+        }
 
-        b =(ImageButton) findViewById(R.id.btnProfileImage);
-        viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
+<<<<<<< HEAD
+        b = (ImageButton) findViewById(R.id.btnProfileImage);
+        viewImage= (ImageButton) findViewById(R.id.btnProfileImage);
         b.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 selectImage();
             }
         });
+=======
+        b =(ImageButton) findViewById(R.id.btnProfileImage);
+        viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
+
+        Usuario usuario = new Usuario();
+        usuario.setId(person.getId());
+        if(!usuario.getFoto().equals("")) {
+
+
+            Bitmap bitmap = BitmapFactory.decodeFile(usuario.getFoto());
+            viewImage.setImageBitmap(bitmap);
+
+        }
+            b.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    selectImage();
+                }
+            });
+
+>>>>>>> 480c141a945346b965a58e0f649124835b9f4bdb
 
         btnChooseInterest.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Set name to person object
                 setName();
 
                 // Create intent to open interests activity
                 Intent intent = new Intent(ProfileActivity.this, InterestsActivity.class);
 
                 // Set person inside intent
-                //intent.putExtra("USER", user);
                 intent.putExtra("PERSON", person);
 
+                // Start change to a new layout
                 startActivity(intent);
 
                 // Finish activity
@@ -136,15 +170,16 @@ public class ProfileActivity extends Activity {
         btnChooseContact.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Set name to person object
                 setName();
 
                 // Create intent to open get contacted by activity
                 Intent intent = new Intent(ProfileActivity.this, GetContactedByActivity.class);
 
                 // Set bundle inside intent
-                //intent.putExtras(bundleProfile());
                 intent.putExtra("PERSON", person);
 
+                // Start change to a new layout
                 startActivity(intent);
 
                 // Finish activity
@@ -158,12 +193,19 @@ public class ProfileActivity extends Activity {
         btnSaveChanges.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Set name to person object
+                setName();
+
+                // Save picture and name into data base
+                // method here
+
                 // Create intent
                 Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
 
                 // Set person inside intent
                 intent.putExtra("PERSON", person);
 
+                // Start change to a new layout
                 startActivity(intent);
 
                 // Finish activity
@@ -174,19 +216,70 @@ public class ProfileActivity extends Activity {
         gridViewInterests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String title = getTitle(position);
+                /*String title = getTitle(position);
                 if (!title.isEmpty() && person.textValue(title) != null)
-                    showInterestInfoDialog(textFavoriteType(title), person.textValue(title));
+                    showInterestInfoDialog(textFavoriteType(title), person.textValue(title));*/
+                GridObject forDialog = gridList.get(position);
+                if (!forDialog.getTitle().isEmpty() && person.textValue(forDialog.getTitle()) != null)
+                    showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), person.textValue(forDialog.getTitle()));
             }
         });
 
-    }
+/*
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
 
-    public void getSetUser() {
-        user = this.getIntent().getParcelableExtra("USER");
+        final ListView drawer = (ListView) findViewById(R.id.drawer2);
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-        if (user == null)
-            user = new User(Parcel.obtain());
+        //tres lineaas de codigo paraa la imgen del menu
+        NavList = (ListView) findViewById(R.id.drawer2);
+        //Declaramos el header el caul sera el layout de header.xml
+        View header = getLayoutInflater().inflate(R.layout.header, null);
+        //Establecemos header
+        NavList.addHeaderView(header);
+
+        //obtiene las imagenes desde el string.xml
+        NavIcons = getResources().obtainTypedArray(R.array.navigation_iconos);
+        //crea en arraylist de la clae Item_object que tiene imagen y texto
+        NavItms = new ArrayList<Item_objct>();
+        //Se procede a insertar las imagines y textos
+        NavItms.add(new Item_objct(opciones[0], NavIcons.getResourceId(0, -1)));
+        NavItms.add(new Item_objct(opciones[1], NavIcons.getResourceId(1, -1)));
+        NavItms.add(new Item_objct(opciones[2], NavIcons.getResourceId(2, -1)));
+        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(3, -1)));
+        NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
+        NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
+        //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
+        NavAdapter = new NavigationAdapter(this,NavItms);
+        NavList.setAdapter(NavAdapter);
+
+        drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                displayView(arg2);
+                drawerLayout.closeDrawers();
+
+            }
+        });
+
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.hello_world){
+            public void onDrawerClosed(View view) {
+                // Drawer cerrado
+                getActionBar().setTitle(getResources().getString(R.string.app_name));
+                //invalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                // Drawer abierto
+                getActionBar().setTitle("Menu");
+                //invalidateOptionsMenu();
+            }
+        };
+
+        drawerLayout.setDrawerListener(toggle);
+*/
+
     }
 
     public void getSetPerson() {
@@ -207,56 +300,16 @@ public class ProfileActivity extends Activity {
             txtProfileName.setText(person.getName());
     }
 
-    public String getInterestsList() {
-        String interestList = "Set your Interests preferences...";
-
-        if (person != null && !person.getInterestList().isEmpty()) {
-            interestList = "";
-            for (Map.Entry<String, List<String>> entry : person.getInterestList().entrySet()) {
-                interestList += entry.getKey() + "\n";
-                if (entry.getKey().equals("Science"))
-                    interestList += "\n";
-                else
-                    interestList += entry.getValue() + "\n";
-                if (!person.textValue(entry.getKey()).isEmpty())
-                    interestList += textFavoriteType(entry.getKey()) + "\n" + person.textValue(entry.getKey()) + "\n\n";
-                else
-                    interestList += "\n";
-            }
-        }
-
-        return interestList;
-    }
-
-    public String textFavoriteType(String title) {
-        String favorite = "";
-        if (title.equals(getResources().getString(R.string.selectInterestMusic)))
-            favorite = getResources().getString(R.string.txtMusic);
-        if (title.equals(getResources().getString(R.string.selectInterestLiterature)))
-            favorite = getResources().getString(R.string.txtLiterature);
-        if (title.equals(getResources().getString(R.string.selectInterestMovies)))
-            favorite = getResources().getString(R.string.txtMovies);
-        if (title.equals(getResources().getString(R.string.selectInterestArt)))
-            favorite = getResources().getString(R.string.txtArt);
-        if (title.equals(getResources().getString(R.string.selectInterestTVShows)))
-            favorite = getResources().getString(R.string.txtTvShow);
-        if (title.equals(getResources().getString(R.string.selectInterestSports)))
-            favorite = getResources().getString(R.string.txtSports);
-        if (title.equals(getResources().getString(R.string.selectInterestScience)))
-            favorite = getResources().getString(R.string.txtScience);
-        if (title.equals(getResources().getString(R.string.selectInterestLookingFor)))
-            favorite = getResources().getString(R.string.txtLookingFor);
-        return favorite;
-    }
-
-    public List<String> fillGridViewInterests() {
-        gridInterests = new ArrayList<String>();
-        String interests = getResources().getString(R.string.lblInterestsList);
+    public ArrayList<GridObject> fillGridViewInterests() {
+        gridList = new ArrayList<GridObject>();
+        GridObject object = new GridObject();
+        String interestTitle = "";
+        String interestGenres = "";
 
         if (person != null && !person.getInterestList().isEmpty()) {
             for (Map.Entry<String, List<String>> entry : person.getInterestList().entrySet()) {
-                interests = "";
-                interests += entry.getKey();
+                interestTitle = entry.getKey();
+                object.setTitle(interestTitle);
                 if (!person.interestsValue(entry.getKey()).isEmpty()) {
                     String value = "";
                     int count = 0;
@@ -267,90 +320,63 @@ public class ProfileActivity extends Activity {
                         } else
                             value += v + ".";
                     }
-                    interests += "\n" + value;
+                    interestGenres = value;
+                    object.setGenres(interestGenres);
                 }
-                //if (person.textValue(entry.getKey()) != null)
-                //    interests += "\n" + textFavoriteType(entry.getKey()) + "\n" + person.textValue(entry.getKey());
-                gridInterests.add(interests);
-            }
-        } else
-            gridInterests.add(interests);
-
-        return gridInterests;
-    }
-
-    public String getContactedByList() {
-        String contactedByList = "Set your Get Contacted By preferences...";
-
-        if (person != null && !person.getGetContactedByList().isEmpty()) {
-            contactedByList = "";
-            for (Map.Entry<String, String> entry : person.getGetContactedByList().entrySet()) {
-                contactedByList += entry.getKey() + "\n";
-                contactedByList += entry.getValue() + "\n\n";
+                gridList.add(object);
+                object = new GridObject();
             }
         }
 
-        return contactedByList;
+        Collections.sort(gridList, new Comparator<GridObject>() {
+            @Override
+            public int compare(GridObject lhs, GridObject rhs) {
+                return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+            }
+        });
+
+        return gridList;
     }
 
-    public List<String> fillGridViewContactedBy() {
-        List<String> gridContactedBy = new ArrayList<String>();
+    public ArrayList<GridObject> fillGridViewContactedBy() {
+        contactedBy = new ArrayList<GridObject>();
         String contactedByList = getResources().getString(R.string.lblContactedByList);
+        GridObject object = new GridObject();
+
         if (person != null && !person.getGetContactedByList().isEmpty()) {
             for (Map.Entry<String, String> entry : person.getGetContactedByList().entrySet()) {
                 contactedByList = "";
-                contactedByList += entry.getKey() + "\n";
-                contactedByList += entry.getValue();
-                gridContactedBy.add(contactedByList);
+                object = new GridObject();
+                contactedByList = entry.getKey();
+                object.setTitle(contactedByList);
+                contactedByList = entry.getValue();
+                object.setGenres(contactedByList);
+                contactedBy.add(object);
             }
-        } else
-            gridContactedBy.add(contactedByList);
-        return gridContactedBy;
+        }
+
+        Collections.sort(contactedBy, new Comparator<GridObject>() {
+            @Override
+            public int compare(GridObject lhs, GridObject rhs) {
+                return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
+            }
+        });
+
+        return contactedBy;
     }
 
     public void showInterestInfoDialog(String tittle, String message) {
+        // Create an instance of dialogInterestInfo
         InterestInfo dialogInterestInfo = new InterestInfo();
+        // Set tittle and description
         dialogInterestInfo.setInfo(tittle, message);
+        // Show SelectInterest instance
         dialogInterestInfo.show(getFragmentManager(), "InterestInfo");
     }
 
-    public String getTitle(int position) {
-        String check = gridInterests.get(position);
-        String title = "";
-        char letter = ' ';
-        for (int c = 0; c < check.length(); c++) {
-            letter = check.charAt(c);
-            if (title.equals(getResources().getString(R.string.selectInterestMusic))) {
-                title = getResources().getString(R.string.selectInterestMusic);
-            } else if (title.equals(getResources().getString(R.string.selectInterestLiterature))) {
-                title = getResources().getString(R.string.selectInterestLiterature);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestMovies))) {
-                title = getResources().getString(R.string.selectInterestMovies);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestArt))) {
-                title = getResources().getString(R.string.selectInterestArt);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestTVShows).substring(0,1))) {
-                title = getResources().getString(R.string.selectInterestTVShows);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestSports))) {
-                title = getResources().getString(R.string.selectInterestSports);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestScience))) {
-                title = getResources().getString(R.string.selectInterestScience);
-                break;
-            } else if (title.equals(getResources().getString(R.string.selectInterestLookingFor))) {
-                title = getResources().getString(R.string.selectInterestLookingFor);
-                break;
-            } else {
-                title += letter;
-            }
-        }
-        return title;
-    }
 
-    @Override
+
+   /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.profile, menu);
@@ -368,7 +394,7 @@ public class ProfileActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
-
+*/
     @Override
     public void onBackPressed()
     {
@@ -380,6 +406,8 @@ public class ProfileActivity extends Activity {
 
     private void selectImage() {
 
+        //recordar cambiar strings xml con esto
+
         final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
@@ -387,20 +415,16 @@ public class ProfileActivity extends Activity {
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo"))
-                {
+                if (options[item].equals("Take Photo")) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
-                }
-                else if (options[item].equals("Choose from Gallery"))
-                {
-                    Intent intent = new   Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                } else if (options[item].equals("Choose from Gallery")) {
+                    Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
 
-                }
-                else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals("Cancel")) {
                     dialog.dismiss();
                 }
             }
@@ -466,6 +490,10 @@ public class ProfileActivity extends Activity {
                 int columnIndex = c.getColumnIndex(filePath[0]);
                 String picturePath = c.getString(columnIndex);
                 c.close();
+                Usuario usuario = new Usuario();
+                usuario.setId(person.getId());
+                usuario.setFoto(picturePath);
+                db.insertUsuario(usuario);
                 /*BitmapFactory.Options opt = new BitmapFactory.Options();
                 opt.inDensity = 300;
                 opt.inTargetDensity = 300;*/
@@ -495,6 +523,108 @@ public class ProfileActivity extends Activity {
                 Log.w("path of image from gallery......******************.........", picturePath + "");
                 viewImage.setImageBitmap(bitmap);
             }
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+/*
+    // Activamos el toggle con el icono
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toggle.syncState();
+    }
+*/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+   /* @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    } */
+
+    /**Metodo para abrir el form escogido en el menu**/
+    private void displayView(int options){
+
+        switch (options) {
+            case 1:
+                /*//aqui se abrira la actividad de Perfil
+                Intent intentProfile = new Intent(ProfileActivity.this, ProfileActivity.class);
+                //Create the Intent element
+                Bundle bProfile = new Bundle();
+                intentProfile.putExtras(bProfile);
+                //Start the new Activity
+                startActivity(intentProfile);
+                break;*/
+                break;
+            case 2:
+                //aqui se abrira la actividad Historial
+                Intent intentHistory = new Intent(ProfileActivity.this, History.class);
+                //Create the Intent element
+                Bundle bHistory = new Bundle();
+                intentHistory.putExtras(bHistory);
+                //Start the new Activity
+                startActivity(intentHistory);
+                break;
+            case 3:
+                //aqui se abrira la actividad Home
+                Intent intentHome = new Intent(ProfileActivity.this, HomeActivity.class);
+                //Create the Intent element
+                Bundle bHome = new Bundle();
+                intentHome.putExtras(bHome);
+                //Start the new Activity
+                startActivity(intentHome);
+                break;
+            case 4:
+                //aqui se abrira la actividad MainActivity
+                Intent intentMain = new Intent(ProfileActivity.this, MainActivity.class);
+                //Create the Intent element
+                Bundle bMain = new Bundle();
+                intentMain.putExtras(bMain);
+                //Start the new Activity
+                startActivity(intentMain);
+                break;
+            case 5:
+                /* //aqui se abrira la actividad Match
+                Intent intentMatch = new Intent(ProfileActivity.this, Match.class);
+                //Create the Intent element
+                Bundle bMatch = new Bundle();
+                intentMatch.putExtras(bMatch);
+                //Start the new Activity
+                startActivity(intentMatch);
+                break;*/
+                Toast.makeText(ProfileActivity.this,
+                        "Maintenance",
+                        Toast.LENGTH_SHORT).show();
+                break;
+            case 6:
+                //aqui se abrira la actividad MySettings
+                Intent intentMySettings = new Intent(ProfileActivity.this, MySettings.class);
+                //Create the Intent element
+                Bundle bMySettings = new Bundle();
+                intentMySettings.putExtras(bMySettings);
+                //Start the new Activity
+                startActivity(intentMySettings);
+                break;
+            default:
+                break;
         }
     }
 }
