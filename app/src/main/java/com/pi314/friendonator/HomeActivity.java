@@ -33,13 +33,6 @@ public class HomeActivity extends Activity {
     Person person;
     TextView lblprofilename;
 
-    private ListView NavList;
-    private ArrayList<Item_objct> NavItms;
-    private ActionBarDrawerToggle toggle;
-    private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
-    private TypedArray NavIcons;
-    NavigationAdapter NavAdapter;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,59 +105,7 @@ public class HomeActivity extends Activity {
             }
 
         });
-/*
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
 
-        final ListView drawer = (ListView) findViewById(R.id.drawerHa);
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        //tres lineaas de codigo paraa la imgen del menu
-        NavList = (ListView) findViewById(R.id.drawerHa);
-        //Declaramos el header el caul sera el layout de header.xml
-        View header = getLayoutInflater().inflate(R.layout.header, null);
-        //Establecemos header
-        NavList.addHeaderView(header);
-
-        //obtiene las imagenes desde el string.xml
-        NavIcons = getResources().obtainTypedArray(R.array.navigation_iconos);
-        //crea en arraylist de la clae Item_object que tiene imagen y texto
-        NavItms = new ArrayList<Item_objct>();
-        //Se procede a insertar las imagines y textos
-        NavItms.add(new Item_objct(opciones[0], NavIcons.getResourceId(0, -1)));
-        NavItms.add(new Item_objct(opciones[1], NavIcons.getResourceId(1, -1)));
-        NavItms.add(new Item_objct(opciones[2], NavIcons.getResourceId(2, -1)));
-        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(3, -1)));
-        NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
-        NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
-        //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
-        NavAdapter = new NavigationAdapter(this,NavItms);
-        NavList.setAdapter(NavAdapter);
-
-        drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                displayView(arg2);
-                drawerLayout.closeDrawers();
-
-            }
-        });
-
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.hello_world){
-            public void onDrawerClosed(View view) {
-                // Drawer cerrado
-                getActionBar().setTitle(getResources().getString(R.string.app_name));
-                //invalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                // Drawer abierto
-                getActionBar().setTitle("Menu");
-                //invalidateOptionsMenu();
-            }
-        };
-
-        drawerLayout.setDrawerListener(toggle);*/
     }
 
     public void getSetPerson() {
@@ -332,13 +273,7 @@ public class HomeActivity extends Activity {
 
         return image;
     }*/
-   @Override
-   public boolean onOptionsItemSelected(MenuItem item) {
-       if (toggle.onOptionsItemSelected(item)) {
-           return true;
-       }
-       return super.onOptionsItemSelected(item);
-   }
+
 /*
     // Activamos el toggle con el icono
     @Override
@@ -365,7 +300,6 @@ public class HomeActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     } */
-
     /**Metodo para abrir el form escogido en el menu**/
     private void displayView(int options){
 
