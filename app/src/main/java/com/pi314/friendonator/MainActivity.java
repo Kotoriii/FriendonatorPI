@@ -358,16 +358,15 @@ public class MainActivity extends Activity implements Button.OnClickListener{
                 break;*/
                 break;
             case 5:
-               /* //aqui se abrira la actividad Match
-                Intent intentMatch = new Intent(MainActivity.this, Match.class);
+                Intent intentMatch = new Intent(MainActivity.this, MenuActivity.class);
                 //Create the Intent element
                 Bundle bMatch = new Bundle();
                 intentMatch.putExtras(bMatch);
                 //Start the new Activity
-                startActivity(intentMatch);*/
-                Toast.makeText(MainActivity.this,
-                        "Maintenance",
-                        Toast.LENGTH_SHORT).show();
+                startActivity(intentMatch);
+                //Toast.makeText(MainActivity.this,
+                //       "Maintenance",
+                //        Toast.LENGTH_SHORT).show();
                 break;
             case 6:
                 //aqui se abrira la actividad MySettings

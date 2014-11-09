@@ -63,12 +63,6 @@ public class ProfileActivity extends Activity {
     ImageButton viewImage;
     SQLiteHelper db;
 
-    private ListView NavList;
-    private ArrayList<Item_objct> NavItms;
-    private ActionBarDrawerToggle toggle;
-    private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
-    private TypedArray NavIcons;
-    NavigationAdapter NavAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -571,14 +565,6 @@ public class ProfileActivity extends Activity {
                 viewImage.setImageBitmap(bitmap);
             }
         }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
     }
 /*
     // Activamos el toggle con el icono
