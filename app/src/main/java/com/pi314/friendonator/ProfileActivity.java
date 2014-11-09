@@ -494,7 +494,7 @@ public class ProfileActivity extends Activity {
                     }
 
 
-
+/*
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
                             + File.separator
@@ -513,7 +513,7 @@ public class ProfileActivity extends Activity {
                         e.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
