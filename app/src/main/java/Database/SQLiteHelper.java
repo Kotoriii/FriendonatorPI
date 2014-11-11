@@ -141,7 +141,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //values.put("idUsuario", hist.getIdusuario());
         values.put("fecha", hist.getFecha());
         values.put("latitud", hist.getLatitud());
         values.put("longitud", hist.getLongitud());
@@ -154,7 +153,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //values.put("idIntereses", inter.getId());
         values.put("idSuperInteres", inter.getIdsuperinteres());
         values.put("Descripcion", inter.getDescripcion());
 
@@ -177,7 +175,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //values.put("idUsuario", user.getId());
         values.put("nombre", user.getNombre());
         values.put("fecha_de_nacimiento", user.getDob());
         values.put("correo", user.getCorreo());
@@ -220,7 +217,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //values.put("idSuperInteres", intereses.getIdsuperinteres());
         values.put("Descripcion", intereses.getDescripcion());
 
         return db.update("intereses", values, "idIntereses=?", new String[] { intereses.getId() });
