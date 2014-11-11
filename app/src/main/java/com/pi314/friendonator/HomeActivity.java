@@ -136,18 +136,10 @@ public class HomeActivity extends Activity {
             lblprofilename.setText(person.getName());
     }
 
-
-
-
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
 
     }
-
-
-
-
-
 
 /*
     // Activamos el toggle con el icono

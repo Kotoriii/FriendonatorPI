@@ -15,6 +15,8 @@ public class Person implements Serializable {
 
     private String name;
     private String id;
+    private String email;
+
     private Date fecha_de_nacimiento = null;
     private int modo_de_cont_favorito;
     private Bitmap foto_perfil = null;
@@ -55,6 +57,14 @@ public class Person implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Date getFecha_de_nacimiento() {

@@ -68,7 +68,6 @@ public class ProfileActivity extends Activity {
     ImageButton viewImage;
     SQLiteHelper db;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         db = SQLiteHelper.getInstance(getApplicationContext());

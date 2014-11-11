@@ -400,37 +400,11 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         return usuarioList;
     }
 
-    public Usuario getUserByEmail(String email) {
+    public Usuario getUser(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Usuario usuario = new Usuario();
 
         Cursor cursor=db.query("usuario", null, "correo=?", new String[]{email}, null, null, null);
-        if(cursor.moveToFirst()){
-            usuario.setId(cursor.getString(0));
-            usuario.setNombre(cursor.getString(1));
-            usuario.setDob(cursor.getString(2));
-            usuario.setCorreo(cursor.getString(3));
-            usuario.setPassword(cursor.getString(4));
-            usuario.setNum(cursor.getString(5));
-            usuario.setFb(cursor.getString(6));
-            usuario.setGplus(cursor.getString(7));
-            usuario.setTwitter(cursor.getString(8));
-            usuario.setModfav(cursor.getString(9));
-            usuario.setFoto(cursor.getString(10));
-            usuario.setMatchp(cursor.getString(11));
-        }
-
-        cursor.close();
-
-        return usuario;
-    }
-
-    public Usuario getUser(String id) {
-        SQLiteDatabase db = this.getReadableDatabase();
-        Usuario usuario = new Usuario();
-
-        Cursor cursor=db.query("usuario", null, " idUsuario=?", new String[]{id}, null, null, null);
-
         if(cursor.moveToFirst()){
             usuario.setId(cursor.getString(0));
             usuario.setNombre(cursor.getString(1));
