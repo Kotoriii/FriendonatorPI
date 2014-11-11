@@ -55,6 +55,13 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="FindMe"
+            android:id="@+id/btnFindME"
+            android:onClick="findmeT" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="StartServer"
             android:id="@+id/StrtServer" />
 

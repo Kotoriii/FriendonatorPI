@@ -102,5 +102,6 @@
     <string name="toastCheckEmail">Please provide a valid email address</string>
     <string name="toastAccountSuccess">Account Successfully Created</string>
     <string name="title_activity_menu">MenuActivity</string>
+    <string name="title_activity_find_me_tool">FindMeTool</string>
 
 </resources>

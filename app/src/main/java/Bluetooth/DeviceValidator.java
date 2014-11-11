@@ -43,7 +43,7 @@ public class DeviceValidator {
                 return true;
             }
         }catch (Exception e){
-            Log.e("BluetoothFR","Name not valid "+ e.getMessage());
+            Log.e("Validator","Name not valid "+ e.getMessage());
         }
         return false;
     }
