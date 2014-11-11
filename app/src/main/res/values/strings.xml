@@ -79,7 +79,8 @@
     <string name="txtLoginUserName">Username</string>
     <string name="txtLoginPassword">Password</string>
     <string name="toastWrongLogIn">Wrong email or password</string>
-
+    <string name="btnlogin">Accept</string>
+    <string name="btnRegister">Register</string>
 
     <array name="navigation_iconos">
         <item>@drawable/ic_action_user</item>

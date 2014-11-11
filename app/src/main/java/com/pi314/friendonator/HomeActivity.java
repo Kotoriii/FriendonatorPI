@@ -19,7 +19,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pi314.interests.InterestsMethods;
+
 import java.util.ArrayList;
+
+import Database.SQLiteHelper;
 
 /**
  * Created by Christian on 10/12/2014.
@@ -32,6 +36,7 @@ public class HomeActivity extends Activity {
     ProgressDialog pd;
     Person person;
     TextView lblprofilename;
+    SQLiteHelper db;
 
     private ListView NavList;
     private ArrayList<Item_objct> NavItms;
@@ -48,6 +53,7 @@ public class HomeActivity extends Activity {
         iv = (ImageView) findViewById(R.id.imgviewEventpic);
         final String txtSpinner = spnEvent.getSelectedItem().toString();
 
+        db = SQLiteHelper.getInstance(getApplicationContext());
 
         //addItemsOnEventSpinner();
         lblprofilename = (TextView)findViewById(R.id.lblProfileName);
@@ -57,6 +63,10 @@ public class HomeActivity extends Activity {
 
         // Set user name
         textName();
+
+        // Set interests from Data Base
+        InterestsMethods fillPerson = new InterestsMethods();
+        person.setDataBaseInterest(fillPerson.getInterestFromDataBase(HomeActivity.this, Integer.parseInt(person.getId())));
 
         //onItemSelected();
 
