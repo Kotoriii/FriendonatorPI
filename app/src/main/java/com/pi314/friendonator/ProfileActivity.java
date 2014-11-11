@@ -33,11 +33,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.pi314.interests.InterestsMethods;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,7 +48,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import Database.Intereses;
 import Database.SQLiteHelper;
+import Database.Superinteres;
 import Database.Usuario;
 import Dialog.InterestInfo;
 import GridView.GridObject;
@@ -86,6 +91,10 @@ public class ProfileActivity extends Activity {
 
         // Set user name
         textName();
+
+        // Set interests from Data Base
+        InterestsMethods fillPerson = new InterestsMethods();
+        person.setDataBaseInterest(fillPerson.getInterestFromDataBase(ProfileActivity.this, Integer.parseInt(person.getId())));
 
         // Locate the gridViewInterests TextView
         final GridView gridViewInterests = (GridView) findViewById(R.id.gridViewInterests);
@@ -309,21 +318,16 @@ public class ProfileActivity extends Activity {
         GridObject object = new GridObject();
         String interestTitle = "";
         String interestGenres = "";
+        String [] interestsList = getResources().getStringArray(R.array.identifyInterests);
+        InterestsMethods interestsMethods = new InterestsMethods();
 
-        if (person != null && !person.getInterestList().isEmpty()) {
-            for (Map.Entry<String, List<String>> entry : person.getInterestList().entrySet()) {
-                interestTitle = entry.getKey();
+        if (person != null && !person.getDataBaseInterest().isEmpty()) {
+            for (Map.Entry<Integer, List<Integer>> entry : person.getDataBaseInterest().entrySet()) {
+                interestTitle = interestsList[entry.getKey() - 1];
                 object.setTitle(interestTitle);
-                if (!person.interestsValue(entry.getKey()).isEmpty()) {
+                if (!person.dataBaseValues(entry.getKey()).isEmpty()) {
                     String value = "";
-                    int count = 0;
-                    for (String v : entry.getValue()) {
-                        if(count < entry.getValue().size()-1) {
-                            value += v + ", ";
-                            count += 1;
-                        } else
-                            value += v + ".";
-                    }
+                    value = interestsMethods.getInterestsStrings(ProfileActivity.this, entry.getKey(), entry.getValue());
                     interestGenres = value;
                     object.setGenres(interestGenres);
                 }

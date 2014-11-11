@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,14 +14,14 @@ import java.util.List;
 
 public class SelectInterests extends DialogFragment {
 
-    private List<String> listBySelectedInterest;
-    private String tittle;
+    private String title;
     private String [] choices;
     private Person person;
-    private List<String> mirrorListForCancel;
+    private List<Integer> interestList;
+    private List<Integer> mirrorIntegerListForCancel;
 
-    public void setOptions(String tittle, String [] choices, Person person){
-        this.tittle = tittle;
+    public void setOptions(String title, String [] choices, Person person){
+        this.title = title;
         this.choices = choices;
         this.person = person;
     }
@@ -28,25 +29,28 @@ public class SelectInterests extends DialogFragment {
     // Set boolean array to fill checkbox
     public boolean [] putChecks() {
         boolean[] interestsChecked = new boolean[choices.length];
+
         for (int i = 0; i < choices.length; i++) {
             interestsChecked[i] = false;
         }
-        listBySelectedInterest = new ArrayList<String>();
-        mirrorListForCancel = new ArrayList<String>();
-        if (!person.getInterestList().isEmpty()) {
-            if (person.interestsValue(tittle) != null) {
-                for (String value : person.interestsValue(tittle)) {
-                    if (Arrays.asList(choices).contains(value)) {
-                        int index = Arrays.asList(choices).indexOf(value);
-                        listBySelectedInterest.add(value);
-                        interestsChecked[index] = true;
-                    }
+
+        mirrorIntegerListForCancel = new ArrayList<Integer>();
+        interestList = new ArrayList<Integer>();
+
+        if (!person.getDataBaseInterest().isEmpty()) {
+            int titleIndex = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
+            if (person.dataBaseValues(titleIndex + 1) != null) {
+                for (int value : person.dataBaseValues(titleIndex + 1)) {
+                    int index = indexGenre(titleIndex, value);
+                    interestList.add(value);
+                    interestsChecked[index] = true;
+                }
+                for (Integer i : interestList) {
+                    mirrorIntegerListForCancel.add(i);
                 }
             }
-            for (String s : listBySelectedInterest) {
-                mirrorListForCancel.add(s);
-            }
         }
+
         return interestsChecked;
     }
 
@@ -54,8 +58,8 @@ public class SelectInterests extends DialogFragment {
        implement this interface in order to receive event callbacks.
        Each method passes the DialogFragment in case the host needs to query it. */
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(List<String> listBySelectedInterest, String tittle);
-        public void onDialogNegativeClick(List<String> listBySelectedInterest, String tittle);
+        public void onDialogPositiveClick(String tittle, List<Integer> interestList);
+        public void onDialogNegativeClick(List<Integer> mirrorIntegerListForCancel, String tittle);
     }
 
     // Use this instance of the interface to deliver action events
@@ -80,7 +84,7 @@ public class SelectInterests extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Set the dialog title
-        AlertDialog.Builder builder1 = builder.setTitle(tittle)
+        AlertDialog.Builder builder1 = builder.setTitle(title)
                 // Specify the list array, the items to be selected by default (null for none),
                 // and the listener through which to receive callbacks when items are selected
                 .setMultiChoiceItems(choices, putChecks(),
@@ -90,10 +94,10 @@ public class SelectInterests extends DialogFragment {
                                                 boolean isChecked) {
                                 if (isChecked) {
                                     // If the user checked the item, add it to the selected items
-                                    listBySelectedInterest.add(choices[which]);
-                                } else if (listBySelectedInterest.contains(choices[which])) {
+                                    interestList.add(dataBaseID(title, which));
+                                } else if (interestList.contains(dataBaseID(title, which))) {
                                     // Else, if the item is already in the array, remove it
-                                    listBySelectedInterest.remove(listBySelectedInterest.indexOf(choices[which]));
+                                    interestList.remove(interestList.indexOf(dataBaseID(title, which)));
                                 }
                             }
                         })
@@ -102,16 +106,63 @@ public class SelectInterests extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         // Return selected interest to the component that opened the dialog
-                        mListener.onDialogPositiveClick(listBySelectedInterest, tittle);
+                        mListener.onDialogPositiveClick(title, interestList);
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onDialogNegativeClick(mirrorListForCancel, tittle);
+                        mListener.onDialogNegativeClick(mirrorIntegerListForCancel, title);
                     }
                 });
 
         return builder.create();
+    }
+
+    public Integer dataBaseID(String title, int index) {
+        int realIndex;
+        int titleIndex = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
+
+        if (titleIndex == 1)
+            realIndex = index + 8;
+        else if (titleIndex == 2)
+            realIndex = index + 16;
+        else if (titleIndex == 3)
+            realIndex = index + 24;
+        else if (titleIndex == 4)
+            realIndex = index + 32;
+        else if (titleIndex == 5)
+            realIndex = index + 40;
+        else if (titleIndex == 6)
+            realIndex = index + 48;
+        else if (titleIndex == 7)
+            realIndex = index + 49;
+        else
+            realIndex = index;
+
+        return realIndex;
+    }
+
+    public Integer indexGenre(int idSuperInt, int dataBaseID) {
+        int index;
+
+        if (idSuperInt == 1)
+            index = dataBaseID - 8;
+        else if (idSuperInt == 2)
+            index = dataBaseID - 16;
+        else if (idSuperInt == 3)
+            index = dataBaseID - 24;
+        else if (idSuperInt == 4)
+            index = dataBaseID - 32;
+        else if (idSuperInt == 5)
+            index = dataBaseID - 40;
+        else if (idSuperInt == 6)
+            index = dataBaseID - 48;
+        else if (idSuperInt == 7)
+            index = dataBaseID - 49;
+        else
+            index = dataBaseID;
+
+        return index;
     }
 }

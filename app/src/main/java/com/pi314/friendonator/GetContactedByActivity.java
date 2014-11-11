@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.pi314.interests.InterestsMethods;
 
 import Database.SQLiteHelper;
+import Database.Usuario;
 
 
 public class GetContactedByActivity extends Activity {
@@ -70,8 +71,13 @@ public class GetContactedByActivity extends Activity {
                     createContactedByList(phone, google, facebook, twitter);
 
                     // Update user contact fields in data base
-                    InterestsMethods insertContactedBy = new InterestsMethods();
-
+                    Usuario updateUser = new Usuario();
+                    updateUser.setId(person.getId());
+                    updateUser.setNum(txtPhone.getText().toString());
+                    updateUser.setGplus(txtGoogle.getText().toString());
+                    updateUser.setFb(txtFacebook.getText().toString());
+                    updateUser.setTwitter(txtTwitter.getText().toString());
+                    db.updateUsuario(updateUser);
 
                     // Create intent to open interests activity
                     Intent intent = new Intent(GetContactedByActivity.this, ProfileActivity.class);
@@ -84,6 +90,8 @@ public class GetContactedByActivity extends Activity {
 
                     // Finish activity
                     finish();
+
+                    // Slide animation
                     overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
                 } else
                     Toast.makeText(getApplicationContext(), R.string.textRequired, Toast.LENGTH_SHORT).show();

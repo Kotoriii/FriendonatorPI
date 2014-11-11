@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,7 +99,10 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         Boolean emptyTable = true;
 
         try {
-            Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM superinteres", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM superinteres", null);
+            if (cursor.moveToFirst())
+                emptyTable = false;
+            cursor.close();
         } catch (SQLiteException sqlE) {
             emptyTable = false;
         }
@@ -250,6 +254,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
+
         return historialList;
     }
 
@@ -269,6 +275,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
+
         return interesesList;
     }
 
@@ -277,7 +285,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM superinteres", null);
-
         if(cursor.moveToFirst()) {
             do {
                 Superinteres superinteres = new Superinteres();
@@ -286,6 +293,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
                 superinterList.add(superinteres);
             } while (cursor.moveToNext());
         }
+
+        cursor.close();
 
         return superinterList;
     }
@@ -301,29 +310,36 @@ public class SQLiteHelper extends SQLiteOpenHelper{
                 Usuariointereses uInteres = new Usuariointereses();
                 uInteres.setIdinteres(cursor.getString(0));
                 uInteres.setIdusuario(cursor.getString(1));
+                intereses.add(uInteres);
             } while (cursor.moveToNext());
         }
+
+        cursor.close();
 
         return intereses;
     }
 
-    public List<Superinteres> getAllUserSuperInterest() {
-        List<Superinteres> userInterests = new ArrayList<Superinteres>();
+    public List<Intereses> getAllUserInterests(int idUser) {
+        List<Intereses> interests = new ArrayList<Intereses>();
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * si FROM usuariointereses ui, intereses i, superinteres si " +
-                                    "WHERE ui.idInteres = i.idIntereses AND i.idSuperInteres = si.idSuperInteres", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM intereses, usuariointereses " +
+                                    "WHERE intereses.idIntereses = usuariointereses.idInteres AND usuariointereses.idUsuario=?" +
+                                    "GROUP BY intereses.idIntereses", new String[] {String.valueOf(idUser)});
 
         if(cursor.moveToFirst()) {
             do {
-                Superinteres interests = new Superinteres();
-                interests.setId(cursor.getString(0));
-                interests.setDescripcion((cursor.getString(1)));
-                userInterests.add(interests);
-            } while(cursor.moveToNext());
+                Intereses intereses = new Intereses();
+                intereses.setId(cursor.getString(0));
+                intereses.setIdsuperinteres(cursor.getString(1));
+                intereses.setDescripcion(cursor.getString(2));
+                interests.add(intereses);
+            } while (cursor.moveToNext());
         }
 
-        return userInterests;
+        cursor.close();
+
+        return interests;
     }
 
     public List<Usuario> getAllUsuarios() {
@@ -350,16 +366,16 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
+
         return usuarioList;
     }
-
-
 
     public Usuario getUser(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Usuario usuario = new Usuario();
 
-        Cursor cursor=db.query("usuario", null, " correo=?", new String[]{email}, null, null, null);
+        Cursor cursor=db.query("usuario", null, "correo=?", new String[]{email}, null, null, null);
 
         if(cursor.moveToFirst()){
             usuario.setId(cursor.getString(0));
@@ -378,6 +394,11 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         cursor.close();
 
         return usuario;
+    }
+
+    public int deleteUserInterestData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("usuariointereses", null, null);
     }
 
 }

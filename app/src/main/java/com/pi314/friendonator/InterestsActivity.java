@@ -3,6 +3,7 @@ package com.pi314.friendonator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,7 +15,9 @@ import android.widget.ImageButton;
 import com.pi314.interests.InterestsMethods;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import Database.SQLiteHelper;
 
@@ -93,9 +96,9 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                 // Set optional fields into person
                 addTextToInterest();
 
-                // Insert interests to users
+                // Insert interests to user
                 InterestsMethods insertInterests = new InterestsMethods();
-                insertInterests.insertInterests(db, person);
+                insertInterests.insertInterests(InterestsActivity.this, person);
 
                 // Create intent to open interests activity
                 Intent intent = new Intent(InterestsActivity.this, ProfileActivity.class);
@@ -120,53 +123,53 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
     }
 
     public void fillCheckBox() {
-        for (String key : person.getInterestList().keySet()) {
-            if (key.equals(getResources().getString(R.string.selectInterestMusic))) {
+        for (int key : person.getDataBaseInterest().keySet()) {
+            if (key == 1) {
                 music.setChecked(true);
                 btnEditMusic.setVisibility(View.VISIBLE);
                 txtMusic.setVisibility(View.VISIBLE);
-                txtMusic.setText(person.textValue(key));
+                //txtMusic.setText(person.textValue(key));
             }
-            else if (key.equals(getResources().getString(R.string.selectInterestLiterature))) {
+            else if (key == 2) {
                 literature.setChecked(true);
                 btnEditLiterature.setVisibility(View.VISIBLE);
                 txtLiterature.setVisibility(View.VISIBLE);
-                txtLiterature.setText(person.textValue(key));
+                //txtLiterature.setText(person.textValue(key));
             }
-            else if (key.equals(getResources().getString(R.string.selectInterestMovies))) {
+            else if (key == 3) {
                 movies.setChecked(true);
                 btnEditMovies.setVisibility(View.VISIBLE);
                 txtMovies.setVisibility(View.VISIBLE);
-                txtMovies.setText(person.textValue(key));
+                //txtMovies.setText(person.textValue(key));
             }
-            else if (key.equals(getResources().getString(R.string.selectInterestArt))) {
+            else if (key == 4) {
                 art.setChecked(true);
                 btnEditArt.setVisibility(View.VISIBLE);
                 txtArt.setVisibility(View.VISIBLE);
-                txtArt.setText(person.textValue(key));
+                //txtArt.setText(person.textValue(key));
             }
-            else if (key.equals(getResources().getString(R.string.selectInterestTVShows))) {
+            else if (key == 5) {
                 tvShow.setChecked(true);
                 btnEditTvShow.setVisibility(View.VISIBLE);
                 txtTvShow.setVisibility(View.VISIBLE);
-                txtTvShow.setText(person.textValue(key));
+                //txtTvShow.setText(person.textValue(key));
             }
-            else if (key.equals(getResources().getString(R.string.selectInterestSports))) {
+            else if (key == 6) {
                 sports.setChecked(true);
                 btnEditSports.setVisibility(View.VISIBLE);
                 txtSports.setVisibility(View.VISIBLE);
-                txtSports.setText(person.textValue(key));
+                //txtSports.setText(person.textValue(key));
             }
-            else if (key.equals(getResources().getString(R.string.selectInterestScience))) {
+            else if (key == 7) {
                 science.setChecked(true);
                 txtScience.setVisibility(View.VISIBLE);
-                txtScience.setText(person.textValue(key));
+                //txtScience.setText(person.textValue(key));
             }
-            else if (key.equals(getResources().getString(R.string.selectInterestLookingFor))) {
+            else if (key == 8) {
                 lookingFor.setChecked(true);
                 btnEditLookingFor.setVisibility(View.VISIBLE);
                 txtLookingFor.setVisibility(View.VISIBLE);
-                txtLookingFor.setText(person.textValue(key));
+                //txtLookingFor.setText(person.textValue(key));
             }
         }
     }
@@ -187,7 +190,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                 } else {
                     txtMusic.setVisibility(View.GONE);
                     btnEditMusic.setVisibility(View.GONE);
-                    person.getInterestList().remove(getResources().getString(R.string.selectInterestMusic));
+                    person.getDataBaseInterest().remove(1);
                 }
                 break;
             case R.id.checkBoxLiterature:
@@ -200,7 +203,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                 } else {
                     txtLiterature.setVisibility(View.GONE);
                     btnEditLiterature.setVisibility(View.GONE);
-                    person.getInterestList().remove(getResources().getString(R.string.selectInterestLiterature));
+                    person.getDataBaseInterest().remove(2);
                 }
                 break;
             case R.id.checkBoxMovies:
@@ -213,7 +216,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                 } else {
                     txtMovies.setVisibility(View.GONE);
                     btnEditMovies.setVisibility(View.GONE);
-                    person.getInterestList().remove(getResources().getString(R.string.selectInterestMovies));
+                    person.getDataBaseInterest().remove(3);
                 }
                 break;
             case R.id.checkBoxArt:
@@ -226,7 +229,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                 } else {
                     txtArt.setVisibility(View.GONE);
                     btnEditArt.setVisibility(View.GONE);
-                    person.getInterestList().remove(getResources().getString(R.string.selectInterestArt));
+                    person.getDataBaseInterest().remove(4);
                 }
                 break;
             case R.id.checkBoxTvShow:
@@ -239,7 +242,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                 } else {
                     txtTvShow.setVisibility(View.GONE);
                     btnEditTvShow.setVisibility(View.GONE);
-                    person.getInterestList().remove(getResources().getString(R.string.selectInterestTVShows));
+                    person.getDataBaseInterest().remove(5);
                 }
                 break;
             case R.id.checkBoxSports:
@@ -252,7 +255,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                 } else {
                     txtSports.setVisibility(View.GONE);
                     btnEditSports.setVisibility(View.GONE);
-                    person.getInterestList().remove(getResources().getString(R.string.selectInterestSports));
+                    person.getDataBaseInterest().remove(6);
                 }
                 break;
             case R.id.checkBoxScience:
@@ -261,7 +264,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                     person.fillInterestList(getResources().getString(R.string.selectInterestScience), new ArrayList<String>());
                 } else {
                     txtScience.setVisibility(View.GONE);
-                    person.getInterestList().remove(getResources().getString(R.string.selectInterestScience));
+                    person.getDataBaseInterest().remove(7);
                 }
                 break;
             case R.id.checkBoxLookingFor:
@@ -274,7 +277,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                 } else {
                     txtLookingFor.setVisibility(View.GONE);
                     btnEditLookingFor.setVisibility(View.GONE);
-                    person.getInterestList().remove(getResources().getString(R.string.selectInterestLookingFor));
+                    person.getDataBaseInterest().remove(8);
                 }
                 break;
         }
@@ -376,19 +379,29 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
     }
 
     @Override
-    public void onDialogPositiveClick(List<String> listBySelectedInterest, String title) {
-        if (title.equals(getResources().getString(R.string.selectInterestLookingFor)) && listBySelectedInterest.isEmpty()) {
+    public void onDialogPositiveClick(String title, List<Integer> interestList) {
+        if (title.equals(getResources().getString(R.string.selectInterestLookingFor)) && interestList.isEmpty()) {
         }
-        else
-            person.fillInterestList(title, listBySelectedInterest);
+        else {
+            int index = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
+            person.fillDataBaseInterests(index + 1, interestList);
+            Log.i("===> ", "CHECKING ALL HASHMAP");
+            for (Map.Entry<Integer, List<Integer>> entry : person.getDataBaseInterest().entrySet()) {
+                Log.i("===> ", "***********************");
+                Log.i("===> ", "Title " + entry.getKey());
+                Log.i("===> ", "Values " + entry.getValue());
+            }
+        }
     }
 
     @Override
-    public void onDialogNegativeClick(List<String> mirrorList,  String title) {
+    public void onDialogNegativeClick(List<Integer> mirrorList,  String title) {
         if (title.equals(getResources().getString(R.string.selectInterestLookingFor)) && mirrorList.isEmpty()) {
         }
-        else
-            person.fillInterestList(title, mirrorList);
+        else {
+            int index = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
+            person.fillDataBaseInterests(index, mirrorList);
+        }
     }
 
     @Override

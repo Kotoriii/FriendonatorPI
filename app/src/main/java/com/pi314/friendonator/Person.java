@@ -57,6 +57,30 @@ public class Person implements Serializable {
         this.id = id;
     }
 
+    public Date getFecha_de_nacimiento() {
+        return fecha_de_nacimiento;
+    }
+
+    public void setFecha_de_nacimiento(Date fecha_de_nacimiento) {
+        this.fecha_de_nacimiento = fecha_de_nacimiento;
+    }
+
+    public int getModo_de_cont_favorito() {
+        return modo_de_cont_favorito;
+    }
+
+    public void setModo_de_cont_favorito(int modo_de_cont_favorito) {
+        this.modo_de_cont_favorito = modo_de_cont_favorito;
+    }
+
+    public Bitmap getFoto_perfil() {
+        return foto_perfil;
+    }
+
+    public void setFoto_perfil(Bitmap foto_perfil) {
+        this.foto_perfil = foto_perfil;
+    }
+
     public HashMap<String, List<String>> getInterestList() {
         return interestList;
     }

@@ -1,5 +1,8 @@
 package com.pi314.interests;
 
+import android.content.Context;
+import android.util.Log;
+
 import com.pi314.friendonator.Person;
 import com.pi314.friendonator.R;
 
@@ -8,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Database.Intereses;
 import Database.SQLiteHelper;
 import Database.Superinteres;
 import Database.Usuario;
@@ -16,24 +20,84 @@ import GridView.GridObject;
 
 public class InterestsMethods {
 
-    public HashMap<String, List<String>> getInterestFromDataBase(String [] interest, SQLiteHelper db) {
-        // Data base should be a parameter, will be included on project update
-        List<Integer> interestId = new ArrayList<Integer>(); // From data base, can be received by parameter
-        List<Integer> valuesId = new ArrayList<Integer>(); // From data base, can be received by parameter
-        List<String> interestsList = new ArrayList<String>();
-        HashMap<String, List<String>> userInterests = new HashMap<String, List<String>>();
+    public HashMap<Integer, List<Integer>> getInterestFromDataBase(Context context, int idUser) {
+        SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+        List<Integer> superId = new ArrayList<Integer>();
+        List<Integer> valuesId = new ArrayList<Integer>();
+        HashMap<Integer, List<Integer>> interests = new HashMap<Integer, List<Integer>>();
 
         for (Superinteres spi : db.getAllSuperinter()) {
-            interestId.add(Integer.parseInt(spi.getId()));
+            superId.add(Integer.parseInt(spi.getId()));
         }
 
+        List<Intereses> getAllUserInterests = db.getAllUserInterests(idUser);
         int count = 0;
-        while (count < interestId.size()) {
-            userInterests.put(interest[interestId.get(count)+1], null); // Get data from db, will send interestId
+
+        while (count < superId.size()) {
+            for (Intereses i : getAllUserInterests) {
+                if (superId.get(count) == Integer.parseInt(i.getIdsuperinteres())) {
+                    valuesId.add(Integer.parseInt(i.getId()) - 1);
+                }
+            }
+            if (!valuesId.isEmpty()) {
+                interests.put(superId.get(count), valuesId);
+                valuesId = new ArrayList<Integer>();
+            }
             count ++;
         }
 
-        return userInterests;
+        return interests;
+    }
+
+    public String getInterestsStrings(Context context,int interest, List<Integer> value) {
+        String [] values = new String[8];
+        int subtractRealID = 0;
+
+        if (interest == 1) {
+            values = context.getApplicationContext().getResources().getStringArray(R.array.music);
+            subtractRealID = 0;
+        }
+        else if (interest == 2) {
+            values = context.getApplicationContext().getResources().getStringArray(R.array.literature);
+            subtractRealID = 8;
+        }
+        else if (interest == 3) {
+            values = context.getApplicationContext().getResources().getStringArray(R.array.movies);
+            subtractRealID = 16;
+        }
+        else if (interest == 4) {
+            values = context.getApplicationContext().getResources().getStringArray(R.array.art);
+            subtractRealID = 24;
+        }
+        else if (interest == 5) {
+            values = context.getApplicationContext().getResources().getStringArray(R.array.tvShows);
+            subtractRealID = 32;
+        }
+        else if (interest == 6) {
+            values = context.getApplicationContext().getResources().getStringArray(R.array.sports);
+            subtractRealID = 40;
+        }
+        else if (interest == 7) {
+            values = context.getApplicationContext().getResources().getStringArray(R.array.science);
+            subtractRealID = 48;
+        }
+        else if (interest == 8) {
+            values = context.getApplicationContext().getResources().getStringArray(R.array.lookingFor);
+            subtractRealID = 49;
+        }
+
+        String forReturn = "";
+        int count = 0;
+
+        for (Integer v : value) {
+            if(count < value.size()-1) {
+                forReturn += values[v - subtractRealID] + ", ";
+                count += 1;
+            } else
+                forReturn += values[v - subtractRealID] + ".";
+        }
+
+        return forReturn;
     }
 
     public double getMatchPercentage(Person user, Person match) {
@@ -67,7 +131,7 @@ public class InterestsMethods {
 
     public int getPercentage(int event, Person user, Person match) {
         int percentage;
-        double resultInterest = 0.0;
+        double resultInterest;
         HashMap<Integer, List<Integer>> userList = user.getDataBaseInterest();
         HashMap<Integer, List<Integer>> matchList = match.getDataBaseInterest();
         boolean special = false;
@@ -119,21 +183,15 @@ public class InterestsMethods {
         return resultInterest;
     }
 
-    public void insertInterests(SQLiteHelper db, Person person) {
-        if (!person.getInterestList().isEmpty()) {
-            for (String interest : person.getInterestList().keySet())
-                for (String value : person.getInterestList().get(interest))
-                    db.insertUserint(new Usuariointereses(value, person.getId()));
+    public void insertInterests(Context context, Person person) {
+        if (!person.getDataBaseInterest().isEmpty()) {
+            SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+            int testing = db.deleteUserInterestData();
+            Log.i("===> ", "raw deleted " + testing);
+            for (int interest : person.getDataBaseInterest().keySet())
+                for (int value : person.getDataBaseInterest().get(interest))
+                    db.insertUserint(new Usuariointereses(String.valueOf(value + 1), person.getId()));
         }
     }
 
-    public void insertContactedByInfo(SQLiteHelper db, Person person) {
-        if (!person.getGetContactedByList().isEmpty()) {
-            Usuario user = new Usuario();
-            for (Map.Entry<String, String> entry : person.getGetContactedByList().entrySet()) {
-
-            }
-
-        }
-    }
 }
