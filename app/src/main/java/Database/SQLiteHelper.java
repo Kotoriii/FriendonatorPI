@@ -57,6 +57,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
     String createUsuario = "CREATE TABLE usuario (" +
             "idUsuario INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "nombre VARCHAR," +
             "fecha_de_nacimiento VARCHAR," +
             "correo VARCHAR," +
             //agregado password hasta resolver asunto ese
@@ -78,6 +79,12 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)" +
             ")";
 
+    String createTextointer = "CREATE TABLE textointeres (" +
+            "idTexto INTEGER PRIMARY KEY," +
+            "idUsuario INTEGER," +
+            "texto VARCHAR," +
+            "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario))";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createAuth);
@@ -86,6 +93,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         db.execSQL(createSuperinter);
         db.execSQL(createInter);
         db.execSQL(createUserinter);
+        db.execSQL(createTextointer);
     }
 
     @Override
@@ -104,6 +112,18 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         }
 
         return emptyTable;
+    }
+
+    public void insertTexto(TextoInteres text){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idTexto", text.getIdTexto());
+        values.put("idUsuario", text.getUsuario());
+        values.put("texto", text.getTexto());
+
+        db.insert("textointeres", null, values);
+        db.close();
     }
 
     public void insertAuth(Limbo auth) {
@@ -158,6 +178,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
         ContentValues values = new ContentValues();
         //values.put("idUsuario", user.getId());
+        values.put("nombre", user.getNombre());
         values.put("fecha_de_nacimiento", user.getDob());
         values.put("correo", user.getCorreo());
         values.put("password", user.getPassword());
@@ -214,10 +235,22 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         return db.update("superinteres", values, "idSuperInteres=?", new String[] { superint.getId() });
     }
 
+    public int updateTextointeres(TextoInteres text) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idTexto", text.getIdTexto());
+        values.put("idUsuario", text.getUsuario());
+        values.put("texto", text.getTexto());
+
+        return db.update("textointeres", values, "idTexto=?", new String[] { text.getIdTexto() });
+    }
+
     public int updateUsuario(Usuario user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("nombre", user.getNombre());
         values.put("fecha_de_nacimiento", user.getDob());
         values.put("correo", user.getCorreo());
         values.put("password", user.getPassword());
@@ -355,29 +388,45 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
 
 
-    public Usuario getUser(String email) {
+    public Usuario getUser(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Usuario usuario = new Usuario();
 
-        Cursor cursor=db.query("usuario", null, " correo=?", new String[]{email}, null, null, null);
+        Cursor cursor=db.query("usuario", null, " idUsuario=?", new String[]{id}, null, null, null);
 
         if(cursor.moveToFirst()){
             usuario.setId(cursor.getString(0));
-            usuario.setDob(cursor.getString(1));
-            usuario.setCorreo(cursor.getString(2));
-            usuario.setPassword(cursor.getString(3));
-            usuario.setNum(cursor.getString(4));
-            usuario.setFb(cursor.getString(5));
-            usuario.setGplus(cursor.getString(6));
-            usuario.setTwitter(cursor.getString(7));
-            usuario.setModfav(cursor.getString(8));
-            usuario.setFoto(cursor.getString(9));
-            usuario.setMatchp(cursor.getString(10));
+            usuario.setNombre(cursor.getString(1));
+            usuario.setDob(cursor.getString(2));
+            usuario.setCorreo(cursor.getString(3));
+            usuario.setPassword(cursor.getString(4));
+            usuario.setNum(cursor.getString(5));
+            usuario.setFb(cursor.getString(6));
+            usuario.setGplus(cursor.getString(7));
+            usuario.setTwitter(cursor.getString(8));
+            usuario.setModfav(cursor.getString(9));
+            usuario.setFoto(cursor.getString(10));
+            usuario.setMatchp(cursor.getString(11));
         }
 
         cursor.close();
 
         return usuario;
+    }
+
+    public TextoInteres getTexto(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        TextoInteres texto = new TextoInteres();
+
+        Cursor cursor=db.query("textointeres", null, " idTexto=?", new String[]{id}, null, null, null);
+        if(cursor.moveToFirst()){
+            texto.setIdTexto(cursor.getString(0));
+            texto.setUsuario(cursor.getString(1));
+            texto.setTexto(cursor.getString(2));
+        }
+        cursor.close();
+
+        return texto;
     }
 
 }

@@ -66,6 +66,7 @@ public class ProfileActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        db = SQLiteHelper.getInstance(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         final Button btnChooseInterest = (Button) findViewById(R.id.btnChooseInterest);
@@ -109,10 +110,14 @@ public class ProfileActivity extends Activity {
 
         viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
 
-        Usuario usuario = new Usuario();
-        usuario.setId("1");
-        if(usuario.getFoto() != null) {
-            viewImage.setImageBitmap(StringToBitMap(usuario.getFoto()));
+        //Usuario usuario = new Usuario();
+        db.getUser("1");
+        //usuario.setId("1");
+
+        if(db.getUser("1").getFoto() != null) {
+            File file = new File(db.getUser("1").getFoto());
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            viewImage.setImageBitmap(bitmap);
         }
             viewImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -408,23 +413,23 @@ public class ProfileActivity extends Activity {
 
         //recordar cambiar strings xml con esto
 
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = { getResources().getString(R.string.txttakephoto), getResources().getString(R.string.txtaddfromgallery),getResources().getString(R.string.txtphotocancel)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle(getResources().getString(R.string.txtaddphoto));
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo")) {
+                if (options[item].equals(getResources().getString(R.string.txttakephoto))) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
-                } else if (options[item].equals("Choose from Gallery")) {
+                } else if (options[item].equals( getResources().getString(R.string.txtaddfromgallery))) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
 
-                } else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals(getResources().getString(R.string.txtphotocancel))) {
                     dialog.dismiss();
                 }
             }
@@ -434,6 +439,7 @@ public class ProfileActivity extends Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        db = SQLiteHelper.getInstance(getApplicationContext());
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
@@ -478,12 +484,12 @@ public class ProfileActivity extends Activity {
 
                     if(usuario.getFoto() == null) {
                         usuario.setId("1");
-                        usuario.setFoto(BitMapToString(bitmap));
+                        usuario.setFoto(f.getAbsolutePath());
                         db.updateUsuario(usuario);
                     }
                     else{
                         usuario.setId("1");
-                        usuario.setFoto(BitMapToString(bitmap));
+                        usuario.setFoto(f.getAbsolutePath());
                         db.updateUsuario(usuario);
                     }
 
@@ -550,11 +556,11 @@ public class ProfileActivity extends Activity {
                 usuario.setId("1");
 
                 if(usuario.getFoto() == null) {
-                    usuario.setFoto(BitMapToString(bitmap));
+                    usuario.setFoto(picturePath);
                     db.updateUsuario(usuario);
                 }
                 else{
-                    usuario.setFoto(BitMapToString(bitmap));
+                    usuario.setFoto(picturePath);
                     db.updateUsuario(usuario);
                 }
 

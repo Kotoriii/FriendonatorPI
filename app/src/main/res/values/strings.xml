@@ -74,6 +74,10 @@
     <string name="txtLoginUserName">Username</string>
     <string name="txtLoginPassword">Password</string>
     <string name="toastWrongLogIn">Wrong email or password</string>
+    <string name="txtaddphoto">Add a photo</string>
+    <string name="txttakephoto">Take Photo</string>
+    <string name="txtaddfromgallery">Choose from Gallery</string>
+    <string name="txtphotocancel">Cancel</string>
 
     <array name="navigation_iconos">
         <item>@drawable/ic_action_user</item>
