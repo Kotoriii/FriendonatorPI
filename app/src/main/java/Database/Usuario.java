@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class Usuario {
 
     String id;
+    String nombre;
     String dob;
     String correo;
     String num;
@@ -28,6 +29,14 @@ public class Usuario {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getDob() {

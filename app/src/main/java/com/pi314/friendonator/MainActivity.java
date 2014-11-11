@@ -101,7 +101,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         startservice = (Button) findViewById(R.id.startservice);
         startservice.setOnClickListener(this);
 
-        mBHand = new BluetoothHandler(this);
+        mBHand = BluetoothHandler.getInstance(this);
         DeviceValidator dv = new DeviceValidator();
         String enc = dv.encrypt("1193434");
         String desenc = dv.decrypt(enc);
@@ -241,14 +241,21 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         }
     }
 
+    public void findmeT(View v){
+        Intent inte = new Intent(this, FindMeTool.class);
+        startActivity(inte);
+    }
     @Override
     public void onClick(View v) {
         if ( (Button)v == btnServer) {
           //
         } else if ( (Button)v == btnClient) {
             Log.v("BluetoothFR", "******** start new scan *******" );
-            mBHand.StartScan();
-
+            //mBHand.StartScan();
+            //ahora background service se encarga de empezar el scan cada ves que
+            //este termine
+            BackgroundService bks = new BackgroundService();
+            bks.ScanConstantly(this);
         } else if ( (Button)v == btnScan) {
             output.setText("");
                 for (BluetoothDevice b : mBHand.getDevicesList()) {
@@ -360,16 +367,15 @@ public class MainActivity extends Activity implements Button.OnClickListener{
                 break;*/
                 break;
             case 5:
-               /* //aqui se abrira la actividad Match
-                Intent intentMatch = new Intent(MainActivity.this, Match.class);
+                Intent intentMatch = new Intent(MainActivity.this, MenuActivity.class);
                 //Create the Intent element
                 Bundle bMatch = new Bundle();
                 intentMatch.putExtras(bMatch);
                 //Start the new Activity
-                startActivity(intentMatch);*/
-                Toast.makeText(MainActivity.this,
-                        "Maintenance",
-                        Toast.LENGTH_SHORT).show();
+                startActivity(intentMatch);
+                //Toast.makeText(MainActivity.this,
+                //       "Maintenance",
+                //        Toast.LENGTH_SHORT).show();
                 break;
             case 6:
                 //aqui se abrira la actividad MySettings
