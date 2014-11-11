@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.ParcelUuid;
 import android.util.Log;
 
 import com.pi314.friendonator.Person;
@@ -29,18 +30,26 @@ import java.util.UUID;
  */
 public class BluetoothHandler {
     BluetoothAdapter mBluetoothAdapter = null;
-    BluetoothDevice device;
     private static final int REQUEST_ENABLE_BT = 1;
     private static final UUID MY_UUID = UUID.fromString("f409e1f6-5665-11e4-9e35-164230d1df67");
     private static final String NAME = "Friendonator";
-    BluetoothDevice remoteDevice;
     private boolean registered = false;
     private DeviceValidator mValidator = null;
     List<BluetoothDevice> lstDisptV = new ArrayList<BluetoothDevice>();
     Activity mAct = null;
+    private static BluetoothHandler mbth;
 
+    public static BluetoothHandler getInstance(Activity act){
+        if(mbth == null){
+           mbth = new BluetoothHandler(act);
+        }
+        return mbth;
+    }
 
-    public BluetoothHandler(Activity act) {
+    public void redefineActivity(Activity act){
+        this.mAct = act;
+    }
+    private BluetoothHandler(Activity act) {
         this.mAct=act;
         mValidator = new DeviceValidator();
 
@@ -101,6 +110,7 @@ public class BluetoothHandler {
      * direccion) son los que se obtienen a la hora de hacer el scan y no son constantemente actualizados.
      */
     public void StartScan() {
+
         getDevicesList().clear();
         getAdapter().startDiscovery();
     }
@@ -132,7 +142,7 @@ public class BluetoothHandler {
         }
 
         if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+          Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             mAct.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
 
@@ -154,23 +164,39 @@ public class BluetoothHandler {
     }
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
+        private boolean finding = true;
+        private BluetoothDevice findingDevice;
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
 
 
-            //minimo por el momento -24 max -85
-            BluetoothDevice ss = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-            int  rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI,Short.MIN_VALUE);
-            Log.v("BluetoothFR", "Device RSSI: " + rssi + "\n Name: " + ss.getName() );
-
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                 if (!lstDisptV.contains(device) &&
                         mValidator.isValidDevice(device)) {
-
                     lstDisptV.add(device);
                 }
+
+                try{
+
+                        int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+                        Log.d("BluetoothFR", device.getName() + " RSSI: " + rssi);
+
+                        mAct.getIntent().putExtra("name", device.getName());
+                        mAct.getIntent().putExtra("strg", rssi);
+
+                }catch (Exception e){}
+
+
+
+                if(finding && mValidator.isValidDevice(device)){// && device.getAddress().equals(findingDevice.getAddress())){
+
+                                int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+                                Log.v("BluetoothFR", "Device RSSI: " + rssi + "\n Name: " + device.getName());
+
+                  }
+
             }
 
             if (action.equals(BluetoothAdapter.ACTION_STATE_CHANGED)) {
@@ -190,8 +216,20 @@ public class BluetoothHandler {
                         break;
                 }
             }
+
+
+        }
+
+        public void fingdDeviceMR(BluetoothDevice bd){
+            this.findingDevice = bd;
+            this.finding = true;
+        }
+        public void stopFingdDeviceMR(){
+            this.findingDevice = null;
+            this.finding = false;
         }
     };
+
 
     /**
      * Calcula un nombre numerico Random, lo encripta y se lo asigna como
@@ -236,6 +274,8 @@ public class BluetoothHandler {
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         return (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled());
     }
+
+
 
     /**
      * Corre indefinidamente, acepta conexiones inseguras de dispositivos con el mismo UUID y

@@ -8,6 +8,7 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.pi314.friendonator.MainActivity;
@@ -98,7 +99,7 @@ public class BackgroundService extends IntentService {
     }
 
     public void ScanEveryX(final int x, final Activity activity){
-        final BluetoothHandler bMan = new BluetoothHandler(activity);
+        final BluetoothHandler bMan = BluetoothHandler.getInstance(activity);
         Thread scanner = new Thread(){
             public void run(){
                 try{
@@ -117,4 +118,27 @@ public class BackgroundService extends IntentService {
 
     }
 
+    public void ScanConstantly(final Activity activity){
+        final BluetoothHandler bMan = BluetoothHandler.getInstance(activity);
+        Thread scanner = new Thread(){
+            public void run(){
+                try{
+                    while (true){
+                        synchronized (this) {
+                            if(!bMan.getAdapter().isDiscovering()) {
+
+                                Log.v("BluetoothFR", "^^^^^ start scan Background Service. Conserving list");
+                                bMan.getAdapter().startDiscovery();//doesn't clear the devices list
+                            }
+                        }
+                        this.sleep(400);//sleep 400 ms, just to not occupy to much memory
+                    }
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            }
+        };
+        scanner.start();
+
+    }
 }
