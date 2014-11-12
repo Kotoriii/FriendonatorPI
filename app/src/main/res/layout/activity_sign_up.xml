@@ -42,17 +42,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/btnCreateAccount"
+        android:background="@drawable/custom_border_button"
+        android:textColor="@android:color/white"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="20dp" />
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/btnCancelSignUp"
         android:id="@+id/btnCancelSignUp"
+        android:background="@drawable/custom_border_button"
+        android:textColor="@android:color/white"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp" />
+        android:layout_marginBottom="20dp"
+        android:layout_marginTop="10dp" />
 
 </LinearLayout>

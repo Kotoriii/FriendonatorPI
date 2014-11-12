@@ -129,7 +129,7 @@
                 android:text="@string/btnClose"
                 android:id="@+id/btnClose"
                 android:textColor="@android:color/white"
-                android:background="@android:color/holo_blue_dark" />
+                android:background="@drawable/custom_border_button" />
 
         </LinearLayout>
     </ScrollView>

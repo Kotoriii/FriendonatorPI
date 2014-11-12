@@ -25,7 +25,6 @@
                 android:id="@+id/txtusername"
                 android:layout_marginTop="25dp"
                 android:layout_marginLeft="30dp"
-                android:background="@drawable/custom_border_view"
                 android:hint="@string/txtLoginUserName"
                 android:textStyle="italic"
                 android:inputType="textEmailAddress" />
@@ -38,28 +37,28 @@
                 android:id="@+id/txtpassword"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="25dp"
+                android:fontFamily="sans-serif"
                 android:hint="@string/txtLoginPassword"
-                android:textStyle="italic"
-                android:background="@drawable/custom_border_view"
-                />
+                android:textStyle="italic" />
 
             <Button
-                android:layout_width="100dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btnlogin"
                 android:id="@+id/btnlogin"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/custom_border_button"
-                />
+                android:textColor="@android:color/white"
+                android:background="@drawable/custom_border_button" />
 
             <Button
-                android:layout_width="100dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btnRegister"
                 android:id="@+id/btnRegister"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
+                android:textColor="@android:color/white"
                 android:background="@drawable/custom_border_button" />
 
         </LinearLayout>
