@@ -6,9 +6,12 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -103,22 +106,40 @@ public class History extends Activity {
         return super.onOptionsItemSelected(item);*/
         switch (item.getItemId()) {
             case R.id.menu_new:
-                Toast.makeText(History.this,
-                        "Presionado la opcion order Match",
-                        Toast.LENGTH_SHORT).show();
+
+                ToastCostumizado("Pressed the option order Match");
+
                 clearAdapter();
                 orderbyMatch();
                 return true;
             case R.id.menu_save:
-                Toast.makeText(History.this,
-                        "Presionado la opcion order name",
-                        Toast.LENGTH_SHORT).show();
+
+                ToastCostumizado("Pressed the option order Name");
+
                 clearAdapter();
                 orderByName();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void ToastCostumizado (String mensaje){
+        LayoutInflater inflater = getLayoutInflater();
+
+        View layout = inflater.inflate(R.layout.customtoast,
+                (ViewGroup) findViewById(R.id.custom_toast_layout_id));
+
+        // set a message
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(mensaje);
+
+        // Toast...
+        Toast toast = new Toast(getApplicationContext());
+        //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 
     public void orderByName () {
