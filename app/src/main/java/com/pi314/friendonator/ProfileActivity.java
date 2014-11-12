@@ -117,12 +117,11 @@ public class ProfileActivity extends Activity {
 
         viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
 
-        //Usuario usuario = new Usuario();
-        db.getUser("1");
-        //usuario.setId("1");
+        Usuario usuario = db.getUser(person.getEmail());
+;
 
-        if(db.getUser("1").getFoto() != null) {
-            File file = new File(db.getUser("1").getFoto());
+        if(usuario.getFoto() != null) {
+            File file = new File(usuario.getFoto());
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
             viewImage.setImageBitmap(bitmap);
         }
@@ -494,15 +493,16 @@ public class ProfileActivity extends Activity {
                     Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 600, 600, false);*/
                     viewImage.setImageBitmap(bitmap);
 
-                    Usuario usuario = new Usuario();
+                    Usuario usuario = db.getUser(person.getEmail());
+
 
                     if(usuario.getFoto() == null) {
-                        usuario.setId("1");
+                        usuario.setId(person.getId());
                         usuario.setFoto(f.getAbsolutePath());
                         db.updateUsuario(usuario);
                     }
                     else{
-                        usuario.setId("1");
+                        usuario.setId(person.getId());
                         usuario.setFoto(f.getAbsolutePath());
                         db.updateUsuario(usuario);
                     }
@@ -566,8 +566,7 @@ public class ProfileActivity extends Activity {
                 Bitmap bitmap = BitmapFactory.decodeFile(picturePath, bmOptions);
 
 
-                Usuario usuario = new Usuario();
-                usuario.setId("1");
+                Usuario usuario = db.getUser(person.getEmail());
 
                 if(usuario.getFoto() == null) {
                     usuario.setFoto(picturePath);

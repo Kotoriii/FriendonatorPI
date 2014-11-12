@@ -4,27 +4,27 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="#ff6583ff">
+    android:background="#ffdcdbd3">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="258dp"
         android:layout_height="301dp"
-        android:layout_gravity="center"
-        android:background="@drawable/custom_border">
+        android:layout_gravity="center">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#ffffffff">
+            android:background="@drawable/custom_border_view"
+            android:id="@+id/loginwhitelayout">
 
             <EditText
                 android:layout_width="200dp"
                 android:layout_height="40dp"
                 android:id="@+id/txtusername"
                 android:layout_marginTop="25dp"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:background="@drawable/custom_border_view"
                 android:hint="@string/txtLoginUserName"
                 android:textStyle="italic"
@@ -36,7 +36,7 @@
                 android:inputType="textPassword"
                 android:ems="10"
                 android:id="@+id/txtpassword"
-                android:layout_marginLeft="20dp"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="25dp"
                 android:hint="@string/txtLoginPassword"
                 android:textStyle="italic"

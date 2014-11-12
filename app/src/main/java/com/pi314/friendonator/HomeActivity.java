@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -13,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -21,9 +23,11 @@ import android.widget.Toast;
 
 import com.pi314.interests.InterestsMethods;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import Database.SQLiteHelper;
+import Database.Usuario;
 
 /**
  * Created by Christian on 10/12/2014.
@@ -38,6 +42,7 @@ public class HomeActivity extends Activity {
     TextView lblprofilename;
     SQLiteHelper db;
     int eventSelected;
+    ImageView viewImage;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,7 +55,7 @@ public class HomeActivity extends Activity {
         db = SQLiteHelper.getInstance(getApplicationContext());
 
         //addItemsOnEventSpinner();
-        lblprofilename = (TextView)findViewById(R.id.lblProfileName);
+        lblprofilename = (TextView) findViewById(R.id.lblProfileName);
 
         // Get object person from intent extras
         getSetPerson();
@@ -64,7 +69,7 @@ public class HomeActivity extends Activity {
 
         //onItemSelected();
 
-        final TextView btnprofile = (TextView)findViewById(R.id.lblProfileName);
+        final TextView btnprofile = (TextView) findViewById(R.id.lblProfileName);
 
         btnprofile.setOnClickListener(new OnClickListener() {
             @Override
@@ -83,6 +88,30 @@ public class HomeActivity extends Activity {
                 finish();
             }
         });
+
+
+        viewImage=(ImageView) findViewById(R.id.imgviewHomeprofile);
+
+        Usuario usuario = db.getUser(person.getEmail());
+
+
+        if(usuario.getFoto() != null) {
+            File file = new File(usuario.getFoto());
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            viewImage.setImageBitmap(bitmap);
+        }
+
+        viewImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+                intent.putExtra("PERSON", person);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
 
         spnEvent.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
