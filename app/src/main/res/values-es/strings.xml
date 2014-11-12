@@ -1,29 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
 
     <string name="app_name">Friendonator</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_settings">Preferencias</string>
 
-    <string name="title_activity_profile">Profile</string>
-    <string name="lblProfileName">Name</string>
-    <string name="txtProfileName">Name</string>
-    <string name="btnProfileImage">Profile Picture</string>
-    <string name="lblInterests">Interests</string>
-    <string name="lblGetContactedBy">Get contacted by</string>
-    <string name="btnSaveChanges">Save Changes</string>
-    <string name="btnChooseInterest">Edit</string>
-    <string name="lblInterestsList">Set your Interests preferences</string>
-    <string name="btnChooseContact">Edit</string>
-    <string name="lblContactedByList">Set your Contact preferences</string>
-    <string name="btnEditMusic">Edit music interests</string>
-    <string name="btnEditLiterature">Edit literature interests</string>
-    <string name="btnEditMovies">Edit movies interests</string>
-    <string name="btnEditArt">Edit art interests</string>
-    <string name="btnEditTvShows">Edit TV Shows interests</string>
-    <string name="btnEditSports">Edit sports interest</string>
-    <string name="btnEditLookingFor">Edit looking for interest</string>
-    <string name="profileNameRequired">A profile name is required</string>
+    <string name="title_activity_profile">Perfil</string>
+    <string name="lblProfileName">Nombre</string>
+    <string name="txtProfileName">Nombre</string>
+    <string name="btnProfileImage">Foto de perfil</string>
+    <string name="lblInterests">Intereses</string>
+    <string name="lblGetContactedBy">Contactame por</string>
+    <string name="btnSaveChanges">Guardar Cambios</string>
+    <string name="btnChooseInterest">Editar</string>
+    <string name="lblInterestsList">Escogé tus preferencias</string>
+    <string name="btnChooseContact">Editar</string>
+    <string name="lblContactedByList">Escogé tus preferencias de contacto</string>
+    <string name="btnEditMusic">Editar música</string>
+    <string name="btnEditLiterature">Editar literatura</string>
+    <string name="btnEditMovies">Editar películas</string>
+    <string name="btnEditArt">Editar arte</string>
+    <string name="btnEditTvShows">Editar programas de televisión</string>
+    <string name="btnEditSports">Editar deportes</string>
+    <string name="btnEditLookingFor">Editar preferencias de búsqueda</string>
+    <string name="profileNameRequired">Nombre de perfil requerido</string>
 
     <string name="title_activity_interests">Interests</string>
     <string name="lblInterestsL">Interest</string>
@@ -121,4 +122,4 @@
     <string name="lblMatchInterests">Interests</string>
     <string name="lblMatchContactedBy">Get contacted by</string>
 
- </resources>
+</resources>
