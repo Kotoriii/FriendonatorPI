@@ -55,7 +55,6 @@
                     android:id="@+id/imgviewHomeprofile"
                     android:background="#ffcecece"
                     android:layout_marginLeft="50dp"
-                    android:src="@drawable/dogeswag"
                     android:adjustViewBounds="false"
                     android:baselineAlignBottom="false" />
 
