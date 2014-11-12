@@ -31,16 +31,20 @@ public class SignUp extends Activity {
         editTextConfirmPassword = (TextView) findViewById(R.id.editTextConfirmPassword);
         db = SQLiteHelper.getInstance(getApplicationContext());
 
+        // User can only close the dialog by CreateAccount or Cancel buttons
+        this.setFinishOnTouchOutside(false);
+
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String userName = editTextUserName.getText().toString();
                 String password = editTextPassword.getText().toString();
                 String confirmPassword = editTextConfirmPassword.getText().toString();
+                Usuario checkEmail = db.getUser(userName);
 
                 if (userName.equals("") || password.equals("") || confirmPassword.equals("")) {
                     Toast.makeText(getApplicationContext(), R.string.toastEmptyField, Toast.LENGTH_LONG).show();
-                } else if (db.getUser(userName).getCorreo() != null) {
+                } else if (userName.equals(checkEmail.getPassword())) {
                     Toast.makeText(getApplicationContext(), R.string.toastEmail, Toast.LENGTH_LONG).show();
                 } else if (!password.equals(confirmPassword)) {
                     // check if both password matches

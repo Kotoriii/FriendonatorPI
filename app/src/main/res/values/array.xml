@@ -66,12 +66,8 @@
         <item>Soccer</item>
     </string-array>
 
-    <string-array name="event_array">
-        <item>Hang Out</item>
-        <item>Art</item>
-        <item>Literature</item>
-        <item>Party</item>
-        <item>Concert</item>
+    <string-array name="science">
+        <item>Science</item>
     </string-array>
 
     <string-array name="lookingFor">
@@ -80,13 +76,21 @@
     </string-array>
 
     <string-array name="identifyInterests">
-        <item>Movies</item>
-        <item>Literature</item>
         <item>Music</item>
+        <item>Literature</item>
+        <item>Movies</item>
         <item>Art</item>
         <item>TV Shows</item>
         <item>Sports</item>
         <item>Science</item>
         <item>Looking For</item>
+    </string-array>
+
+    <string-array name="event_array">
+        <item>Hang Out</item>
+        <item>Concert</item>
+        <item>Art</item>
+        <item>Literature</item>
+        <item>Party</item>
     </string-array>
 </resources>

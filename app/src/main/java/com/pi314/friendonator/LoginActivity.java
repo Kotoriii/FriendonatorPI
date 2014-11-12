@@ -33,6 +33,9 @@ public class LoginActivity extends Activity {
         final Button btnlogin = (Button) findViewById(R.id.btnlogin);
         final Button btnregister = (Button) findViewById(R.id.btnRegister);
 
+        // Create object person
+        getSetPerson();
+
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,10 +44,16 @@ public class LoginActivity extends Activity {
                 Usuario userLogin = db.getUser(userName);
 
                 if (password.equals(userLogin.getPassword())) {
+
+                    person.setId(userLogin.getId());
+                    person.setEmail(userName);
+                    person.setName(userLogin.getNombre());
+
                     // Create intent to open interests activity
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 
-                    if (person.getName() != null) {
+
+                    if (person.getName() == null) {
                         // Create intent to open interests activity
                         intent = new Intent(LoginActivity.this, ProfileActivity.class);
                     }

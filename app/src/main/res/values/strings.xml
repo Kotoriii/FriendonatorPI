@@ -4,6 +4,7 @@
     <string name="app_name">Friendonator</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+
     <string name="title_activity_profile">Profile</string>
     <string name="lblProfileName">Name</string>
     <string name="txtProfileName">Name</string>
@@ -22,6 +23,8 @@
     <string name="btnEditTvShows">Edit TV Shows interests</string>
     <string name="btnEditSports">Edit sports interest</string>
     <string name="btnEditLookingFor">Edit looking for interest</string>
+    <string name="profileNameRequired">A profile name is required</string>
+
     <string name="title_activity_interests">Interests</string>
     <string name="lblInterestsL">Interest</string>
     <string name="lblMusic">Music</string>
@@ -42,6 +45,7 @@
     <string name="txtLookingFor">Type your aim to find (optional)</string>
     <string name="btnSaveInterestsChanges">Save Interests</string>
     <string name="whatILike">What I like about</string>
+
     <string name="title_activity_get_contacted_by">Get Contacted By</string>
     <string name="lblContact">Contact me</string>
     <string name="lblCellphone">Cellphone</string>
@@ -67,13 +71,21 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="textRequired">Selected fields must be filled</string>
+
     <string name="title_activity_home">Home</string>
     <string name="lblMatchhome">Female Doge</string>
     <string name="spnEvent">Choose Event</string>
+    <string name="txtaddphoto">Add a photo</string>
+    <string name="txttakephoto">Take Photo</string>
+    <string name="txtaddfromgallery">Choose from Gallery</string>
+    <string name="txtphotocancel">Cancel</string>
+
     <string name="title_activity_login">Login</string>
     <string name="txtLoginUserName">Username</string>
     <string name="txtLoginPassword">Password</string>
     <string name="toastWrongLogIn">Wrong email or password</string>
+    <string name="btnlogin">Accept</string>
+    <string name="btnRegister">Register</string>
 
     <array name="navigation_iconos">
         <item>@drawable/ic_action_user</item>
@@ -86,6 +98,7 @@
 
     <string name="title_activity_my_settings">MySettings</string>
     <string name="title_activity_history">History</string>
+
     <string name="title_activity_sign_up">SignUp</string>
     <string name="editTextUserName">Email Address</string>
     <string name="editTextPassword">Password</string>
@@ -97,7 +110,15 @@
     <string name="toastPassword">Password does not match</string>
     <string name="toastCheckEmail">Please provide a valid email address</string>
     <string name="toastAccountSuccess">Account Successfully Created</string>
+
     <string name="title_activity_menu">MenuActivity</string>
     <string name="title_activity_find_me_tool">FindMeTool</string>
+
+    <string name="title_activity_match_profile">Match Profile</string>
+    <string name="lblMatchName">Match Name</string>
+    <string name="btnClose">Close Profile</string>
+    <string name="imageMatch">Match Image</string>
+    <string name="lblMatchInterests">Interests</string>
+    <string name="lblMatchContactedBy">Get contacted by</string>
 
 </resources>

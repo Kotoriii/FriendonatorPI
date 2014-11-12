@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +58,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
 
     String createUsuario = "CREATE TABLE usuario (" +
             "idUsuario INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "nombre VARCHAR," +
             "fecha_de_nacimiento VARCHAR," +
             "correo VARCHAR," +
             //agregado password hasta resolver asunto ese
@@ -78,6 +80,12 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)" +
             ")";
 
+    String createTextointer = "CREATE TABLE textointeres (" +
+            "idTexto INTEGER PRIMARY KEY," +
+            "idUsuario INTEGER," +
+            "texto VARCHAR," +
+            "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario))";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createAuth);
@@ -86,6 +94,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         db.execSQL(createSuperinter);
         db.execSQL(createInter);
         db.execSQL(createUserinter);
+        db.execSQL(createTextointer);
     }
 
     @Override
@@ -98,12 +107,27 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         Boolean emptyTable = true;
 
         try {
-            Cursor cursor = db.rawQuery("SELECT COUNT(*) FROM superinteres", null);
+            Cursor cursor = db.rawQuery("SELECT * FROM superinteres", null);
+            if (cursor.moveToFirst())
+                emptyTable = false;
+            cursor.close();
         } catch (SQLiteException sqlE) {
             emptyTable = false;
         }
 
         return emptyTable;
+    }
+
+    public void insertTexto(TextoInteres text){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idTexto", text.getIdTexto());
+        values.put("idUsuario", text.getUsuario());
+        values.put("texto", text.getTexto());
+
+        db.insert("textointeres", null, values);
+        db.close();
     }
 
     public void insertAuth(Limbo auth) {
@@ -121,7 +145,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //values.put("idUsuario", hist.getIdusuario());
         values.put("fecha", hist.getFecha());
         values.put("latitud", hist.getLatitud());
         values.put("longitud", hist.getLongitud());
@@ -134,7 +157,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //values.put("idIntereses", inter.getId());
         values.put("idSuperInteres", inter.getIdsuperinteres());
         values.put("Descripcion", inter.getDescripcion());
 
@@ -157,7 +179,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //values.put("idUsuario", user.getId());
+        values.put("nombre", user.getNombre());
         values.put("fecha_de_nacimiento", user.getDob());
         values.put("correo", user.getCorreo());
         values.put("password", user.getPassword());
@@ -199,7 +221,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        //values.put("idSuperInteres", intereses.getIdsuperinteres());
         values.put("Descripcion", intereses.getDescripcion());
 
         return db.update("intereses", values, "idIntereses=?", new String[] { intereses.getId() });
@@ -214,10 +235,22 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         return db.update("superinteres", values, "idSuperInteres=?", new String[] { superint.getId() });
     }
 
+    public int updateTextointeres(TextoInteres text) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idTexto", text.getIdTexto());
+        values.put("idUsuario", text.getUsuario());
+        values.put("texto", text.getTexto());
+
+        return db.update("textointeres", values, "idTexto=?", new String[] { text.getIdTexto() });
+    }
+
     public int updateUsuario(Usuario user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("nombre", user.getNombre());
         values.put("fecha_de_nacimiento", user.getDob());
         values.put("correo", user.getCorreo());
         values.put("password", user.getPassword());
@@ -232,6 +265,14 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         return db.update("usuario", values, "idUsuario=?", new String[] { user.getId() });
     }
 
+    public int updateUserProfileName(Usuario user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("nombre", user.getNombre());
+
+        return db.update("usuario", values, "idUsuario=?", new String[] { user.getId() });
+    }
 
     public List<Historial> getAllHistorial() {
         List<Historial> historialList = new ArrayList<Historial>();
@@ -249,6 +290,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
                 historialList.add(historial);
             } while (cursor.moveToNext());
         }
+
+        cursor.close();
 
         return historialList;
     }
@@ -269,6 +312,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
+
         return interesesList;
     }
 
@@ -277,7 +322,6 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM superinteres", null);
-
         if(cursor.moveToFirst()) {
             do {
                 Superinteres superinteres = new Superinteres();
@@ -286,6 +330,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
                 superinterList.add(superinteres);
             } while (cursor.moveToNext());
         }
+
+        cursor.close();
 
         return superinterList;
     }
@@ -301,29 +347,36 @@ public class SQLiteHelper extends SQLiteOpenHelper{
                 Usuariointereses uInteres = new Usuariointereses();
                 uInteres.setIdinteres(cursor.getString(0));
                 uInteres.setIdusuario(cursor.getString(1));
+                intereses.add(uInteres);
             } while (cursor.moveToNext());
         }
+
+        cursor.close();
 
         return intereses;
     }
 
-    public List<Superinteres> getAllUserSuperInterest() {
-        List<Superinteres> userInterests = new ArrayList<Superinteres>();
+    public List<Intereses> getAllUserInterests(int idUser) {
+        List<Intereses> interests = new ArrayList<Intereses>();
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * si FROM usuariointereses ui, intereses i, superinteres si " +
-                                    "WHERE ui.idInteres = i.idIntereses AND i.idSuperInteres = si.idSuperInteres", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM intereses, usuariointereses " +
+                                    "WHERE intereses.idIntereses = usuariointereses.idInteres AND usuariointereses.idUsuario=?" +
+                                    "GROUP BY intereses.idIntereses", new String[] {String.valueOf(idUser)});
 
         if(cursor.moveToFirst()) {
             do {
-                Superinteres interests = new Superinteres();
-                interests.setId(cursor.getString(0));
-                interests.setDescripcion((cursor.getString(1)));
-                userInterests.add(interests);
-            } while(cursor.moveToNext());
+                Intereses intereses = new Intereses();
+                intereses.setId(cursor.getString(0));
+                intereses.setIdsuperinteres(cursor.getString(1));
+                intereses.setDescripcion(cursor.getString(2));
+                interests.add(intereses);
+            } while (cursor.moveToNext());
         }
 
-        return userInterests;
+        cursor.close();
+
+        return interests;
     }
 
     public List<Usuario> getAllUsuarios() {
@@ -350,34 +403,54 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
+
         return usuarioList;
     }
-
-
 
     public Usuario getUser(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Usuario usuario = new Usuario();
 
-        Cursor cursor=db.query("usuario", null, " correo=?", new String[]{email}, null, null, null);
-
+        Cursor cursor=db.query("usuario", null, "correo=?", new String[]{email}, null, null, null);
         if(cursor.moveToFirst()){
             usuario.setId(cursor.getString(0));
-            usuario.setDob(cursor.getString(1));
-            usuario.setCorreo(cursor.getString(2));
-            usuario.setPassword(cursor.getString(3));
-            usuario.setNum(cursor.getString(4));
-            usuario.setFb(cursor.getString(5));
-            usuario.setGplus(cursor.getString(6));
-            usuario.setTwitter(cursor.getString(7));
-            usuario.setModfav(cursor.getString(8));
-            usuario.setFoto(cursor.getString(9));
-            usuario.setMatchp(cursor.getString(10));
+            usuario.setNombre(cursor.getString(1));
+            usuario.setDob(cursor.getString(2));
+            usuario.setCorreo(cursor.getString(3));
+            usuario.setPassword(cursor.getString(4));
+            usuario.setNum(cursor.getString(5));
+            usuario.setFb(cursor.getString(6));
+            usuario.setGplus(cursor.getString(7));
+            usuario.setTwitter(cursor.getString(8));
+            usuario.setModfav(cursor.getString(9));
+            usuario.setFoto(cursor.getString(10));
+            usuario.setMatchp(cursor.getString(11));
         }
 
         cursor.close();
 
         return usuario;
+    }
+
+    public int deleteUserInterestData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("usuariointereses", null, null);
+    }
+
+    public TextoInteres getTexto(String id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        TextoInteres texto = new TextoInteres();
+
+        Cursor cursor=db.query("textointeres", null, " idTexto=?", new String[]{id}, null, null, null);
+        if(cursor.moveToFirst()){
+            texto.setIdTexto(cursor.getString(0));
+            texto.setUsuario(cursor.getString(1));
+            texto.setTexto(cursor.getString(2));
+        }
+        cursor.close();
+
+        return texto;
     }
 
 }

@@ -39,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/lblCellphone"
                     android:id="@+id/lblCellphone"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
@@ -79,6 +80,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/lblGoogle"
                     android:id="@+id/lblGoogle"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
@@ -119,6 +121,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/lblFacebook"
                     android:id="@+id/lblFacebook"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
@@ -158,6 +161,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/lblTwitter"
                     android:id="@+id/lblTwitter"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true" />
@@ -192,6 +196,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/lblFindMeTool"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/lblFindMeTool" />
 
             <Space
@@ -203,6 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/switchActivateTool"
+                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:id="@+id/switchActivateTool" />
 
             <Space
@@ -216,7 +222,7 @@
                 android:text="@string/btnSaveContactMeChanges"
                 android:id="@+id/btnSaveContactMeChanges"
                 android:textColor="@android:color/white"
-                android:background="@android:color/holo_blue_dark" />
+                android:background="@drawable/custom_border_button" />
         </LinearLayout>
     </ScrollView>
 

@@ -33,11 +33,14 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import android.widget.ImageButton;
 import android.widget.Toast;
+
+import com.pi314.interests.InterestsMethods;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -45,7 +48,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import Database.Intereses;
 import Database.SQLiteHelper;
+import Database.Superinteres;
 import Database.Usuario;
 import Dialog.InterestInfo;
 import GridView.GridObject;
@@ -59,13 +64,12 @@ public class ProfileActivity extends Activity {
     ArrayList<GridObject> contactedBy;
     TextView lblInterests;
     TextView lblGetContactedBy;
-
     ImageButton viewImage;
     SQLiteHelper db;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        db = SQLiteHelper.getInstance(getApplicationContext());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         final Button btnChooseInterest = (Button) findViewById(R.id.btnChooseInterest);
@@ -80,6 +84,10 @@ public class ProfileActivity extends Activity {
 
         // Set user name
         textName();
+
+        // Set interests from Data Base
+        InterestsMethods fillPerson = new InterestsMethods();
+        person.setDataBaseInterest(fillPerson.getInterestFromDataBase(ProfileActivity.this, Integer.parseInt(person.getId())));
 
         // Locate the gridViewInterests TextView
         final GridView gridViewInterests = (GridView) findViewById(R.id.gridViewInterests);
@@ -109,10 +117,13 @@ public class ProfileActivity extends Activity {
 
         viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
 
-        Usuario usuario = new Usuario();
-        usuario.setId("1");
+        Usuario usuario = db.getUser(person.getEmail());
+;
+
         if(usuario.getFoto() != null) {
-            viewImage.setImageBitmap(StringToBitMap(usuario.getFoto()));
+            File file = new File(usuario.getFoto());
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            viewImage.setImageBitmap(bitmap);
         }
             viewImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -170,23 +181,24 @@ public class ProfileActivity extends Activity {
         btnSaveChanges.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Set name to person object
-                setName();
+                // Save/update name into Data Base and go to Home Activity
+                if (validateSaveProfile()) {
+                    // Set name to person object
+                    setName();
 
-                // Save picture and name into data base
-                // method here
+                    // Create intent
+                    Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
 
-                // Create intent
-                Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
+                    // Set person inside intent
+                    intent.putExtra("PERSON", person);
 
-                // Set person inside intent
-                intent.putExtra("PERSON", person);
+                    // Start change to a new layout
+                    startActivity(intent);
 
-                // Start change to a new layout
-                startActivity(intent);
-
-                // Finish activity
-                finish();
+                    // Finish activity
+                    finish();
+                } else
+                    Toast.makeText(getApplication(), R.string.profileNameRequired, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -303,21 +315,16 @@ public class ProfileActivity extends Activity {
         GridObject object = new GridObject();
         String interestTitle = "";
         String interestGenres = "";
+        String [] interestsList = getResources().getStringArray(R.array.identifyInterests);
+        InterestsMethods interestsMethods = new InterestsMethods();
 
-        if (person != null && !person.getInterestList().isEmpty()) {
-            for (Map.Entry<String, List<String>> entry : person.getInterestList().entrySet()) {
-                interestTitle = entry.getKey();
+        if (person != null && !person.getDataBaseInterest().isEmpty()) {
+            for (Map.Entry<Integer, List<Integer>> entry : person.getDataBaseInterest().entrySet()) {
+                interestTitle = interestsList[entry.getKey() - 1];
                 object.setTitle(interestTitle);
-                if (!person.interestsValue(entry.getKey()).isEmpty()) {
+                if (!person.dataBaseValues(entry.getKey()).isEmpty()) {
                     String value = "";
-                    int count = 0;
-                    for (String v : entry.getValue()) {
-                        if(count < entry.getValue().size()-1) {
-                            value += v + ", ";
-                            count += 1;
-                        } else
-                            value += v + ".";
-                    }
+                    value = interestsMethods.getInterestsStrings(ProfileActivity.this, entry.getKey(), entry.getValue());
                     interestGenres = value;
                     object.setGenres(interestGenres);
                 }
@@ -363,6 +370,21 @@ public class ProfileActivity extends Activity {
         return contactedBy;
     }
 
+    public boolean validateSaveProfile() {
+        boolean good = false;
+        String profileName = txtProfileName.getText().toString();
+
+        if (!profileName.isEmpty()) {
+            Usuario userUpdate = new Usuario();
+            userUpdate.setId(person.getId());
+            userUpdate.setNombre(profileName);
+            db.updateUserProfileName(userUpdate);
+            good = true;
+        }
+
+        return good;
+    }
+
     public void showInterestInfoDialog(String tittle, String message) {
         // Create an instance of dialogInterestInfo
         InterestInfo dialogInterestInfo = new InterestInfo();
@@ -371,8 +393,6 @@ public class ProfileActivity extends Activity {
         // Show SelectInterest instance
         dialogInterestInfo.show(getFragmentManager(), "InterestInfo");
     }
-
-
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -406,25 +426,23 @@ public class ProfileActivity extends Activity {
 
     private void selectImage() {
 
-        //recordar cambiar strings xml con esto
-
-        final CharSequence[] options = { "Take Photo", "Choose from Gallery","Cancel" };
+        final CharSequence[] options = { getResources().getString(R.string.txttakephoto), getResources().getString(R.string.txtaddfromgallery),getResources().getString(R.string.txtphotocancel)};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
-        builder.setTitle("Add Photo!");
+        builder.setTitle(getResources().getString(R.string.txtaddphoto));
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int item) {
-                if (options[item].equals("Take Photo")) {
+                if (options[item].equals(getResources().getString(R.string.txttakephoto))) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
-                } else if (options[item].equals("Choose from Gallery")) {
+                } else if (options[item].equals( getResources().getString(R.string.txtaddfromgallery))) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
 
-                } else if (options[item].equals("Cancel")) {
+                } else if (options[item].equals(getResources().getString(R.string.txtphotocancel))) {
                     dialog.dismiss();
                 }
             }
@@ -434,6 +452,7 @@ public class ProfileActivity extends Activity {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        db = SQLiteHelper.getInstance(getApplicationContext());
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == 1) {
@@ -474,21 +493,22 @@ public class ProfileActivity extends Activity {
                     Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 600, 600, false);*/
                     viewImage.setImageBitmap(bitmap);
 
-                    Usuario usuario = new Usuario();
+                    Usuario usuario = db.getUser(person.getEmail());
+
 
                     if(usuario.getFoto() == null) {
-                        usuario.setId("1");
-                        usuario.setFoto(BitMapToString(bitmap));
+                        usuario.setId(person.getId());
+                        usuario.setFoto(f.getAbsolutePath());
                         db.updateUsuario(usuario);
                     }
                     else{
-                        usuario.setId("1");
-                        usuario.setFoto(BitMapToString(bitmap));
+                        usuario.setId(person.getId());
+                        usuario.setFoto(f.getAbsolutePath());
                         db.updateUsuario(usuario);
                     }
 
 
-
+/*
                     String path = android.os.Environment
                             .getExternalStorageDirectory()
                             + File.separator
@@ -507,7 +527,7 @@ public class ProfileActivity extends Activity {
                         e.printStackTrace();
                     } catch (Exception e) {
                         e.printStackTrace();
-                    }
+                    }*/
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -546,15 +566,14 @@ public class ProfileActivity extends Activity {
                 Bitmap bitmap = BitmapFactory.decodeFile(picturePath, bmOptions);
 
 
-                Usuario usuario = new Usuario();
-                usuario.setId("1");
+                Usuario usuario = db.getUser(person.getEmail());
 
                 if(usuario.getFoto() == null) {
-                    usuario.setFoto(BitMapToString(bitmap));
+                    usuario.setFoto(picturePath);
                     db.updateUsuario(usuario);
                 }
                 else{
-                    usuario.setFoto(BitMapToString(bitmap));
+                    usuario.setFoto(picturePath);
                     db.updateUsuario(usuario);
                 }
 

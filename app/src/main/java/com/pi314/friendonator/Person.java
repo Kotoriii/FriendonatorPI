@@ -15,6 +15,8 @@ public class Person implements Serializable {
 
     private String name;
     private String id;
+    private String email;
+
     private Date fecha_de_nacimiento = null;
     private int modo_de_cont_favorito;
     private Bitmap foto_perfil = null;
@@ -55,6 +57,38 @@ public class Person implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public Date getFecha_de_nacimiento() {
+        return fecha_de_nacimiento;
+    }
+
+    public void setFecha_de_nacimiento(Date fecha_de_nacimiento) {
+        this.fecha_de_nacimiento = fecha_de_nacimiento;
+    }
+
+    public int getModo_de_cont_favorito() {
+        return modo_de_cont_favorito;
+    }
+
+    public void setModo_de_cont_favorito(int modo_de_cont_favorito) {
+        this.modo_de_cont_favorito = modo_de_cont_favorito;
+    }
+
+    public Bitmap getFoto_perfil() {
+        return foto_perfil;
+    }
+
+    public void setFoto_perfil(Bitmap foto_perfil) {
+        this.foto_perfil = foto_perfil;
     }
 
     public HashMap<String, List<String>> getInterestList() {
