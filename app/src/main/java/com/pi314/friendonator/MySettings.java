@@ -8,9 +8,11 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
@@ -36,7 +38,7 @@ public class MySettings extends Activity {
 
         final CharSequence[] privacyArr = {"Show interests", "Show contact me"};
         final AlertDialog.Builder alt_bldPr = new AlertDialog.Builder(this);
-        // alt_bld.setIcon(R.drawable.icon);
+        alt_bldPr.setIcon(R.drawable.ic_settings_alert );
         alt_bldPr.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -48,14 +50,14 @@ public class MySettings extends Activity {
         alt_bldPr.setSingleChoiceItems(privacyArr, -1, new DialogInterface
                 .OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                Toast.makeText(getApplicationContext(),
-                        "Privacy option = " + privacyArr[item], Toast.LENGTH_SHORT).show();
+               String mensajePr = "Privacy option = " + privacyArr[item];
+                ToastCostumizado(mensajePr);
             }
         });
 
         final CharSequence[] AdvancedArr = {"Wi-Fi", "Bluetooth", "Data Connection", "Application"};
         final AlertDialog.Builder alt_bldAd = new AlertDialog.Builder(this);
-        // alt_bld.setIcon(R.drawable.icon);
+        alt_bldAd.setIcon(R.drawable.ic_settings_alert);
         alt_bldAd.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -67,15 +69,15 @@ public class MySettings extends Activity {
         alt_bldAd.setSingleChoiceItems(AdvancedArr, -1, new DialogInterface
                 .OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                Toast.makeText(getApplicationContext(),
-                        "Advanced option = "+AdvancedArr[item], Toast.LENGTH_SHORT).show();
+                String mensajeAd = "Advanced option = "+AdvancedArr[item];
+                ToastCostumizado(mensajeAd);
             }
         });
 
 
         final CharSequence[] LanguageArr = {"Italian", "Deutsch", "English", "Español", "中国"};
         final AlertDialog.Builder alt_bldLa = new AlertDialog.Builder(this);
-        // alt_bld.setIcon(R.drawable.icon);
+        alt_bldLa.setIcon(R.drawable.ic_settings_alert);
         alt_bldLa.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -87,8 +89,8 @@ public class MySettings extends Activity {
         alt_bldLa.setSingleChoiceItems(LanguageArr, -1, new DialogInterface
                 .OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                Toast.makeText(getApplicationContext(),
-                        "Language option = "+LanguageArr[item], Toast.LENGTH_SHORT).show();
+                String mensajeLa = "Language option = "+LanguageArr[item];
+                ToastCostumizado(mensajeLa);
             }
         });
 
@@ -170,4 +172,23 @@ public class MySettings extends Activity {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+    public void ToastCostumizado (String mensaje){
+        LayoutInflater inflater = getLayoutInflater();
+
+        View layout = inflater.inflate(R.layout.customtoast,
+                (ViewGroup) findViewById(R.id.custom_toast_layout_id));
+
+        // set a message
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(mensaje);
+
+        // Toast...
+        Toast toast = new Toast(getApplicationContext());
+        //toast.setGravity(Gravity.CENTER_VERTICAL, 0, 0);
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
+    }
+
 }
