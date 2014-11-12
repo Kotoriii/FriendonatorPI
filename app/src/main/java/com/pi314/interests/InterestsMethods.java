@@ -101,9 +101,9 @@ public class InterestsMethods {
     }
 
     public double getMatchPercentage(Person user, Person match) {
-        int userInterest = 0;
-        int matchInterest = 0;
-        int matchValueCount = 0;
+        double userInterest = 0.0;
+        double matchInterest = 0.0;
+        double matchValueCount = 0.0;
         double percentage;
         double resultInterest = 0.0;
         HashMap<Integer, List<Integer>> userList = user.getDataBaseInterest();
@@ -113,15 +113,15 @@ public class InterestsMethods {
             if(matchList.containsKey(interest)) {
                 for (int value : userList.get(interest)) {
                     if (matchList.get(interest).contains(value)) {
-                        matchInterest ++;
+                        matchInterest += 1;
                     }
-                    userInterest ++;
+                    userInterest += 1;
                 }
                 resultInterest += (matchInterest/userInterest) * 100;
                 matchValueCount ++;
             }
-            matchInterest = 0;
-            userInterest = 0;
+            matchInterest = 0.0;
+            userInterest = 0.0;
         }
 
         percentage = resultInterest/matchValueCount;
@@ -165,15 +165,15 @@ public class InterestsMethods {
     }
 
     public double specialMatchResult(int event, Person user, Person match) {
-        int userInterest = 0;
-        int matchInterest = 0;
+        double userInterest = 0.0;
+        double matchInterest = 0.0;
         double resultInterest;
         HashMap<Integer, List<Integer>> userList = user.getDataBaseInterest();
         HashMap<Integer, List<Integer>> matchList = match.getDataBaseInterest();
 
         for (int value : userList.get(event)) {
             if (matchList.get(event).contains(value)) {
-                matchInterest++;
+                matchInterest += 1;
             }
             userInterest++;
         }

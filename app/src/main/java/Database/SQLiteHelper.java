@@ -265,6 +265,14 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         return db.update("usuario", values, "idUsuario=?", new String[] { user.getId() });
     }
 
+    public int updateUserProfileName(Usuario user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("nombre", user.getNombre());
+
+        return db.update("usuario", values, "idUsuario=?", new String[] { user.getId() });
+    }
 
     public List<Historial> getAllHistorial() {
         List<Historial> historialList = new ArrayList<Historial>();

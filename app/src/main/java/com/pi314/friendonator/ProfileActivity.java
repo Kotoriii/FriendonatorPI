@@ -64,7 +64,6 @@ public class ProfileActivity extends Activity {
     ArrayList<GridObject> contactedBy;
     TextView lblInterests;
     TextView lblGetContactedBy;
-
     ImageButton viewImage;
     SQLiteHelper db;
 
@@ -183,23 +182,24 @@ public class ProfileActivity extends Activity {
         btnSaveChanges.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Set name to person object
-                setName();
+                // Save/update name into Data Base and go to Home Activity
+                if (validateSaveProfile()) {
+                    // Set name to person object
+                    setName();
 
-                // Save picture and name into data base
-                // method here
+                    // Create intent
+                    Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
 
-                // Create intent
-                Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
+                    // Set person inside intent
+                    intent.putExtra("PERSON", person);
 
-                // Set person inside intent
-                intent.putExtra("PERSON", person);
+                    // Start change to a new layout
+                    startActivity(intent);
 
-                // Start change to a new layout
-                startActivity(intent);
-
-                // Finish activity
-                finish();
+                    // Finish activity
+                    finish();
+                } else
+                    Toast.makeText(getApplication(), R.string.profileNameRequired, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -371,6 +371,21 @@ public class ProfileActivity extends Activity {
         return contactedBy;
     }
 
+    public boolean validateSaveProfile() {
+        boolean good = false;
+        String profileName = txtProfileName.getText().toString();
+
+        if (!profileName.isEmpty()) {
+            Usuario userUpdate = new Usuario();
+            userUpdate.setId(person.getId());
+            userUpdate.setNombre(profileName);
+            db.updateUserProfileName(userUpdate);
+            good = true;
+        }
+
+        return good;
+    }
+
     public void showInterestInfoDialog(String tittle, String message) {
         // Create an instance of dialogInterestInfo
         InterestInfo dialogInterestInfo = new InterestInfo();
@@ -379,8 +394,6 @@ public class ProfileActivity extends Activity {
         // Show SelectInterest instance
         dialogInterestInfo.show(getFragmentManager(), "InterestInfo");
     }
-
-
 
    /* @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -413,8 +426,6 @@ public class ProfileActivity extends Activity {
 
 
     private void selectImage() {
-
-        //recordar cambiar strings xml con esto
 
         final CharSequence[] options = { getResources().getString(R.string.txttakephoto), getResources().getString(R.string.txtaddfromgallery),getResources().getString(R.string.txtphotocancel)};
 

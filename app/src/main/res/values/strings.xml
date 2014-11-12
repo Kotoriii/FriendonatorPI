@@ -23,6 +23,7 @@
     <string name="btnEditTvShows">Edit TV Shows interests</string>
     <string name="btnEditSports">Edit sports interest</string>
     <string name="btnEditLookingFor">Edit looking for interest</string>
+    <string name="profileNameRequired">A profile name is required</string>
 
     <string name="title_activity_interests">Interests</string>
     <string name="lblInterestsL">Interest</string>
@@ -109,7 +110,15 @@
     <string name="toastPassword">Password does not match</string>
     <string name="toastCheckEmail">Please provide a valid email address</string>
     <string name="toastAccountSuccess">Account Successfully Created</string>
+
     <string name="title_activity_menu">MenuActivity</string>
     <string name="title_activity_find_me_tool">FindMeTool</string>
+
+    <string name="title_activity_match_profile">Match Profile</string>
+    <string name="lblMatchName">Match Name</string>
+    <string name="btnClose">Close Profile</string>
+    <string name="imageMatch">Match Image</string>
+    <string name="lblMatchInterests">Interests</string>
+    <string name="lblMatchContactedBy">Get contacted by</string>
 
 </resources>

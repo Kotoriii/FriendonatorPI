@@ -37,6 +37,7 @@ public class HomeActivity extends Activity {
     Person person;
     TextView lblprofilename;
     SQLiteHelper db;
+    int eventSelected;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -104,9 +105,7 @@ public class HomeActivity extends Activity {
                         iv.setImageResource(R.drawable.dogeparty);
                         break;
                 }
-                Toast.makeText(spnEvent.getContext(),
-                        "Selected Event: " + spnEvent.getItemAtPosition(position).toString(),
-                        Toast.LENGTH_SHORT).show();
+                eventSelected = position;
             }
 
             @Override
@@ -136,9 +135,23 @@ public class HomeActivity extends Activity {
             lblprofilename.setText(person.getName());
     }
 
-    public void onNothingSelected(AdapterView<?> arg0) {
-        // TODO Auto-generated method stub
+    public void onClickMatch(View v) {
+        setName();
 
+        // Create the Intent element
+        Intent intent = new Intent(HomeActivity.this, MatchProfileActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("EVENT", eventSelected);
+
+        // Set person inside intent
+        intent.putExtra("PERSON", person);
+        intent.putExtras(bundle);
+
+        startActivity(intent);
+
+        // Finish activity
+        finish();
     }
 
 /*

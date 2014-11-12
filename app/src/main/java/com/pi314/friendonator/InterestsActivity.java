@@ -385,7 +385,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
         else {
             int index = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
             person.fillDataBaseInterests(index + 1, interestList);
-            Log.i("===> ", "CHECKING ALL HASHMAP");
+            Log.i("===> ", "CHECKING ALL HASHMAPS");
             for (Map.Entry<Integer, List<Integer>> entry : person.getDataBaseInterest().entrySet()) {
                 Log.i("===> ", "***********************");
                 Log.i("===> ", "Title " + entry.getKey());

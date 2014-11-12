@@ -47,6 +47,7 @@ public class LoginActivity extends Activity {
 
                     person.setId(userLogin.getId());
                     person.setEmail(userName);
+                    person.setName(userLogin.getNombre());
 
                     // Create intent to open interests activity
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
