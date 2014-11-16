@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Created by Christian on 10/30/2014.
  */
-public class SQLiteHelper extends SQLiteOpenHelper{
+public class SQLiteHelper extends SQLiteOpenHelper {
 
     private static SQLiteHelper sInstance;
 
@@ -86,6 +86,14 @@ public class SQLiteHelper extends SQLiteOpenHelper{
             "texto VARCHAR," +
             "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario))";
 
+    String createContacto = "CREATE TABLE contacto (" +
+            "idContacto INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "idUsuario INTEGER," +
+            "descripcion VARCHAR," +
+            "modofavorito INTEGER," +
+            "activo INTEGER," +
+            "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario))";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createAuth);
@@ -95,6 +103,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         db.execSQL(createInter);
         db.execSQL(createUserinter);
         db.execSQL(createTextointer);
+        db.execSQL(createContacto);
     }
 
     @Override
@@ -118,7 +127,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         return emptyTable;
     }
 
-    public void insertTexto(TextoInteres text){
+    public void insertTexto(TextoInteres text) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -206,6 +215,18 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         db.close();
     }
 
+    public void insertContacto(Contacto contacto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idUsuario", contacto.getIdUsuario());
+        values.put("descripcion", contacto.getDescripcion());
+        values.put("modofavorito", contacto.getModofavorito());
+        values.put("activo", contacto.getActivo());
+        db.insert("contacto", null, values);
+        db.close();
+    }
+
     public int updateHistorial(Historial hist) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -214,7 +235,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         values.put("latitud", hist.getLatitud());
         values.put("longitud", hist.getLongitud());
 
-        return db.update("historial", values, "idUsuario=?", new String[] { hist.getIdusuario() });
+        return db.update("historial", values, "idUsuario=?", new String[]{hist.getIdusuario()});
     }
 
     public int updateInteres(Intereses intereses) {
@@ -223,7 +244,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put("Descripcion", intereses.getDescripcion());
 
-        return db.update("intereses", values, "idIntereses=?", new String[] { intereses.getId() });
+        return db.update("intereses", values, "idIntereses=?", new String[]{intereses.getId()});
     }
 
     public int updateSuperinteres(Superinteres superint) {
@@ -232,7 +253,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put("Descripcion", superint.getDescripcion());
 
-        return db.update("superinteres", values, "idSuperInteres=?", new String[] { superint.getId() });
+        return db.update("superinteres", values, "idSuperInteres=?", new String[]{superint.getId()});
     }
 
     public int updateTextointeres(TextoInteres text) {
@@ -243,7 +264,8 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         values.put("idUsuario", text.getUsuario());
         values.put("texto", text.getTexto());
 
-        return db.update("textointeres", values, "idTexto=?", new String[] { text.getIdTexto() });
+        return db.update("textointeres", values, "idText" +
+                "o=?", new String[]{text.getIdTexto()});
     }
 
     public int updateUsuario(Usuario user) {
@@ -262,7 +284,7 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         values.put("foto_perfil", user.getFoto());
         values.put("match_percentage", user.getMatchp());
 
-        return db.update("usuario", values, "idUsuario=?", new String[] { user.getId() });
+        return db.update("usuario", values, "idUsuario=?", new String[]{user.getId()});
     }
 
     public int updateUserProfileName(Usuario user) {
@@ -271,7 +293,41 @@ public class SQLiteHelper extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put("nombre", user.getNombre());
 
-        return db.update("usuario", values, "idUsuario=?", new String[] { user.getId() });
+        return db.update("usuario", values, "idUsuario=?", new String[]{user.getId()});
+    }
+
+    public int updateContacto(Contacto contacto) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idUsuario",contacto.getIdUsuario());
+        values.put("descripcion",contacto.getDescripcion());
+        values.put("modofavorito", contacto.getModofavorito());
+        values.put("activo", contacto.getActivo());
+
+        return db.update("contacto", values, "idContacto=?", new String[]{contacto.getIdContacto()});
+    }
+
+    public List<Contacto> getAllContactos(){
+        List<Contacto> contactoList = new ArrayList<Contacto>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM contacto WHERE activo='1'", null);
+        if(cursor.moveToFirst()) {
+            do {
+                Contacto contacto = new Contacto();
+                contacto.setIdContacto(cursor.getString(0));
+                contacto.setIdUsuario(cursor.getString(1));
+                contacto.setDescripcion(cursor.getString(2));
+                contacto.setModofavorito(cursor.getString(3));
+                contacto.setActivo(cursor.getString(4));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return contactoList;
+
     }
 
     public List<Historial> getAllHistorial() {

@@ -42,12 +42,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
-                <ImageButton
+                <ImageView
                     android:layout_width="300dp"
                     android:layout_height="300dp"
                     android:id="@+id/btnProfileImage"
                     android:contentDescription="@string/btnProfileImage"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:background="#ffdadada" />
             </FrameLayout>
 
             <Space
