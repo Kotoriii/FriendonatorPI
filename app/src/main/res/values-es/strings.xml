@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="app_name">Friendonator</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Preferencias</string>
+
+    <string name="title_activity_profile">Perfil</string>
+    <string name="lblProfileName">Nombre</string>
+    <string name="txtProfileName">Nombre</string>
+    <string name="btnProfileImage">Foto de perfil</string>
+    <string name="lblInterests">Intereses</string>
+    <string name="lblGetContactedBy">Contactame por</string>
+    <string name="btnSaveChanges">Guardar Cambios</string>
+    <string name="btnChooseInterest">Editar</string>
+    <string name="lblInterestsList">Escogé tus preferencias</string>
+    <string name="btnChooseContact">Editar</string>
+    <string name="lblContactedByList">Escogé tus preferencias de contacto</string>
+    <string name="btnEditMusic">Editar música</string>
+    <string name="btnEditLiterature">Editar literatura</string>
+    <string name="btnEditMovies">Editar películas</string>
+    <string name="btnEditArt">Editar arte</string>
+    <string name="btnEditTvShows">Editar programas de televisión</string>
+    <string name="btnEditSports">Editar deportes</string>
+    <string name="btnEditLookingFor">Editar preferencias de búsqueda</string>
+    <string name="profileNameRequired">Nombre de perfil requerido</string>
+
+    <string name="title_activity_interests">Intereses</string>
+    <string name="lblInterestsL">Intereses</string>
+    <string name="lblMusic">Música</string>
+    <string name="txtMusic">Ingresá tus artistas preferidos (opcional)</string>
+    <string name="lblLiterature">Literatura</string>
+    <string name="txtLiterature">Ingresá tus autores favoritos (opcional)</string>
+    <string name="lblMovies">Películas</string>
+    <string name="txtMovies">Ingresá tus películas o actores favoritos (opcional)</string>
+    <string name="lblArt">Arte</string>
+    <string name="txtArt">Ingresá tus obras o artistas preferidos (opcional)</string>
+    <string name="lblTvShow">Shows de TV</string>
+    <string name="txtTvShow">Ingresá tus shows favoritos (opcional)</string>
+    <string name="lblSports">Deportes</string>
+    <string name="txtSports">Ingresá tus deportistas favoritos (opcional)</string>
+    <string name="lblScience">Ciencia</string>
+    <string name="txtScience">Ingresá tus temas favoritos (opcional)</string>
+    <string name="lblLookingFor">Busco</string>
+    <string name="txtLookingFor">Ingresá qué estás buscando con esta aplicación (optional)</string>
+    <string name="btnSaveInterestsChanges">Guardar intereses</string>
+    <string name="whatILike">Me gusta:</string>
+
+    <string name="title_activity_get_contacted_by">Me podés contactar por:</string>
+    <string name="lblContact">Contáctame</string>
+    <string name="lblCellphone">Teléfono</string>
+    <string name="txtPhone">Número</string>
+    <string name="lblGoogle">Google+</string>
+    <string name="txtGoogle">Google+ Account</string>
+    <string name="lblFacebook">Facebook</string>
+    <string name="txtFacebook">Facebook Account</string>
+    <string name="lblTwitter">Twitter</string>
+    <string name="txtTwitter">Cuenta de Twitter</string>
+    <string name="lblFindMeTool">Encuéntrame!</string>
+    <string name="switchActivateTool">Modo Invisible</string>
+    <string name="btnSaveContactMeChanges">Guardar información</string>
+    <string name="selectInterestMusic">Música</string>
+    <string name="selectInterestMovies">Películas</string>
+    <string name="selectInterestLiterature">Literatura</string>
+    <string name="selectInterestArt">Arte</string>
+    <string name="selectInterestTVShows">Shows de TV</string>
+    <string name="selectInterestSports">Deportes</string>
+    <string name="selectInterestScience">Ciencia</string>
+    <string name="selectInterestLookingFor">Busco</string>
+    <string name="accept">Aceptar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="ok">OK</string>
+    <string name="textRequired">Campos seleccionados deben ser llenados</string>
+
+    <string name="title_activity_home">Página principal</string>
+    <string name="lblMatchhome">Female Doge</string>
+    <string name="spnEvent">Seleccioná un evento</string>
+    <string name="txtaddphoto">Agregá una foto</string>
+    <string name="txttakephoto">Tómate una foto</string>
+    <string name="txtaddfromgallery">Escogé de tu galería</string>
+    <string name="txtphotocancel">Cancelar</string>
+
+    <string name="title_activity_login">Login</string>
+    <string name="txtLoginUserName">Nombre de usuario</string>
+    <string name="txtLoginPassword">Contraseña</string>
+    <string name="toastWrongLogIn">Email o contraseña incorrectos</string>
+    <string name="btnlogin">Aceptar</string>
+    <string name="btnRegister">Registrar</string>
+
+    <array name="navigation_iconos">
+        <item>@drawable/ic_action_user</item>
+        <item>@drawable/ic_action_user</item>
+        <item>@drawable/ic_action_user</item>
+        <item>@drawable/ic_action_user</item>
+        <item>@drawable/ic_action_user</item>
+        <item>@drawable/ic_action_settings</item>
+    </array>
+
+    <string name="title_activity_my_settings">Mis preferencias</string>
+    <string name="title_activity_history">Historial</string>
+
+    <string name="title_activity_sign_up">Registro</string>
+    <string name="editTextUserName">Email</string>
+    <string name="editTextPassword">Contraseña</string>
+    <string name="editTextConfirmPassword">Confirmar contraseña</string>
+    <string name="btnCreateAccount">Crear cueenta</string>
+    <string name="btnCancelSignUp">Cancelar</string>
+    <string name="toastEmptyField">Campo vacío</string>
+    <string name="toastEmail">Email ya existe</string>
+    <string name="toastPassword">Contraseñas no son idénticas</string>
+    <string name="toastCheckEmail">Por favor digita un email válido</string>
+    <string name="toastAccountSuccess">Cuenta creada con éxito</string>
+
+    <string name="title_activity_menu">Menú</string>
+    <string name="title_activity_find_me_tool">Encuéntrame</string>
+
+    <string name="title_activity_match_profile">Perfil de Match</string>
+    <string name="lblMatchName">Nombre de Match</string>
+    <string name="btnClose">Cerrar perfil</string>
+    <string name="imageMatch">Imagen de Match</string>
+    <string name="lblMatchInterests">Intereses</string>
+    <string name="lblMatchContactedBy">Contáctame por:</string>
+
+</resources>

@@ -43,7 +43,6 @@ public class DeviceValidator {
                 return true;
             }
         }catch (Exception e){
-            Log.e("Validator","Name not valid "+ e.getMessage());
         }
         return false;
     }
@@ -64,7 +63,7 @@ public class DeviceValidator {
         try {
             pop = decrypt(this.hexStringToByteArray(dato));
         } catch (GeneralSecurityException e) {
-            e.printStackTrace();
+            Log.e("DeviceValidator", "El string: "+dato+" es invalido");
         }
         return pop;
     }

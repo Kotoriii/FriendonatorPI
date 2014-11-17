@@ -23,8 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-
-
 /**
  * Created by andrea on 30/09/14.
  */
@@ -179,9 +177,9 @@ public class BluetoothHandler {
                 }
 
                 try{
-
+                    BluetoothDevice dev = getAdapter().getRemoteDevice(device.getAddress());
                         int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                        Log.d("BluetoothFR", device.getName() + " RSSI: " + rssi);
+                        Log.d("BluetoothFR", device.getName() + " RSSI: " + rssi + " describe_contents: "+ device.describeContents());
 
                         mAct.getIntent().putExtra("name", device.getName());
                         mAct.getIntent().putExtra("strg", rssi);
