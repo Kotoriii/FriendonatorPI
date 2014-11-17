@@ -1,18 +1,17 @@
 package Bluetooth;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
-//import android.bluetooth.BluetoothGatt;
-//import android.bluetooth.BluetoothGattCallback;
-//import android.bluetooth.BluetoothGattServer;
+import android.bluetooth.BluetoothGatt;
+import android.bluetooth.BluetoothGattCallback;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.ParcelUuid;
 import android.util.Log;
 
 import com.pi314.friendonator.Person;
@@ -61,9 +60,8 @@ public class BluetoothHandler {
         if(!this.isBluetoothEnabled()) {
             StartBlueTooth();
         }
-        //BluetoothGatt sad= null;
-        //sad.readRemoteRssi();
     }
+
 
     public BluetoothAdapter getAdapter() {
         if (mBluetoothAdapter == null) {
@@ -162,9 +160,11 @@ public class BluetoothHandler {
        mBluetoothAdapter.disable();
     }
 
+
     public BroadcastReceiver getReceiver() {
         return this.mReceiver;
     }
+
 
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         private boolean finding = true;
@@ -186,7 +186,7 @@ public class BluetoothHandler {
                         int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
                         Log.d("BluetoothFR", device.getName() + " RSSI: " + rssi + " describe_contents: "+ device.describeContents());
 
-                        mAct.getIntent().putExtra("name", device.getName());
+                          mAct.getIntent().putExtra("name", device.getName());
                         mAct.getIntent().putExtra("strg", rssi);
 
                 }catch (Exception e){}
@@ -303,7 +303,6 @@ public class BluetoothHandler {
             // Keep listening until exception occurs or a socket is returned
             while (true) {
                 try {
-
                     socket = mmServerSocket.accept();
 
                 } catch (IOException e) {
