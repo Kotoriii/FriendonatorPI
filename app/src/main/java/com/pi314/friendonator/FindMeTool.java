@@ -2,7 +2,7 @@ package com.pi314.friendonator;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.renderscript.ProgramStore;
+//import android.renderscript.ProgramStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;

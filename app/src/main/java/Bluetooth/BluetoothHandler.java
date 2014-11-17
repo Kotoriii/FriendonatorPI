@@ -3,6 +3,9 @@ package Bluetooth;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+//import android.bluetooth.BluetoothGatt;
+//import android.bluetooth.BluetoothGattCallback;
+//import android.bluetooth.BluetoothGattServer;
 import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
@@ -58,6 +61,8 @@ public class BluetoothHandler {
         if(!this.isBluetoothEnabled()) {
             StartBlueTooth();
         }
+        //BluetoothGatt sad= null;
+        //sad.readRemoteRssi();
     }
 
     public BluetoothAdapter getAdapter() {
@@ -298,7 +303,9 @@ public class BluetoothHandler {
             // Keep listening until exception occurs or a socket is returned
             while (true) {
                 try {
+
                     socket = mmServerSocket.accept();
+
                 } catch (IOException e) {
                     break;
                 }
