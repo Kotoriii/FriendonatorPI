@@ -32,7 +32,6 @@
                 android:layout_height="match_parent">
 
                 <Spinner
-                    android:theme="@android:style/Theme.Black"
                     android:layout_width="275dp"
                     android:layout_height="50dp"
                     android:id="@+id/spnEvent"

@@ -25,6 +25,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -64,7 +65,7 @@ public class ProfileActivity extends Activity {
     ArrayList<GridObject> contactedBy;
     TextView lblInterests;
     TextView lblGetContactedBy;
-    ImageButton viewImage;
+    ImageView viewImage;
     SQLiteHelper db;
 
     @Override
@@ -115,15 +116,16 @@ public class ProfileActivity extends Activity {
             lblGetContactedBy.setText(getResources().getString(R.string.lblGetContactedBy));
         }
 
-        viewImage=(ImageButton) findViewById(R.id.btnProfileImage);
+        viewImage=(ImageView) findViewById(R.id.btnProfileImage);
 
         Usuario usuario = db.getUser(person.getEmail());
-;
+
 
         if(usuario.getFoto() != null) {
             File file = new File(usuario.getFoto());
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
             viewImage.setImageBitmap(bitmap);
+            viewImage.setBackgroundColor(0x0000FF00);
         }
             viewImage.setOnClickListener(new View.OnClickListener() {
                 @Override
