@@ -9,7 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.json.JSONException;
+
 import Bluetooth.BluetoothHandler;
+import Database.Superinteres;
+import misc.ApiWrapper;
 
 
 public class FindMeTool extends Activity {
@@ -31,6 +35,22 @@ public class FindMeTool extends Activity {
                 reload();
             }
         });
+
+        //TODO remove!!
+        final TextView txtService = (TextView) findViewById(R.id.txtServiceR);
+        final Button btnRequest = (Button) findViewById(R.id.btnRequesS);
+        btnRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApiWrapper api = new ApiWrapper();
+                String oo = "";
+                for(Superinteres su : api.getSuperIntereses()){
+                    oo += su.getId() + "\n";
+                }
+                    txtService.setText(oo);
+            }
+        });
+
     }
 
     public void reload() {
