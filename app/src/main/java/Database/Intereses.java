@@ -13,6 +13,12 @@ public class Intereses {
     public Intereses() {
     }
 
+    public Intereses(String id, String descripcion,  String idsuperinteres) {
+        this.id = id;
+        this.idsuperinteres = idsuperinteres;
+        this.descripcion = descripcion;
+    }
+
     public Intereses(String idsuperinteres, String descripcion) {
         this.idsuperinteres = idsuperinteres;
         this.descripcion = descripcion;

@@ -11,7 +11,11 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 
+import java.util.HashMap;
+import java.util.List;
+
 import Bluetooth.BluetoothHandler;
+import Database.Intereses;
 import Database.Superinteres;
 import misc.ApiWrapper;
 
@@ -43,9 +47,16 @@ public class FindMeTool extends Activity {
             @Override
             public void onClick(View v) {
                 ApiWrapper api = new ApiWrapper();
+                if(!api.isConnected(FindMeTool.this))
+                    api.activateWifi(FindMeTool.this);
+
                 String oo = "";
-                for(Superinteres su : api.getSuperIntereses()){
-                    oo += su.getId() + "\n";
+                HashMap<Superinteres, List<Intereses>> lstIntrereses = api.getIntereses();
+                for(Superinteres su : lstIntrereses.keySet()){
+                    oo += su.getDescripcion() + "\n";
+                    for(Intereses in : lstIntrereses.get(su)){
+                        oo += "  "+ in.getDescripcion() + "\n";
+                    }
                 }
                     txtService.setText(oo);
             }

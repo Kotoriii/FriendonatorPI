@@ -23,6 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import misc.BackgroundService;
+
 /**
  * Created by andrea on 30/09/14.
  */
@@ -76,6 +79,12 @@ public class BluetoothHandler {
     private void registerAdapter() {
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+        try {
+            mAct.unregisterReceiver(getReceiver());
+            Log.d("BluetoothFR", "Reciever registered and unregistering");
+        }catch (Exception e){
+            Log.d("BluetoothFR", "Reciever wasn't registered");
+        }
         mAct.registerReceiver(getReceiver(), filter);
         registered = true;
     }
@@ -302,7 +311,6 @@ public class BluetoothHandler {
             while (true) {
                 try {
                     socket = mmServerSocket.accept();
-
                 } catch (IOException e) {
                     break;
                 }
@@ -313,13 +321,11 @@ public class BluetoothHandler {
                     //Por el momento este es el objeto que manda, mas adelante va a mandar el
                     //objeto representante al usuario del telefono
                     Log.v("BluetoothFR", "got connection from client, starting send");
-                             String potato = "potato";
-                        ConnectedToClientThread cntCT = new ConnectedToClientThread(socket, potato);
-                        cntCT.start();
+                    ConnectedToClientThread cntCT = new ConnectedToClientThread(socket);
+                    cntCT.start();
 
                 }
             }
-
         }
 
         /** Will cancel the listening socket, and cause the thread to finish */
@@ -385,8 +391,7 @@ public class BluetoothHandler {
     private class ConnectedToClientThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final OutputStream mmOutStream;
-        private Object mObj;
-        public ConnectedToClientThread(BluetoothSocket socket, Object obj) {
+        public ConnectedToClientThread(BluetoothSocket socket) {
             mmSocket = socket;
             OutputStream tmpOut = null;
 
@@ -394,7 +399,6 @@ public class BluetoothHandler {
             // member streams are final
             try {
                 tmpOut = socket.getOutputStream();
-                mObj = obj;
             } catch (IOException e) { }
 
             mmOutStream = tmpOut;
@@ -406,11 +410,10 @@ public class BluetoothHandler {
                     Log.v("BluetoothFR", "Sending data via ObjectOutputStream");
 
                     //por el momento se crea un usuario test. mas adelante se va a sacar de la BD
-                    Person testUsuario = new Person();
-                    testUsuario
-                            .setId("1");
-                    testUsuario
-                            .setName("Test Usuario Cambiar");
+
+                    //TODO sacar usuario de la base de datos
+                    Person testUsuario = (Person) mAct.getIntent().getSerializableExtra("PERSON");
+                    Log.v("BluetoothFr", "Person " + testUsuario);
 
                     ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
                     oos.writeObject(testUsuario);
@@ -465,10 +468,12 @@ public class BluetoothHandler {
 
                         ObjectInputStream bjr = new ObjectInputStream(mmInStream);
                         usuario = (Person)bjr.readObject();
+
+                        //TODO meter usuario en base de datos
+
                         bjr.close();
                     } catch (IOException e) {
-
-
+                        e.printStackTrace();
                 } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }

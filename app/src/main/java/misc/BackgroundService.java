@@ -132,8 +132,7 @@ public class BackgroundService extends IntentService {
                     while (is_scanning){
                         synchronized (this) {
                             if(!bMan.getAdapter().isDiscovering()) {
-
-                                Log.v("BluetoothFR", "^^^^^ start scan Background Service. Conserving list");
+                                Log.v("BackgroundService", "^^^^^ start scan Background Service. Conserving list");
                                 bMan.getAdapter().startDiscovery();//doesn't clear the devices list
                             }
                         }
