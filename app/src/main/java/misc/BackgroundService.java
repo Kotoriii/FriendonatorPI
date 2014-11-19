@@ -21,7 +21,7 @@ import Bluetooth.BluetoothHandler;
  * Created by andrea on 01/10/14.
  */
 public class BackgroundService extends IntentService {
-
+    private boolean is_scanning = false;
     private final int mIdNotification = 48454;
     NotificationManager mNotificationManager = null;
 
@@ -118,12 +118,18 @@ public class BackgroundService extends IntentService {
 
     }
 
+    public void cancelScan(){
+        this.is_scanning = false;
+    }
+
     public void ScanConstantly(final Activity activity){
         final BluetoothHandler bMan = BluetoothHandler.getInstance(activity);
+        //sets this.is_scanning to true
+        this.is_scanning = true;
         Thread scanner = new Thread(){
             public void run(){
                 try{
-                    while (true){
+                    while (is_scanning){
                         synchronized (this) {
                             if(!bMan.getAdapter().isDiscovering()) {
 

@@ -20,4 +20,23 @@
         android:layout_alignParentStart="true"
         android:background="@android:drawable/btn_star_big_off"/>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Test Service"
+        android:id="@+id/txtServiceR"
+        android:layout_below="@+id/btnReload"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Request Service"
+        android:id="@+id/btnRequesS"
+        android:layout_below="@+id/txtServiceR"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
 </RelativeLayout>
