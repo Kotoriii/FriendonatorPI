@@ -7,11 +7,13 @@ public class ListaEntrada_History {
     private int Image;
     private String name;
     private String percentage;
+    private int percentage1;
 
-    public ListaEntrada_History(int image, String name, String percentage) {
+    public ListaEntrada_History(int image, String name, String percentage, int precentage1) {
         Image = image;
         this.name = name;
         this.percentage = percentage;
+        percentage1 = precentage1;
     }
 
     public int getImage() {
@@ -38,8 +40,11 @@ public class ListaEntrada_History {
         this.percentage = percentage;
     }
 
-    public int getPercentageInt() {
-        int percentageMatch = Integer.parseInt(percentage);
-        return percentageMatch;
+    public int getPercentage1() {
+        return percentage1;
+    }
+
+    public void setPercentage1(int percentage1) {
+        this.percentage1 = percentage1;
     }
 }

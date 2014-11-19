@@ -47,7 +47,7 @@ public class MySettings extends Activity {
 
             }
         });
-        alt_bldPr.setNegativeButton("No", null);
+        alt_bldPr.setNegativeButton("Cancel", null);
         alt_bldPr.setTitle("Privacy Options");
         alt_bldPr.setSingleChoiceItems(privacyArr, -1, new DialogInterface
                 .OnClickListener() {
@@ -66,7 +66,7 @@ public class MySettings extends Activity {
 
             }
         });
-        alt_bldAd.setNegativeButton("No", null);
+        alt_bldAd.setNegativeButton("Cancel", null);
         alt_bldAd.setTitle("Advanced Options");
         alt_bldAd.setSingleChoiceItems(AdvancedArr, -1, new DialogInterface
                 .OnClickListener() {
@@ -86,7 +86,7 @@ public class MySettings extends Activity {
 
             }
         });
-        alt_bldLa.setNegativeButton("No", null);
+        alt_bldLa.setNegativeButton("Cancel", null);
         alt_bldLa.setTitle("Language Options");
         alt_bldLa.setSingleChoiceItems(LanguageArr, -1, new DialogInterface
                 .OnClickListener() {
@@ -105,7 +105,7 @@ public class MySettings extends Activity {
 
             }
         });
-        alt_bldInt.setNegativeButton("No", null);
+        alt_bldInt.setNegativeButton("Cancel", null);
         alt_bldInt.setTitle("Intervale Scan");
         alt_bldInt.setSingleChoiceItems(Intervale, -1, new DialogInterface
                 .OnClickListener() {
