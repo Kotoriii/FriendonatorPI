@@ -35,6 +35,7 @@ public class MatchProfileActivity extends Activity {
         setContentView(R.layout.activity_match_profile);
         final TextView lblMatchName = (TextView) findViewById(R.id.lblMatchName);
         final TextView lblMatchPercentage = (TextView) findViewById(R.id.lblMatchPercentage);
+        final TextView lblSpecialMatch = (TextView) findViewById(R.id.lblSpecialPercentage);
         final Button btnClose = (Button) findViewById(R.id.btnClose);
 
         // Get object person from intent extras
@@ -74,9 +75,11 @@ public class MatchProfileActivity extends Activity {
         }
 
         InterestsMethods match = new InterestsMethods();
-        int percentage = match.getPercentage(eventSelected, person, matchPerson);
+        int percentage = (int) Math.floor(match.getMatchPercentage(person, matchPerson));
+        int specialPercentage = (int) Math.floor(match.specialMatchResult(eventSelected, person, matchPerson));
 
         lblMatchPercentage.setText("Match: " + percentage + " %");
+        lblSpecialMatch.setText("Category match: " + specialPercentage + " %");
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override

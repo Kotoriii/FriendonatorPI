@@ -264,8 +264,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("idUsuario", text.getUsuario());
         values.put("texto", text.getTexto());
 
-        return db.update("textointeres", values, "idText" +
-                "o=?", new String[]{text.getIdTexto()});
+        return db.update("textointeres", values, "idText=?", new String[]{text.getIdTexto()});
     }
 
     public int updateUsuario(Usuario user) {
@@ -392,26 +391,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return superinterList;
     }
 
-    public List<Usuariointereses> getAllUsuarioIntereses() {
-        List<Usuariointereses> intereses = new ArrayList<Usuariointereses>();
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT * FROM usuariointereses", null);
-
-        if(cursor.moveToFirst()) {
-            do {
-                Usuariointereses uInteres = new Usuariointereses();
-                uInteres.setIdinteres(cursor.getString(0));
-                uInteres.setIdusuario(cursor.getString(1));
-                intereses.add(uInteres);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-
-        return intereses;
-    }
-
     public List<Intereses> getAllUserInterests(int idUser) {
         List<Intereses> interests = new ArrayList<Intereses>();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -462,6 +441,25 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return usuarioList;
+    }
+
+    public List<TextoInteres> getAllInterestTexts(int idUser) {
+        List<TextoInteres> textList = new ArrayList<TextoInteres>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM textointeres WHERE idUsuario=?", new String[] {String.valueOf(idUser)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                TextoInteres text = new TextoInteres();
+                text.setIdTexto(cursor.getString(0));
+                text.setUsuario(cursor.getString(1));
+                text.setTexto(cursor.getString(2));
+                textList.add(text);
+            } while (cursor.moveToNext());
+        }
+
+        return textList;
     }
 
     public Usuario getUser(String email) {

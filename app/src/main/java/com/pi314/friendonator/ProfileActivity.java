@@ -90,6 +90,9 @@ public class ProfileActivity extends Activity {
         InterestsMethods fillPerson = new InterestsMethods();
         person.setDataBaseInterest(fillPerson.getInterestFromDataBase(ProfileActivity.this, Integer.parseInt(person.getId())));
 
+        // Set getContactedBy from Data Base
+        person.setGetTextFieldInfo(fillPerson.getTextsFromDataBase(ProfileActivity.this, Integer.parseInt(person.getId())));
+
         // Locate the gridViewInterests TextView
         final GridView gridViewInterests = (GridView) findViewById(R.id.gridViewInterests);
 
@@ -215,64 +218,6 @@ public class ProfileActivity extends Activity {
                     showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), person.textValue(forDialog.getTitle()));
             }
         });
-
-/*
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-
-        final ListView drawer = (ListView) findViewById(R.id.drawer2);
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        //tres lineaas de codigo paraa la imgen del menu
-        NavList = (ListView) findViewById(R.id.drawer2);
-        //Declaramos el header el caul sera el layout de header.xml
-        View header = getLayoutInflater().inflate(R.layout.header, null);
-        //Establecemos header
-        NavList.addHeaderView(header);
-
-        //obtiene las imagenes desde el string.xml
-        NavIcons = getResources().obtainTypedArray(R.array.navigation_iconos);
-        //crea en arraylist de la clae Item_object que tiene imagen y texto
-        NavItms = new ArrayList<Item_objct>();
-        //Se procede a insertar las imagines y textos
-        NavItms.add(new Item_objct(opciones[0], NavIcons.getResourceId(0, -1)));
-        NavItms.add(new Item_objct(opciones[1], NavIcons.getResourceId(1, -1)));
-        NavItms.add(new Item_objct(opciones[2], NavIcons.getResourceId(2, -1)));
-        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(3, -1)));
-        NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
-        NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
-        //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
-        NavAdapter = new NavigationAdapter(this,NavItms);
-        NavList.setAdapter(NavAdapter);
-
-        drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                displayView(arg2);
-                drawerLayout.closeDrawers();
-
-            }
-        });
-
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.hello_world){
-            public void onDrawerClosed(View view) {
-                // Drawer cerrado
-                getActionBar().setTitle(getResources().getString(R.string.app_name));
-                //invalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                // Drawer abierto
-                getActionBar().setTitle("Menu");
-                //invalidateOptionsMenu();
-            }
-        };
-
-        drawerLayout.setDrawerListener(toggle);
-*/
-
-
-
     }
 
     public String BitMapToString(Bitmap bitmap){

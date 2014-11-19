@@ -123,53 +123,54 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
     }
 
     public void fillCheckBox() {
+        String [] interest = getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
         for (int key : person.getDataBaseInterest().keySet()) {
             if (key == 1) {
                 music.setChecked(true);
                 btnEditMusic.setVisibility(View.VISIBLE);
                 txtMusic.setVisibility(View.VISIBLE);
-                //txtMusic.setText(person.textValue(key));
+                txtMusic.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 2) {
                 literature.setChecked(true);
                 btnEditLiterature.setVisibility(View.VISIBLE);
                 txtLiterature.setVisibility(View.VISIBLE);
-                //txtLiterature.setText(person.textValue(key));
+                txtLiterature.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 3) {
                 movies.setChecked(true);
                 btnEditMovies.setVisibility(View.VISIBLE);
                 txtMovies.setVisibility(View.VISIBLE);
-                //txtMovies.setText(person.textValue(key));
+                txtMovies.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 4) {
                 art.setChecked(true);
                 btnEditArt.setVisibility(View.VISIBLE);
                 txtArt.setVisibility(View.VISIBLE);
-                //txtArt.setText(person.textValue(key));
+                txtArt.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 5) {
                 tvShow.setChecked(true);
                 btnEditTvShow.setVisibility(View.VISIBLE);
                 txtTvShow.setVisibility(View.VISIBLE);
-                //txtTvShow.setText(person.textValue(key));
+                txtTvShow.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 6) {
                 sports.setChecked(true);
                 btnEditSports.setVisibility(View.VISIBLE);
                 txtSports.setVisibility(View.VISIBLE);
-                //txtSports.setText(person.textValue(key));
+                txtSports.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 7) {
                 science.setChecked(true);
                 txtScience.setVisibility(View.VISIBLE);
-                //txtScience.setText(person.textValue(key));
+                txtScience.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 8) {
                 lookingFor.setChecked(true);
                 btnEditLookingFor.setVisibility(View.VISIBLE);
                 txtLookingFor.setVisibility(View.VISIBLE);
-                //txtLookingFor.setText(person.textValue(key));
+                txtLookingFor.setText(person.textValue(interest[key - 1]));
             }
         }
     }
@@ -380,9 +381,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
 
     @Override
     public void onDialogPositiveClick(String title, List<Integer> interestList) {
-        if (title.equals(getResources().getString(R.string.selectInterestLookingFor)) && interestList.isEmpty()) {
-        }
-        else {
+        if (!interestList.isEmpty()) {
             int index = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
             person.fillDataBaseInterests(index + 1, interestList);
             Log.i("===> ", "CHECKING ALL HASHMAPS");
@@ -396,9 +395,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
 
     @Override
     public void onDialogNegativeClick(List<Integer> mirrorList,  String title) {
-        if (title.equals(getResources().getString(R.string.selectInterestLookingFor)) && mirrorList.isEmpty()) {
-        }
-        else {
+        if (!mirrorList.isEmpty()) {
             int index = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
             person.fillDataBaseInterests(index, mirrorList);
         }

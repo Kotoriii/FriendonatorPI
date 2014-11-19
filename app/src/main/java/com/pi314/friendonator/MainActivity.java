@@ -58,7 +58,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         final Button btnPerfil = (Button)findViewById(R.id.btnPerfil);
         final Button btnHome = (Button)findViewById(R.id.btnHome);
 
-        //getApplicationContext().deleteDatabase("BaseFriendonator");
+        getApplicationContext().deleteDatabase("BaseFriendonator");
 
         db = SQLiteHelper.getInstance(getApplicationContext());
 
