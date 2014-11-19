@@ -33,7 +33,9 @@ public class MySettings extends Activity {
         final Button btnPrivacy = (Button)findViewById(R.id.btnPrivacy);
         final Button btnAdvanced = (Button)findViewById(R.id.btnAdvanced);
         final Button btnLanguage = (Button)findViewById(R.id.btnLanguage);
+        final Button btnIntervaleScan = (Button)findViewById(R.id.btnIntervale);
         final SeekBar seekBar1 = (SeekBar) findViewById(R.id.seekBar);
+
         final TextView textPercentage = (TextView) findViewById(R.id.txtPercentage);
 
         final CharSequence[] privacyArr = {"Show interests", "Show contact me"};
@@ -94,6 +96,24 @@ public class MySettings extends Activity {
             }
         });
 
+        final CharSequence[] Intervale = {"Always", "5 min", "10 min", "15 min"};
+        final AlertDialog.Builder alt_bldInt = new AlertDialog.Builder(this);
+        alt_bldInt.setIcon(R.drawable.ic_settings_alert);
+        alt_bldInt.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alt_bldInt.setNegativeButton("No", null);
+        alt_bldInt.setTitle("Intervale Scan");
+        alt_bldInt.setSingleChoiceItems(Intervale, -1, new DialogInterface
+                .OnClickListener() {
+            public void onClick(DialogInterface dialog, int item) {
+                String mensajePr = "Intervale scan selected " + Intervale[item];
+                ToastCostumizado(mensajePr);
+            }
+        });
 
         btnPrivacy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,6 +149,19 @@ public class MySettings extends Activity {
                 alertLa.show();
             }
         });
+
+        btnIntervaleScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //String fd =  "boton Privacy presionado";
+                //Toast.makeText(getApplicationContext(), fd,
+                //        Toast.LENGTH_SHORT).show();
+                AlertDialog alertInt = alt_bldInt.create();
+                alertInt.show();
+            }
+        });
+
+
 
         textPercentage.setText(seekBar1.getProgress() + "/" + seekBar1.getMax());
 
