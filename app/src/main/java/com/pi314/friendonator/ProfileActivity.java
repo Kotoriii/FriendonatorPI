@@ -17,10 +17,12 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -203,7 +205,8 @@ public class ProfileActivity extends Activity {
                     // Finish activity
                     finish();
                 } else
-                    Toast.makeText(getApplication(), R.string.profileNameRequired, Toast.LENGTH_SHORT).show();
+                    customToast(getResources().getString(R.string.profileNameRequired));
+                    //Toast.makeText(getApplication(), R.string.profileNameRequired, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -339,6 +342,23 @@ public class ProfileActivity extends Activity {
         dialogInterestInfo.setInfo(tittle, message);
         // Show SelectInterest instance
         dialogInterestInfo.show(getFragmentManager(), "InterestInfo");
+    }
+
+    public void customToast(String message) {
+        LayoutInflater inflater = getLayoutInflater();
+
+        View layout = inflater.inflate(R.layout.customtoast,
+                (ViewGroup) findViewById(R.id.custom_toast_layout_id));
+
+        // Set a message
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(message);
+
+        // Toast
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 
    /* @Override

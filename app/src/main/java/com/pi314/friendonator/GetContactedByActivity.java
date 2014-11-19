@@ -3,13 +3,16 @@ package com.pi314.friendonator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pi314.interests.InterestsMethods;
@@ -71,13 +74,16 @@ public class GetContactedByActivity extends Activity {
                     createContactedByList(phone, google, facebook, twitter);
 
                     // Update user contact fields in data base
-                    Usuario updateUser = new Usuario();
+                    /*Usuario updateUser = new Usuario();
                     updateUser.setId(person.getId());
                     updateUser.setNum(txtPhone.getText().toString());
                     updateUser.setGplus(txtGoogle.getText().toString());
                     updateUser.setFb(txtFacebook.getText().toString());
                     updateUser.setTwitter(txtTwitter.getText().toString());
-                    db.updateUsuario(updateUser);
+                    db.updateUsuario(updateUser);*/
+
+                    // Save get contacted by into Data Base
+
 
                     // Create intent to open interests activity
                     Intent intent = new Intent(GetContactedByActivity.this, ProfileActivity.class);
@@ -94,7 +100,8 @@ public class GetContactedByActivity extends Activity {
                     // Slide animation
                     overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
                 } else
-                    Toast.makeText(getApplicationContext(), R.string.textRequired, Toast.LENGTH_SHORT).show();
+                    customToast(getResources().getString(R.string.textRequired));
+                    //Toast.makeText(getApplicationContext(), R.string.textRequired, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -109,25 +116,21 @@ public class GetContactedByActivity extends Activity {
             if (key.equals(getResources().getString(R.string.lblCellphone))) {
                 txtPhone.setText(person.contactedByValue(key));
                 txtPhone.setVisibility(View.VISIBLE);
-                checkBoxCellPhone = (CheckBox) findViewById(R.id.checkBoxCellPhone);
                 checkBoxCellPhone.setChecked(true);
             }
             else if (key.equals(getResources().getString(R.string.lblGoogle))) {
                 txtGoogle.setText(person.contactedByValue(key));
                 txtGoogle.setVisibility(View.VISIBLE);
-                checkBoxGoogle = (CheckBox) findViewById(R.id.checkBoxGoogle);
                 checkBoxGoogle.setChecked(true);
             }
             else if (key.equals(getResources().getString(R.string.lblFacebook))) {
                 txtFacebook.setText(person.contactedByValue(key));
                 txtFacebook.setVisibility(View.VISIBLE);
-                checkBoxFacebook = (CheckBox) findViewById(R.id.checkBoxFacebook);
                 checkBoxFacebook.setChecked(true);
             }
             else if (key.equals(getResources().getString(R.string.lblTwitter))) {
                 txtTwitter.setText(person.contactedByValue(key));
                 txtTwitter.setVisibility(View.VISIBLE);
-                checkBoxTwitter = (CheckBox) findViewById(R.id.checkBoxTwitter);
                 checkBoxTwitter.setChecked(true);
             }
             else if (key.equals(getResources().getString(R.string.lblFindMeTool))) {
@@ -189,11 +192,6 @@ public class GetContactedByActivity extends Activity {
     }
 
     public void createContactedByList(String phone, String google, String facebook, String twitter) {
-        checkBoxCellPhone = (CheckBox) findViewById(R.id.checkBoxCellPhone);
-        checkBoxGoogle = (CheckBox) findViewById(R.id.checkBoxGoogle);
-        checkBoxFacebook = (CheckBox) findViewById(R.id.checkBoxFacebook);
-        checkBoxTwitter = (CheckBox) findViewById(R.id.checkBoxTwitter);
-
         if (!phone.isEmpty() && checkBoxCellPhone.isChecked())
             person.fillContactedList(getResources().getString(R.string.lblCellphone), phone);
         if (!google.isEmpty() && checkBoxGoogle.isChecked())
@@ -207,10 +205,6 @@ public class GetContactedByActivity extends Activity {
     }
 
     public boolean validateSave() {
-        checkBoxCellPhone = (CheckBox) findViewById(R.id.checkBoxCellPhone);
-        checkBoxGoogle = (CheckBox) findViewById(R.id.checkBoxGoogle);
-        checkBoxFacebook = (CheckBox) findViewById(R.id.checkBoxFacebook);
-        checkBoxTwitter = (CheckBox) findViewById(R.id.checkBoxTwitter);
         boolean good = true;
 
         if (txtPhone.getText().toString().isEmpty() && checkBoxCellPhone.isChecked() ||
@@ -220,6 +214,23 @@ public class GetContactedByActivity extends Activity {
             good = false;
         }
         return good;
+    }
+
+    public void customToast(String message) {
+        LayoutInflater inflater = getLayoutInflater();
+
+        View layout = inflater.inflate(R.layout.customtoast,
+                (ViewGroup) findViewById(R.id.custom_toast_layout_id));
+
+        // Set a message
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(message);
+
+        // Toast
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 
     @Override

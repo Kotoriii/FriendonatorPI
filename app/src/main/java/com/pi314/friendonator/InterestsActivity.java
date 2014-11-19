@@ -96,9 +96,10 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                 // Set optional fields into person
                 addTextToInterest();
 
-                // Insert interests to user
-                InterestsMethods insertInterests = new InterestsMethods();
-                insertInterests.insertInterests(InterestsActivity.this, person);
+                // Insert interests and optional text to user
+                InterestsMethods insert = new InterestsMethods();
+                insert.insertInterests(InterestsActivity.this, person);
+                insert.insertText(InterestsActivity.this, person);
 
                 // Create intent to open interests activity
                 Intent intent = new Intent(InterestsActivity.this, ProfileActivity.class);
@@ -262,7 +263,10 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
             case R.id.checkBoxScience:
                 if (checked) {
                     txtScience.setVisibility(View.VISIBLE);
-                    person.fillInterestList(getResources().getString(R.string.selectInterestScience), new ArrayList<String>());
+                    int index = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(getResources().getString(R.string.selectInterestScience));
+                    List<Integer> science = new ArrayList<Integer>();
+                    science.add(48);
+                    person.fillDataBaseInterests(index + 1, science);
                 } else {
                     txtScience.setVisibility(View.GONE);
                     person.getDataBaseInterest().remove(7);
@@ -350,21 +354,21 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
         String sScience = txtScience.getText().toString();
         String sLookingFor = txtLookingFor.getText().toString();
 
-        if (!sMusic.isEmpty() && music.isChecked())
+        if (music.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestMusic), sMusic);
-        if (!sLiterature.isEmpty() && literature.isChecked())
+        if (literature.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestLiterature), sLiterature);
-        if (!sMovies.isEmpty() && movies.isChecked())
+        if (movies.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestMovies), sMovies);
-        if (!sArt.isEmpty() && art.isChecked())
+        if (art.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestArt), sArt);
-        if (!sTvShow.isEmpty() && tvShow.isChecked())
+        if (tvShow.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestTVShows), sTvShow);
-        if (!sSports.isEmpty() && sports.isChecked())
+        if (sports.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestSports), sSports);
-        if (!sScience.isEmpty() && science.isChecked())
+        if (science.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestScience), sScience);
-        if (!sLookingFor.isEmpty() && lookingFor.isChecked())
+        if (lookingFor.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestLookingFor), sLookingFor);
     }
 

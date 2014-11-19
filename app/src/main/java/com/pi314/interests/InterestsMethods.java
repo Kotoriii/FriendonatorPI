@@ -112,7 +112,7 @@ public class InterestsMethods {
 
         while (count < allTexts.size()) {
             for (TextoInteres t : allTexts) {
-                contactedByList.put(interest[Integer.parseInt(t.getIdTexto())], t.getTexto());
+                contactedByList.put(interest[Integer.parseInt(t.getIdSuperInteres())], t.getTexto());
             }
             count ++;
         }
@@ -191,11 +191,13 @@ public class InterestsMethods {
         HashMap<Integer, List<Integer>> userList = user.getDataBaseInterest();
         HashMap<Integer, List<Integer>> matchList = match.getDataBaseInterest();
 
-        for (int value : userList.get(event)) {
-            if (matchList.get(event).contains(value)) {
-                matchInterest += 1;
+        if (event != 0 && event !=4) {
+            for (int value : userList.get(event)) {
+                if (matchList.get(event).contains(value)) {
+                    matchInterest += 1;
+                }
+                userInterest++;
             }
-            userInterest++;
         }
 
         resultInterest = (matchInterest/userInterest) * 100;
@@ -215,17 +217,25 @@ public class InterestsMethods {
     }
 
     public void insertText(Context context, Person person) {
-        if (!person.getGetContactedByList().isEmpty()) {
+        if (!person.getTextFieldInfo().isEmpty()) {
             SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
             String [] interestArray = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
+            db.deleteUserTextData();
 
             for (Map.Entry<String, String> entry : person.getTextFieldInfo().entrySet()) {
                 TextoInteres text = new TextoInteres();
-                text.setIdTexto(String.valueOf(Arrays.asList(interestArray).indexOf(entry.getKey())));
+                text.setIdSuperInteres(String.valueOf(Arrays.asList(interestArray).indexOf(entry.getKey())));
                 text.setUsuario(person.getId());
                 text.setTexto(entry.getValue());
                 db.insertTexto(text);
             }
+        }
+    }
+
+    public void insertUpdateContactedBy(Context context, Person person) {
+        if (!person.getGetContactedByList().isEmpty()) {
+            SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+
         }
     }
 
