@@ -11,8 +11,13 @@ import android.widget.TextView;
 
 import org.json.JSONException;
 
+import java.math.BigInteger;
+import java.security.Key;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 import Bluetooth.BluetoothHandler;
 import Database.Intereses;
@@ -47,23 +52,21 @@ public class FindMeTool extends Activity {
             @Override
             public void onClick(View v) {
                 ApiWrapper api = new ApiWrapper();
-                if(!api.isConnected(FindMeTool.this))
+                if (!api.isConnected(FindMeTool.this))
                     api.activateWifi(FindMeTool.this);
 
                 String oo = "";
-                HashMap<Superinteres, List<Intereses>> lstIntrereses = api.getIntereses();
-                for(Superinteres su : lstIntrereses.keySet()){
-                    oo += su.getDescripcion() + "\n";
-                    for(Intereses in : lstIntrereses.get(su)){
-                        oo += "  "+ in.getDescripcion() + "\n";
-                    }
+                boolean pop = api.loginConServidor("3@23.com", "3");
+                if (pop) {
+                    oo += "login exitoso";
+                } else {
+                    oo += "login NO ";
                 }
-                    txtService.setText(oo);
+                txtService.setText(oo);
             }
+
         });
-
     }
-
     public void reload() {
 
         Thread reloadT = new Thread() {
@@ -110,4 +113,5 @@ public class FindMeTool extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

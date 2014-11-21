@@ -9,9 +9,14 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,9 +25,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
 
 import Database.Intereses;
 import Database.Superinteres;
@@ -37,6 +47,39 @@ import Database.Superinteres;
  */
 public class ApiWrapper {
     private String mResult = null; //Resultado del request, para request asincronicas
+    private List<NameValuePair> mPostData = null; //datos a mandar durante el HttpAsyncPOSTTask
+
+    /**
+     * Devuelve True su el login es exitoso y false si no lo es.
+     * Este login solo lo puede accesar la aplicacion con dicho api_key.
+     *
+     * @param correo
+     * @param password
+     * @return si son datos correctos o no
+     */
+    public boolean loginConServidor(String correo, String password) {
+        //obtenemos el objeto json correspondiente al correo
+        String url = "http://tupini07.pythonanywhere.com/api/webServices/login_usuario/correo=" + correo + "&pass=" + password;
+
+        //TODO talves implementar login con post en ves de GET o poner encripcion
+        /*---Esto solo si se implementa con POST
+            List<NameValuePair> datos = new ArrayList<NameValuePair>(2);
+            datos.add(new BasicNameValuePair("correo", correo));
+            datos.add(new BasicNameValuePair("pass", password));
+        */
+
+        JSONObject json = getRESTJSON(url);
+        try {
+            JSONArray jsonArray = json.getJSONArray("objects");
+            json = jsonArray.getJSONObject(0); //en teoria solo hay una entrada asi que esto es seguro.
+            if (password.equals(json.getString("password")))
+                return true;
+
+        } catch (JSONException e) {
+            return false;
+        }
+        return false;
+    }
 
     /**
      * Retorna la lista de superintereses que se encuentran en el servidor
@@ -103,7 +146,7 @@ public class ApiWrapper {
     }
 
     private JSONObject getRESTJSON(String URL) {
-        new HttpAsyncTask().execute(URL);
+        new HttpAsyncGETTask().execute(URL);
         int ss = 0;
         while (mResult == null) { //necesitamos esperar por la respuesta
             try {
@@ -115,6 +158,38 @@ public class ApiWrapper {
             }
             ss++;
         }
+        Log.d("ApiWrapper", "waited " + ss + " cycles before response");
+        JSONObject json = null;
+        try {
+            json = new JSONObject(mResult);
+
+
+        } catch (JSONException e) {
+            try {
+                json = new JSONObject("{\"error\": \"not a valid json object\"}");
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return json;
+    }
+
+    private JSONObject postRESTJSON(String URL, List<NameValuePair> data) {
+        mPostData = data;
+        new HttpAsyncPOSTTask().execute(URL);
+        int ss = 0;
+        while (mResult == null) { //necesitamos esperar por la respuesta
+            try {
+                synchronized (this) {
+                    this.wait(200);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ss++;
+        }
+        mPostData = null; //liberamos la memoria.
+
         Log.d("ApiWrapper", "waited " + ss + " cycles before response");
         JSONObject json = null;
         try {
@@ -158,6 +233,33 @@ public class ApiWrapper {
         return result;
     }
 
+    private String POST(String url, List<NameValuePair> data) {
+        // Create a new HttpClient and Post Header
+        HttpClient httpclient = new DefaultHttpClient();
+        HttpPost httppost = new HttpPost(url);
+        InputStream inputStream = null;
+        String result = "";
+        try {
+            httppost.setEntity(new UrlEncodedFormEntity(data));
+            // Execute HTTP Post Request
+            HttpResponse httpResponse = httpclient.execute(httppost);
+
+            // receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            // convert inputstream to string
+            if (inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+        } catch (ClientProtocolException e) {
+            result = "Did not work!";
+        } catch (IOException e) {
+            result = "Did not work!";
+        }
+        return result;
+    }
+
     private String convertInputStreamToString(InputStream inputStream) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         String line = "";
@@ -196,7 +298,7 @@ public class ApiWrapper {
         wifi.setWifiEnabled(false); // true or false to activate/deactivate wifi
     }
 
-    private class HttpAsyncTask extends AsyncTask<String, Void, String> {
+    private class HttpAsyncGETTask extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... urls) {
             mResult = null; // Si el resutado es null entonces aun no se a completado el AsyncTask
@@ -208,6 +310,21 @@ public class ApiWrapper {
         @Override
         protected void onPostExecute(String result) {
             Log.v("ApiWrapper", "** POST execute HttpAsyncTask ** \n" + result);
+        }
+    }
+
+    private class HttpAsyncPOSTTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... urls) {
+            mResult = null; // Si el resutado es null entonces aun no se a completado el AsyncTask
+            mResult = POST(urls[0], mPostData);
+            return mResult;
+        }
+
+        // onPostExecute displays the results of the AsyncTask.
+        @Override
+        protected void onPostExecute(String result) {
+            Log.v("ApiWrapper", "** POST execute HttpAsyncPOSTTask ** \n" + result);
         }
     }
 }
