@@ -86,6 +86,13 @@
         <item>Looking For</item>
     </string-array>
 
+    <string-array name="identifyContact">
+        <item>Cellphone</item>
+        <item>Google+</item>
+        <item>Facebook</item>
+        <item>Twitter</item>
+    </string-array>
+
     <string-array name="event_array">
         <item>Hang Out</item>
         <item>Concert</item>

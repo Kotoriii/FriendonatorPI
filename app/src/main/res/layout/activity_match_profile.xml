@@ -12,12 +12,27 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView" >
+        android:id="@+id/scrollView"
+        android:scrollbars="none">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:id="@+id/imageMatch"
+                android:contentDescription="@string/imageMatch"
+                android:layout_gravity="center_horizontal"
+                android:focusable="false"
+                android:src="@drawable/dogemarilyn" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/space" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -34,7 +49,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="%"
                     android:id="@+id/lblMatchPercentage"
                     android:layout_alignParentTop="true"
@@ -44,23 +59,26 @@
                     android:textStyle="bold"/>
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="%"
+                    android:id="@+id/lblSpecialPercentage"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@android:color/holo_red_dark"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
             <Space
                 android:layout_width="20dp"
-                android:layout_height="20dp" />
-
-            <ImageView
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:id="@+id/imageMatch"
-                android:contentDescription="@string/imageMatch"
-                android:layout_gravity="center_horizontal"
-                android:focusable="false"
-                android:src="@drawable/dogemarilyn" />
-
-            <Space
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:id="@+id/space" />
+                android:layout_height="5dp" />
 
             <TextView
                 android:layout_width="wrap_content"

@@ -4,8 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.widget.DrawerLayout;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -36,19 +35,20 @@ public class History extends Activity {
         setContentView(R.layout.listado_history);
 
         //Se crean ls personajes
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Carlos", "78" + "%"));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Carlos", "78" + "%", 78));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Mack", "87" + "%"));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Mack", "87" + "%", 87));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Tupini", "80" + "%"));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Tupini", "80" + "%", 80));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Alejandro", "75" + "%"));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Alejandro", "75" + "%", 75));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Fernando", "82" + "%"));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Fernando", "82" + "%", 82));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Warren", "90" + "%"));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Warren", "90" + "%", 90));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Vicky", "69" + "%"));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Vicky", "69" + "%", 69));
+
 
         //Ordenacion de testeo
      /*Collections.sort(datos, new Comparator<ListaEntrada_History>() {
@@ -80,6 +80,8 @@ public class History extends Activity {
                         imgProfile.setImageResource(((ListaEntrada_History) entrada).getImage());
 
                     ProgressBar progreesMatch = (ProgressBar) findViewById(R.id.progressBarPercentage);
+                    if (progreesMatch != null)
+                        progreesMatch.setProgress(((ListaEntrada_History) entrada).getPercentage1()-1);
                 }
             }
         });

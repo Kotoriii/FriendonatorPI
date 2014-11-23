@@ -7,6 +7,7 @@ import com.pi314.friendonator.Person;
 import com.pi314.friendonator.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Map;
 import Database.Intereses;
 import Database.SQLiteHelper;
 import Database.Superinteres;
+import Database.TextoInteres;
 import Database.Usuario;
 import Database.Usuariointereses;
 import GridView.GridObject;
@@ -100,6 +102,24 @@ public class InterestsMethods {
         return forReturn;
     }
 
+    public HashMap<String, String> getTextsFromDataBase(Context context, int idUser) {
+        SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+        HashMap<String, String> contactedByList = new HashMap<String, String>();
+        String [] interest = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
+
+        List<TextoInteres> allTexts = db.getAllInterestTexts(idUser);
+        int count = 0;
+
+        while (count < allTexts.size()) {
+            for (TextoInteres t : allTexts) {
+                contactedByList.put(interest[Integer.parseInt(t.getIdSuperInteres())], t.getTexto());
+            }
+            count ++;
+        }
+
+        return contactedByList;
+    }
+
     public double getMatchPercentage(Person user, Person match) {
         double userInterest = 0.0;
         double matchInterest = 0.0;
@@ -171,11 +191,13 @@ public class InterestsMethods {
         HashMap<Integer, List<Integer>> userList = user.getDataBaseInterest();
         HashMap<Integer, List<Integer>> matchList = match.getDataBaseInterest();
 
-        for (int value : userList.get(event)) {
-            if (matchList.get(event).contains(value)) {
-                matchInterest += 1;
+        if (event != 0 && event !=4) {
+            for (int value : userList.get(event)) {
+                if (matchList.get(event).contains(value)) {
+                    matchInterest += 1;
+                }
+                userInterest++;
             }
-            userInterest++;
         }
 
         resultInterest = (matchInterest/userInterest) * 100;
@@ -191,6 +213,29 @@ public class InterestsMethods {
             for (int interest : person.getDataBaseInterest().keySet())
                 for (int value : person.getDataBaseInterest().get(interest))
                     db.insertUserint(new Usuariointereses(String.valueOf(value + 1), person.getId()));
+        }
+    }
+
+    public void insertText(Context context, Person person) {
+        if (!person.getTextFieldInfo().isEmpty()) {
+            SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+            String [] interestArray = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
+            db.deleteUserTextData();
+
+            for (Map.Entry<String, String> entry : person.getTextFieldInfo().entrySet()) {
+                TextoInteres text = new TextoInteres();
+                text.setIdSuperInteres(String.valueOf(Arrays.asList(interestArray).indexOf(entry.getKey())));
+                text.setUsuario(person.getId());
+                text.setTexto(entry.getValue());
+                db.insertTexto(text);
+            }
+        }
+    }
+
+    public void insertUpdateContactedBy(Context context, Person person) {
+        if (!person.getGetContactedByList().isEmpty()) {
+            SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+
         }
     }
 

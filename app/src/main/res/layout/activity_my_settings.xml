@@ -1,220 +1,242 @@
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/drawer_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:scrollbars="none"
+    android:layout_marginRight="0dp"
+    >
 
-    <!-- Contenido principal -->
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/Settings">
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Minimun matching percentage"
-        android:id="@+id/txtMinimunPercentage"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="%"
-        android:id="@+id/txtPercentage"
-        android:layout_below="@+id/txtMinimunPercentage"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="18dp" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_blue_dark"
-        android:id="@+id/view1"
-        android:layout_below="@+id/seekBar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Notifications"
-        android:id="@+id/txtNotifications"
-        android:layout_marginLeft="29dp"
-        android:layout_alignBottom="@+id/view2"
-        android:layout_marginBottom="23dp" />
-
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/switchNotifications"
-        android:checked="true"
-        android:layout_alignBottom="@+id/txtNotifications"
-        android:layout_alignLeft="@+id/switchSound"
-        android:layout_alignStart="@+id/switchSound" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_blue_dark"
-        android:id="@+id/view2"
-        android:layout_marginTop="63dp"
-        android:layout_below="@+id/view1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sound"
-        android:id="@+id/txtSound"
-        android:layout_below="@+id/view2"
-        android:layout_alignLeft="@+id/txtNotifications"
-        android:layout_alignStart="@+id/txtNotifications"
-        android:layout_marginTop="27dp" />
-
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/switchSound"
-        android:checked="true"
-        android:layout_toEndOf="@+id/txtMinimunPercentage"
-        android:layout_marginLeft="23dp"
-        android:layout_alignBottom="@+id/txtSound"
-        android:layout_toRightOf="@+id/txtMinimunPercentage" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_blue_dark"
-        android:id="@+id/view3"
-        android:layout_marginTop="128dp"
-        android:layout_below="@+id/view1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Vibration"
-        android:id="@+id/txtVibration"
-        android:layout_alignBottom="@+id/switch1"
-        android:layout_alignLeft="@+id/txtSound"
-        android:layout_alignStart="@+id/txtSound" />
-
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/switch1"
-        android:checked="true"
-        android:layout_marginTop="16dp"
-        android:layout_below="@+id/view3"
-        android:layout_alignLeft="@+id/switchSound"
-        android:layout_alignStart="@+id/switchSound" />
-
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_blue_dark"
-        android:id="@+id/view4"
-        android:layout_marginTop="193dp"
-        android:layout_below="@+id/view1"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_blue_dark"
-        android:id="@+id/view5"
-        android:layout_below="@+id/btnPrivacy"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-
-
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_blue_dark"
-        android:id="@+id/view7"
-
-        android:layout_below="@+id/btnAdvanced"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Privacy"
-        android:id="@+id/btnPrivacy"
-        android:background="@android:color/transparent"
-        android:layout_below="@+id/view4"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Advanced"
-        android:background="@android:color/transparent"
-        android:id="@+id/btnAdvanced"
-        android:layout_below="@+id/view5"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Language"
-        android:id="@+id/btnLanguage"
-        android:layout_below="@+id/view7"
-        android:background="@android:color/transparent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:background="@android:color/holo_blue_dark"
-        android:id="@+id/view6"
-        android:layout_alignBottom="@+id/btnLanguage"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-
-    <SeekBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/seekBar"
-        android:layout_alignTop="@+id/txtPercentage"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:max="100"
-        android:layout_toRightOf="@+id/txtSound"
-        android:layout_toEndOf="@+id/txtSound" />
-
-
-</RelativeLayout>
-    <ListView
-        android:id="@+id/drawer1"
-        android:layout_width="240dp"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
-        android:background="#424242"
-        android:divider="#2E2E2E"
-        android:dividerHeight="2dp"/>
+        android:id="@+id/Settings">
 
-</android.support.v4.widget.DrawerLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Minimun matching percentage"
+            android:id="@+id/txtMinimunPercentage"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="%"
+            android:id="@+id/txtPercentage"
+            android:layout_below="@+id/txtMinimunPercentage"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="18dp" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark"
+            android:id="@+id/view1"
+            android:layout_below="@+id/seekBar"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Notifications"
+            android:id="@+id/txtNotifications"
+            android:layout_marginLeft="29dp"
+            android:layout_alignBottom="@+id/view2"
+            android:layout_marginBottom="23dp" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/switchNotifications"
+            android:checked="true"
+            android:layout_alignBottom="@+id/txtNotifications"
+            android:layout_alignLeft="@+id/switchSound"
+            android:layout_alignStart="@+id/switchSound" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark"
+            android:id="@+id/view2"
+            android:layout_marginTop="63dp"
+            android:layout_below="@+id/view1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sound"
+            android:id="@+id/txtSound"
+            android:layout_below="@+id/view2"
+            android:layout_alignLeft="@+id/txtNotifications"
+            android:layout_alignStart="@+id/txtNotifications"
+            android:layout_marginTop="27dp" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/switchSound"
+            android:checked="true"
+            android:layout_toEndOf="@+id/txtMinimunPercentage"
+            android:layout_marginLeft="23dp"
+            android:layout_alignBottom="@+id/txtSound"
+            android:layout_toRightOf="@+id/txtMinimunPercentage" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark"
+            android:id="@+id/view3"
+            android:layout_marginTop="128dp"
+            android:layout_below="@+id/view1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Vibration"
+            android:id="@+id/txtVibration"
+            android:layout_alignBottom="@+id/switch1"
+            android:layout_alignLeft="@+id/txtSound"
+            android:layout_alignStart="@+id/txtSound" />
+
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/switch1"
+            android:checked="true"
+            android:layout_marginTop="16dp"
+            android:layout_below="@+id/view3"
+            android:layout_alignLeft="@+id/switchSound"
+            android:layout_alignStart="@+id/switchSound" />
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark"
+            android:id="@+id/view4"
+            android:layout_marginTop="193dp"
+            android:layout_below="@+id/view1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark"
+            android:id="@+id/view5"
+            android:layout_below="@+id/btnPrivacy"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark"
+            android:id="@+id/view7"
+
+            android:layout_below="@+id/btnAdvanced"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Privacy"
+            android:id="@+id/btnPrivacy"
+            android:background="@android:color/transparent"
+            android:layout_below="@+id/view4"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Advanced"
+            android:background="@android:color/transparent"
+            android:id="@+id/btnAdvanced"
+            android:layout_below="@+id/view5"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Language"
+            android:id="@+id/btnLanguage"
+            android:layout_below="@+id/view7"
+            android:background="@android:color/transparent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark"
+            android:id="@+id/view6"
+            android:layout_alignBottom="@+id/btnLanguage"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <SeekBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/seekBar"
+            android:layout_alignTop="@+id/txtPercentage"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:max="100"
+            android:layout_toRightOf="@+id/txtSound"
+            android:layout_toEndOf="@+id/txtSound" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark"
+            android:id="@+id/view8"
+            android:layout_marginTop="385dp"
+            android:layout_below="@+id/view1"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Intervale Scan"
+            android:id="@+id/btnIntervale"
+            android:background="@android:color/transparent"
+            android:layout_below="@+id/view6"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save Changues"
+            android:id="@+id/btnSave"
+            android:layout_below="@+id/view8"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/custom_border_button"
+            android:layout_centerHorizontal="true" />
+
+    </RelativeLayout>
+</ScrollView>

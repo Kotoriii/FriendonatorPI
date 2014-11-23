@@ -81,9 +81,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             ")";
 
     String createTextointer = "CREATE TABLE textointeres (" +
-            "idTexto INTEGER PRIMARY KEY," +
+            "idSuperInteres INTEGER," +
             "idUsuario INTEGER," +
             "texto VARCHAR," +
+            "PRIMARY KEY (idSuperInteres,idUsuario)" +
+            "FOREIGN KEY(idSuperInteres) REFERENCES superinteres(idSuperInteres), " +
             "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario))";
 
     String createContacto = "CREATE TABLE contacto (" +
@@ -131,7 +133,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("idTexto", text.getIdTexto());
+        values.put("idSuperInteres", text.getIdSuperInteres());
         values.put("idUsuario", text.getUsuario());
         values.put("texto", text.getTexto());
 
@@ -260,12 +262,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("idTexto", text.getIdTexto());
+        values.put("idTexto", text.getIdSuperInteres());
         values.put("idUsuario", text.getUsuario());
         values.put("texto", text.getTexto());
 
-        return db.update("textointeres", values, "idText" +
-                "o=?", new String[]{text.getIdTexto()});
+        return db.update("textointeres", values, "idUsuario=?", new String[]{text.getUsuario()});
     }
 
     public int updateUsuario(Usuario user) {
@@ -308,11 +309,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.update("contacto", values, "idContacto=?", new String[]{contacto.getIdContacto()});
     }
 
-    public List<Contacto> getAllContactos(){
+    public List<Contacto> getAllContactos(int idUser){
         List<Contacto> contactoList = new ArrayList<Contacto>();
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM contacto WHERE activo='1'", null);
+        Cursor cursor = db.rawQuery("SELECT * FROM contacto WHERE activo=?", new String[]{String.valueOf(idUser)});
         if(cursor.moveToFirst()) {
             do {
                 Contacto contacto = new Contacto();
@@ -392,26 +393,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return superinterList;
     }
 
-    public List<Usuariointereses> getAllUsuarioIntereses() {
-        List<Usuariointereses> intereses = new ArrayList<Usuariointereses>();
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT * FROM usuariointereses", null);
-
-        if(cursor.moveToFirst()) {
-            do {
-                Usuariointereses uInteres = new Usuariointereses();
-                uInteres.setIdinteres(cursor.getString(0));
-                uInteres.setIdusuario(cursor.getString(1));
-                intereses.add(uInteres);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-
-        return intereses;
-    }
-
     public List<Intereses> getAllUserInterests(int idUser) {
         List<Intereses> interests = new ArrayList<Intereses>();
         SQLiteDatabase db = this.getWritableDatabase();
@@ -464,6 +445,25 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return usuarioList;
     }
 
+    public List<TextoInteres> getAllInterestTexts(int idUser) {
+        List<TextoInteres> textList = new ArrayList<TextoInteres>();
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM textointeres WHERE idUsuario=?", new String[] {String.valueOf(idUser)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                TextoInteres text = new TextoInteres();
+                text.setIdSuperInteres(cursor.getString(0));
+                text.setUsuario(cursor.getString(1));
+                text.setTexto(cursor.getString(2));
+                textList.add(text);
+            } while (cursor.moveToNext());
+        }
+
+        return textList;
+    }
+
     public Usuario getUser(String email) {
         SQLiteDatabase db = this.getReadableDatabase();
         Usuario usuario = new Usuario();
@@ -494,13 +494,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.delete("usuariointereses", null, null);
     }
 
+    public int deleteUserTextData() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        return db.delete("textointeres", null, null);
+    }
+
     public TextoInteres getTexto(String id){
         SQLiteDatabase db = this.getReadableDatabase();
         TextoInteres texto = new TextoInteres();
 
         Cursor cursor=db.query("textointeres", null, " idTexto=?", new String[]{id}, null, null, null);
         if(cursor.moveToFirst()){
-            texto.setIdTexto(cursor.getString(0));
+            texto.setIdSuperInteres(cursor.getString(0));
             texto.setUsuario(cursor.getString(1));
             texto.setTexto(cursor.getString(2));
         }

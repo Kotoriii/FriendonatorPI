@@ -17,10 +17,12 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,6 +91,9 @@ public class ProfileActivity extends Activity {
         // Set interests from Data Base
         InterestsMethods fillPerson = new InterestsMethods();
         person.setDataBaseInterest(fillPerson.getInterestFromDataBase(ProfileActivity.this, Integer.parseInt(person.getId())));
+
+        // Set getContactedBy from Data Base
+        person.setGetTextFieldInfo(fillPerson.getTextsFromDataBase(ProfileActivity.this, Integer.parseInt(person.getId())));
 
         // Locate the gridViewInterests TextView
         final GridView gridViewInterests = (GridView) findViewById(R.id.gridViewInterests);
@@ -200,7 +205,8 @@ public class ProfileActivity extends Activity {
                     // Finish activity
                     finish();
                 } else
-                    Toast.makeText(getApplication(), R.string.profileNameRequired, Toast.LENGTH_SHORT).show();
+                    customToast(getResources().getString(R.string.profileNameRequired));
+                    //Toast.makeText(getApplication(), R.string.profileNameRequired, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -215,64 +221,6 @@ public class ProfileActivity extends Activity {
                     showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), person.textValue(forDialog.getTitle()));
             }
         });
-
-/*
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-
-        final ListView drawer = (ListView) findViewById(R.id.drawer2);
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        //tres lineaas de codigo paraa la imgen del menu
-        NavList = (ListView) findViewById(R.id.drawer2);
-        //Declaramos el header el caul sera el layout de header.xml
-        View header = getLayoutInflater().inflate(R.layout.header, null);
-        //Establecemos header
-        NavList.addHeaderView(header);
-
-        //obtiene las imagenes desde el string.xml
-        NavIcons = getResources().obtainTypedArray(R.array.navigation_iconos);
-        //crea en arraylist de la clae Item_object que tiene imagen y texto
-        NavItms = new ArrayList<Item_objct>();
-        //Se procede a insertar las imagines y textos
-        NavItms.add(new Item_objct(opciones[0], NavIcons.getResourceId(0, -1)));
-        NavItms.add(new Item_objct(opciones[1], NavIcons.getResourceId(1, -1)));
-        NavItms.add(new Item_objct(opciones[2], NavIcons.getResourceId(2, -1)));
-        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(3, -1)));
-        NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
-        NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
-        //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
-        NavAdapter = new NavigationAdapter(this,NavItms);
-        NavList.setAdapter(NavAdapter);
-
-        drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                displayView(arg2);
-                drawerLayout.closeDrawers();
-
-            }
-        });
-
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.hello_world){
-            public void onDrawerClosed(View view) {
-                // Drawer cerrado
-                getActionBar().setTitle(getResources().getString(R.string.app_name));
-                //invalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                // Drawer abierto
-                getActionBar().setTitle("Menu");
-                //invalidateOptionsMenu();
-            }
-        };
-
-        drawerLayout.setDrawerListener(toggle);
-*/
-
-
-
     }
 
     public String BitMapToString(Bitmap bitmap){
@@ -394,6 +342,23 @@ public class ProfileActivity extends Activity {
         dialogInterestInfo.setInfo(tittle, message);
         // Show SelectInterest instance
         dialogInterestInfo.show(getFragmentManager(), "InterestInfo");
+    }
+
+    public void customToast(String message) {
+        LayoutInflater inflater = getLayoutInflater();
+
+        View layout = inflater.inflate(R.layout.customtoast,
+                (ViewGroup) findViewById(R.id.custom_toast_layout_id));
+
+        // Set a message
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(message);
+
+        // Toast
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setView(layout);
+        toast.show();
     }
 
    /* @Override

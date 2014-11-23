@@ -5,19 +5,19 @@ package Database;
  */
 public class TextoInteres {
 
-    String idTexto;
+    String idSuperInteres;
     String usuario;
     String texto;
 
     public TextoInteres() {
     }
 
-    public String getIdTexto() {
-        return idTexto;
+    public String getIdSuperInteres() {
+        return idSuperInteres;
     }
 
-    public void setIdTexto(String idTexto) {
-        this.idTexto = idTexto;
+    public void setIdSuperInteres(String idTexto) {
+        this.idSuperInteres = idTexto;
     }
 
     public String getUsuario() {

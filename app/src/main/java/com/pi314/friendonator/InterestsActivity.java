@@ -96,9 +96,10 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                 // Set optional fields into person
                 addTextToInterest();
 
-                // Insert interests to user
-                InterestsMethods insertInterests = new InterestsMethods();
-                insertInterests.insertInterests(InterestsActivity.this, person);
+                // Insert interests and optional text to user
+                InterestsMethods insert = new InterestsMethods();
+                insert.insertInterests(InterestsActivity.this, person);
+                insert.insertText(InterestsActivity.this, person);
 
                 // Create intent to open interests activity
                 Intent intent = new Intent(InterestsActivity.this, ProfileActivity.class);
@@ -123,53 +124,54 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
     }
 
     public void fillCheckBox() {
+        String [] interest = getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
         for (int key : person.getDataBaseInterest().keySet()) {
             if (key == 1) {
                 music.setChecked(true);
                 btnEditMusic.setVisibility(View.VISIBLE);
                 txtMusic.setVisibility(View.VISIBLE);
-                //txtMusic.setText(person.textValue(key));
+                txtMusic.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 2) {
                 literature.setChecked(true);
                 btnEditLiterature.setVisibility(View.VISIBLE);
                 txtLiterature.setVisibility(View.VISIBLE);
-                //txtLiterature.setText(person.textValue(key));
+                txtLiterature.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 3) {
                 movies.setChecked(true);
                 btnEditMovies.setVisibility(View.VISIBLE);
                 txtMovies.setVisibility(View.VISIBLE);
-                //txtMovies.setText(person.textValue(key));
+                txtMovies.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 4) {
                 art.setChecked(true);
                 btnEditArt.setVisibility(View.VISIBLE);
                 txtArt.setVisibility(View.VISIBLE);
-                //txtArt.setText(person.textValue(key));
+                txtArt.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 5) {
                 tvShow.setChecked(true);
                 btnEditTvShow.setVisibility(View.VISIBLE);
                 txtTvShow.setVisibility(View.VISIBLE);
-                //txtTvShow.setText(person.textValue(key));
+                txtTvShow.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 6) {
                 sports.setChecked(true);
                 btnEditSports.setVisibility(View.VISIBLE);
                 txtSports.setVisibility(View.VISIBLE);
-                //txtSports.setText(person.textValue(key));
+                txtSports.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 7) {
                 science.setChecked(true);
                 txtScience.setVisibility(View.VISIBLE);
-                //txtScience.setText(person.textValue(key));
+                txtScience.setText(person.textValue(interest[key - 1]));
             }
             else if (key == 8) {
                 lookingFor.setChecked(true);
                 btnEditLookingFor.setVisibility(View.VISIBLE);
                 txtLookingFor.setVisibility(View.VISIBLE);
-                //txtLookingFor.setText(person.textValue(key));
+                txtLookingFor.setText(person.textValue(interest[key - 1]));
             }
         }
     }
@@ -261,7 +263,10 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
             case R.id.checkBoxScience:
                 if (checked) {
                     txtScience.setVisibility(View.VISIBLE);
-                    person.fillInterestList(getResources().getString(R.string.selectInterestScience), new ArrayList<String>());
+                    int index = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(getResources().getString(R.string.selectInterestScience));
+                    List<Integer> science = new ArrayList<Integer>();
+                    science.add(48);
+                    person.fillDataBaseInterests(index + 1, science);
                 } else {
                     txtScience.setVisibility(View.GONE);
                     person.getDataBaseInterest().remove(7);
@@ -349,21 +354,21 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
         String sScience = txtScience.getText().toString();
         String sLookingFor = txtLookingFor.getText().toString();
 
-        if (!sMusic.isEmpty() && music.isChecked())
+        if (music.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestMusic), sMusic);
-        if (!sLiterature.isEmpty() && literature.isChecked())
+        if (literature.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestLiterature), sLiterature);
-        if (!sMovies.isEmpty() && movies.isChecked())
+        if (movies.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestMovies), sMovies);
-        if (!sArt.isEmpty() && art.isChecked())
+        if (art.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestArt), sArt);
-        if (!sTvShow.isEmpty() && tvShow.isChecked())
+        if (tvShow.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestTVShows), sTvShow);
-        if (!sSports.isEmpty() && sports.isChecked())
+        if (sports.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestSports), sSports);
-        if (!sScience.isEmpty() && science.isChecked())
+        if (science.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestScience), sScience);
-        if (!sLookingFor.isEmpty() && lookingFor.isChecked())
+        if (lookingFor.isChecked())
             person.fillTextFieldInfo(getResources().getString(R.string.selectInterestLookingFor), sLookingFor);
     }
 
@@ -380,9 +385,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
 
     @Override
     public void onDialogPositiveClick(String title, List<Integer> interestList) {
-        if (title.equals(getResources().getString(R.string.selectInterestLookingFor)) && interestList.isEmpty()) {
-        }
-        else {
+        if (!interestList.isEmpty()) {
             int index = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
             person.fillDataBaseInterests(index + 1, interestList);
             Log.i("===> ", "CHECKING ALL HASHMAPS");
@@ -396,9 +399,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
 
     @Override
     public void onDialogNegativeClick(List<Integer> mirrorList,  String title) {
-        if (title.equals(getResources().getString(R.string.selectInterestLookingFor)) && mirrorList.isEmpty()) {
-        }
-        else {
+        if (!mirrorList.isEmpty()) {
             int index = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
             person.fillDataBaseInterests(index, mirrorList);
         }
