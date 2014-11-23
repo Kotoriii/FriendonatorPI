@@ -1,16 +1,19 @@
 package com.pi314.friendonator;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 //import android.renderscript.ProgramStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
 
+import java.io.FileNotFoundException;
 import java.math.BigInteger;
 import java.security.Key;
 import java.util.HashMap;
@@ -47,6 +50,7 @@ public class FindMeTool extends Activity {
 
         //TODO remove!!
         final TextView txtService = (TextView) findViewById(R.id.txtServiceR);
+        final ImageView imgView = (ImageView) findViewById(R.id.imgFiewFindME);
         final Button btnRequest = (Button) findViewById(R.id.btnRequesS);
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,14 +59,8 @@ public class FindMeTool extends Activity {
                 if (!api.isConnected(FindMeTool.this))
                     api.activateWifi(FindMeTool.this);
 
-                String oo = "";
-                boolean pop = api.loginConServidor("3@23.com", "3");
-                if (pop) {
-                    oo += "login exitoso";
-                } else {
-                    oo += "login NO ";
-                }
-                txtService.setText(oo);
+                Bitmap oo = api.getImage("http://tupini07.pythonanywhere.com/media/imagenesUs/diagrama.png", FindMeTool.this);
+                imgView.setImageBitmap(oo);
             }
 
         });

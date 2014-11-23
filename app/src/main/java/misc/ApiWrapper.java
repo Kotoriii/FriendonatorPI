@@ -2,10 +2,15 @@ package misc;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 
 import org.apache.http.HttpResponse;
@@ -22,14 +27,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.Key;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
@@ -48,6 +59,7 @@ import Database.Superinteres;
 public class ApiWrapper {
     private String mResult = null; //Resultado del request, para request asincronicas
     private List<NameValuePair> mPostData = null; //datos a mandar durante el HttpAsyncPOSTTask
+    private Bitmap mBitmapHolder = null;
 
     /**
      * Devuelve True su el login es exitoso y false si no lo es.
@@ -143,6 +155,79 @@ public class ApiWrapper {
             e.printStackTrace();
         }
         return lstIntereses;
+    }
+
+    /**
+     * Devuelve la imagen don dicho url y la guarda en:
+     *      /data/data/com.pi314.friendonator/app_Friendonator/Pictures
+     * @param url
+     * @param act
+     * @return
+     */
+    public Bitmap getImage(String url, Activity act){
+
+        new HttpGetImage().execute(url);
+        int ss = 0;
+        while (mBitmapHolder == null) { //necesitamos esperar por la respuesta
+            try {
+                synchronized (this) {
+                    this.wait(200);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ss++;
+        }
+        Log.d("ApiWrapper", "waited " + ss + " cycles before response");
+        Bitmap btmp = null;
+        try {
+            btmp = mBitmapHolder;
+
+            Random rndm = new Random();
+            boolean salvada = false;
+            while(!salvada)
+            {
+                try {
+                    OutputStream fOut = null;
+                    // save image
+                    ContextWrapper cw = new ContextWrapper(act.getApplicationContext());
+                    // path to /data/data/yourapp/app_data/imageDir
+                    File directory = cw.getDir("Pictures", Context.MODE_PRIVATE);
+                    File file = new File(directory, rndm.nextLong()+".jpg"); // the File to save to
+                    fOut = new FileOutputStream(file);
+                    btmp.compress(Bitmap.CompressFormat.JPEG, 85, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+                    salvada = true;
+                    fOut.flush();
+                    fOut.close(); // do not forget to close the stream
+                    Log.v(getClass().getSimpleName(), "image directory path " + directory.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return btmp;
+    }
+
+    /**
+     * Devuelve la imagen q se encuentra en cierto path..
+     * no sabia donde poner el metodo :) pero por el momento se queda aqui
+     * @param path
+     * @return
+     */
+    public Bitmap loadImageFromStorage(String path){
+        Bitmap b = null;
+        try {
+            File f=new File(path, "profile.jpg");
+            b = BitmapFactory.decodeStream(new FileInputStream(f));
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        return b;
     }
 
     private JSONObject getRESTJSON(String URL) {
@@ -327,4 +412,28 @@ public class ApiWrapper {
             Log.v("ApiWrapper", "** POST execute HttpAsyncPOSTTask ** \n" + result);
         }
     }
+
+    private class HttpGetImage extends AsyncTask<String, Void, Bitmap> {
+        @Override
+        protected Bitmap doInBackground(String... urls) {
+            mBitmapHolder = null;
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            mBitmapHolder = mIcon11;
+            return mBitmapHolder;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            Log.v("ApiWrapper", "** POST execute HTTPGETIMAGE ** \n");
+        }
+    }
+
 }

@@ -85,8 +85,12 @@ public class BluetoothHandler {
         }catch (Exception e){
             Log.d("BluetoothFR", "Reciever wasn't registered");
         }
-        mAct.registerReceiver(getReceiver(), filter);
-        registered = true;
+        try {
+            mAct.registerReceiver(getReceiver(), filter);
+            registered = true;
+        }catch (Exception e){
+            Log.e("BluetoothFR", "Register is trying to register on top of another");
+        }
     }
 
     public void setUnlimitedVisibility() {
@@ -414,6 +418,8 @@ public class BluetoothHandler {
                     //TODO sacar usuario de la base de datos
                     Person testUsuario = (Person) mAct.getIntent().getSerializableExtra("PERSON");
                     Log.v("BluetoothFr", "Person " + testUsuario);
+
+
 
                     ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
                     oos.writeObject(testUsuario);
