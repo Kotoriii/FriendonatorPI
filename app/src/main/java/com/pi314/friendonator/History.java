@@ -74,7 +74,12 @@ public class History extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                  int id1 = datos.get(position).getId();
-                 ToastCostumizado(""+id1);
+                 //ToastCostumizado(""+id1);
+                Intent intent = new Intent(History.this, MatchProfileActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("ID", id1);
+                intent.putExtras(b);
+                startActivity(intent);
            }
         });
 
