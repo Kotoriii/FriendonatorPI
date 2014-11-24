@@ -24,6 +24,8 @@
     <string name="btnEditSports">Edit sports interest</string>
     <string name="btnEditLookingFor">Edit looking for interest</string>
     <string name="profileNameRequired">A profile name is required</string>
+    <string name="setInterests">Set your interests to continue</string>
+    <string name="setContactedBy">Set your Contact preferences to continue</string>
 
     <string name="title_activity_interests">Interests</string>
     <string name="lblInterestsL">Interest</string>
@@ -45,6 +47,7 @@
     <string name="txtLookingFor">Type your aim to find (optional)</string>
     <string name="btnSaveInterestsChanges">Save Interests</string>
     <string name="whatILike">What I like about</string>
+    <string name="interestRequired">Please select an interest</string>
 
     <string name="title_activity_get_contacted_by">Get Contacted By</string>
     <string name="lblContact">Contact me</string>
@@ -71,6 +74,7 @@
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="textRequired">Selected fields must be filled</string>
+    <string name="contactRequired">Please select a contact</string>
 
     <string name="title_activity_home">Home</string>
     <string name="lblMatchhome">Female Doge</string>
@@ -120,5 +124,7 @@
     <string name="imageMatch">Match Image</string>
     <string name="lblMatchInterests">Interests</string>
     <string name="lblMatchContactedBy">Get contacted by</string>
+    <string name="matchPercentage">Match: </string>
+    <string name="categoryPercentage">Category match: </string>
 
  </resources>

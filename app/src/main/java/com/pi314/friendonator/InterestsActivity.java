@@ -4,13 +4,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pi314.interests.InterestsMethods;
 
@@ -87,34 +92,37 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
         // Get object person from intent extras
         setPerson();
 
-        // Fill checkboxes previously set
+        // Fill checkboxes previously selected
         fillCheckBox();
 
         btnSaveInterestsChanges.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Set optional fields into person
-                addTextToInterest();
+                if (!person.getDataBaseInterest().isEmpty()) {
+                    // Set optional fields into person
+                    addTextToInterest();
 
-                // Insert interests and optional text to user
-                InterestsMethods insert = new InterestsMethods();
-                insert.insertInterests(InterestsActivity.this, person);
-                insert.insertText(InterestsActivity.this, person);
+                    // Insert interests and optional text to user
+                    InterestsMethods insert = new InterestsMethods();
+                    insert.insertInterests(InterestsActivity.this, person);
+                    insert.insertText(InterestsActivity.this, person);
 
-                // Create intent to open interests activity
-                Intent intent = new Intent(InterestsActivity.this, ProfileActivity.class);
+                    // Create intent to open interests activity
+                    Intent intent = new Intent(InterestsActivity.this, ProfileActivity.class);
 
-                // Put bundle inside intent
-                intent.putExtra("PERSON", person);
+                    // Put bundle inside intent
+                    intent.putExtra("PERSON", person);
 
-                // Start change to a new layout
-                startActivity(intent);
+                    // Start change to a new layout
+                    startActivity(intent);
 
-                // Finish activity
-                finish();
+                    // Finish activity
+                    finish();
 
-                // Slide animation
-                overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+                    // Slide animation
+                    overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+                } else
+                    customToast(getResources().getString(R.string.interestRequired));
             }
         });
     }
@@ -124,6 +132,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
     }
 
     public void fillCheckBox() {
+        // Fill previously selected interests
         String [] interest = getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
         for (int key : person.getDataBaseInterest().keySet()) {
             if (key == 1) {
@@ -291,6 +300,7 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
     public void onPencilClicked(View v) {
         Boolean clicked = v.isClickable();
 
+        // Check which pencil was clicked and call the interest selection dialog
         switch (v.getId()){
             case R.id.btnEditMusic:
                 if (clicked && music.isChecked()) {
@@ -345,31 +355,23 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
     }
 
     public void addTextToInterest() {
-        String sMusic = txtMusic.getText().toString();
-        String sLiterature = txtLiterature.getText().toString();
-        String sMovies = txtMovies.getText().toString();
-        String sArt = txtArt.getText().toString();
-        String sTvShow = txtTvShow.getText().toString();
-        String sSports = txtSports.getText().toString();
-        String sScience = txtScience.getText().toString();
-        String sLookingFor = txtLookingFor.getText().toString();
-
-        if (music.isChecked())
-            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestMusic), sMusic);
-        if (literature.isChecked())
-            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestLiterature), sLiterature);
-        if (movies.isChecked())
-            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestMovies), sMovies);
-        if (art.isChecked())
-            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestArt), sArt);
-        if (tvShow.isChecked())
-            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestTVShows), sTvShow);
-        if (sports.isChecked())
-            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestSports), sSports);
-        if (science.isChecked())
-            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestScience), sScience);
-        if (lookingFor.isChecked())
-            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestLookingFor), sLookingFor);
+        // Fill interests optional texts hash map
+        if (music.isChecked() && !txtMusic.getText().toString().isEmpty())
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestMusic), txtMusic.getText().toString());
+        if (literature.isChecked() && !txtLiterature.getText().toString().isEmpty())
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestLiterature), txtLiterature.getText().toString());
+        if (movies.isChecked() && !txtMovies.getText().toString().isEmpty())
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestMovies), txtMovies.getText().toString());
+        if (art.isChecked() && !txtArt.getText().toString().isEmpty())
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestArt), txtArt.getText().toString());
+        if (tvShow.isChecked() && !txtTvShow.getText().toString().isEmpty())
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestTVShows), txtTvShow.getText().toString());
+        if (sports.isChecked() && !txtSports.getText().toString().isEmpty())
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestSports), txtSports.getText().toString());
+        if (science.isChecked() && !txtScience.getText().toString().isEmpty())
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestScience), txtScience.getText().toString());
+        if (lookingFor.isChecked() && !txtLookingFor.getText().toString().isEmpty())
+            person.fillTextFieldInfo(getResources().getString(R.string.selectInterestLookingFor), txtLookingFor.getText().toString());
     }
 
     public void showNoticeDialog(String title, String[] choices) {
@@ -385,24 +387,39 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
 
     @Override
     public void onDialogPositiveClick(String title, List<Integer> interestList) {
+        // Set selected interest into hash map
         if (!interestList.isEmpty()) {
             int index = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
             person.fillDataBaseInterests(index + 1, interestList);
-            Log.i("===> ", "CHECKING ALL HASHMAPS");
-            for (Map.Entry<Integer, List<Integer>> entry : person.getDataBaseInterest().entrySet()) {
-                Log.i("===> ", "***********************");
-                Log.i("===> ", "Title " + entry.getKey());
-                Log.i("===> ", "Values " + entry.getValue());
-            }
         }
     }
 
     @Override
     public void onDialogNegativeClick(List<Integer> mirrorList,  String title) {
+        // Keeps old selected interest in hash map
         if (!mirrorList.isEmpty()) {
             int index = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
-            person.fillDataBaseInterests(index, mirrorList);
+            person.fillDataBaseInterests(index + 1, mirrorList);
         }
+    }
+
+    public void customToast(String message) {
+        // Toast for validates messages when save button is clicked
+        LayoutInflater inflater = getLayoutInflater();
+
+        View layout = inflater.inflate(R.layout.customtoast,
+                (ViewGroup) findViewById(R.id.custom_toast_layout_id));
+
+        // Set a message
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(message);
+
+        // Toast
+        Toast toast = new Toast(getApplicationContext());
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 250);
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 
     @Override

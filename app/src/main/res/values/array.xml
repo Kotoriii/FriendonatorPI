@@ -67,7 +67,7 @@
     </string-array>
 
     <string-array name="science">
-        <item>Science</item>
+        <item>General Science</item>
     </string-array>
 
     <string-array name="lookingFor">
@@ -92,6 +92,17 @@
         <item>Facebook</item>
         <item>Twitter</item>
     </string-array>
+
+    <array name="dialogeIcon">
+        <item>@drawable/ic_music</item>
+        <item>@drawable/ic_literature</item>
+        <item>@drawable/ic_movie</item>
+        <item>@drawable/ic_art</item>
+        <item>@drawable/ic_tv_show</item>
+        <item>@drawable/ic_sports</item>
+        <item>@drawable/ic_science</item>
+        <item>@drawable/ic_looking_for</item>
+    </array>
 
     <string-array name="event_array">
         <item>Hang Out</item>

@@ -17,6 +17,7 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Base64;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,13 +88,6 @@ public class ProfileActivity extends Activity {
 
         // Set user name
         textName();
-
-        // Set interests from Data Base
-        InterestsMethods fillPerson = new InterestsMethods();
-        person.setDataBaseInterest(fillPerson.getInterestFromDataBase(ProfileActivity.this, Integer.parseInt(person.getId())));
-
-        // Set getContactedBy from Data Base
-        person.setGetTextFieldInfo(fillPerson.getTextsFromDataBase(ProfileActivity.this, Integer.parseInt(person.getId())));
 
         // Locate the gridViewInterests TextView
         final GridView gridViewInterests = (GridView) findViewById(R.id.gridViewInterests);
@@ -213,12 +207,9 @@ public class ProfileActivity extends Activity {
         gridViewInterests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*String title = getTitle(position);
-                if (!title.isEmpty() && person.textValue(title) != null)
-                    showInterestInfoDialog(textFavoriteType(title), person.textValue(title));*/
                 GridObject forDialog = gridList.get(position);
                 if (!forDialog.getTitle().isEmpty() && person.textValue(forDialog.getTitle()) != null)
-                    showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), person.textValue(forDialog.getTitle()));
+                    showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), person.textValue(forDialog.getTitle()), forDialog.getTitle());
             }
         });
     }
@@ -282,14 +273,14 @@ public class ProfileActivity extends Activity {
                 object = new GridObject();
             }
         }
-
+/*
         Collections.sort(gridList, new Comparator<GridObject>() {
             @Override
             public int compare(GridObject lhs, GridObject rhs) {
                 return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
             }
         });
-
+*/
         return gridList;
     }
 
@@ -300,13 +291,15 @@ public class ProfileActivity extends Activity {
 
         if (person != null && !person.getGetContactedByList().isEmpty()) {
             for (Map.Entry<String, String> entry : person.getGetContactedByList().entrySet()) {
-                contactedByList = "";
-                object = new GridObject();
-                contactedByList = entry.getKey();
-                object.setTitle(contactedByList);
-                contactedByList = entry.getValue();
-                object.setGenres(contactedByList);
-                contactedBy.add(object);
+                if (!entry.getValue().isEmpty()) {
+                    contactedByList = "";
+                    object = new GridObject();
+                    contactedByList = entry.getKey();
+                    object.setTitle(contactedByList);
+                    contactedByList = entry.getValue();
+                    object.setGenres(contactedByList);
+                    contactedBy.add(object);
+                }
             }
         }
 
@@ -335,16 +328,17 @@ public class ProfileActivity extends Activity {
         return good;
     }
 
-    public void showInterestInfoDialog(String tittle, String message) {
+    public void showInterestInfoDialog(String tittle, String message, String tittleIcon) {
         // Create an instance of dialogInterestInfo
         InterestInfo dialogInterestInfo = new InterestInfo();
         // Set tittle and description
-        dialogInterestInfo.setInfo(tittle, message);
+        dialogInterestInfo.setInfo(tittle, message, tittleIcon);
         // Show SelectInterest instance
         dialogInterestInfo.show(getFragmentManager(), "InterestInfo");
     }
 
     public void customToast(String message) {
+        // Toast for validates messages when save button is clicked
         LayoutInflater inflater = getLayoutInflater();
 
         View layout = inflater.inflate(R.layout.customtoast,
@@ -356,7 +350,8 @@ public class ProfileActivity extends Activity {
 
         // Toast
         Toast toast = new Toast(getApplicationContext());
-        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 200);
+        toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
     }
