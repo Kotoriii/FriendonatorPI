@@ -165,7 +165,7 @@ public class ApiWrapper {
      * @return
      */
     public Bitmap getImage(String url, Activity act){
-
+        //TODO el request sigue ejecutandose incluso si no esta conectado a internet
         new HttpGetImage().execute(url);
         int ss = 0;
         while (mBitmapHolder == null) { //necesitamos esperar por la respuesta
@@ -183,9 +183,13 @@ public class ApiWrapper {
         try {
             btmp = mBitmapHolder;
 
+
             Random rndm = new Random();
             boolean salvada = false;
-            while(!salvada)
+            while(salvada) //TODO nunca entra, arreglar cuando necesario
+            //por el momento no queremos que guarde una imagen
+            //mil veces ya que se esta probando con una imagen dummy,
+            //nada necesario de guardar
             {
                 try {
                     OutputStream fOut = null;
