@@ -63,10 +63,6 @@ public class HomeActivity extends Activity {
         // Set user name
         textName();
 
-        // Set interests from Data Base
-        InterestsMethods fillPerson = new InterestsMethods();
-        person.setDataBaseInterest(fillPerson.getInterestFromDataBase(HomeActivity.this, Integer.parseInt(person.getId())));
-
         //onItemSelected();
 
         final TextView btnprofile = (TextView) findViewById(R.id.lblProfileName);

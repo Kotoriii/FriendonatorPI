@@ -37,31 +37,20 @@ public class History extends Activity {
         //Se crean ls personajes
         datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Carlos", "78" + "%", 78));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Mack", "87" + "%", 87));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Mack", "87" + "%", 4));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Tupini", "80" + "%", 80));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Tupini", "80" + "%", 34));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Alejandro", "75" + "%", 75));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Alejandro", "75" + "%", 67));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Fernando", "82" + "%", 82));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Fernando", "82" + "%", 89));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Warren", "90" + "%", 90));
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Warren", "90" + "%", 23));
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Vicky", "69" + "%", 69));
-
-
-        //Ordenacion de testeo
-     /*Collections.sort(datos, new Comparator<ListaEntrada_History>() {
-            @Override
-            public int compare(ListaEntrada_History L1, ListaEntrada_History L2) {
-                // Aqui esta el truco, ahora comparamos p2 con p1 y no al reves como antes
-                return new Integer(L2.getPercentageInt()).compareTo(new Integer(L1.getPercentageInt()));
-            }
-        });*/
-        //Termina logica de ordenaacion de testeo
+        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Vicky", "69" + "%", 45));
 
 
-        ListView historyList = (ListView) findViewById(R.id.ListView_listado_history);
+        final ListView historyList = (ListView) findViewById(R.id.ListView_listado_history);
         historyList.setAdapter(new Lista_History(this, R.layout.entrada_history, datos) {
             @Override
             public void onEntrada(Object entrada, View view) {
@@ -78,12 +67,20 @@ public class History extends Activity {
                     ImageView imgProfile = (ImageView) view.findViewById(R.id.imageView_imagen);
                     if (imgProfile != null)
                         imgProfile.setImageResource(((ListaEntrada_History) entrada).getImage());
-
-                    ProgressBar progreesMatch = (ProgressBar) findViewById(R.id.progressBarPercentage);
-                    if (progreesMatch != null)
-                        progreesMatch.setProgress(((ListaEntrada_History) entrada).getPercentage1()-1);
                 }
             }
+        });
+        historyList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                 int id1 = datos.get(position).getId();
+                 //ToastCostumizado(""+id1);
+                Intent intent = new Intent(History.this, MatchProfileActivity.class);
+                Bundle b = new Bundle();
+                b.putInt("ID", id1);
+                intent.putExtras(b);
+                startActivity(intent);
+           }
         });
 
     }
@@ -166,8 +163,6 @@ public class History extends Activity {
                     ImageView imgProfile = (ImageView) view.findViewById(R.id.imageView_imagen);
                     if (imgProfile != null)
                         imgProfile.setImageResource(((ListaEntrada_History) entrada).getImage());
-
-                    ProgressBar progreesMatch = (ProgressBar) findViewById(R.id.progressBarPercentage);
                 }
             }
         });
@@ -195,8 +190,6 @@ public class History extends Activity {
                     ImageView imgProfile = (ImageView) view.findViewById(R.id.imageView_imagen);
                     if (imgProfile != null)
                         imgProfile.setImageResource(((ListaEntrada_History) entrada).getImage());
-
-                    ProgressBar progreesMatch = (ProgressBar) findViewById(R.id.progressBarPercentage);
                 }
             }
         });

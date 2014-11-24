@@ -36,11 +36,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             ")";
 
     String createHist = "CREATE TABLE historial (" +
+            "idMatch INTEGER," +
             "idUsuario INTEGER," +
+            "matchPerc INTEGER," +
             "latitud VARCHAR," +
             "longitud VARCHAR," +
-            "fecha VARCHAR," +
-            "PRIMARY KEY (idUsuario)" +
+            "fecha VARCHAR," + // ToDo should use DataTime or equivalent
+            "PRIMARY KEY (idMatch, idUsuario)" +
             "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)" +
             ")";
 
@@ -152,10 +154,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public void insertHistorial(Historial hist) {
+    public void insertHistorial(Historial hist) { // ToDo change this to match the new table values
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("idMatch", hist.getIdMatch());
+        values.put("idUsuario", hist.getIdusuario());
+        values.put("matchPerc", hist.getMatchPerc());
         values.put("fecha", hist.getFecha());
         values.put("latitud", hist.getLatitud());
         values.put("longitud", hist.getLongitud());
@@ -229,15 +234,16 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public int updateHistorial(Historial hist) {
+    public int updateHistorial(Historial hist) { // ToDo change this to match the new table values
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("matchPerc", hist.getMatchPerc());
         values.put("fecha", hist.getFecha());
         values.put("latitud", hist.getLatitud());
         values.put("longitud", hist.getLongitud());
 
-        return db.update("historial", values, "idUsuario=?", new String[]{hist.getIdusuario()});
+        return db.update("historial", values, "idMatch=?", new String[]{hist.getIdMatch()});
     }
 
     public int updateInteres(Intereses intereses) {
@@ -331,7 +337,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     }
 
-    public List<Historial> getAllHistorial() {
+    public List<Historial> getAllHistorial() { // ToDo change this to match the new table values
         List<Historial> historialList = new ArrayList<Historial>();
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -340,10 +346,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()) {
             do {
                 Historial historial = new Historial();
-                historial.setIdusuario(cursor.getString(0));
-                historial.setFecha(cursor.getString(1));
-                historial.setLatitud(cursor.getString(2));
-                historial.setLongitud(cursor.getString(3));
+                historial.setIdMatch(cursor.getString(0));
+                historial.setIdusuario(cursor.getString(1));
+                historial.setMatchPerc(cursor.getString(2));
+                historial.setLatitud(cursor.getString(3));
+                historial.setLongitud(cursor.getString(4));
+                historial.setFecha(cursor.getString(5));
                 historialList.add(historial);
             } while (cursor.moveToNext());
         }
@@ -351,27 +359,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return historialList;
-    }
-
-    public List<Intereses> getAllIntereses() {
-        List<Intereses> interesesList = new ArrayList<Intereses>();
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        Cursor cursor = db.rawQuery("SELECT * FROM intereses", null);
-
-        if(cursor.moveToFirst()) {
-            do {
-                Intereses intereses = new Intereses();
-                intereses.setId(cursor.getString(0));
-                intereses.setIdsuperinteres(cursor.getString(1));
-                intereses.setDescripcion(cursor.getString(2));
-                interesesList.add(intereses);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-
-        return interesesList;
     }
 
     public List<Superinteres> getAllSuperinter() {
@@ -489,6 +476,31 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return usuario;
     }
 
+    public Usuario getUserByID(int userId) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Usuario usuario = new Usuario();
+
+        Cursor cursor=db.query("usuario", null, "idUsuario=?", new String[]{String.valueOf(userId)}, null, null, null);
+        if(cursor.moveToFirst()){
+            usuario.setId(cursor.getString(0));
+            usuario.setNombre(cursor.getString(1));
+            usuario.setDob(cursor.getString(2));
+            usuario.setCorreo(cursor.getString(3));
+            usuario.setPassword(cursor.getString(4));
+            usuario.setNum(cursor.getString(5));
+            usuario.setFb(cursor.getString(6));
+            usuario.setGplus(cursor.getString(7));
+            usuario.setTwitter(cursor.getString(8));
+            usuario.setModfav(cursor.getString(9));
+            usuario.setFoto(cursor.getString(10));
+            usuario.setMatchp(cursor.getString(11));
+        }
+
+        cursor.close();
+
+        return usuario;
+    }
+
     public int deleteUserInterestData() {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete("usuariointereses", null, null);
@@ -512,6 +524,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         cursor.close();
 
         return texto;
+    }
+
+    public int updateUserContacts(Usuario user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("numero_telefono", user.getNum());
+        values.put("facebook", user.getFb());
+        values.put("google_p", user.getGplus());
+        values.put("Twitter", user.getTwitter());
+
+        return db.update("usuario", values, "idUsuario=?", new String[]{user.getId()});
     }
 
 }

@@ -3,7 +3,6 @@
 <resources>
 
     <string name="app_name">Friendonator</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Preferencias</string>
 
     <string name="title_activity_profile">Perfil</string>
@@ -11,10 +10,10 @@
     <string name="txtProfileName">Nombre</string>
     <string name="btnProfileImage">Foto de perfil</string>
     <string name="lblInterests">Intereses</string>
-    <string name="lblGetContactedBy">Contactame por</string>
+    <string name="lblGetContactedBy">Contáctame por</string>
     <string name="btnSaveChanges">Guardar Cambios</string>
     <string name="btnChooseInterest">Editar</string>
-    <string name="lblInterestsList">Escogé tus preferencias</string>
+    <string name="lblInterestsList">Escogé tus intereses</string>
     <string name="btnChooseContact">Editar</string>
     <string name="lblContactedByList">Escogé tus preferencias de contacto</string>
     <string name="btnEditMusic">Editar música</string>
@@ -25,6 +24,8 @@
     <string name="btnEditSports">Editar deportes</string>
     <string name="btnEditLookingFor">Editar preferencias de búsqueda</string>
     <string name="profileNameRequired">Nombre de perfil requerido</string>
+    <string name="setInterests">Escogé tus intereses para continuar </string>
+    <string name="setContactedBy">Escogé tus preferencias de contacto para continuar</string>
 
     <string name="title_activity_interests">Intereses</string>
     <string name="lblInterestsL">Intereses</string>
@@ -45,7 +46,8 @@
     <string name="lblLookingFor">Busco</string>
     <string name="txtLookingFor">Ingresá qué estás buscando con esta aplicación (optional)</string>
     <string name="btnSaveInterestsChanges">Guardar intereses</string>
-    <string name="whatILike">Me gusta:</string>
+    <string name="whatILike">Me gusta sobre</string>
+    <string name="interestRequired">Por favor seleccione un interes</string>
 
     <string name="title_activity_get_contacted_by">Me podés contactar por:</string>
     <string name="lblContact">Contáctame</string>
@@ -72,6 +74,7 @@
     <string name="cancel">Cancelar</string>
     <string name="ok">OK</string>
     <string name="textRequired">Campos seleccionados deben ser llenados</string>
+    <string name="contactRequired">Por favor seleccione un medio para ser contactado</string>
 
     <string name="title_activity_home">Página principal</string>
     <string name="lblMatchhome">Female Doge</string>
@@ -120,6 +123,8 @@
     <string name="btnClose">Cerrar perfil</string>
     <string name="imageMatch">Imagen de Match</string>
     <string name="lblMatchInterests">Intereses</string>
-    <string name="lblMatchContactedBy">Contáctame por:</string>
+    <string name="lblMatchContactedBy">Contáctame por</string>
+    <string name="matchPercentage">Match: </string>
+    <string name="categoryPercentage">Match por categoría: </string>
 
 </resources>
