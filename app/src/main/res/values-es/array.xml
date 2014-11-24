@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="movies">
+        <item>Acción</item>
+        <item>Suspenso</item>
+        <item>Romantica</item>
+        <item>Comedia</item>
+        <item>Fantassia</item>
+        <item>Historia</item>
+        <item>Terror</item>
+        <item>Ciencia Ficción</item>
+    </string-array>
+
+    <string-array name="literature">
+        <item>Novela</item>
+        <item>Drama</item>
+        <item>Poesía</item>
+        <item>Romance</item>
+        <item>Comedia</item>
+        <item>Ficción</item>
+        <item>Fantasía</item>
+        <item>Mitología</item>
+    </string-array>
+
+    <string-array name="music">
+        <item>Rock</item>
+        <item>Jazz</item>
+        <item>Blues</item>
+        <item>Clásica</item>
+        <item>Hip Hop</item>
+        <item>Electrónica</item>
+        <item>Pop</item>
+        <item>Romantica</item>
+    </string-array>
+
+    <string-array name="art">
+        <item>Retrato</item>
+        <item>Paisaje</item>
+        <item>Conceptuales</item>
+        <item>Modernismo</item>
+        <item>Crítica</item>
+        <item>Neoclásico</item>
+        <item>Clásico</item>
+        <item>Expressionismo</item>
+    </string-array>
+
+    <string-array name="tvShows">
+        <item>Telenovela</item>
+        <item>Sitcom</item>
+        <item>Deportes</item>
+        <item>Documental</item>
+        <item>Noticias</item>
+        <item>Reality</item>
+        <item>Cocina</item>
+        <item>Drama</item>
+    </string-array>
+
+    <string-array name="sports">
+        <item>Artes Marciales Mixtas</item>
+        <item>Escalada</item>
+        <item>Gimnasia</item>
+        <item>Ciclismo</item>
+        <item>Correr</item>
+        <item>Tenis</item>
+        <item>Basketball</item>
+        <item>Fútbol</item>
+    </string-array>
+
+    <string-array name="science">
+        <item>Ciencia en general</item>
+    </string-array>
+
+    <string-array name="lookingFor">
+        <item>Hombre</item>
+        <item>Mujer</item>
+    </string-array>
+
+    <string-array name="identifyInterests">
+        <item>Musica</item>
+        <item>Literatura</item>
+        <item>Peliculas</item>
+        <item>Arte</item>
+        <item>Shows de TV</item>
+        <item>Deportes</item>
+        <item>Ciencia</item>
+        <item>Busco</item>
+    </string-array>
+
+    <string-array name="identifyContact">
+        <item>Teléfono</item>
+        <item>Google+</item>
+        <item>Facebook</item>
+        <item>Twitter</item>
+    </string-array>
+
+    <array name="dialogeIcon">
+        <item>@drawable/ic_music</item>
+        <item>@drawable/ic_literature</item>
+        <item>@drawable/ic_movie</item>
+        <item>@drawable/ic_art</item>
+        <item>@drawable/ic_tv_show</item>
+        <item>@drawable/ic_sports</item>
+        <item>@drawable/ic_science</item>
+        <item>@drawable/ic_looking_for</item>
+    </array>
+
+    <string-array name="event_array">
+        <item>Hang Out</item>
+        <item>Concert</item>
+        <item>Art</item>
+        <item>Literature</item>
+        <item>Party</item>
+    </string-array>
+</resources>
