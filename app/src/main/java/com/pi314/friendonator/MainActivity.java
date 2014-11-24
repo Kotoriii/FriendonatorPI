@@ -55,7 +55,6 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final Button btnPerfil = (Button)findViewById(R.id.btnPerfil);
         final Button btnHome = (Button)findViewById(R.id.btnHome);
 
         //getApplicationContext().deleteDatabase("BaseFriendonator");
@@ -64,16 +63,6 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 
         // Insert of all interests for the first time
         initialDataBaseInserts();
-
-        btnPerfil.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create the Intent element
-                Intent intent = new Intent(MainActivity.this,
-                        ProfileActivity.class);
-                startActivity(intent);
-            }
-        });
 
         btnHome.setOnClickListener(new OnClickListener() {
             @Override

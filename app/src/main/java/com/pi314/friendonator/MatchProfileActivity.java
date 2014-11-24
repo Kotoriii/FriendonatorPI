@@ -78,8 +78,8 @@ public class MatchProfileActivity extends Activity {
         int percentage = (int) Math.floor(match.getMatchPercentage(person, matchPerson));
         int specialPercentage = (int) Math.floor(match.specialMatchResult(eventSelected, person, matchPerson));
 
-        lblMatchPercentage.setText("Match: " + percentage + " %");
-        lblSpecialMatch.setText("Category match: " + specialPercentage + " %");
+        lblMatchPercentage.setText(getResources().getString(R.string.matchPercentage) + percentage + " %");
+        lblSpecialMatch.setText(getResources().getString(R.string.categoryPercentage) + specialPercentage + " %");
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,7 +127,7 @@ public class MatchProfileActivity extends Activity {
         genres3.add(18);
         genres3.add(22);
 
-        interests.put(1,genres);
+        interests.put(1, genres);
         interests.put(3, genres3);
         interests.put(6, genres2);
 
@@ -166,14 +166,14 @@ public class MatchProfileActivity extends Activity {
                 object = new GridObject();
             }
         }
-
+/*
         Collections.sort(gridList, new Comparator<GridObject>() {
             @Override
             public int compare(GridObject lhs, GridObject rhs) {
                 return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
             }
         });
-
+*/
         return gridList;
     }
 
@@ -183,14 +183,16 @@ public class MatchProfileActivity extends Activity {
         GridObject object = new GridObject();
 
         if (matchPerson != null && !matchPerson.getGetContactedByList().isEmpty()) {
-            for (Map.Entry<String, String> entry : matchPerson.getGetContactedByList().entrySet()) {
-                contactedByList = "";
-                object = new GridObject();
-                contactedByList = entry.getKey();
-                object.setTitle(contactedByList);
-                contactedByList = entry.getValue();
-                object.setGenres(contactedByList);
-                contactedBy.add(object);
+            for (Map.Entry<String, String> entry : person.getGetContactedByList().entrySet()) {
+                if (!entry.getValue().isEmpty()) {
+                    contactedByList = "";
+                    object = new GridObject();
+                    contactedByList = entry.getKey();
+                    object.setTitle(contactedByList);
+                    contactedByList = entry.getValue();
+                    object.setGenres(contactedByList);
+                    contactedBy.add(object);
+                }
             }
         }
 

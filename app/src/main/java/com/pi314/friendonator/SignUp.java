@@ -2,9 +2,11 @@ package com.pi314.friendonator;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -43,14 +45,18 @@ public class SignUp extends Activity {
                 Usuario checkEmail = db.getUser(userName);
 
                 if (userName.equals("") || password.equals("") || confirmPassword.equals("")) {
-                    Toast.makeText(getApplicationContext(), R.string.toastEmptyField, Toast.LENGTH_LONG).show();
+                    customToast(getResources().getString(R.string.toastEmptyField));
+                    //Toast.makeText(getApplicationContext(), R.string.toastEmptyField, Toast.LENGTH_LONG).show();
                 } else if (userName.equals(checkEmail.getPassword())) {
-                    Toast.makeText(getApplicationContext(), R.string.toastEmail, Toast.LENGTH_LONG).show();
+                    customToast(getResources().getString(R.string.toastEmail));
+                    //Toast.makeText(getApplicationContext(), R.string.toastEmail, Toast.LENGTH_LONG).show();
                 } else if (!password.equals(confirmPassword)) {
                     // check if both password matches
-                    Toast.makeText(getApplicationContext(), R.string.toastPassword, Toast.LENGTH_LONG).show();
+                    customToast(getResources().getString(R.string.toastPassword));
+                    //Toast.makeText(getApplicationContext(), R.string.toastPassword, Toast.LENGTH_LONG).show();
                 } else if (!isEmail(userName)) {
-                    Toast.makeText(getApplicationContext(), R.string.toastCheckEmail, Toast.LENGTH_LONG).show();
+                    customToast(getResources().getString(R.string.toastCheckEmail));
+                    //Toast.makeText(getApplicationContext(), R.string.toastCheckEmail, Toast.LENGTH_LONG).show();
                 } else {
                     Usuario usuario = new Usuario();
                     usuario.setCorreo(userName);
@@ -59,7 +65,8 @@ public class SignUp extends Activity {
                     // Save the Data in Database
                     db.insertUsuario(usuario);
 
-                    Toast.makeText(getApplicationContext(), R.string.toastAccountSuccess, Toast.LENGTH_LONG).show();
+                    customToast(getResources().getString(R.string.toastAccountSuccess));
+                    //Toast.makeText(getApplicationContext(), R.string.toastAccountSuccess, Toast.LENGTH_LONG).show();
 
                     // Close SignUp
                     finish();
@@ -78,6 +85,24 @@ public class SignUp extends Activity {
 
     public boolean isEmail(CharSequence email) {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    public void customToast(String message) {
+        // Toast for validate messages and successfully registered
+        LayoutInflater inflater = getLayoutInflater();
+
+        View layout = inflater.inflate(R.layout.customtoast,
+                (ViewGroup) findViewById(R.id.custom_toast_layout_id));
+
+        // Set a message
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(message);
+
+        // Toast
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 
     @Override

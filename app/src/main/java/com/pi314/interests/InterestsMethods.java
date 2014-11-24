@@ -6,12 +6,16 @@ import android.util.Log;
 import com.pi314.friendonator.Person;
 import com.pi314.friendonator.R;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
+import Database.Historial;
 import Database.Intereses;
 import Database.SQLiteHelper;
 import Database.Superinteres;
@@ -23,6 +27,7 @@ import GridView.GridObject;
 public class InterestsMethods {
 
     public HashMap<Integer, List<Integer>> getInterestFromDataBase(Context context, int idUser) {
+        // Make interests hashMap from Data Base to fill person interests using its id
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
         List<Integer> superId = new ArrayList<Integer>();
         List<Integer> valuesId = new ArrayList<Integer>();
@@ -52,6 +57,7 @@ public class InterestsMethods {
     }
 
     public String getInterestsStrings(Context context,int interest, List<Integer> value) {
+        // Method to convert genres id to its respective string
         String [] values = new String[8];
         int subtractRealID = 0;
 
@@ -103,6 +109,7 @@ public class InterestsMethods {
     }
 
     public HashMap<String, String> getTextsFromDataBase(Context context, int idUser) {
+        // Make optional interest text hashMap from Data Base to fill person interests text using its id
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
         HashMap<String, String> contactedByList = new HashMap<String, String>();
         String [] interest = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
@@ -206,10 +213,10 @@ public class InterestsMethods {
     }
 
     public void insertInterests(Context context, Person person) {
+        // Insert interest from person interest hash map
         if (!person.getDataBaseInterest().isEmpty()) {
             SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
-            int testing = db.deleteUserInterestData();
-            Log.i("===> ", "raw deleted " + testing);
+            db.deleteUserInterestData();
             for (int interest : person.getDataBaseInterest().keySet())
                 for (int value : person.getDataBaseInterest().get(interest))
                     db.insertUserint(new Usuariointereses(String.valueOf(value + 1), person.getId()));
@@ -217,6 +224,7 @@ public class InterestsMethods {
     }
 
     public void insertText(Context context, Person person) {
+        // Insert optional texts from person text hash map
         if (!person.getTextFieldInfo().isEmpty()) {
             SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
             String [] interestArray = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
@@ -232,11 +240,76 @@ public class InterestsMethods {
         }
     }
 
-    public void insertUpdateContactedBy(Context context, Person person) {
-        if (!person.getGetContactedByList().isEmpty()) {
-            SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+    public Person createPerson(Context context, int userId) {
+        // Create object person using its id as parameter
+        SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+        Usuario userFromDataBase = db.getUserByID(userId);
 
+        Person person = new Person();
+        person.setName(userFromDataBase.getNombre());
+        person.setId(userFromDataBase.getId());
+        person.setDataBaseInterest(getInterestFromDataBase(context, userId));
+        person.setGetTextFieldInfo(getTextsFromDataBase(context, userId));
+        person.setGetContactedByList(getContactedByFromDataBase(context, userFromDataBase));
+
+        return person;
+    }
+
+    public HashMap<String, String> getContactedByFromDataBase(Context context, Usuario user) {
+        // Create contactedBy hash map from Data Base user information
+        HashMap<String, String> contactedByList = new HashMap<String, String>();
+
+        if (user.getNum() != null)
+            contactedByList.put(context.getApplicationContext().getResources().getString(R.string.lblCellphone), user.getNum());
+        if (user.getGplus() != null)
+            contactedByList.put(context.getApplicationContext().getResources().getString(R.string.lblGoogle), user.getGplus());
+        if (user.getFb() != null)
+            contactedByList.put(context.getApplicationContext().getResources().getString(R.string.lblFacebook), user.getFb());
+        if (user.getTwitter() != null)
+            contactedByList.put(context.getApplicationContext().getResources().getString(R.string.lblTwitter), user.getTwitter());
+
+        return contactedByList;
+    }
+
+    public void insertReceivedPerson(Context context, Person person, String idUsuario, int percentage) {
+        // Insert received person via bluetooth into Data Base
+        SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+
+        Usuario userToInsert = new Usuario();
+        userToInsert.setId(person.getId());
+        userToInsert.setNombre(person.getName());
+        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblCellphone)) != null){
+            userToInsert.setNum(person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblCellphone)));
         }
+        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblGoogle)) != null){
+            userToInsert.setGplus(person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblGoogle)));
+        }
+        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblFacebook)) != null){
+            userToInsert.setFb(person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblFacebook)));
+        }
+        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblTwitter)) != null){
+            userToInsert.setTwitter(person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblTwitter)));
+        }
+
+        db.insertUsuario(userToInsert);
+        insertInterests(context, person);
+        insertText(context, person);
+
+        Historial historial = new Historial();
+        historial.setIdMatch(person.getId());
+        historial.setIdusuario(idUsuario);
+        historial.setMatchPerc(String.valueOf(percentage));
+        historial.setLatitud("");
+        historial.setLongitud("");
+        historial.setFecha(getDataTime());
+
+        db.insertHistorial(historial);
+    }
+
+    private String getDataTime() {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
 }

@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -54,6 +56,12 @@ public class SelectInterests extends DialogFragment {
         return interestsChecked;
     }
 
+    // Set icon
+    public Drawable setIcon() {
+        int titleIndex = Arrays.asList(getResources().getStringArray(R.array.identifyInterests)).indexOf(title);
+        return getResources().obtainTypedArray(R.array.dialogeIcon).getDrawable(titleIndex);
+    }
+
     /* The activity that creates an instance of this dialog fragment must
        implement this interface in order to receive event callbacks.
        Each method passes the DialogFragment in case the host needs to query it. */
@@ -85,6 +93,7 @@ public class SelectInterests extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Set the dialog title
         AlertDialog.Builder builder1 = builder.setTitle(title)
+                .setIcon(setIcon())
                 // Specify the list array, the items to be selected by default (null for none),
                 // and the listener through which to receive callbacks when items are selected
                 .setMultiChoiceItems(choices, putChecks(),
