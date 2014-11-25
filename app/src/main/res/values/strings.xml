@@ -26,6 +26,7 @@
     <string name="profileNameRequired">A profile name is required</string>
     <string name="setInterests">Set your interests to continue</string>
     <string name="setContactedBy">Set your Contact preferences to continue</string>
+    <string name="setPicture">Set a picture to continue</string>
 
     <string name="title_activity_interests">Interests</string>
     <string name="lblInterestsL">Interest</string>

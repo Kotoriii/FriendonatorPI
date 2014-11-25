@@ -8,6 +8,7 @@ public class Historial {
     String idMatch;
     String idusuario;
     String matchPerc;
+    String matchName;
     String latitud;
     String longitud;
     String fecha;
@@ -34,6 +35,14 @@ public class Historial {
 
     public String getMatchPerc() {
         return matchPerc;
+    }
+
+    public String getMatchName() {
+        return matchName;
+    }
+
+    public void setMatchName(String matchName) {
+        this.matchName = matchName;
     }
 
     public void setMatchPerc(String matchPerc) {
