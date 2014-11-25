@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 import com.pi314.friendonator.Person;
+import com.pi314.interests.InterestsMethods;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,6 +25,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import Database.SQLiteHelper;
+import Database.Usuario;
 import misc.BackgroundService;
 
 /**
@@ -416,13 +419,13 @@ public class BluetoothHandler {
                     //por el momento se crea un usuario test. mas adelante se va a sacar de la BD
 
                     //TODO sacar usuario de la base de datos
-                    Person testUsuario = (Person) mAct.getIntent().getSerializableExtra("PERSON");
-                    Log.v("BluetoothFr", "Person " + testUsuario);
-
-
-
+                    InterestsMethods mets = new InterestsMethods();
+                    SQLiteHelper as = SQLiteHelper.getInstance(mAct);
+                    int sas = Integer.parseInt(as.getLimbo1().getId());
+                    List<Usuario> asd = as.getAllUsuarios();
+                    Person usuario = mets.createPerson(mAct, 5);
                     ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
-                    oos.writeObject(testUsuario);
+                    oos.writeObject(usuario);
 
 
                 } catch (Exception e) {
@@ -470,12 +473,12 @@ public class BluetoothHandler {
                             mmSocket.connect();
                             Log.v("BluetoothFR", "Connected to server- ****** Conected *****");
                         }
-                        Log.v("BluetoothFR", "Connected to server- Recibiendo datos ");
 
                         ObjectInputStream bjr = new ObjectInputStream(mmInStream);
                         usuario = (Person)bjr.readObject();
-
-                        //TODO meter usuario en base de datos
+                        InterestsMethods mtf = new InterestsMethods();
+                        //TODO set real match percentage
+                        mtf.insertReceivedPerson(mAct, usuario, usuario.getId(), 50);
 
                         bjr.close();
                     } catch (IOException e) {

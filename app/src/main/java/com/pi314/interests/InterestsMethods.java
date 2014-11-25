@@ -26,6 +26,8 @@ import GridView.GridObject;
 
 public class InterestsMethods {
 
+
+
     public HashMap<Integer, List<Integer>> getInterestFromDataBase(Context context, int idUser) {
         // Make interests hashMap from Data Base to fill person interests using its id
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
@@ -274,7 +276,6 @@ public class InterestsMethods {
     public void insertReceivedPerson(Context context, Person person, String idUsuario, int percentage) {
         // Insert received person via bluetooth into Data Base
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
-
         Usuario userToInsert = new Usuario();
         userToInsert.setId(person.getId());
         userToInsert.setNombre(person.getName());
@@ -299,11 +300,17 @@ public class InterestsMethods {
         historial.setIdMatch(person.getId());
         historial.setIdusuario(idUsuario);
         historial.setMatchPerc(String.valueOf(percentage));
-        historial.setLatitud("");
-        historial.setLongitud("");
+        historial.setLatitud("0");
+        historial.setLongitud("0");
         historial.setFecha(getDataTime());
 
         db.insertHistorial(historial);
+    }
+
+    public Person getLocalPropietor(Context contex){
+        SQLiteHelper hlpr = SQLiteHelper.getInstance(contex);
+        int idDePropietario = Integer.parseInt(hlpr.getLimbo1().getId());
+        return this.createPerson(contex, idDePropietario);
     }
 
     private String getDataTime() {
