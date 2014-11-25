@@ -128,4 +128,36 @@
     <string name="matchPercentage">Match: </string>
     <string name="categoryPercentage">Category match: </string>
 
+    <!-- Settings -->
+
+    <string name="showinterests">Show interests</string>
+    <string name="showcontactme">Show Contact Me</string>
+    <string name="privacyoptions">Privacy Options</string>
+    <string name="wifi">Wi-Fi</string>
+    <string name="bluetooth">Bluetooth</string>
+    <string name="dataconnection">Data Connection</string>
+    <string name="application">Application</string>
+    <string name="advancedoptions">Advanced Options</string>
+    <string name="espanol">Español</string>
+    <string name="english">English</string>
+    <string name="languageoptions">Language Options</string>
+    <string name="always">Always</string>
+    <string name="minutes5">5 minutes</string>
+    <string name="minutes10">10 minutes</string>
+    <string name="minutes15">15 minutes</string>
+    <string name="intervalscan">Interval Scan</string>
+
+    <string name="privacyoptiontoast">Privacy Option = </string>
+    <string name="advancedoptiontoast">Advanced Option = </string>
+    <string name="languageoptiontoast">Selected Language = </string>
+    <string name="intervalscantoast">Interval scan-time selected = </string>
+
+    <string name="lblminmatchpercentage">Minimum matching percentage</string>
+    <string name="lblnotifications">Notifications</string>
+    <string name="lblsound">Sound</string>
+    <string name="lblvibration">Vibration</string>
+    <string name="lblprivacy">Vibration</string>
+
+
+
  </resources>

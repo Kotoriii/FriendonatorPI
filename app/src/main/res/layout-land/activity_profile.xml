@@ -12,6 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
+        android:scrollbars="none"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
@@ -26,13 +27,13 @@
             android:id="@+id/linearLayout">
 
             <EditText
-                android:layout_width="350dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName|textCapSentences"
                 android:hint="@string/txtProfileName"
                 android:ems="10"
                 android:id="@+id/txtProfileName"
-                android:layout_gravity="center" />
+                android:layout_gravity="center_horizontal" />
 
             <Space
                 android:layout_width="20dp"
@@ -43,12 +44,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
-                <ImageButton
+                <ImageView
                     android:layout_width="300dp"
                     android:layout_height="300dp"
                     android:id="@+id/btnProfileImage"
                     android:contentDescription="@string/btnProfileImage"
-                    android:layout_gravity="center" />
+                    android:layout_gravity="center"
+                    android:background="#ffdadada" />
             </FrameLayout>
 
             <Space
@@ -58,15 +60,14 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp">
+                android:layout_height="fill_parent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/lblInterests"
+                    android:text="@string/lblInterestsList"
                     android:id="@+id/lblInterests"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -78,6 +79,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/btnChooseInterest"
                     android:id="@+id/btnChooseInterest"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/custom_border_button"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
@@ -95,13 +98,11 @@
                 android:layout_gravity="center"
                 android:columnWidth="100dp"
                 android:gravity="center"
-                android:numColumns="2"
+                android:numColumns="1"
                 android:verticalSpacing="10dp"
                 android:horizontalSpacing="10dp"
                 android:id="@+id/gridViewInterests"
-                android:background="@drawable/custom_gridbackground"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp" />
+                android:background="@drawable/custom_gridbackground" />
 
             <Space
                 android:layout_width="20dp"
@@ -110,15 +111,14 @@
 
             <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp">
+                android:layout_height="fill_parent">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/lblGetContactedBy"
+                    android:text="@string/lblContactedByList"
                     android:id="@+id/lblGetContactedBy"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
                     android:layout_centerVertical="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
@@ -130,6 +130,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/btnChooseContact"
                     android:id="@+id/btnChooseContact"
+                    android:textColor="@android:color/white"
+                    android:background="@drawable/custom_border_button"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
@@ -146,27 +148,29 @@
                 android:layout_gravity="center"
                 android:columnWidth="100dp"
                 android:gravity="center"
-                android:numColumns="2"
+                android:numColumns="1"
                 android:verticalSpacing="10dp"
                 android:horizontalSpacing="10dp"
                 android:id="@+id/gridViewContactedBy"
                 android:background="@drawable/custom_gridbackground"
-                android:listSelector="@android:color/transparent"
-                android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp" />
+                android:listSelector="@android:color/transparent" />
 
             <Space
                 android:layout_width="20dp"
                 android:layout_height="20dp" />
 
             <Button
-                android:layout_width="350dp"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btnSaveChanges"
                 android:id="@+id/btnSaveChanges"
-                android:layout_gravity="center" />
+                android:textColor="@android:color/white"
+                android:background="@drawable/custom_border_button"
+                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
     </ScrollView>
 
 </RelativeLayout>
+
+

@@ -16,7 +16,8 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/layoutcontact">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -229,13 +230,18 @@
                 android:layout_height="20dp"
                 android:id="@+id/space11" />
 
-            <Button
-                android:layout_width="350dp"
-                android:layout_height="wrap_content"
-                android:text="@string/btnSaveContactMeChanges"
-                android:id="@+id/btnSaveContactMeChanges"
-                android:layout_gravity="center" />
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:text="@string/btnSaveContactMeChanges"
+        android:id="@+id/button"
+        android:textColor="@android:color/white"
+        android:background="@drawable/custom_border_button"
+        android:layout_alignTop="@+id/scrollView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="201dp" />
 
 </RelativeLayout>

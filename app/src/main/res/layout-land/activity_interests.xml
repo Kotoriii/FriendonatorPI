@@ -386,11 +386,14 @@
                 android:id="@+id/space5" />
 
             <Button
-                android:layout_width="350dp"
+                android:layout_width="275dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btnSaveInterestsChanges"
-                android:id="@+id/btnSaveInterestsChanges"
-                android:layout_gravity="center" />
+                android:id="@+id/button"
+                android:textColor="@android:color/white"
+                android:background="@drawable/custom_border_button"
+                android:layout_gravity="center_horizontal" />
+
         </LinearLayout>
     </ScrollView>
 
