@@ -38,79 +38,79 @@ public class MySettings extends Activity {
 
         final TextView textPercentage = (TextView) findViewById(R.id.txtPercentage);
 
-        final CharSequence[] privacyArr = {"Show interests", "Show contact me"};
+        final CharSequence[] privacyArr = {getResources().getString(R.string.showinterests), getResources().getString(R.string.showcontactme)};
         final AlertDialog.Builder alt_bldPr = new AlertDialog.Builder(this);
         alt_bldPr.setIcon(R.drawable.ic_settings_alert );
-        alt_bldPr.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        alt_bldPr.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
-        alt_bldPr.setNegativeButton("Cancel", null);
-        alt_bldPr.setTitle("Privacy Options");
+        alt_bldPr.setNegativeButton(getResources().getString(R.string.cancel), null);
+        alt_bldPr.setTitle(getResources().getString(R.string.privacyoptions));
         alt_bldPr.setSingleChoiceItems(privacyArr, -1, new DialogInterface
                 .OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-               String mensajePr = "Privacy option = " + privacyArr[item];
+               String mensajePr = getResources().getString(R.string.privacyoptiontoast) + privacyArr[item];
                 ToastCostumizado(mensajePr);
             }
         });
 
-        final CharSequence[] AdvancedArr = {"Wi-Fi", "Bluetooth", "Data Connection", "Application"};
+        final CharSequence[] AdvancedArr = {getResources().getString(R.string.wifi),getResources().getString(R.string.bluetooth),getResources().getString(R.string.dataconnection), getResources().getString(R.string.application)};
         final AlertDialog.Builder alt_bldAd = new AlertDialog.Builder(this);
         alt_bldAd.setIcon(R.drawable.ic_settings_alert);
-        alt_bldAd.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        alt_bldAd.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
-        alt_bldAd.setNegativeButton("Cancel", null);
-        alt_bldAd.setTitle("Advanced Options");
+        alt_bldAd.setNegativeButton(getResources().getString(R.string.cancel), null);
+        alt_bldAd.setTitle(getResources().getString(R.string.advancedoptions));
         alt_bldAd.setSingleChoiceItems(AdvancedArr, -1, new DialogInterface
                 .OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                String mensajeAd = "Advanced option = "+AdvancedArr[item];
+                String mensajeAd = getResources().getString(R.string.advancedoptiontoast) +AdvancedArr[item];
                 ToastCostumizado(mensajeAd);
             }
         });
 
 
-        final CharSequence[] LanguageArr = {"Italian", "Deutsch", "English", "Español", "中国"};
+        final CharSequence[] LanguageArr = {getResources().getString(R.string.english), getResources().getString(R.string.espanol)};
         final AlertDialog.Builder alt_bldLa = new AlertDialog.Builder(this);
         alt_bldLa.setIcon(R.drawable.ic_settings_alert);
-        alt_bldLa.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        alt_bldLa.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
-        alt_bldLa.setNegativeButton("Cancel", null);
-        alt_bldLa.setTitle("Language Options");
+        alt_bldLa.setNegativeButton(getResources().getString(R.string.cancel), null);
+        alt_bldLa.setTitle(getResources().getString(R.string.languageoptions));
         alt_bldLa.setSingleChoiceItems(LanguageArr, -1, new DialogInterface
                 .OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                String mensajeLa = "Language option = "+LanguageArr[item];
+                String mensajeLa = getResources().getString(R.string.languageoptiontoast)+LanguageArr[item];
                 ToastCostumizado(mensajeLa);
             }
         });
 
-        final CharSequence[] Intervale = {"Always", "5 min", "10 min", "15 min"};
+        final CharSequence[] Intervale = {getResources().getString(R.string.always),getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15)};
         final AlertDialog.Builder alt_bldInt = new AlertDialog.Builder(this);
         alt_bldInt.setIcon(R.drawable.ic_settings_alert);
-        alt_bldInt.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+        alt_bldInt.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
         });
-        alt_bldInt.setNegativeButton("Cancel", null);
-        alt_bldInt.setTitle("Intervale Scan");
+        alt_bldInt.setNegativeButton(getResources().getString(R.string.cancel), null);
+        alt_bldInt.setTitle(getResources().getString(R.string.intervalscan));
         alt_bldInt.setSingleChoiceItems(Intervale, -1, new DialogInterface
                 .OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
-                String mensajePr = "Intervale scan selected " + Intervale[item];
+                String mensajePr = getResources().getString(R.string.intervalscantoast) + Intervale[item];
                 ToastCostumizado(mensajePr);
             }
         });
