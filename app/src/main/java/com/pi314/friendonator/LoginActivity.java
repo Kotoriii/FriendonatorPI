@@ -4,10 +4,16 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.pi314.interests.InterestsMethods;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +62,11 @@ public class LoginActivity extends Activity {
                     if (person.getName() == null) {
                         // Create intent to open interests activity
                         intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                    } else {
+                        InterestsMethods fillPerson = new InterestsMethods();
+                        person.setDataBaseInterest(fillPerson.getInterestFromDataBase(LoginActivity.this, Integer.parseInt(person.getId())));
+                        person.setGetTextFieldInfo(fillPerson.getTextsFromDataBase(LoginActivity.this, Integer.parseInt(person.getId())));
+                        person.setGetContactedByList(fillPerson.getContactedByFromDataBase(LoginActivity.this, userLogin));
                     }
 
                     // Set person inside intent
@@ -67,7 +78,8 @@ public class LoginActivity extends Activity {
                     // Finish activity
                     finish();
                 } else
-                    Toast.makeText(btnlogin.getContext(), R.string.toastWrongLogIn, Toast.LENGTH_SHORT).show();
+                    customToast(getResources().getString(R.string.toastWrongLogIn));
+                    //Toast.makeText(btnlogin.getContext(), R.string.toastWrongLogIn, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -87,6 +99,24 @@ public class LoginActivity extends Activity {
 
         if (person == null)
             person = new Person();
+    }
+
+    public void customToast(String message) {
+        // Toast for validate messages when login is wrong
+        LayoutInflater inflater = getLayoutInflater();
+
+        View layout = inflater.inflate(R.layout.customtoast,
+                (ViewGroup) findViewById(R.id.custom_toast_layout_id));
+
+        // Set a message
+        TextView text = (TextView) layout.findViewById(R.id.text);
+        text.setText(message);
+
+        // Toast
+        Toast toast = new Toast(getApplicationContext());
+        toast.setDuration(Toast.LENGTH_SHORT);
+        toast.setView(layout);
+        toast.show();
     }
 
 }

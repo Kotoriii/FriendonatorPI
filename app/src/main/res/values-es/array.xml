@@ -1,93 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="movies">
-        <item>Action</item>
-        <item>Thriller</item>
-        <item>Romantic</item>
-        <item>Comedy</item>
-        <item>Fantasy</item>
-        <item>Historical</item>
-        <item>Horror</item>
-        <item>Scy Fy</item>
+        <item>Acción</item>
+        <item>Suspenso</item>
+        <item>Romantica</item>
+        <item>Comedia</item>
+        <item>Fantassia</item>
+        <item>Historia</item>
+        <item>Terror</item>
+        <item>Ciencia Ficción</item>
     </string-array>
 
     <string-array name="literature">
-        <item>Novel</item>
+        <item>Novela</item>
         <item>Drama</item>
-        <item>Poetry</item>
+        <item>Poesía</item>
         <item>Romance</item>
-        <item>Comedy</item>
-        <item>Fiction</item>
-        <item>Fantasy</item>
-        <item>Mythology</item>
+        <item>Comedia</item>
+        <item>Ficción</item>
+        <item>Fantasía</item>
+        <item>Mitología</item>
     </string-array>
 
     <string-array name="music">
         <item>Rock</item>
         <item>Jazz</item>
         <item>Blues</item>
-        <item>Classical</item>
+        <item>Clásica</item>
         <item>Hip Hop</item>
-        <item>Electronic</item>
+        <item>Electrónica</item>
         <item>Pop</item>
-        <item>Romantic</item>
+        <item>Romantica</item>
     </string-array>
 
     <string-array name="art">
-        <item>Portrait</item>
-        <item>Landscape</item>
-        <item>Conceptual</item>
-        <item>Modernism</item>
-        <item>Criticism</item>
-        <item>Neoclassic</item>
-        <item>Classic</item>
-        <item>Expressionism</item>
+        <item>Retrato</item>
+        <item>Paisaje</item>
+        <item>Conceptuales</item>
+        <item>Modernismo</item>
+        <item>Crítica</item>
+        <item>Neoclásico</item>
+        <item>Clásico</item>
+        <item>Expressionismo</item>
     </string-array>
 
     <string-array name="tvShows">
-        <item>Soap Opera</item>
+        <item>Telenovela</item>
         <item>Sitcom</item>
-        <item>Sports</item>
-        <item>Documentary</item>
-        <item>News</item>
+        <item>Deportes</item>
+        <item>Documental</item>
+        <item>Noticias</item>
         <item>Reality</item>
-        <item>Cookery</item>
+        <item>Cocina</item>
         <item>Drama</item>
     </string-array>
 
     <string-array name="sports">
-        <item>Mix Martial Arts</item>
-        <item>Climbing</item>
-        <item>Gymnastics</item>
-        <item>Cycling</item>
-        <item>Jogging</item>
-        <item>Tennis</item>
+        <item>Artes Marciales Mixtas</item>
+        <item>Escalada</item>
+        <item>Gimnasia</item>
+        <item>Ciclismo</item>
+        <item>Correr</item>
+        <item>Tenis</item>
         <item>Basketball</item>
-        <item>Soccer</item>
+        <item>Fútbol</item>
     </string-array>
 
     <string-array name="science">
-        <item>General Science</item>
+        <item>Ciencia en general</item>
     </string-array>
 
     <string-array name="lookingFor">
-        <item>Man</item>
-        <item>Woman</item>
+        <item>Hombre</item>
+        <item>Mujer</item>
     </string-array>
 
     <string-array name="identifyInterests">
-        <item>Music</item>
-        <item>Literature</item>
-        <item>Movies</item>
-        <item>Art</item>
-        <item>TV Shows</item>
-        <item>Sports</item>
-        <item>Science</item>
-        <item>Looking For</item>
+        <item>Musica</item>
+        <item>Literatura</item>
+        <item>Peliculas</item>
+        <item>Arte</item>
+        <item>Shows de TV</item>
+        <item>Deportes</item>
+        <item>Ciencia</item>
+        <item>Busco</item>
     </string-array>
 
     <string-array name="identifyContact">
-        <item>Cellphone</item>
+        <item>Teléfono</item>
         <item>Google+</item>
         <item>Facebook</item>
         <item>Twitter</item>

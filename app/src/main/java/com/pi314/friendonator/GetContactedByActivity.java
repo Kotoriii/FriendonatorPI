@@ -3,6 +3,7 @@ package com.pi314.friendonator;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -56,7 +57,7 @@ public class GetContactedByActivity extends Activity {
         // Get object person from intent extras
         setPersonCont();
 
-        // Fill checkboxes previously set
+        // Fill checkboxes previously selected
         fillCheckBoxContactedBy();
 
         btnSaveContactMeChanges.setOnClickListener(new View.OnClickListener() {
@@ -67,23 +68,20 @@ public class GetContactedByActivity extends Activity {
                 String facebook = txtFacebook.getText().toString();
                 String twitter = txtTwitter.getText().toString();
 
-                // Verify is every text from selections are filled
-                if (validateSave()) {
-
+                if (!validateContact()) { // Verify is every checkbox is empty
+                    customToast(getResources().getString(R.string.contactRequired));
+                } else if(validateSave()) { // Verify is every text from selections are filled
                     // Set contacted by list into person
                     createContactedByList(phone, google, facebook, twitter);
 
                     // Update user contact fields in data base
-                    /*Usuario updateUser = new Usuario();
+                    Usuario updateUser = new Usuario();
                     updateUser.setId(person.getId());
                     updateUser.setNum(txtPhone.getText().toString());
                     updateUser.setGplus(txtGoogle.getText().toString());
                     updateUser.setFb(txtFacebook.getText().toString());
                     updateUser.setTwitter(txtTwitter.getText().toString());
-                    db.updateUsuario(updateUser);*/
-
-                    // Save get contacted by into Data Base
-
+                    db.updateUserContacts(updateUser);
 
                     // Create intent to open interests activity
                     Intent intent = new Intent(GetContactedByActivity.this, ProfileActivity.class);
@@ -112,30 +110,29 @@ public class GetContactedByActivity extends Activity {
     }
 
     public void fillCheckBoxContactedBy() {
+        // Fill previously selected contacts
         for (String key : person.getGetContactedByList().keySet()) {
-            if (key.equals(getResources().getString(R.string.lblCellphone))) {
-                txtPhone.setText(person.contactedByValue(key));
-                txtPhone.setVisibility(View.VISIBLE);
-                checkBoxCellPhone.setChecked(true);
-            }
-            else if (key.equals(getResources().getString(R.string.lblGoogle))) {
-                txtGoogle.setText(person.contactedByValue(key));
-                txtGoogle.setVisibility(View.VISIBLE);
-                checkBoxGoogle.setChecked(true);
-            }
-            else if (key.equals(getResources().getString(R.string.lblFacebook))) {
-                txtFacebook.setText(person.contactedByValue(key));
-                txtFacebook.setVisibility(View.VISIBLE);
-                checkBoxFacebook.setChecked(true);
-            }
-            else if (key.equals(getResources().getString(R.string.lblTwitter))) {
-                txtTwitter.setText(person.contactedByValue(key));
-                txtTwitter.setVisibility(View.VISIBLE);
-                checkBoxTwitter.setChecked(true);
-            }
-            else if (key.equals(getResources().getString(R.string.lblFindMeTool))) {
-                Switch tool = (Switch) findViewById(R.id.switchActivateTool);
-                tool.setChecked(true);
+            if (!person.contactedByValue(key).isEmpty()) {
+                if (key.equals(getResources().getString(R.string.lblCellphone))) {
+                    txtPhone.setText(person.contactedByValue(key));
+                    txtPhone.setVisibility(View.VISIBLE);
+                    checkBoxCellPhone.setChecked(true);
+                } else if (key.equals(getResources().getString(R.string.lblGoogle))) {
+                    txtGoogle.setText(person.contactedByValue(key));
+                    txtGoogle.setVisibility(View.VISIBLE);
+                    checkBoxGoogle.setChecked(true);
+                } else if (key.equals(getResources().getString(R.string.lblFacebook))) {
+                    txtFacebook.setText(person.contactedByValue(key));
+                    txtFacebook.setVisibility(View.VISIBLE);
+                    checkBoxFacebook.setChecked(true);
+                } else if (key.equals(getResources().getString(R.string.lblTwitter))) {
+                    txtTwitter.setText(person.contactedByValue(key));
+                    txtTwitter.setVisibility(View.VISIBLE);
+                    checkBoxTwitter.setChecked(true);
+                } else if (key.equals(getResources().getString(R.string.lblFindMeTool))) {
+                    Switch tool = (Switch) findViewById(R.id.switchActivateTool);
+                    tool.setChecked(true);
+                }
             }
         }
     }
@@ -205,6 +202,7 @@ public class GetContactedByActivity extends Activity {
     }
 
     public boolean validateSave() {
+        // Checks checked checkbox and its respective textBox to be filled
         boolean good = true;
 
         if (txtPhone.getText().toString().isEmpty() && checkBoxCellPhone.isChecked() ||
@@ -213,10 +211,24 @@ public class GetContactedByActivity extends Activity {
                 txtTwitter.getText().toString().isEmpty() && checkBoxTwitter.isChecked()) {
             good = false;
         }
+
         return good;
     }
 
+    public boolean validateContact() {
+        // Checks that at least one way of contact is selected
+        boolean check = true;
+
+        if (!checkBoxCellPhone.isChecked() && !checkBoxGoogle.isChecked() &&
+                !checkBoxFacebook.isChecked() && !checkBoxTwitter.isChecked()) {
+            check = false;
+        }
+
+        return check;
+    }
+
     public void customToast(String message) {
+        // Toast for validates messages when save button is clicked
         LayoutInflater inflater = getLayoutInflater();
 
         View layout = inflater.inflate(R.layout.customtoast,
@@ -228,7 +240,7 @@ public class GetContactedByActivity extends Activity {
 
         // Toast
         Toast toast = new Toast(getApplicationContext());
-        toast.setDuration(Toast.LENGTH_LONG);
+        toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
     }
