@@ -11,20 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.json.JSONException;
-
-import java.io.FileNotFoundException;
-import java.math.BigInteger;
-import java.security.Key;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-
 import Bluetooth.BluetoothHandler;
-import Database.Intereses;
-import Database.Superinteres;
+import Database.SQLiteHelper;
 import misc.ApiWrapper;
 
 
@@ -58,9 +46,12 @@ public class FindMeTool extends Activity {
                 ApiWrapper api = new ApiWrapper();
                 if (!api.isConnected(FindMeTool.this))
                     api.activateWifi(FindMeTool.this);
+                SQLiteHelper hl = SQLiteHelper.getInstance(FindMeTool.this);
+                String id = hl.getLimbo1().getId();
+                Person pop = api.loginConServidor("tupini07@gmail.com","1", FindMeTool.this);
 
-                Bitmap oo = api.getImage("http://tupini07.pythonanywhere.com/media/imagenesUs/diagrama.png", FindMeTool.this);
-                imgView.setImageBitmap(oo);
+                //Bitmap oo = api.getImageFromURL("http://tupini07.pythonanywhere.com/media/imagenesUs/diagrama.png", FindMeTool.this);
+                //imgView.setImageBitmap(oo);
             }
 
         });

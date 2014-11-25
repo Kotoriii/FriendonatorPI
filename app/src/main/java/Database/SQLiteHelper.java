@@ -3,6 +3,7 @@ package Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteCursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -131,6 +132,25 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return emptyTable;
     }
 
+    /**
+     * retorna el usuario que es el propietario del telefono
+     * @return
+     */
+    public Usuario getLimbo1() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Usuario usuario = new Usuario();
+
+        Cursor cursor=db.rawQuery("select * from limbo",null);
+        if(cursor.moveToFirst()){
+            usuario.setId(cursor.getString(0));
+            usuario.setPassword(cursor.getString(1));
+        }
+
+        cursor.close();
+
+        return usuario;
+    }
+
     public void insertTexto(TextoInteres text) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -198,7 +218,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("nombre", user.getNombre());
         values.put("fecha_de_nacimiento", user.getDob());
         values.put("correo", user.getCorreo());
-        values.put("password", user.getPassword());
+        //values.put("password", user.getPassword());
         values.put("numero_telefono", user.getNum());
         values.put("facebook", user.getFb());
         values.put("google_p", user.getGplus());
@@ -461,7 +481,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             usuario.setNombre(cursor.getString(1));
             usuario.setDob(cursor.getString(2));
             usuario.setCorreo(cursor.getString(3));
-            usuario.setPassword(cursor.getString(4));
+            //usuario.setPassword(cursor.getString(4)); lo retornaria null
             usuario.setNum(cursor.getString(5));
             usuario.setFb(cursor.getString(6));
             usuario.setGplus(cursor.getString(7));

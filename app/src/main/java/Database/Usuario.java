@@ -118,4 +118,12 @@ public class Usuario {
     public void setMatchp(String matchp) {
         this.matchp = matchp;
     }
+
+    public void setId(int id_us) {
+        this.id = Integer.toString(id_us);
+    }
+
+    public void setDob(long time) {
+        this.dob = Long.toString(time);
+    }
 }

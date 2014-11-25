@@ -423,7 +423,7 @@ public class BluetoothHandler {
                     SQLiteHelper as = SQLiteHelper.getInstance(mAct);
                     int sas = Integer.parseInt(as.getLimbo1().getId());
                     List<Usuario> asd = as.getAllUsuarios();
-                    Person usuario = mets.createPerson(mAct, 5);
+                    Person usuario = mets.getLocalPropietor(mAct); //ToDo posiblemente esto no va a servir..
                     ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
                     oos.writeObject(usuario);
 

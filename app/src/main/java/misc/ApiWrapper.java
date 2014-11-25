@@ -13,6 +13,10 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
+import com.pi314.friendonator.Person;
+import com.pi314.friendonator.R;
+import com.pi314.interests.InterestsMethods;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -38,15 +42,20 @@ import java.io.OutputStream;
 import java.math.BigInteger;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import Database.Historial;
 import Database.Intereses;
+import Database.SQLiteHelper;
 import Database.Superinteres;
+import Database.Usuario;
 
 /**
  * Created by andrea on 18/11/14.
@@ -69,28 +78,104 @@ public class ApiWrapper {
      * @param password
      * @return si son datos correctos o no
      */
-    public boolean loginConServidor(String correo, String password) {
+    public Person loginConServidor(String correo, String password, Activity act) {
         //obtenemos el objeto json correspondiente al correo
-        String url = "http://tupini07.pythonanywhere.com/api/webServices/login_usuario/correo=" + correo + "&pass=" + password;
-
-        //TODO talves implementar login con post en ves de GET o poner encripcion
+        String url = "http://tupini07.pythonanywhere.com/api/webServices/login_usuario/?correo=" + correo + "&pass=" + password;
+        int id_us = 0;
         /*---Esto solo si se implementa con POST
             List<NameValuePair> datos = new ArrayList<NameValuePair>(2);
             datos.add(new BasicNameValuePair("correo", correo));
             datos.add(new BasicNameValuePair("pass", password));
         */
-
+        SQLiteHelper sqlHelper = SQLiteHelper.getInstance(act);
         JSONObject json = getRESTJSON(url);
+        Person persona = new Person();
         try {
             JSONArray jsonArray = json.getJSONArray("objects");
             json = jsonArray.getJSONObject(0); //en teoria solo hay una entrada asi que esto es seguro.
-            if (password.equals(json.getString("password")))
-                return true;
+            if (correo.equals(json.getString("correo"))) {
+
+                id_us = json.getInt("id");//obtiene id para operaciones futuras
+
+                //si es null entonces inserta el usuario en la base de datos,
+                //quiere decir que esta persona nunca ha iniciado sesion.
+                if (sqlHelper.getUser(correo).getId() == null) {
+                    Bitmap img_serv = this.getUserImage(id_us);
+                    persona.setId(id_us);
+                    persona.setEmail(correo);
+                    persona.setDataBaseInterest(this.getInteresesUsuario(id_us));
+                    persona.setName(json.getString("nombre"));
+
+                    //Obtenemos la fecha
+                    String json_fecha = json.getString("fecha_de_nacimiento");
+                    int anno = Integer.parseInt(json_fecha.substring(0, 4));
+                    int mes = Integer.parseInt(json_fecha.substring(5, 7));
+                    int dia = Integer.parseInt(json_fecha.substring(8));
+                    persona.setFecha_de_nacimiento(new Date(anno, mes, dia));
+                    persona.setFoto_perfil(this.getUserImage(id_us));
+
+                    //cosas especificas de usuario
+                    Usuario usuario = new Usuario();
+                    usuario.setNum(json.getString("numero_telefono"));
+                    usuario.setGplus(json.getString("googleP_id"));
+                    usuario.setFb(json.getString("facebookID"));
+                    usuario.setTwitter(json.getString("twitter_id"));
+                    usuario.setFoto(this.saveBitmap(act, img_serv));
+                    usuario.setModfav(json.getString("modo_de_cont_favorito"));
+
+                    this.insertPerson(act, persona, usuario);
+                }
+
+            }
 
         } catch (JSONException e) {
-            return false;
+            Log.e(getClass().getSimpleName(), "error de lecctura de json. " + e.getStackTrace());
         }
-        return false;
+        //luego de insertar tanto usuario como persona se recrea una instancia limpia de la persona.
+        //o en el caso de que no sea una nueva persona entonces se obtiene la persona de la BD
+        return (new InterestsMethods()).createPerson(act, id_us);
+    }
+
+    /**
+     * Retorna un HashMap<Integer, List<Integer>> para meter en el nuevo objeto
+     * Person. Casi que solo se usa en el login.
+     * ************* Es necesaria una conexion a internet
+     *
+     * @param id_us
+     * @return
+     */
+    public HashMap<Integer, List<Integer>> getInteresesUsuario(int id_us) {
+        HashMap<Integer, List<Integer>> lstIntereses = new HashMap<Integer, List<Integer>>();
+        JSONObject json = getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/intereses_usuario/?id_us=" + id_us);
+        try {
+            Integer supHolder = null;
+            List<Integer> interesHolder = new ArrayList<Integer>();
+            JSONObject supIntJson = null;
+            boolean added_checker = false;
+            Iterator<String> iter = json.keys();
+            while (iter.hasNext()) {
+                String key = iter.next();
+                supHolder = Integer.parseInt(key);
+                JSONArray arrayHolder = json.getJSONArray(key);
+                int intrsInmdt = 0;
+                for (int i = 0; i < arrayHolder.length(); i++) {
+                    try {
+                        intrsInmdt = arrayHolder.getInt(i);
+                        interesHolder.add(intrsInmdt);
+                    } catch (IndexOutOfBoundsException e) {
+                        Log.e(getClass().getSimpleName(), "out of bound en obtener intereses usuario, revisar");
+                    }
+                }
+
+                lstIntereses.put(supHolder, interesHolder);
+
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return lstIntereses;
     }
 
     /**
@@ -159,13 +244,14 @@ public class ApiWrapper {
 
     /**
      * Devuelve la imagen don dicho url y la guarda en:
-     *      /data/data/com.pi314.friendonator/app_Friendonator/Pictures
+     * /data/data/com.pi314.friendonator/app_Friendonator/Pictures
+     *
      * @param url
-     * @param act
      * @return
      */
-    public Bitmap getImage(String url, Activity act){
+    public Bitmap getImageFromURL(String url) {
         //TODO el request sigue ejecutandose incluso si no esta conectado a internet
+        mBitmapHolder = null; //limpiamos
         new HttpGetImage().execute(url);
         int ss = 0;
         while (mBitmapHolder == null) { //necesitamos esperar por la respuesta
@@ -179,62 +265,91 @@ public class ApiWrapper {
             ss++;
         }
         Log.d("ApiWrapper", "waited " + ss + " cycles before response");
-        Bitmap btmp = null;
-        try {
-            btmp = mBitmapHolder;
+        return mBitmapHolder;
+    }
+
+    /**
+     * Salva el bitmap path default. Devuelve el path
+     * a la imagen.
+     *
+     * @param act
+     * @param img_serv
+     * @return El string donde se guardo.
+     */
+    public String saveBitmap(Activity act, Bitmap img_serv) {
+        Bitmap btmp = img_serv;
 
 
-            Random rndm = new Random();
-            boolean salvada = false;
-            while(salvada) //TODO nunca entra, arreglar cuando necesario
-            //por el momento no queremos que guarde una imagen
-            //mil veces ya que se esta probando con una imagen dummy,
-            //nada necesario de guardar
-            {
-                try {
-                    OutputStream fOut = null;
-                    // save image
-                    ContextWrapper cw = new ContextWrapper(act.getApplicationContext());
-                    // path to /data/data/yourapp/app_data/imageDir
-                    File directory = cw.getDir("Pictures", Context.MODE_PRIVATE);
-                    File file = new File(directory, rndm.nextLong()+".jpg"); // the File to save to
-                    fOut = new FileOutputStream(file);
-                    btmp.compress(Bitmap.CompressFormat.JPEG, 85, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
-                    salvada = true;
-                    fOut.flush();
-                    fOut.close(); // do not forget to close the stream
-                    Log.v(getClass().getSimpleName(), "image directory path " + directory.getAbsolutePath());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        Random rndm = new Random();
+        boolean salvada = false;
+        while (!salvada) {
+            try {
+                OutputStream fOut = null;
+                // save image
+                String name = String.valueOf(rndm.nextLong());
+                ContextWrapper cw = new ContextWrapper(act.getApplicationContext());
+                // path to /data/data/yourapp/app_data/imageDir
+                File directory = cw.getDir("Pictures", Context.MODE_PRIVATE);
+                File file = new File(directory, name + ".jpg"); // the File to save to
+                fOut = new FileOutputStream(file);
+                btmp.compress(Bitmap.CompressFormat.JPEG, 85, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+                salvada = true;
+                fOut.flush();
+                fOut.close(); // do not forget to close the stream
+                Log.v(getClass().getSimpleName(), "image directory path " + file.getAbsolutePath());
+                return file.getAbsolutePath();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
             }
-
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return btmp;
+
+        return null;
+
+    }
+
+    /**
+     * Devuelve el bitmap con la imagen del usuario identificado con el id, estaimagen se saca desde el
+     * servidor.
+     *
+     * @param user_id
+     * @return
+     */
+    public Bitmap getUserImage(int user_id) {
+        JSONObject json = getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/get_imagen_usuario/?id_usuario=" + user_id);
+
+        try {
+            String url = "http://tupini07.pythonanywhere.com" + json.getString("url_foto");
+            return getImageFromURL(url);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+            return null;
+        }
+
     }
 
     /**
      * Devuelve la imagen q se encuentra en cierto path..
      * no sabia donde poner el metodo :) pero por el momento se queda aqui
+     *
      * @param path
      * @return
      */
-    public Bitmap loadImageFromStorage(String path){
+    public Bitmap loadImageFromStorage(String path) {
         Bitmap b = null;
         try {
-            File f=new File(path, "profile.jpg");
+            File f = new File(path, "profile.jpg");
             b = BitmapFactory.decodeStream(new FileInputStream(f));
-        }
-        catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return b;
     }
 
     private JSONObject getRESTJSON(String URL) {
+        mResult = null; //reiniciamos el holder
         new HttpAsyncGETTask().execute(URL);
         int ss = 0;
         while (mResult == null) { //necesitamos esperar por la respuesta
@@ -386,6 +501,32 @@ public class ApiWrapper {
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
         wifi.setWifiEnabled(false); // true or false to activate/deactivate wifi
     }
+
+    private void insertPerson(Context context, Person person, Usuario usu) {
+        // Insert received person via bluetooth into Data Base
+        InterestsMethods mths = new InterestsMethods();
+        SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+        Usuario userToInsert = new Usuario();
+        userToInsert.setId(person.getId());
+        userToInsert.setNombre(person.getName());
+        userToInsert.setDob(person.getFecha_de_nacimiento().getTime());
+        userToInsert.setCorreo(person.getEmail());
+        //cosas solo de usuario
+        userToInsert.setNum(usu.getNum());
+        userToInsert.setGplus(usu.getGplus());
+        userToInsert.setFb(usu.getFb());
+        userToInsert.setTwitter(usu.getTwitter());
+        userToInsert.setFoto(usu.getFoto());
+        userToInsert.setModfav(usu.getModfav());
+        //para evitar problemas con la incercion.. si es null da error
+        userToInsert.setMatchp("");
+
+        db.insertUsuario(userToInsert);
+        mths.insertInterests(context, person);
+        mths.insertText(context, person);
+
+    }
+
 
     private class HttpAsyncGETTask extends AsyncTask<String, Void, String> {
         @Override

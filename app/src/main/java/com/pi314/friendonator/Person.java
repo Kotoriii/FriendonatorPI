@@ -171,4 +171,7 @@ public class Person implements Serializable {
                 '}';
     }
 
+    public void setId(int id_us) {
+        this.id = Integer.toString(id_us);
+    }
 }
