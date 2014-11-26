@@ -1,18 +1,18 @@
 package com.pi314.friendonator;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 //import android.renderscript.ProgramStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.json.JSONException;
-
 import Bluetooth.BluetoothHandler;
-import Database.Superinteres;
+import Database.SQLiteHelper;
 import misc.ApiWrapper;
 
 
@@ -38,21 +38,22 @@ public class FindMeTool extends Activity {
 
         //TODO remove!!
         final TextView txtService = (TextView) findViewById(R.id.txtServiceR);
+        final ImageView imgView = (ImageView) findViewById(R.id.imgFiewFindME);
         final Button btnRequest = (Button) findViewById(R.id.btnRequesS);
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ApiWrapper api = new ApiWrapper();
-                String oo = "";
-                for(Superinteres su : api.getSuperIntereses()){
-                    oo += su.getId() + "\n";
-                }
-                    txtService.setText(oo);
+                if (!api.isConnected(FindMeTool.this))
+                    api.activateWifi(FindMeTool.this);
+                SQLiteHelper hl = SQLiteHelper.getInstance(FindMeTool.this);
+                String id = hl.getLimbo1().getId();
+                Bitmap oo = api.getImageFromURL("http://tupini07.pythonanywhere.com/media/imagenesUs/diagrama.png");
+                imgView.setImageBitmap(oo);
             }
+
         });
-
     }
-
     public void reload() {
 
         Thread reloadT = new Thread() {
@@ -99,4 +100,5 @@ public class FindMeTool extends Activity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

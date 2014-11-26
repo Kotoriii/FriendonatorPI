@@ -240,11 +240,11 @@ public class MainActivity extends Activity implements Button.OnClickListener{
           //
         } else if ( (Button)v == btnClient) {
             Log.v("BluetoothFR", "******** start new scan *******" );
-            //mBHand.StartScan();
+            mBHand.StartScan();
             //ahora background service se encarga de empezar el scan cada ves que
             //este termine
-            BackgroundService bks = new BackgroundService();
-            bks.ScanConstantly(this);
+            //BackgroundService bks = new BackgroundService();
+            //bks.ScanConstantly(this);
         } else if ( (Button)v == btnScan) {
             output.setText("");
                 for (BluetoothDevice b : mBHand.getDevicesList()) {

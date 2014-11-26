@@ -27,7 +27,8 @@
                 android:layout_marginLeft="30dp"
                 android:hint="@string/txtLoginUserName"
                 android:textStyle="italic"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:text="tupini07@gmail.com" />
 
             <EditText
                 android:layout_width="200dp"
@@ -39,7 +40,8 @@
                 android:layout_marginTop="25dp"
                 android:fontFamily="sans-serif"
                 android:hint="@string/txtLoginPassword"
-                android:textStyle="italic" />
+                android:textStyle="italic"
+                android:text="1" />
 
             <Button
                 android:layout_width="200dp"

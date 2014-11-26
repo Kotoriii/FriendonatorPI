@@ -13,6 +13,7 @@ import android.content.IntentFilter;
 import android.util.Log;
 
 import com.pi314.friendonator.Person;
+import com.pi314.interests.InterestsMethods;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,6 +24,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
+import Database.SQLiteHelper;
+import Database.Usuario;
+import misc.BackgroundService;
+
 /**
  * Created by andrea on 30/09/14.
  */
@@ -76,8 +82,18 @@ public class BluetoothHandler {
     private void registerAdapter() {
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
-        mAct.registerReceiver(getReceiver(), filter);
-        registered = true;
+        try {
+            mAct.unregisterReceiver(getReceiver());
+            Log.d("BluetoothFR", "Reciever registered and unregistering");
+        }catch (Exception e){
+            Log.d("BluetoothFR", "Reciever wasn't registered");
+        }
+        try {
+            mAct.registerReceiver(getReceiver(), filter);
+            registered = true;
+        }catch (Exception e){
+            Log.e("BluetoothFR", "Register is trying to register on top of another");
+        }
     }
 
     public void setUnlimitedVisibility() {
@@ -302,7 +318,6 @@ public class BluetoothHandler {
             while (true) {
                 try {
                     socket = mmServerSocket.accept();
-
                 } catch (IOException e) {
                     break;
                 }
@@ -313,13 +328,11 @@ public class BluetoothHandler {
                     //Por el momento este es el objeto que manda, mas adelante va a mandar el
                     //objeto representante al usuario del telefono
                     Log.v("BluetoothFR", "got connection from client, starting send");
-                             String potato = "potato";
-                        ConnectedToClientThread cntCT = new ConnectedToClientThread(socket, potato);
-                        cntCT.start();
+                    ConnectedToClientThread cntCT = new ConnectedToClientThread(socket);
+                    cntCT.start();
 
                 }
             }
-
         }
 
         /** Will cancel the listening socket, and cause the thread to finish */
@@ -385,8 +398,7 @@ public class BluetoothHandler {
     private class ConnectedToClientThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final OutputStream mmOutStream;
-        private Object mObj;
-        public ConnectedToClientThread(BluetoothSocket socket, Object obj) {
+        public ConnectedToClientThread(BluetoothSocket socket) {
             mmSocket = socket;
             OutputStream tmpOut = null;
 
@@ -394,7 +406,6 @@ public class BluetoothHandler {
             // member streams are final
             try {
                 tmpOut = socket.getOutputStream();
-                mObj = obj;
             } catch (IOException e) { }
 
             mmOutStream = tmpOut;
@@ -406,14 +417,15 @@ public class BluetoothHandler {
                     Log.v("BluetoothFR", "Sending data via ObjectOutputStream");
 
                     //por el momento se crea un usuario test. mas adelante se va a sacar de la BD
-                    Person testUsuario = new Person();
-                    testUsuario
-                            .setId("1");
-                    testUsuario
-                            .setName("Test Usuario Cambiar");
 
+                    //TODO sacar usuario de la base de datos
+                    InterestsMethods mets = new InterestsMethods();
+                    SQLiteHelper as = SQLiteHelper.getInstance(mAct);
+                    int sas = Integer.parseInt(as.getLimbo1().getId());
+                    List<Usuario> asd = as.getAllUsuarios();
+                    Person usuario = mets.getLocalPropietor(mAct); //ToDo posiblemente esto no va a servir..
                     ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
-                    oos.writeObject(testUsuario);
+                    oos.writeObject(usuario);
 
 
                 } catch (Exception e) {
@@ -461,14 +473,16 @@ public class BluetoothHandler {
                             mmSocket.connect();
                             Log.v("BluetoothFR", "Connected to server- ****** Conected *****");
                         }
-                        Log.v("BluetoothFR", "Connected to server- Recibiendo datos ");
 
                         ObjectInputStream bjr = new ObjectInputStream(mmInStream);
                         usuario = (Person)bjr.readObject();
+                        InterestsMethods mtf = new InterestsMethods();
+                        //TODO set real match percentage
+                        mtf.insertReceivedPerson(mAct, usuario, usuario.getId(), 50);
+
                         bjr.close();
                     } catch (IOException e) {
-
-
+                        e.printStackTrace();
                 } catch (ClassNotFoundException e) {
                         e.printStackTrace();
                     }

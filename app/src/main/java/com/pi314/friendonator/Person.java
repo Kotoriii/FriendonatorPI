@@ -19,7 +19,7 @@ public class Person implements Serializable {
 
     private Date fecha_de_nacimiento = null;
     private int modo_de_cont_favorito;
-    private Bitmap foto_perfil = null;
+    private String foto_perfil = null;
     private List<Person> historial = null;
 
     public Person() {
@@ -28,7 +28,7 @@ public class Person implements Serializable {
     public Person(HashMap<String, String> getContactedByList,
                   HashMap<String, String> textFieldInfo, HashMap<Integer, List<Integer>> dataBaseInterest,
                   String name, String id, Date fecha_de_nacimiento, int modo_de_cont_favorito,
-                  Bitmap foto_perfil, List<Person> historial) {
+                  String foto_perfil, List<Person> historial) {
 
         this.getContactedByList = getContactedByList;
         this.textFieldInfo = textFieldInfo;
@@ -90,11 +90,11 @@ public class Person implements Serializable {
         this.modo_de_cont_favorito = modo_de_cont_favorito;
     }
 
-    public Bitmap getFoto_perfil() {
+    public String getFoto_perfil() {
         return foto_perfil;
     }
 
-    public void setFoto_perfil(Bitmap foto_perfil) {
+    public void setFoto_perfil(String foto_perfil) {
         this.foto_perfil = foto_perfil;
     }
 
@@ -162,4 +162,7 @@ public class Person implements Serializable {
                 '}';
     }
 
+    public void setId(int id_us) {
+        this.id = Integer.toString(id_us);
+    }
 }
