@@ -26,6 +26,7 @@
     <string name="profileNameRequired">Nombre de perfil requerido</string>
     <string name="setInterests">Escogé tus intereses para continuar </string>
     <string name="setContactedBy">Escogé tus preferencias de contacto para continuar</string>
+    <string name="setPicture">Escogé una imagen para continuar</string>
 
     <string name="title_activity_interests">Intereses</string>
     <string name="lblInterestsL">Intereses</string>

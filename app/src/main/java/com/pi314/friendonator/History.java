@@ -18,37 +18,53 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.pi314.interests.InterestsMethods;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+
+import Database.Historial;
+import Database.SQLiteHelper;
 
 
 public class History extends Activity {
 
     //Se crea un arrylist con los datos que quieren que se muestren en el perfil
-    static List<ListaEntrada_History> datos = new ArrayList<ListaEntrada_History>();
+    List<ListaEntrada_History> datos = new ArrayList<ListaEntrada_History>();
 
+    Person person;
+    SQLiteHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.listado_history);
 
-        //Se crean ls personajes
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Carlos", "78" + "%", 78));
+        // Get object person from intent extras
+        getSetPerson();
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Mack", "87" + "%", 4));
+        // Set Data Base
+        db = SQLiteHelper.getInstance(getApplicationContext());
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Tupini", "80" + "%", 34));
+        // Get history list from Data Base
+        List<Historial> historialList = db.getAllHistorial();
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Alejandro", "75" + "%", 67));
+        if (historialList.isEmpty()) {
+            // Testing inserting match and history
+            testMatchStuff();
+        }
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Fernando", "82" + "%", 89));
+        historialList = db.getAllHistorial();
 
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Warren", "90" + "%", 23));
-
-        datos.add(new ListaEntrada_History(R.drawable.ic_launcher, "Vicky", "69" + "%", 45));
-
+        if (!historialList.isEmpty()) {
+            int count = 2; // Integer.parseInt(h.getIdMatch())
+            for (Historial h : historialList) {
+                datos.add(new ListaEntrada_History(R.drawable.ic_launcher, h.getMatchName(), getResources().getString(R.string.matchPercentage) + h.getMatchPerc() + " %", count));
+                count ++;
+            }
+        }
 
         final ListView historyList = (ListView) findViewById(R.id.ListView_listado_history);
         historyList.setAdapter(new Lista_History(this, R.layout.entrada_history, datos) {
@@ -74,17 +90,119 @@ public class History extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                  int id1 = datos.get(position).getId();
-                 //ToastCostumizado(""+id1);
+
+                // Create the Intent element
                 Intent intent = new Intent(History.this, MatchProfileActivity.class);
+
+                // Send ID to match profile activity
                 Bundle b = new Bundle();
                 b.putInt("ID", id1);
                 intent.putExtras(b);
+
+                // Set person inside intent
+                intent.putExtra("PERSON", person);
+
                 startActivity(intent);
+
+                // Finish activity
+                finish();
+
+                // Slide animation
+                overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
            }
         });
 
     }
 
+    public void getSetPerson() {
+        person = (Person) this.getIntent().getSerializableExtra("PERSON");
+
+        if (person == null)
+            person = new Person();
+    }
+
+    public void testMatchStuff() {
+        InterestsMethods test = new InterestsMethods();
+
+        Person matchPerson = new Person();
+
+        HashMap<Integer, List<Integer>> interests = new HashMap<Integer, List<Integer>>();
+        List<Integer> genres = new ArrayList<Integer>();
+        genres.add(0);
+        genres.add(1);
+        genres.add(2);
+        genres.add(3);
+
+        List<Integer> genres2 = new ArrayList<Integer>();
+        genres2.add(40);
+        genres2.add(43);
+        genres2.add(44);
+        genres2.add(47);
+
+        List<Integer> genres3 = new ArrayList<Integer>();
+        genres3.add(18);
+        genres3.add(22);
+
+        interests.put(1, genres);
+        interests.put(3, genres3);
+        interests.put(6, genres2);
+
+        matchPerson.setDataBaseInterest(interests);
+        matchPerson.setName("Female Doge");
+        matchPerson.setId("2");
+
+        matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestMusic), "Such music, many artist, wow");
+        matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestMovies), "Cute puppy");
+        matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestSports), "Must shape body");
+
+        HashMap<String, String> contactedBy = new HashMap<String, String>();
+        contactedBy.put("Cellphone", "8649-5984");
+        contactedBy.put("Facebook", "www.facebook.com/female.doge");
+        contactedBy.put("Twitter", "@SuchClass");
+
+        matchPerson.setGetContactedByList(contactedBy);
+
+        int percentage = (int) Math.floor(test.getMatchPercentage(person, matchPerson));
+        test.insertReceivedPerson(History.this, matchPerson, person.getId(), percentage);
+
+        Person matchPerson2 = new Person();
+
+        HashMap<Integer, List<Integer>> interests2 = new HashMap<Integer, List<Integer>>();
+        List<Integer> genres4 = new ArrayList<Integer>();
+        genres4.add(10);
+        genres4.add(11);
+        genres4.add(12);
+
+        List<Integer> genres5 = new ArrayList<Integer>();
+        genres5.add(27);
+        genres5.add(28);
+        genres5.add(29);
+
+        List<Integer> genres6 = new ArrayList<Integer>();
+        genres6.add(49);
+        genres6.add(50);
+
+        interests2.put(2, genres4);
+        interests2.put(4, genres5);
+        interests2.put(8, genres6);
+
+        matchPerson2.setDataBaseInterest(interests2);
+        matchPerson2.setName("Fat Doge");
+        matchPerson2.setId("3");
+
+        matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestLiterature), "Kevin Bacon Guardian, Many Galaxies, Such Mix!");
+        matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestArt), "Doge Lisa");
+        matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestLookingFor), "Many friends, wow");
+
+        HashMap<String, String> contactedBy2 = new HashMap<String, String>();
+        contactedBy2.put("Cellphone", "8321-8495");
+        contactedBy2.put("Twitter", "@MuchFood");
+
+        matchPerson2.setGetContactedByList(contactedBy2);
+
+        int percentage2 = (int) Math.floor(test.getMatchPercentage(person, matchPerson2));
+        test.insertReceivedPerson(History.this, matchPerson2, person.getId(), percentage2);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -229,5 +347,20 @@ public class History extends Activity {
         }
         return super.onOptionsItemSelected(item);
     } */
+
+    @Override
+    public void onBackPressed() {
+        // Create intent to open get contacted by activity
+        Intent intent = new Intent(History.this, HomeActivity.class);
+
+        // Set bundle inside intent
+        intent.putExtra("PERSON", person);
+
+        // Start change to a new layout
+        startActivity(intent);
+
+        // Finish activity
+        this.finish();
+    }
 
 }

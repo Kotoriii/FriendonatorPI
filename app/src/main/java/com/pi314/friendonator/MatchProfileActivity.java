@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -18,6 +19,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import Dialog.InterestInfo;
 import GridView.GridCustomAdapter;
 import GridView.GridObject;
 
@@ -25,7 +28,6 @@ public class MatchProfileActivity extends Activity {
 
     Person person;
     Person matchPerson;
-    int eventSelected;
     ArrayList<GridObject> gridList;
     ArrayList<GridObject> contactedBy;
 
@@ -41,15 +43,15 @@ public class MatchProfileActivity extends Activity {
         // Get object person from intent extras
         getSetPerson();
 
+        // Test getting match from Data Base
         Bundle bundle = this.getIntent().getExtras();
-        eventSelected = bundle.getInt("EVENT");
+        int idUser = bundle.getInt("ID");
 
-        // Fill match interests
-        matchPersonInterests();
+        // Create match person from Data Base
+        InterestsMethods getMatch = new InterestsMethods();
+        matchPerson = getMatch.createPerson(MatchProfileActivity.this, idUser);
 
-        // Fill get contacted by
-        matchGetContactedBy();
-
+        // Set match name
         lblMatchName.setText(matchPerson.getName());
 
         // Locate the gridViewInterests TextView
@@ -76,16 +78,25 @@ public class MatchProfileActivity extends Activity {
 
         InterestsMethods match = new InterestsMethods();
         int percentage = (int) Math.floor(match.getMatchPercentage(person, matchPerson));
-        int specialPercentage = (int) Math.floor(match.specialMatchResult(eventSelected, person, matchPerson));
+        int specialPercentage = (int) Math.floor(match.specialMatchResult(person.getEventId(), person, matchPerson));
 
         lblMatchPercentage.setText(getResources().getString(R.string.matchPercentage) + percentage + " %");
         lblSpecialMatch.setText(getResources().getString(R.string.categoryPercentage) + specialPercentage + " %");
+
+        gridViewInterests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                GridObject forDialog = gridList.get(position);
+                if (!forDialog.getTitle().isEmpty() && matchPerson.textValue(forDialog.getTitle()) != null)
+                    showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), matchPerson.textValue(forDialog.getTitle()), forDialog.getTitle());
+            }
+        });
 
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Create intent
-                Intent intent = new Intent(MatchProfileActivity.this, HomeActivity.class);
+                Intent intent = new Intent(MatchProfileActivity.this, History.class);
 
                 // Set person inside intent
                 intent.putExtra("PERSON", person);
@@ -95,6 +106,9 @@ public class MatchProfileActivity extends Activity {
 
                 // Finish activity
                 finish();
+
+                // Slide animation
+                overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
             }
         });
     }
@@ -104,44 +118,6 @@ public class MatchProfileActivity extends Activity {
 
         if (person == null)
             person = new Person();
-    }
-
-    // For testing matching method
-    public void matchPersonInterests() {
-        matchPerson = new Person();
-
-        HashMap<Integer, List<Integer>> interests = new HashMap<Integer, List<Integer>>();
-        List<Integer> genres = new ArrayList<Integer>();
-        genres.add(0);
-        genres.add(1);
-        genres.add(2);
-        genres.add(3);
-
-        List<Integer> genres2 = new ArrayList<Integer>();
-        genres2.add(40);
-        genres2.add(43);
-        genres2.add(44);
-        genres2.add(47);
-
-        List<Integer> genres3 = new ArrayList<Integer>();
-        genres3.add(18);
-        genres3.add(22);
-
-        interests.put(1, genres);
-        interests.put(3, genres3);
-        interests.put(6, genres2);
-
-        matchPerson.setDataBaseInterest(interests);
-        matchPerson.setName("Female Doge");
-    }
-
-    public void matchGetContactedBy() {
-        HashMap<String, String> contactedBy = new HashMap<String, String>();
-        contactedBy.put("Phone", "8649-5984");
-        contactedBy.put("Facebook", "www.facebook.com/female.doge");
-        contactedBy.put("Twitter", "@SuchClass");
-
-        matchPerson.setGetContactedByList(contactedBy);
     }
 
     public ArrayList<GridObject> fillGridViewInterests() {
@@ -183,7 +159,7 @@ public class MatchProfileActivity extends Activity {
         GridObject object = new GridObject();
 
         if (matchPerson != null && !matchPerson.getGetContactedByList().isEmpty()) {
-            for (Map.Entry<String, String> entry : person.getGetContactedByList().entrySet()) {
+            for (Map.Entry<String, String> entry : matchPerson.getGetContactedByList().entrySet()) {
                 if (!entry.getValue().isEmpty()) {
                     contactedByList = "";
                     object = new GridObject();
@@ -206,6 +182,15 @@ public class MatchProfileActivity extends Activity {
         return contactedBy;
     }
 
+    public void showInterestInfoDialog(String tittle, String message, String tittleIcon) {
+        // Create an instance of dialogInterestInfo
+        InterestInfo dialogInterestInfo = new InterestInfo();
+        // Set tittle and description
+        dialogInterestInfo.setInfo(tittle, message, tittleIcon);
+        // Show SelectInterest instance
+        dialogInterestInfo.show(getFragmentManager(), "InterestInfo");
+    }
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -224,4 +209,23 @@ public class MatchProfileActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+*/
+    @Override
+    public void onBackPressed() {
+        // Create intent to open get contacted by activity
+        Intent intent = new Intent(MatchProfileActivity.this, History.class);
+
+        // Set bundle inside intent
+        intent.putExtra("PERSON", person);
+
+        // Start change to a new layout
+        startActivity(intent);
+
+        // Finish activity
+        this.finish();
+
+        // Slide animation
+        overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+    }
+
 }

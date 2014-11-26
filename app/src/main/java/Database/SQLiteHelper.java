@@ -39,6 +39,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             "idMatch INTEGER," +
             "idUsuario INTEGER," +
             "matchPerc INTEGER," +
+            "matchName VARCHAR," +
             "latitud VARCHAR," +
             "longitud VARCHAR," +
             "fecha VARCHAR," + // ToDo should use DataTime or equivalent
@@ -161,6 +162,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("idMatch", hist.getIdMatch());
         values.put("idUsuario", hist.getIdusuario());
         values.put("matchPerc", hist.getMatchPerc());
+        values.put("matchName", hist.getMatchName());
         values.put("fecha", hist.getFecha());
         values.put("latitud", hist.getLatitud());
         values.put("longitud", hist.getLongitud());
@@ -349,14 +351,23 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 historial.setIdMatch(cursor.getString(0));
                 historial.setIdusuario(cursor.getString(1));
                 historial.setMatchPerc(cursor.getString(2));
-                historial.setLatitud(cursor.getString(3));
-                historial.setLongitud(cursor.getString(4));
-                historial.setFecha(cursor.getString(5));
+                historial.setMatchName(cursor.getString(3));
+                historial.setLatitud(cursor.getString(4));
+                historial.setLongitud(cursor.getString(5));
+                historial.setFecha(cursor.getString(6));
                 historialList.add(historial);
             } while (cursor.moveToNext());
         }
 
         cursor.close();
+
+        for (Historial h : historialList) {
+            Log.i("*******************", h.getIdusuario());
+            Log.i("*******************", h.getIdMatch());
+            Log.i("*******************", h.getMatchName());
+            Log.i("*******************", h.getFecha());
+            Log.i("*******************", h.getMatchPerc());
+        }
 
         return historialList;
     }
@@ -501,14 +512,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return usuario;
     }
 
-    public int deleteUserInterestData() {
+    public int deleteUserInterestData(String idUser) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("usuariointereses", null, null);
+        return db.delete("usuariointereses", "idUsuario=?", new String[]{idUser});
     }
 
-    public int deleteUserTextData() {
+    public int deleteUserTextData(String idUser) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("textointeres", null, null);
+        return db.delete("textointeres", "idUsuario=?", new String[]{idUser});
     }
 
     public TextoInteres getTexto(String id){
