@@ -187,7 +187,7 @@ public class History extends Activity {
         interests2.put(8, genres6);
 
         matchPerson2.setDataBaseInterest(interests2);
-        matchPerson2.setName("Fat Doge");
+        matchPerson2.setName("Doge");
         matchPerson2.setId("3");
 
         matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestLiterature), "Kevin Bacon Guardian, Many Galaxies, Such Mix!");

@@ -39,7 +39,8 @@
                     android:layout_centerHorizontal="true"
                     android:prompt="@string/spnEvent"
                     android:entries="@array/event_array"
-                    android:focusable="false" />
+                    android:focusable="false"
+                    android:theme="@style/AppTheme" />
             </RelativeLayout>
 
             <RelativeLayout

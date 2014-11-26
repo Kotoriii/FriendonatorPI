@@ -50,7 +50,8 @@
                     android:id="@+id/btnProfileImage"
                     android:contentDescription="@string/btnProfileImage"
                     android:layout_gravity="center"
-                    android:background="#ffdadada" />
+                    android:background="#ffdadada"
+                    android:src="@drawable/dogehangout"/>
             </FrameLayout>
 
             <Space

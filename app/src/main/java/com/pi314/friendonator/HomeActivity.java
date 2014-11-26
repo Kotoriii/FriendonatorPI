@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -67,7 +68,13 @@ public class HomeActivity extends Activity {
 
         // Set spinner event
         if (person.getEventId() != 0) {
-            spnEvent.setSelection(person.getEventId());
+            if (person.getEventId() == 4) {
+                spnEvent.setSelection(2);
+            } if (person.getEventId() == 2) {
+                spnEvent.setSelection(3);
+            } else {
+                spnEvent.setSelection(person.getEventId());
+            }
         }
 
         final TextView btnprofile = (TextView) findViewById(R.id.lblProfileName);
@@ -115,7 +122,7 @@ public class HomeActivity extends Activity {
 
         Resources res = getResources();
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, res.getStringArray(R.array.event_array));
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         spnEvent.setAdapter(dataAdapter);
 
 
@@ -126,21 +133,27 @@ public class HomeActivity extends Activity {
                 switch(position) {
                     case 0:
                         iv.setImageResource(R.drawable.dogehangout);
+                        eventSelected = position;
                         break;
                     case 1:
                         iv.setImageResource(R.drawable.snoopdoge);
+                        eventSelected = position;
                         break;
                     case 2:
                         iv.setImageResource(R.drawable.dogeart);
+                        eventSelected = 4;
                         break;
                     case 3:
                         iv.setImageResource(R.drawable.dogepotter);
+                        eventSelected = 2;
                         break;
                     case 4:
                         iv.setImageResource(R.drawable.dogeparty);
+                        eventSelected = position;
                         break;
                 }
-                eventSelected = position;
+                // Set event into person
+                person.setEventId(eventSelected);
             }
 
             @Override
@@ -176,14 +189,8 @@ public class HomeActivity extends Activity {
         // Create the Intent element
         Intent intent = new Intent(HomeActivity.this, History.class);
 
-        Bundle bundle = new Bundle();
-        bundle.putInt("EVENT", eventSelected);
-        // Set event into person
-        person.setEventId(eventSelected);
-
         // Set person inside intent
         intent.putExtra("PERSON", person);
-        intent.putExtras(bundle);
 
         startActivity(intent);
 

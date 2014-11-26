@@ -27,7 +27,7 @@
                 android:contentDescription="@string/imageMatch"
                 android:layout_gravity="center_horizontal"
                 android:focusable="false"
-                android:src="@drawable/dogemarilyn" />
+                android:src="@drawable/dogeswag" />
 
             <Space
                 android:layout_width="20dp"

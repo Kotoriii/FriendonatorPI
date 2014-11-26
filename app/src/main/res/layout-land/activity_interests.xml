@@ -59,7 +59,7 @@
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/imageButton"
+                            android:id="@+id/btnEditMusic"
                             android:background="@android:color/transparent"
                             android:src="@drawable/ic_action_edit"
                             android:visibility="gone"
@@ -127,7 +127,7 @@
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/imageButton2"
+                            android:id="@+id/btnEditLiterature"
                             android:background="@android:color/transparent"
                             android:src="@drawable/ic_action_edit"
                             android:visibility="gone"
@@ -182,7 +182,7 @@
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/imageButton3"
+                            android:id="@+id/btnEditMovies"
                             android:background="@android:color/transparent"
                             android:src="@drawable/ic_action_edit"
                             android:visibility="gone"
@@ -237,7 +237,7 @@
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/imageButton4"
+                            android:id="@+id/btnEditArt"
                             android:background="@android:color/transparent"
                             android:src="@drawable/ic_action_edit"
                             android:visibility="gone"
@@ -296,7 +296,7 @@
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/imageButton5"
+                            android:id="@+id/btnEditTvShows"
                             android:background="@android:color/transparent"
                             android:src="@drawable/ic_action_edit"
                             android:visibility="gone"
@@ -351,7 +351,7 @@
                         <ImageButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:id="@+id/imageButton6"
+                            android:id="@+id/btnEditSports"
                             android:background="@android:color/transparent"
                             android:src="@drawable/ic_action_edit"
                             android:visibility="gone"
@@ -481,7 +481,7 @@
                 android:layout_width="275dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btnSaveInterestsChanges"
-                android:id="@+id/button"
+                android:id="@+id/btnSaveInterestsChanges"
                 android:textColor="@android:color/white"
                 android:background="@drawable/custom_border_button"
                 android:layout_gravity="center_horizontal" />
