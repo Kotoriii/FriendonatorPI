@@ -106,6 +106,9 @@ public class ApiWrapper {
                     persona.setDataBaseInterest(this.getInteresesUsuario(id_us));
                     persona.setName(json.getString("nombre"));
 
+                    //todo, persona.setGetTextFieldInfo();.. primero hay que hacerlo en servidor
+                    // o podriamos quitarlo :D
+
                     //Obtenemos la fecha
                     String json_fecha = json.getString("fecha_de_nacimiento");
                     int anno = Integer.parseInt(json_fecha.substring(0, 4));
@@ -116,12 +119,18 @@ public class ApiWrapper {
 
                     //cosas especificas de usuario
                     Usuario usuario = new Usuario();
+                    usuario.setCorreo(persona.getEmail());
+                    usuario.setMatchp("");
+                    usuario.setId(persona.getId());
+                    usuario.setDob(persona.getFecha_de_nacimiento().getTime());
+                    usuario.setNombre(persona.getName());
                     usuario.setNum(json.getString("numero_telefono"));
                     usuario.setGplus(json.getString("googleP_id"));
                     usuario.setFb(json.getString("facebookID"));
                     usuario.setTwitter(json.getString("twitter_id"));
                     usuario.setFoto(this.saveBitmap(act, img_serv));
                     usuario.setModfav(json.getString("modo_de_cont_favorito"));
+                    usuario.setPassword(""); // <- para evitar inconsistencias
 
                     this.insertPerson(act, persona, usuario);
                 }
@@ -499,30 +508,18 @@ public class ApiWrapper {
      */
     public void activateWifi(Context context) {
         WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        wifi.setWifiEnabled(false); // true or false to activate/deactivate wifi
+        wifi.setWifiEnabled(true); // true or false to activate/deactivate wifi
     }
 
-    private void insertPerson(Context context, Person person, Usuario usu) {
+    private void insertPerson(Context context, Person person, Usuario usuario) {
         // Insert received person via bluetooth into Data Base
         InterestsMethods mths = new InterestsMethods();
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
-        Usuario userToInsert = new Usuario();
-        userToInsert.setId(person.getId());
-        userToInsert.setNombre(person.getName());
-        userToInsert.setDob(person.getFecha_de_nacimiento().getTime());
-        userToInsert.setCorreo(person.getEmail());
-        //cosas solo de usuario
-        userToInsert.setNum(usu.getNum());
-        userToInsert.setGplus(usu.getGplus());
-        userToInsert.setFb(usu.getFb());
-        userToInsert.setTwitter(usu.getTwitter());
-        userToInsert.setFoto(usu.getFoto());
-        userToInsert.setModfav(usu.getModfav());
-        //para evitar problemas con la incercion.. si es null da error
-        userToInsert.setMatchp("");
 
-        db.insertUsuario(userToInsert);
+        db.insertUsuario(usuario);
         mths.insertInterests(context, person);
+        List<Usuario> asd = db.getAllUsuarios();
+
         mths.insertText(context, person);
 
     }
