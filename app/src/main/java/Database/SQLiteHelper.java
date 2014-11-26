@@ -399,14 +399,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         cursor.close();
 
-        for (Historial h : historialList) {
-            Log.i("*******************", h.getIdusuario());
-            Log.i("*******************", h.getIdMatch());
-            Log.i("*******************", h.getMatchName());
-            Log.i("*******************", h.getFecha());
-            Log.i("*******************", h.getMatchPerc());
-        }
-
         return historialList;
     }
 

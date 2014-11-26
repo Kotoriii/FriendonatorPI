@@ -47,15 +47,28 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/lblMusic"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/lblMusic"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:clickable="false"
-                            android:onClick="onLabelInterestClicked" />
+                            android:layout_alignParentStart="true" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/btnEditMusic"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_action_edit"
+                            android:visibility="gone"
+                            android:contentDescription="@string/btnEditMusic"
+                            android:layout_toEndOf="@+id/lblMusic"
+                            android:layout_alignParentTop="true"
+                            android:layout_toRightOf="@+id/lblMusic"
+                            android:layout_marginLeft="10dp"
+                            android:onClick="onPencilClicked" />
 
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -90,15 +103,14 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/lblLiterature"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/lblLiterature"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:clickable="false"
-                            android:onClick="onLabelInterestClicked" />
+                            android:layout_alignParentStart="true" />
 
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -111,6 +123,20 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginRight="20dp"
                             android:onClick="onCheckBoxInterestClicked" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/btnEditLiterature"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_action_edit"
+                            android:visibility="gone"
+                            android:contentDescription="@string/btnEditLiterature"
+                            android:layout_toEndOf="@+id/lblLiterature"
+                            android:layout_marginLeft="10dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_toRightOf="@+id/lblLiterature"
+                            android:onClick="onPencilClicked" />
                     </RelativeLayout>
 
                     <EditText
@@ -132,15 +158,14 @@
                         android:layout_height="fill_parent">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/lblMovies"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/lblMovies"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:clickable="false"
-                            android:onClick="onLabelInterestClicked" />
+                            android:layout_alignParentStart="true" />
 
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -153,6 +178,20 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginRight="20dp"
                             android:onClick="onCheckBoxInterestClicked" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/btnEditMovies"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_action_edit"
+                            android:visibility="gone"
+                            android:contentDescription="@string/btnEditMovies"
+                            android:layout_alignParentTop="true"
+                            android:layout_toRightOf="@+id/lblMovies"
+                            android:layout_toEndOf="@+id/lblMovies"
+                            android:layout_marginLeft="10dp"
+                            android:onClick="onPencilClicked" />
                     </RelativeLayout>
 
                     <EditText
@@ -174,15 +213,14 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/lblArt"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/lblArt"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:clickable="false"
-                            android:onClick="onLabelInterestClicked" />
+                            android:layout_alignParentStart="true" />
 
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -195,6 +233,20 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginRight="20dp"
                             android:onClick="onCheckBoxInterestClicked" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/btnEditArt"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_action_edit"
+                            android:visibility="gone"
+                            android:contentDescription="@string/btnEditArt"
+                            android:layout_alignParentTop="true"
+                            android:layout_toRightOf="@+id/lblArt"
+                            android:layout_toEndOf="@+id/lblArt"
+                            android:layout_marginLeft="10dp"
+                            android:onClick="onPencilClicked" />
                     </RelativeLayout>
 
                     <EditText
@@ -220,15 +272,14 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/lblTvShow"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/lblTvShow"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:clickable="false"
-                            android:onClick="onLabelInterestClicked" />
+                            android:layout_alignParentStart="true" />
 
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -241,6 +292,20 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginRight="20dp"
                             android:onClick="onCheckBoxInterestClicked" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/btnEditTvShows"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_action_edit"
+                            android:visibility="gone"
+                            android:contentDescription="@string/btnEditTvShows"
+                            android:layout_alignParentTop="true"
+                            android:layout_toRightOf="@+id/lblTvShow"
+                            android:layout_toEndOf="@+id/lblTvShow"
+                            android:layout_marginLeft="10dp"
+                            android:onClick="onPencilClicked" />
                     </RelativeLayout>
 
                     <EditText
@@ -262,15 +327,14 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/lblSports"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/lblSports"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:clickable="false"
-                            android:onClick="onLabelInterestClicked" />
+                            android:layout_alignParentStart="true" />
 
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -283,6 +347,20 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginRight="20dp"
                             android:onClick="onCheckBoxInterestClicked" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/btnEditSports"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_action_edit"
+                            android:visibility="gone"
+                            android:contentDescription="@string/btnEditSports"
+                            android:layout_alignParentTop="true"
+                            android:layout_toRightOf="@+id/lblSports"
+                            android:layout_toEndOf="@+id/lblSports"
+                            android:layout_marginLeft="10dp"
+                            android:onClick="onPencilClicked" />
                     </RelativeLayout>
 
                     <EditText
@@ -304,9 +382,10 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/lblScience"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/lblScience"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
@@ -344,15 +423,14 @@
                         android:layout_height="wrap_content">
 
                         <TextView
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/lblLookingFor"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:id="@+id/lblLookingFor"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
-                            android:layout_alignParentStart="true"
-                            android:clickable="false"
-                            android:onClick="onLabelInterestClicked" />
+                            android:layout_alignParentStart="true" />
 
                         <CheckBox
                             android:layout_width="wrap_content"
@@ -365,6 +443,20 @@
                             android:layout_alignParentEnd="true"
                             android:layout_marginRight="20dp"
                             android:onClick="onCheckBoxInterestClicked" />
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/btnEditLookingFor"
+                            android:layout_alignParentTop="true"
+                            android:background="@android:color/transparent"
+                            android:src="@drawable/ic_action_edit"
+                            android:visibility="gone"
+                            android:contentDescription="@string/btnEditLookingFor"
+                            android:layout_toRightOf="@+id/lblLookingFor"
+                            android:layout_toEndOf="@+id/lblLookingFor"
+                            android:layout_marginLeft="10dp"
+                            android:onClick="onPencilClicked" />
                     </RelativeLayout>
 
                     <EditText
@@ -389,7 +481,7 @@
                 android:layout_width="275dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btnSaveInterestsChanges"
-                android:id="@+id/button"
+                android:id="@+id/btnSaveInterestsChanges"
                 android:textColor="@android:color/white"
                 android:background="@drawable/custom_border_button"
                 android:layout_gravity="center_horizontal" />

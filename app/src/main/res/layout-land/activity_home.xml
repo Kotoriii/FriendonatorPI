@@ -7,6 +7,7 @@
     android:id="@+id/relativeLayout"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.pi314.friendonator.HomeActivity"
+    android:background="@android:color/white"
     >
 
     <ScrollView

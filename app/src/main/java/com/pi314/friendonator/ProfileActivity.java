@@ -282,14 +282,14 @@ public class ProfileActivity extends Activity {
                 object = new GridObject();
             }
         }
-/*
+
         Collections.sort(gridList, new Comparator<GridObject>() {
             @Override
             public int compare(GridObject lhs, GridObject rhs) {
                 return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
             }
         });
-*/
+
         return gridList;
     }
 

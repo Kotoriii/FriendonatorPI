@@ -10,7 +10,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:id="@+id/scrollView" >
 
         <LinearLayout
@@ -50,6 +50,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/lblCellphone"
                             android:id="@+id/lblCellphone"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true" />
@@ -90,6 +91,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/lblGoogle"
                             android:id="@+id/lblGoogle"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true" />
@@ -130,6 +132,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/lblFacebook"
                             android:id="@+id/lblFacebook"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true" />
@@ -176,6 +179,7 @@
                             android:layout_height="wrap_content"
                             android:text="@string/lblTwitter"
                             android:id="@+id/lblTwitter"
+                            android:textAppearance="?android:attr/textAppearanceMedium"
                             android:layout_centerVertical="true"
                             android:layout_alignParentLeft="true"
                             android:layout_alignParentStart="true" />
@@ -209,6 +213,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/lblFindMeTool"
                         android:id="@+id/lblFindMeTool" />
 
@@ -220,6 +225,7 @@
                     <Switch
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/switchActivateTool"
                         android:id="@+id/switchActivateTool" />
                 </LinearLayout>
@@ -237,7 +243,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:text="@string/btnSaveContactMeChanges"
-        android:id="@+id/button"
+        android:id="@+id/btnSaveContactMeChanges"
         android:textColor="@android:color/white"
         android:background="@drawable/custom_border_button"
         android:layout_alignTop="@+id/scrollView"
