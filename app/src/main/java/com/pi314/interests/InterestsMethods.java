@@ -1,11 +1,16 @@
 package com.pi314.interests;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.pi314.friendonator.Person;
 import com.pi314.friendonator.R;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,7 +30,6 @@ import Database.Usuariointereses;
 import GridView.GridObject;
 
 public class InterestsMethods {
-
 
 
     public HashMap<Integer, List<Integer>> getInterestFromDataBase(Context context, int idUser) {
@@ -52,46 +56,39 @@ public class InterestsMethods {
                 interests.put(superId.get(count), valuesId);
                 valuesId = new ArrayList<Integer>();
             }
-            count ++;
+            count++;
         }
 
         return interests;
     }
 
-    public String getInterestsStrings(Context context,int interest, List<Integer> value) {
+    public String getInterestsStrings(Context context, int interest, List<Integer> value) {
         // Method to convert genres id to its respective string
-        String [] values = new String[8];
+        String[] values = new String[8];
         int subtractRealID = 0;
 
         if (interest == 1) {
             values = context.getApplicationContext().getResources().getStringArray(R.array.music);
             subtractRealID = 0;
-        }
-        else if (interest == 2) {
+        } else if (interest == 2) {
             values = context.getApplicationContext().getResources().getStringArray(R.array.literature);
             subtractRealID = 8;
-        }
-        else if (interest == 3) {
+        } else if (interest == 3) {
             values = context.getApplicationContext().getResources().getStringArray(R.array.movies);
             subtractRealID = 16;
-        }
-        else if (interest == 4) {
+        } else if (interest == 4) {
             values = context.getApplicationContext().getResources().getStringArray(R.array.art);
             subtractRealID = 24;
-        }
-        else if (interest == 5) {
+        } else if (interest == 5) {
             values = context.getApplicationContext().getResources().getStringArray(R.array.tvShows);
             subtractRealID = 32;
-        }
-        else if (interest == 6) {
+        } else if (interest == 6) {
             values = context.getApplicationContext().getResources().getStringArray(R.array.sports);
             subtractRealID = 40;
-        }
-        else if (interest == 7) {
+        } else if (interest == 7) {
             values = context.getApplicationContext().getResources().getStringArray(R.array.science);
             subtractRealID = 48;
-        }
-        else if (interest == 8) {
+        } else if (interest == 8) {
             values = context.getApplicationContext().getResources().getStringArray(R.array.lookingFor);
             subtractRealID = 49;
         }
@@ -100,7 +97,7 @@ public class InterestsMethods {
         int count = 0;
 
         for (Integer v : value) {
-            if(count < value.size()-1) {
+            if (count < value.size() - 1) {
                 forReturn += values[v - subtractRealID] + ", ";
                 count += 1;
             } else
@@ -114,7 +111,7 @@ public class InterestsMethods {
         // Make optional interest text hashMap from Data Base to fill person interests text using its id
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
         HashMap<String, String> contactedByList = new HashMap<String, String>();
-        String [] interest = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
+        String[] interest = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
 
         List<TextoInteres> allTexts = db.getAllInterestTexts(idUser);
         int count = 0;
@@ -123,7 +120,7 @@ public class InterestsMethods {
             for (TextoInteres t : allTexts) {
                 contactedByList.put(interest[Integer.parseInt(t.getIdSuperInteres())], t.getTexto());
             }
-            count ++;
+            count++;
         }
 
         return contactedByList;
@@ -139,21 +136,21 @@ public class InterestsMethods {
         HashMap<Integer, List<Integer>> matchList = match.getDataBaseInterest();
 
         for (int interest : userList.keySet()) {
-            if(matchList.containsKey(interest)) {
+            if (matchList.containsKey(interest)) {
                 for (int value : userList.get(interest)) {
                     if (matchList.get(interest).contains(value)) {
                         matchInterest += 1;
                     }
                     userInterest += 1;
                 }
-                resultInterest += (matchInterest/userInterest) * 100;
-                matchValueCount ++;
+                resultInterest += (matchInterest / userInterest) * 100;
+                matchValueCount++;
             }
             matchInterest = 0.0;
             userInterest = 0.0;
         }
 
-        percentage = resultInterest/matchValueCount;
+        percentage = resultInterest / matchValueCount;
 
         return percentage;
     }
@@ -209,7 +206,7 @@ public class InterestsMethods {
             }
         }
 
-        resultInterest = (matchInterest/userInterest) * 100;
+        resultInterest = (matchInterest / userInterest) * 100;
 
         return resultInterest;
     }
@@ -229,7 +226,7 @@ public class InterestsMethods {
         // Insert optional texts from person text hash map
         if (!person.getTextFieldInfo().isEmpty()) {
             SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
-            String [] interestArray = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
+            String[] interestArray = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
             Log.i("-------------------", "" + db.deleteUserTextData(person.getId()));
 
             for (Map.Entry<String, String> entry : person.getTextFieldInfo().entrySet()) {
@@ -247,9 +244,16 @@ public class InterestsMethods {
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
         Usuario userFromDataBase = db.getUserByID(userId);
 
+        Long millis_DOB = Long.valueOf(userFromDataBase.getDob());
+
         Person person = new Person();
-        person.setName(userFromDataBase.getNombre());
+        person.setFecha_de_nacimiento(new Date(millis_DOB));
+        person.setFoto_perfil(userFromDataBase.getFoto());
         person.setId(userFromDataBase.getId());
+        person.setName(userFromDataBase.getNombre());
+        person.setEmail(userFromDataBase.getCorreo());
+
+
         person.setDataBaseInterest(getInterestFromDataBase(context, userId));
         person.setGetTextFieldInfo(getTextsFromDataBase(context, userId));
         person.setGetContactedByList(getContactedByFromDataBase(context, userFromDataBase));
@@ -279,16 +283,16 @@ public class InterestsMethods {
         Usuario userToInsert = new Usuario();
         userToInsert.setId(person.getId());
         userToInsert.setNombre(person.getName());
-        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblCellphone)) != null){
+        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblCellphone)) != null) {
             userToInsert.setNum(person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblCellphone)));
         }
-        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblGoogle)) != null){
+        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblGoogle)) != null) {
             userToInsert.setGplus(person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblGoogle)));
         }
-        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblFacebook)) != null){
+        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblFacebook)) != null) {
             userToInsert.setFb(person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblFacebook)));
         }
-        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblTwitter)) != null){
+        if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblTwitter)) != null) {
             userToInsert.setTwitter(person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblTwitter)));
         }
 
@@ -308,7 +312,7 @@ public class InterestsMethods {
         db.insertHistorial(historial);
     }
 
-    public Person getLocalPropietor(Context contex){
+    public Person getLocalPropietor(Context contex) {
         SQLiteHelper hlpr = SQLiteHelper.getInstance(contex);
         int idDePropietario = Integer.parseInt(hlpr.getLimbo1().getId());
         return this.createPerson(contex, idDePropietario);
@@ -320,4 +324,22 @@ public class InterestsMethods {
         return dateFormat.format(date);
     }
 
+
+    /**
+     * Devuelve la imagen q se encuentra en cierto path..
+     * no sabia donde poner el metodo :) pero por el momento se queda aqui
+     *
+     * @param path
+     * @return
+     */
+    public Bitmap loadImageFromStorage(String path) {
+        Bitmap b = null;
+        try {
+            File f = new File(path);
+            b = BitmapFactory.decodeStream(new FileInputStream(f));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return b;
+    }
 }
