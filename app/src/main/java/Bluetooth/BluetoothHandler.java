@@ -418,14 +418,9 @@ public class BluetoothHandler {
 
                     //por el momento se crea un usuario test. mas adelante se va a sacar de la BD
 
-                    //TODO sacar usuario de la base de datos
-                    InterestsMethods mets = new InterestsMethods();
-                    SQLiteHelper as = SQLiteHelper.getInstance(mAct);
-                    int sas = Integer.parseInt(as.getLimbo1().getId());
-                    List<Usuario> asd = as.getAllUsuarios();
-                    Person usuario = mets.getLocalPropietor(mAct); //ToDo posiblemente esto no va a servir..
+                    Person person = (Person) mAct.getIntent().getSerializableExtra("PERSON");
                     ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
-                    oos.writeObject(usuario);
+                    oos.writeObject(person);
 
 
                 } catch (Exception e) {
@@ -464,7 +459,7 @@ public class BluetoothHandler {
         }
 
         public void run() {
-                Person usuario = null ;
+                Person person = null ;
 
                 Log.v("BluetoothFR", "Connected to server- Starting receiving loop ");
 
@@ -475,10 +470,10 @@ public class BluetoothHandler {
                         }
 
                         ObjectInputStream bjr = new ObjectInputStream(mmInStream);
-                        usuario = (Person)bjr.readObject();
+                        person = (Person)bjr.readObject();
                         InterestsMethods mtf = new InterestsMethods();
                         //TODO set real match percentage
-                        mtf.insertReceivedPerson(mAct, usuario, usuario.getId(), 50);
+                        mtf.insertReceivedPerson(mAct, person, person.getId(), 50);
 
                         bjr.close();
                     } catch (IOException e) {
@@ -489,7 +484,7 @@ public class BluetoothHandler {
 
 
             Log.v("BluetoothFR", "Datos recieved!");
-                Log.v("BluetoothFR", "for! -> " +usuario.toString() );
+                Log.v("BluetoothFR", "for! -> " +person.toString() );
 
         }
 

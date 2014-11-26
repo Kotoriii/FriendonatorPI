@@ -29,6 +29,7 @@ import com.pi314.interests.InterestsMethods;
 import java.io.File;
 import java.util.ArrayList;
 
+import Bluetooth.BluetoothHandler;
 import Database.SQLiteHelper;
 import Database.Usuario;
 
@@ -269,7 +270,14 @@ public class HomeActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        BluetoothHandler mbh = BluetoothHandler.getInstance(this);
+        mbh.redefineActivity(this);
+        Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+        intent.putExtra("PERSON", person);
+        startActivity(intent);
+
         if (toggle.onOptionsItemSelected(item)) {
+
             return true;
         }
         return super.onOptionsItemSelected(item);

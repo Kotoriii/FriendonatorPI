@@ -91,6 +91,7 @@ Person person;
         startservice.setOnClickListener(this);
 
         mBHand = BluetoothHandler.getInstance(this);
+
         DeviceValidator dv = new DeviceValidator();
         String enc = dv.encrypt("1193434");
         String desenc = dv.decrypt(enc);
