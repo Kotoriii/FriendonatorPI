@@ -115,7 +115,7 @@ public class ApiWrapper {
                     int mes = Integer.parseInt(json_fecha.substring(5, 7));
                     int dia = Integer.parseInt(json_fecha.substring(8));
                     persona.setFecha_de_nacimiento(new Date(anno, mes, dia));
-                    persona.setFoto_perfil(this.getUserImage(id_us));
+                    persona.setFoto_perfil(this.saveUserBitmapFromUrl(act, id_us));
 
                     //cosas especificas de usuario
                     Usuario usuario = new Usuario();
@@ -133,6 +133,11 @@ public class ApiWrapper {
                     usuario.setPassword(""); // <- para evitar inconsistencias
 
                     this.insertPerson(act, persona, usuario);
+
+                    //en teoria no deberia de llegar aqui si hay algo en limbo.
+                    // por lo tanto no se ponen checks. sin ebargo LoginActivity deberia
+                    // de revisar que no haya nada en limbo
+                    sqlHelper.insertlimbo(usuario);
                 }
 
             }
@@ -143,6 +148,10 @@ public class ApiWrapper {
         //luego de insertar tanto usuario como persona se recrea una instancia limpia de la persona.
         //o en el caso de que no sea una nueva persona entonces se obtiene la persona de la BD
         return (new InterestsMethods()).createPerson(act, id_us);
+    }
+
+    private String saveUserBitmapFromUrl(Activity act, int id_us) {
+        return this.saveBitmap(act, this.getUserImage(id_us));
     }
 
     /**
