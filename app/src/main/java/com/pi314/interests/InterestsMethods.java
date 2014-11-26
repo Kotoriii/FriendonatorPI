@@ -216,7 +216,7 @@ public class InterestsMethods {
         // Insert interest from person interest hash map
         if (!person.getDataBaseInterest().isEmpty()) {
             SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
-            Log.i("-------------------", "" + db.deleteUserInterestData(person.getId()));
+            db.deleteUserInterestData(person.getId());
             for (int interest : person.getDataBaseInterest().keySet())
                 for (int value : person.getDataBaseInterest().get(interest))
                     db.insertUserint(new Usuariointereses(String.valueOf(value + 1), person.getId()));
@@ -228,7 +228,7 @@ public class InterestsMethods {
         if (!person.getTextFieldInfo().isEmpty()) {
             SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
             String [] interestArray = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
-            Log.i("-------------------", "" + db.deleteUserTextData(person.getId()));
+            db.deleteUserTextData(person.getId());
 
             for (Map.Entry<String, String> entry : person.getTextFieldInfo().entrySet()) {
                 TextoInteres text = new TextoInteres();
