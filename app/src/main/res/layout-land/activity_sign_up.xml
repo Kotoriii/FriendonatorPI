@@ -1,10 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical" >
 
     <ScrollView
-        android:layout_width="500dp"
+        android:layout_width="375dp"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView2"
         android:scrollbars="none"
@@ -12,58 +12,62 @@
         android:layout_marginTop="20dp">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/editTextUserName"
                 android:hint="@string/editTextUserName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:inputType="textEmailAddress"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:layout_weight="1">
                 <requestFocus />
             </EditText>
 
             <EditText
                 android:id="@+id/editTextPassword"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:hint="@string/editTextPassword"
                 android:inputType="textPassword"
                 android:fontFamily="sans-serif"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:layout_weight="1" />
 
             <EditText
                 android:id="@+id/editTextConfirmPassword"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:hint="@string/editTextConfirmPassword"
                 android:inputType="textPassword"
                 android:fontFamily="sans-serif"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:layout_weight="1" />
 
             <Button
                 android:id="@+id/btnCreateAccount"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:text="@string/btnCreateAccount"
                 android:background="@drawable/custom_border_button"
                 android:textColor="@android:color/white"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:layout_weight="1" />
 
             <Button
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:text="@string/btnCancelSignUp"
                 android:id="@+id/btnCancelSignUp"
                 android:background="@drawable/custom_border_button"
@@ -71,7 +75,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:layout_weight="1" />
         </LinearLayout>
     </ScrollView>
 
