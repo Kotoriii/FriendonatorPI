@@ -48,10 +48,8 @@ public class FindMeTool extends Activity {
                     api.activateWifi(FindMeTool.this);
                 SQLiteHelper hl = SQLiteHelper.getInstance(FindMeTool.this);
                 String id = hl.getLimbo1().getId();
-                Person pop = api.loginConServidor("tupini07@gmail.com","1", FindMeTool.this);
-
-                //Bitmap oo = api.getImageFromURL("http://tupini07.pythonanywhere.com/media/imagenesUs/diagrama.png", FindMeTool.this);
-                //imgView.setImageBitmap(oo);
+                Bitmap oo = api.getImageFromURL("http://tupini07.pythonanywhere.com/media/imagenesUs/diagrama.png");
+                imgView.setImageBitmap(oo);
             }
 
         });
