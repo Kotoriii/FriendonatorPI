@@ -108,7 +108,7 @@
     <string name="editTextUserName">Email</string>
     <string name="editTextPassword">Contraseña</string>
     <string name="editTextConfirmPassword">Confirmar contraseña</string>
-    <string name="btnCreateAccount">Crear cueenta</string>
+    <string name="btnCreateAccount">Crear cuenta</string>
     <string name="btnCancelSignUp">Cancelar</string>
     <string name="toastEmptyField">Campo vacío</string>
     <string name="toastEmail">Email ya existe</string>
@@ -135,7 +135,7 @@
     <string name="privacyoptions">Opciones de Privacidad</string>
     <string name="wifi">Wi-Fi</string>
     <string name="bluetooth">Bluetooth</string>
-    <string name="dataconnection">Conección de Datos</string>
+    <string name="dataconnection">Conexión de Datos</string>
     <string name="application">Aplicación</string>
     <string name="advancedoptions">Opciones Avanzadas</string>
     <string name="espanol">Español</string>
