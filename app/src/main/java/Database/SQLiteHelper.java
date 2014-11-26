@@ -152,6 +152,24 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return usuario;
     }
 
+    /**
+     * retorna el usuario que es el propietario del telefono
+     * @return
+     */
+    public boolean hay_algo_en_limbo() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+
+        Cursor cursor=db.rawQuery("select * from limbo",null);
+        //si moveToFirst quiere decir q hay algo en limbo
+        if(cursor.moveToFirst()){
+            cursor.close();
+            return true;
+        }else
+            cursor.close();
+            return false;
+    }
+
     public void insertTexto(TextoInteres text) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -570,4 +588,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.update("usuario", values, "idUsuario=?", new String[]{user.getId()});
     }
 
+    public void insertlimbo(Usuario usuario) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idUsuario", usuario.getId());
+        values.put("password", "");
+
+        db.insert("limbo", null, values);
+        db.close();
+    }
 }
