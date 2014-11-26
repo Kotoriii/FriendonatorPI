@@ -228,8 +228,10 @@ public class ProfileActivity extends Activity {
                 if (!forDialog.getTitle().isEmpty() && person.textValue(forDialog.getTitle()) != null)
                     showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), person.textValue(forDialog.getTitle()), forDialog.getTitle());
             }
-        });
+        });}
 
+
+        /*
         ///////////////////////////////////////Logica para el menu//////////////////////////////////////////////////////////
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
@@ -285,7 +287,7 @@ public class ProfileActivity extends Activity {
         };
 
         drawerLayout.setDrawerListener(toggle);
-    }
+    } */
 
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();

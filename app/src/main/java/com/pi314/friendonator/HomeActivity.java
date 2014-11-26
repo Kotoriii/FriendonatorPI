@@ -74,16 +74,7 @@ public class HomeActivity extends Activity {
         // Set user name
         textName();
 
-        // Set spinner event
-        if (person.getEventId() != 0) {
-            if (person.getEventId() == 4) {
-                spnEvent.setSelection(2);
-            } if (person.getEventId() == 2) {
-                spnEvent.setSelection(3);
-            } else {
-                spnEvent.setSelection(person.getEventId());
-            }
-        }
+
 
         final TextView btnprofile = (TextView) findViewById(R.id.lblProfileName);
 
@@ -169,7 +160,20 @@ public class HomeActivity extends Activity {
 
             }
 
+
+
         });
+        // Set spinner event
+        if (person.getEventId() != 0) {
+            if (person.getEventId() == 4) {
+                spnEvent.setSelection(2);
+            } if (person.getEventId() == 2) {
+                spnEvent.setSelection(3);
+            } else {
+                spnEvent.setSelection(person.getEventId());
+            }
+        }
+
 
         ///////////////////////////////////////Logica para el menu//////////////////////////////////////////////////////////
         getActionBar().setDisplayHomeAsUpEnabled(true);
