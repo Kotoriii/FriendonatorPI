@@ -200,9 +200,9 @@ public class InterestsMethods {
         HashMap<Integer, List<Integer>> userList = user.getDataBaseInterest();
         HashMap<Integer, List<Integer>> matchList = match.getDataBaseInterest();
 
-        if (event != 0 && event !=4) {
+        if (userList.get(event) != null) {
             for (int value : userList.get(event)) {
-                if (matchList.get(event).contains(value)) {
+                if (matchList.get(event) != null && matchList.get(event).contains(value)) {
                     matchInterest += 1;
                 }
                 userInterest++;
@@ -218,7 +218,7 @@ public class InterestsMethods {
         // Insert interest from person interest hash map
         if (!person.getDataBaseInterest().isEmpty()) {
             SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
-            db.deleteUserInterestData();
+            Log.i("-------------------", "" + db.deleteUserInterestData(person.getId()));
             for (int interest : person.getDataBaseInterest().keySet())
                 for (int value : person.getDataBaseInterest().get(interest))
                     db.insertUserint(new Usuariointereses(String.valueOf(value + 1), person.getId()));
@@ -230,7 +230,7 @@ public class InterestsMethods {
         if (!person.getTextFieldInfo().isEmpty()) {
             SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
             String [] interestArray = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
-            db.deleteUserTextData();
+            Log.i("-------------------", "" + db.deleteUserTextData(person.getId()));
 
             for (Map.Entry<String, String> entry : person.getTextFieldInfo().entrySet()) {
                 TextoInteres text = new TextoInteres();
@@ -302,6 +302,7 @@ public class InterestsMethods {
         historial.setMatchPerc(String.valueOf(percentage));
         historial.setLatitud("0");
         historial.setLongitud("0");
+        historial.setMatchName(person.getName());
         historial.setFecha(getDataTime());
 
         db.insertHistorial(historial);

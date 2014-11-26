@@ -65,7 +65,10 @@ public class HomeActivity extends Activity {
         // Set user name
         textName();
 
-        //onItemSelected();
+        // Set spinner event
+        if (person.getEventId() != 0) {
+            spnEvent.setSelection(person.getEventId());
+        }
 
         final TextView btnprofile = (TextView) findViewById(R.id.lblProfileName);
 
@@ -171,10 +174,12 @@ public class HomeActivity extends Activity {
         setName();
 
         // Create the Intent element
-        Intent intent = new Intent(HomeActivity.this, MatchProfileActivity.class);
+        Intent intent = new Intent(HomeActivity.this, History.class);
 
         Bundle bundle = new Bundle();
         bundle.putInt("EVENT", eventSelected);
+        // Set event into person
+        person.setEventId(eventSelected);
 
         // Set person inside intent
         intent.putExtra("PERSON", person);

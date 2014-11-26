@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Person implements Serializable {
-    private HashMap<String, List<String>> interestList = new HashMap<String, List<String>>();
     private HashMap<String, String> getContactedByList = new HashMap<String, String>();
     private HashMap<String, String> textFieldInfo = new HashMap<String, String>();
     private HashMap<Integer,List<Integer>> dataBaseInterest = new HashMap<Integer, List<Integer>>();
@@ -16,6 +15,7 @@ public class Person implements Serializable {
     private String name;
     private String id;
     private String email;
+    private int eventId;
 
     private Date fecha_de_nacimiento = null;
     private int modo_de_cont_favorito;
@@ -25,12 +25,11 @@ public class Person implements Serializable {
     public Person() {
     }
 
-    public Person(HashMap<String, List<String>> interestList, HashMap<String, String> getContactedByList,
+    public Person(HashMap<String, String> getContactedByList,
                   HashMap<String, String> textFieldInfo, HashMap<Integer, List<Integer>> dataBaseInterest,
                   String name, String id, Date fecha_de_nacimiento, int modo_de_cont_favorito,
                   Bitmap foto_perfil, List<Person> historial) {
 
-        this.interestList = interestList;
         this.getContactedByList = getContactedByList;
         this.textFieldInfo = textFieldInfo;
         this.dataBaseInterest = dataBaseInterest;
@@ -67,6 +66,14 @@ public class Person implements Serializable {
         this.email = email;
     }
 
+    public int getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
+    }
+
     public Date getFecha_de_nacimiento() {
         return fecha_de_nacimiento;
     }
@@ -89,14 +96,6 @@ public class Person implements Serializable {
 
     public void setFoto_perfil(Bitmap foto_perfil) {
         this.foto_perfil = foto_perfil;
-    }
-
-    public HashMap<String, List<String>> getInterestList() {
-        return interestList;
-    }
-
-    public void setInterestList(HashMap<String, List<String>> interestList) {
-        this.interestList = interestList;
     }
 
     public HashMap<String, String> getGetContactedByList() {
@@ -124,10 +123,6 @@ public class Person implements Serializable {
     }
 
     // Fill hash map
-    public void fillInterestList(String tittle, List<String> interests) {
-        this.interestList.put(tittle, interests);
-    }
-
     public void fillContactedList(String tittle, String contact) {
         this.getContactedByList.put(tittle, contact);
     }
@@ -141,9 +136,6 @@ public class Person implements Serializable {
     }
 
     // Get hash map values
-    public List<String> interestsValue(String key) {
-        return interestList.get(key);
-    }
 
     public String contactedByValue(String key) {
         return getContactedByList.get(key);
@@ -165,7 +157,6 @@ public class Person implements Serializable {
                 ", fecha_de_nacimiento=" + fecha_de_nacimiento +
                 ", modo_de_cont_favorito=" + modo_de_cont_favorito +
                 ", foto_perfil=" + foto_perfil +
-                ", intereses=" + interestList +
                 ", historial=" + historial +
                 "Modos de contactol= " + getContactedByList +
                 '}';

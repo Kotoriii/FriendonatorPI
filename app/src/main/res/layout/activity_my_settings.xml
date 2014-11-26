@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Minimun matching percentage"
+            android:text="@string/lblminmatchpercentage"
             android:id="@+id/txtMinimunPercentage"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
@@ -42,7 +42,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Notifications"
+            android:text="@string/lblnotifications"
             android:id="@+id/txtNotifications"
             android:layout_marginLeft="29dp"
             android:layout_alignBottom="@+id/view2"
@@ -70,7 +70,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sound"
+            android:text="@string/lblsound"
             android:id="@+id/txtSound"
             android:layout_below="@+id/view2"
             android:layout_alignLeft="@+id/txtNotifications"
@@ -100,7 +100,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Vibration"
+            android:text="@string/lblvibration"
             android:id="@+id/txtVibration"
             android:layout_alignBottom="@+id/switch1"
             android:layout_alignLeft="@+id/txtSound"
@@ -218,7 +218,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Intervale Scan"
+            android:text="Interval Scan"
             android:id="@+id/btnIntervale"
             android:background="@android:color/transparent"
             android:layout_below="@+id/view6"
@@ -230,7 +230,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save Changues"
+            android:text="Save Changes"
             android:id="@+id/btnSave"
             android:layout_below="@+id/view8"
             android:layout_marginTop="8dp"

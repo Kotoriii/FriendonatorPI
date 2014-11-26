@@ -70,6 +70,7 @@ public class ProfileActivity extends Activity {
     TextView lblGetContactedBy;
     ImageView viewImage;
     SQLiteHelper db;
+    Boolean gotPhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,13 +120,15 @@ public class ProfileActivity extends Activity {
 
         Usuario usuario = db.getUser(person.getEmail());
 
-
         if(usuario.getFoto() != null) {
             File file = new File(usuario.getFoto());
             Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
             viewImage.setImageBitmap(bitmap);
             viewImage.setBackgroundColor(0x0000FF00);
-        }
+            gotPhoto = true;
+        } else
+            gotPhoto = false;
+
             viewImage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -183,7 +186,13 @@ public class ProfileActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // Save/update name into Data Base and go to Home Activity
-                if (validateSaveProfile()) {
+                if (!gotPhoto) {
+                    customToast(getResources().getString(R.string.setPicture));
+                } else if (person.getDataBaseInterest().isEmpty()) {
+                    customToast(getResources().getString(R.string.setInterests));
+                } else if (person.getGetContactedByList().isEmpty()) {
+                    customToast(getResources().getString(R.string.setContactedBy));
+                } else if (validateSaveProfile()) {
                     // Set name to person object
                     setName();
 
@@ -350,7 +359,7 @@ public class ProfileActivity extends Activity {
 
         // Toast
         Toast toast = new Toast(getApplicationContext());
-        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 200);
+        toast.setGravity(Gravity.CENTER_VERTICAL, 0, 270);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
@@ -539,6 +548,8 @@ public class ProfileActivity extends Activity {
                     db.updateUsuario(usuario);
                 }
 
+                gotPhoto = true;
+                viewImage.setBackgroundColor(0x0000FF00);
 
                 //Bitmap resizedBitmap = Bitmap.createScaledBitmap(thumbnail, 600, 600, false);
 
