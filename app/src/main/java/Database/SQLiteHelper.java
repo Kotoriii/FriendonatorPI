@@ -143,8 +143,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         Cursor cursor=db.rawQuery("select * from limbo",null);
         if(cursor.moveToFirst()){
-            usuario.setId(cursor.getString(0));
-            usuario.setPassword(cursor.getString(1));
+            usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
+            usuario.setPassword(cursor.getString(cursor.getColumnIndex("password")));
         }
 
         cursor.close();
@@ -443,17 +443,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()) {
             do {
                 Usuario usuario = new Usuario();
-                usuario.setId(cursor.getString(0));
-                usuario.setDob(cursor.getString(1));
-                usuario.setCorreo(cursor.getString(2));
-                usuario.setPassword(cursor.getString(3));
-                usuario.setNum(cursor.getString(4));
-                usuario.setFb(cursor.getString(5));
-                usuario.setGplus(cursor.getString(6));
-                usuario.setTwitter(cursor.getString(7));
-                usuario.setModfav(cursor.getString(8));
-                usuario.setFoto(cursor.getString(9));
-                usuario.setMatchp(cursor.getString(10));
+                usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
+                usuario.setDob(cursor.getString(cursor.getColumnIndex("fecha_de_nacimiento")));
+                usuario.setCorreo(cursor.getString(cursor.getColumnIndex("correo")));
+                usuario.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+                usuario.setNum(cursor.getString(cursor.getColumnIndex("numero_telefono")));
+                usuario.setFb(cursor.getString(cursor.getColumnIndex("facebook")));
+                usuario.setGplus(cursor.getString(cursor.getColumnIndex("google_p")));
+                usuario.setTwitter(cursor.getString(cursor.getColumnIndex("Twitter")));
+                usuario.setModfav(cursor.getString(cursor.getColumnIndex("modo_favorito")));
+                usuario.setFoto(cursor.getString(cursor.getColumnIndex("foto_perfil")));
+                usuario.setNombre(cursor.getString(cursor.getColumnIndex("nombre")));
+                usuario.setMatchp(cursor.getString(cursor.getColumnIndex("match_percentage")));
                 usuarioList.add(usuario);
             } while (cursor.moveToNext());
         }
@@ -488,18 +489,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         Cursor cursor=db.query("usuario", null, "correo=?", new String[]{email}, null, null, null);
         if(cursor.moveToFirst()){
-            usuario.setId(cursor.getString(0));
-            usuario.setNombre(cursor.getString(1));
-            usuario.setDob(cursor.getString(2));
-            usuario.setCorreo(cursor.getString(3));
-            //usuario.setPassword(cursor.getString(4)); lo retornaria null
-            usuario.setNum(cursor.getString(5));
-            usuario.setFb(cursor.getString(6));
-            usuario.setGplus(cursor.getString(7));
-            usuario.setTwitter(cursor.getString(8));
-            usuario.setModfav(cursor.getString(9));
-            usuario.setFoto(cursor.getString(10));
-            usuario.setMatchp(cursor.getString(11));
+            usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
+            usuario.setDob(cursor.getString(cursor.getColumnIndex("fecha_de_nacimiento")));
+            usuario.setCorreo(cursor.getString(cursor.getColumnIndex("correo")));
+            usuario.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+            usuario.setNum(cursor.getString(cursor.getColumnIndex("numero_telefono")));
+            usuario.setFb(cursor.getString(cursor.getColumnIndex("facebook")));
+            usuario.setGplus(cursor.getString(cursor.getColumnIndex("google_p")));
+            usuario.setTwitter(cursor.getString(cursor.getColumnIndex("Twitter")));
+            usuario.setModfav(cursor.getString(cursor.getColumnIndex("modo_favorito")));
+            usuario.setFoto(cursor.getString(cursor.getColumnIndex("foto_perfil")));
+            usuario.setNombre(cursor.getString(cursor.getColumnIndex("nombre")));
+            usuario.setMatchp(cursor.getString(cursor.getColumnIndex("match_percentage")));
         }
 
         cursor.close();
@@ -513,18 +514,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         Cursor cursor=db.query("usuario", null, "idUsuario=?", new String[]{String.valueOf(userId)}, null, null, null);
         if(cursor.moveToFirst()){
-            usuario.setId(cursor.getString(0));
-            usuario.setNombre(cursor.getString(1));
-            usuario.setDob(cursor.getString(2));
-            usuario.setCorreo(cursor.getString(3));
-            usuario.setPassword(cursor.getString(4));
-            usuario.setNum(cursor.getString(5));
-            usuario.setFb(cursor.getString(6));
-            usuario.setGplus(cursor.getString(7));
-            usuario.setTwitter(cursor.getString(8));
-            usuario.setModfav(cursor.getString(9));
-            usuario.setFoto(cursor.getString(10));
-            usuario.setMatchp(cursor.getString(11));
+            usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
+            usuario.setDob(cursor.getString(cursor.getColumnIndex("fecha_de_nacimiento")));
+            usuario.setCorreo(cursor.getString(cursor.getColumnIndex("correo")));
+            usuario.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+            usuario.setNum(cursor.getString(cursor.getColumnIndex("numero_telefono")));
+            usuario.setFb(cursor.getString(cursor.getColumnIndex("facebook")));
+            usuario.setGplus(cursor.getString(cursor.getColumnIndex("google_p")));
+            usuario.setTwitter(cursor.getString(cursor.getColumnIndex("Twitter")));
+            usuario.setModfav(cursor.getString(cursor.getColumnIndex("modo_favorito")));
+            usuario.setFoto(cursor.getString(cursor.getColumnIndex("foto_perfil")));
+            usuario.setNombre(cursor.getString(cursor.getColumnIndex("nombre")));
+            usuario.setMatchp(cursor.getString(cursor.getColumnIndex("match_percentage")));
         }
 
         cursor.close();
