@@ -2,13 +2,17 @@ package com.pi314.friendonator;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.widget.DrawerLayout;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pi314.interests.InterestsMethods;
@@ -20,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Database.SQLiteHelper;
 import Dialog.InterestInfo;
 import GridView.GridCustomAdapter;
 import GridView.GridObject;
@@ -30,6 +35,15 @@ public class MatchProfileActivity extends Activity {
     Person matchPerson;
     ArrayList<GridObject> gridList;
     ArrayList<GridObject> contactedBy;
+
+    //Elementos del menu
+    private ListView NavList;
+    private ArrayList<Item_objct> NavItms;
+    private ActionBarDrawerToggle toggle;
+    private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
+    private TypedArray NavIcons;
+    NavigationAdapter NavAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +125,62 @@ public class MatchProfileActivity extends Activity {
                 overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
             }
         });
+
+        ///////////////////////////////////////Logica para el menu//////////////////////////////////////////////////////////
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
+        final ListView drawer = (ListView) findViewById(R.id.drawer);
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //tres lineaas de codigo paraa la imgen del menu
+        NavList = (ListView) findViewById(R.id.drawer);
+        //Declaramos el header el caul sera el layout de header.xml
+        View header = getLayoutInflater().inflate(R.layout.header, null);
+        //Establecemos header
+        NavList.addHeaderView(header);
+
+
+        //obtiene las imagenes desde el string.xml
+        NavIcons = getResources().obtainTypedArray(R.array.navigation_iconos);
+        //crea en arraylist de la clae Item_object que tiene imagen y texto
+        NavItms = new ArrayList<Item_objct>();
+        //Se procede a insertar las imagines y textos
+        NavItms.add(new Item_objct(opciones[0], NavIcons.getResourceId(0, -1)));
+        NavItms.add(new Item_objct(opciones[1], NavIcons.getResourceId(1, -1)));
+        NavItms.add(new Item_objct(opciones[2], NavIcons.getResourceId(2, -1)));
+        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(3, -1)));
+        NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
+        NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
+        //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
+        NavAdapter = new NavigationAdapter(this,NavItms);
+        NavList.setAdapter(NavAdapter);
+
+
+        drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                displayView(arg2);
+                drawerLayout.closeDrawers();
+
+            }
+        });
+
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.hello_world){
+            public void onDrawerClosed(View view) {
+                // Drawer cerrado
+                getActionBar().setTitle(getResources().getString(R.string.app_name));
+                //invalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                // Drawer abierto
+                getActionBar().setTitle("Menu");
+                //invalidateOptionsMenu();
+            }
+        };
+
+        drawerLayout.setDrawerListener(toggle);
     }
 
     public void getSetPerson() {
@@ -190,26 +260,7 @@ public class MatchProfileActivity extends Activity {
         // Show SelectInterest instance
         dialogInterestInfo.show(getFragmentManager(), "InterestInfo");
     }
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.match_profile, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-*/
     @Override
     public void onBackPressed() {
         // Create intent to open get contacted by activity
@@ -226,6 +277,91 @@ public class MatchProfileActivity extends Activity {
 
         // Slide animation
         overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    // Activamos el toggle con el icono
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toggle.syncState();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    /**Metodo para abrir el form escogido en el menu**/
+    private void displayView(int options){
+
+        switch (options) {
+            case 1:
+                //aqui se abrira la actividad de Perfil
+                Intent intentProfile = new Intent(MatchProfileActivity.this, ProfileActivity.class);
+                //Create the Intent element
+                intentProfile.putExtra("PERSON", person);
+                //Start the new Activity
+                startActivity(intentProfile);
+                this.finish();
+                break;
+            case 2:
+                //aqui se abrira la actividad Historial
+                Intent intentHistory = new Intent(MatchProfileActivity.this, History.class);
+                //Create the Intent element
+                intentHistory.putExtra("PERSON", person);
+                //Start the new Activity
+                startActivity(intentHistory);
+                this.finish();
+                break;
+            case 3:
+                //aqui se abrira la actividad Home
+                Intent intentHome = new Intent(MatchProfileActivity.this, HomeActivity.class);
+                //Create the Intent element
+                intentHome.putExtra("PERSON", person);
+                //Start the new Activity
+                startActivity(intentHome);
+                this.finish();
+                break;
+            case 4:
+                //aqui se abrira la actividad MainActivity
+                Intent intentMain = new Intent(MatchProfileActivity.this, MainActivity.class);
+                //Create the Intent element
+                intentMain.putExtra("PERSON", person);
+                //Start the new Activity
+                startActivity(intentMain);
+                this.finish();
+                break;
+            case 5:
+                Intent intentMatch = new Intent(MatchProfileActivity.this, MenuActivity.class);
+                //Create the Intent element
+                intentMatch.putExtra("PERSON", person);
+                //Start the new Activity
+                startActivity(intentMatch);
+                this.finish();
+                break;
+
+            case 6:
+                //aqui se abrira la actividad MySettings
+                Intent intentMySettings = new Intent(MatchProfileActivity.this, MySettings.class);
+                //Create the Intent element
+                intentMySettings.putExtra("PERSON", person);
+                //Start the new Activity
+                startActivity(intentMySettings);
+                this.finish();
+                break;
+            default:
+                break;
+        }
     }
 
 }

@@ -72,6 +72,14 @@ public class ProfileActivity extends Activity {
     SQLiteHelper db;
     Boolean gotPhoto;
 
+    //Elementos del menu
+    private ListView NavList;
+    private ArrayList<Item_objct> NavItms;
+    private ActionBarDrawerToggle toggle;
+    private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
+    private TypedArray NavIcons;
+    NavigationAdapter NavAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         db = SQLiteHelper.getInstance(getApplicationContext());
@@ -221,6 +229,62 @@ public class ProfileActivity extends Activity {
                     showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), person.textValue(forDialog.getTitle()), forDialog.getTitle());
             }
         });
+
+        ///////////////////////////////////////Logica para el menu//////////////////////////////////////////////////////////
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+
+        final ListView drawer = (ListView) findViewById(R.id.drawer);
+        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //tres lineaas de codigo paraa la imgen del menu
+        NavList = (ListView) findViewById(R.id.drawer);
+        //Declaramos el header el caul sera el layout de header.xml
+        View header = getLayoutInflater().inflate(R.layout.header, null);
+        //Establecemos header
+        NavList.addHeaderView(header);
+
+
+        //obtiene las imagenes desde el string.xml
+        NavIcons = getResources().obtainTypedArray(R.array.navigation_iconos);
+        //crea en arraylist de la clae Item_object que tiene imagen y texto
+        NavItms = new ArrayList<Item_objct>();
+        //Se procede a insertar las imagines y textos
+        NavItms.add(new Item_objct(opciones[0], NavIcons.getResourceId(0, -1)));
+        NavItms.add(new Item_objct(opciones[1], NavIcons.getResourceId(1, -1)));
+        NavItms.add(new Item_objct(opciones[2], NavIcons.getResourceId(2, -1)));
+        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(3, -1)));
+        NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
+        NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
+        //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
+        NavAdapter = new NavigationAdapter(this,NavItms);
+        NavList.setAdapter(NavAdapter);
+
+
+        drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                displayView(arg2);
+                drawerLayout.closeDrawers();
+
+            }
+        });
+
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.hello_world){
+            public void onDrawerClosed(View view) {
+                // Drawer cerrado
+                getActionBar().setTitle(getResources().getString(R.string.app_name));
+                //invalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                // Drawer abierto
+                getActionBar().setTitle("Menu");
+                //invalidateOptionsMenu();
+            }
+        };
+
+        drawerLayout.setDrawerListener(toggle);
     }
 
     public String BitMapToString(Bitmap bitmap){
@@ -558,14 +622,22 @@ public class ProfileActivity extends Activity {
             }
         }
     }
-/*
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     // Activamos el toggle con el icono
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         toggle.syncState();
     }
-*/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -573,83 +645,62 @@ public class ProfileActivity extends Activity {
         return true;
     }
 
-   /* @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    } */
-
     /**Metodo para abrir el form escogido en el menu**/
     private void displayView(int options){
 
         switch (options) {
             case 1:
-                /*//aqui se abrira la actividad de Perfil
-                Intent intentProfile = new Intent(ProfileActivity.this, ProfileActivity.class);
-                //Create the Intent element
-                Bundle bProfile = new Bundle();
-                intentProfile.putExtras(bProfile);
-                //Start the new Activity
-                startActivity(intentProfile);
-                break;*/
+                //aqui se abrira la actividad de Perfil
+
                 break;
             case 2:
                 //aqui se abrira la actividad Historial
                 Intent intentHistory = new Intent(ProfileActivity.this, History.class);
                 //Create the Intent element
-                Bundle bHistory = new Bundle();
-                intentHistory.putExtras(bHistory);
+                intentHistory.putExtra("PERSON", person);
                 //Start the new Activity
                 startActivity(intentHistory);
+                this.finish();
                 break;
             case 3:
                 //aqui se abrira la actividad Home
                 Intent intentHome = new Intent(ProfileActivity.this, HomeActivity.class);
                 //Create the Intent element
-                Bundle bHome = new Bundle();
-                intentHome.putExtras(bHome);
+                intentHome.putExtra("PERSON", person);
                 //Start the new Activity
                 startActivity(intentHome);
+                this.finish();
                 break;
             case 4:
                 //aqui se abrira la actividad MainActivity
                 Intent intentMain = new Intent(ProfileActivity.this, MainActivity.class);
                 //Create the Intent element
-                Bundle bMain = new Bundle();
-                intentMain.putExtras(bMain);
+                intentMain.putExtra("PERSON", person);
                 //Start the new Activity
                 startActivity(intentMain);
+                this.finish();
                 break;
             case 5:
-                /* //aqui se abrira la actividad Match
-                Intent intentMatch = new Intent(ProfileActivity.this, Match.class);
+                Intent intentMatch = new Intent(ProfileActivity.this, MenuActivity.class);
                 //Create the Intent element
-                Bundle bMatch = new Bundle();
-                intentMatch.putExtras(bMatch);
+                intentMatch.putExtra("PERSON", person);
                 //Start the new Activity
                 startActivity(intentMatch);
-                break;*/
-                Toast.makeText(ProfileActivity.this,
-                        "Maintenance",
-                        Toast.LENGTH_SHORT).show();
+                this.finish();
                 break;
+
             case 6:
                 //aqui se abrira la actividad MySettings
                 Intent intentMySettings = new Intent(ProfileActivity.this, MySettings.class);
                 //Create the Intent element
-                Bundle bMySettings = new Bundle();
-                intentMySettings.putExtras(bMySettings);
+                intentMySettings.putExtra("PERSON", person);
                 //Start the new Activity
                 startActivity(intentMySettings);
+                this.finish();
                 break;
             default:
                 break;
         }
     }
+
 }

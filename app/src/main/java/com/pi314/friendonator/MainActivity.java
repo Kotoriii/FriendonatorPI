@@ -48,7 +48,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
     private TypedArray NavIcons;
     NavigationAdapter NavAdapter;
-
+Person person;
     SQLiteHelper db;
 
     @Override
@@ -322,58 +322,54 @@ public class MainActivity extends Activity implements Button.OnClickListener{
                 //aqui se abrira la actividad de Perfil
                 Intent intentProfile = new Intent(MainActivity.this, ProfileActivity.class);
                 //Create the Intent element
-                Bundle bProfile = new Bundle();
-                intentProfile.putExtras(bProfile);
+                intentProfile.putExtra("PERSON", person);
                 //Start the new Activity
                 startActivity(intentProfile);
+                this.finish();
                 break;
             case 2:
                 //aqui se abrira la actividad Historial
                 Intent intentHistory = new Intent(MainActivity.this, History.class);
                 //Create the Intent element
-                Bundle bHistory = new Bundle();
-                intentHistory.putExtras(bHistory);
+                intentHistory.putExtra("PERSON", person);
                 //Start the new Activity
                 startActivity(intentHistory);
+                this.finish();
                 break;
             case 3:
                 //aqui se abrira la actividad Home
                 Intent intentHome = new Intent(MainActivity.this, HomeActivity.class);
                 //Create the Intent element
-                Bundle bHome = new Bundle();
-                intentHome.putExtras(bHome);
+                intentHome.putExtra("PERSON", person);
                 //Start the new Activity
                 startActivity(intentHome);
+                this.finish();
                 break;
             case 4:
-               /* //aqui se abrira la actividad MainActivity
-                Intent intentMain = new Intent(MainActivity.this, MainActivity.class);
+               //aqui se abrira la actividad MainActivity
+                Intent intentMatchProfile = new Intent(MainActivity.this, MatchProfileActivity.class);
                 //Create the Intent element
-                Bundle bMain = new Bundle();
-                intentMain.putExtras(bMain);
+                intentMatchProfile.putExtra("PERSON", person);
                 //Start the new Activity
-                startActivity(intentMain);
-                break;*/
+                startActivity(intentMatchProfile);
+                this.finish();
                 break;
             case 5:
                 Intent intentMatch = new Intent(MainActivity.this, MenuActivity.class);
                 //Create the Intent element
-                Bundle bMatch = new Bundle();
-                intentMatch.putExtras(bMatch);
+                intentMatch.putExtra("PERSON", person);
                 //Start the new Activity
                 startActivity(intentMatch);
-                //Toast.makeText(MainActivity.this,
-                //       "Maintenance",
-                //        Toast.LENGTH_SHORT).show();
+                this.finish();
                 break;
             case 6:
                 //aqui se abrira la actividad MySettings
                 Intent intentMySettings = new Intent(MainActivity.this, MySettings.class);
                 //Create the Intent element
-                Bundle bMySettings = new Bundle();
-                intentMySettings.putExtras(bMySettings);
+                intentMySettings.putExtra("PERSON", person);
                 //Start the new Activity
                 startActivity(intentMySettings);
+                this.finish();
                 break;
             default:
                 break;
