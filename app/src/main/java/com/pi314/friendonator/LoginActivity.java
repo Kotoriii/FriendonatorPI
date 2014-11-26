@@ -20,6 +20,7 @@ import java.util.List;
 
 import Database.SQLiteHelper;
 import Database.Usuario;
+import misc.ApiWrapper;
 
 /**
  * Created by Christian on 10/14/2014.
@@ -32,6 +33,8 @@ public class LoginActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.check_si_existe(); // se fija si ya hay algo en limbo.. si hay lo manda al activity correspondiente
+
         setContentView(R.layout.login_activity);
         db = SQLiteHelper.getInstance(getApplicationContext());
         final EditText txtusername = (EditText) findViewById(R.id.txtusername);
@@ -45,15 +48,39 @@ public class LoginActivity extends Activity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userName = txtusername.getText().toString();
+                String correo = txtusername.getText().toString();
                 String password = txtpassword.getText().toString();
-                Usuario userLogin = db.getUser(userName);
 
-                if (password.equals(userLogin.getPassword())) {
+                //implementacion de api para login
+                ApiWrapper api = new ApiWrapper();
 
-                    person.setId(userLogin.getId());
-                    person.setEmail(userName);
-                    person.setName(userLogin.getNombre());
+
+                //todo mandar un alert si no esta conectado a internet y handle la conexion..
+                //la clase de api tiene un metodod especial para ver si se encuentra actualmente
+                //conectado a internet y otro para pedir la conexion
+                customToast("suponemos que esta conectado a internet");
+                try {
+                    if (!api.isConnected(LoginActivity.this)) {
+                        api.activateWifi(LoginActivity.this);
+                    }
+                    //esto se encarga de sacar y armar automaticamente la persona. Si hay algun error
+                    //por ejemplo, no existe la persona en el servidor entonces va a mandar null
+                    person = api.loginConServidor(correo, password, LoginActivity.this);
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                Usuario userLogin = null;
+
+                //si el login no fuera existoso entonces devolveria null
+                if (person != null) {
+
+                    //deberia de existir, ya que existe un usuario..
+                    //al hacer login de un nuevo usuario el sistema se encarga de guardar todo e
+                    //en su respectivo lugar
+                    userLogin = db.getUser(person.getEmail());
 
                     // Create intent to open interests activity
                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
@@ -77,9 +104,9 @@ public class LoginActivity extends Activity {
 
                     // Finish activity
                     finish();
-                } else
+                } else {
                     customToast(getResources().getString(R.string.toastWrongLogIn));
-                    //Toast.makeText(btnlogin.getContext(), R.string.toastWrongLogIn, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -117,6 +144,30 @@ public class LoginActivity extends Activity {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
+    }
+
+    private void check_si_existe(){
+        SQLiteHelper pop = SQLiteHelper.getInstance(this);
+        if(pop.hay_algo_en_limbo()){
+            InterestsMethods mthl = new InterestsMethods();
+            Person pers = mthl.createPerson(this, Integer.valueOf(pop.getLimbo1().getId()));
+
+            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+            if (pers.getName() == null) {
+                // Create intent to open interests activity
+                intent = new Intent(LoginActivity.this, ProfileActivity.class);
+            } else {
+                InterestsMethods fillPerson = new InterestsMethods();
+                pers.setDataBaseInterest(fillPerson.getInterestFromDataBase(LoginActivity.this, Integer.parseInt(pers.getId())));
+                pers.setGetTextFieldInfo(fillPerson.getTextsFromDataBase(LoginActivity.this, Integer.parseInt(pers.getId())));
+                pers.setGetContactedByList(fillPerson.getContactedByFromDataBase(LoginActivity.this, pop.getUser(pers.getEmail())));
+            }
+
+            intent.putExtra("PERSON", pers);
+
+            startActivity(intent);
+            this.finish();
+        }
     }
 
 }
