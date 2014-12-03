@@ -108,7 +108,7 @@ public class MySettings extends Activity {
             }
         });
 
-        final CharSequence[] Intervale = {getResources().getString(R.string.always),getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15)};
+        final CharSequence[] Intervale = {getResources().getString(R.string.always),"2 minutes",getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15)};
         final AlertDialog.Builder alt_bldInt = new AlertDialog.Builder(this);
         alt_bldInt.setIcon(R.drawable.ic_settings_alert);
         alt_bldInt.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
