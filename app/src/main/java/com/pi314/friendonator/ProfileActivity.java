@@ -637,7 +637,7 @@ public class ProfileActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        toggle.syncState();
+       // toggle.syncState();
     }
 
     @Override

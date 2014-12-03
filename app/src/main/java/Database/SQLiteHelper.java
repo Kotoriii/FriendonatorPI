@@ -61,7 +61,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             ")";
 
     String createUsuario = "CREATE TABLE usuario (" +
-            "idUsuario INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "idUsuario INTEGER PRIMARY KEY," +
             "nombre VARCHAR," +
             "fecha_de_nacimiento VARCHAR," +
             "correo VARCHAR," +
@@ -235,6 +235,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("idUsuario", user.getId());
         values.put("nombre", user.getNombre());
         values.put("fecha_de_nacimiento", user.getDob());
         values.put("correo", user.getCorreo());
@@ -585,7 +586,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put("idUsuario", usuario.getId());
-        values.put("password", "");
+        values.put("password", usuario.getPassword());
 
         db.insert("limbo", null, values);
         db.close();

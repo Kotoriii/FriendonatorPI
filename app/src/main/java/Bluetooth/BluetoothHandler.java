@@ -10,6 +10,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.pi314.friendonator.Person;
@@ -420,7 +422,11 @@ public class BluetoothHandler {
 
                     Person person = (Person) mAct.getIntent().getSerializableExtra("PERSON");
                     ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
+                    oos.flush();
+
                     oos.writeObject(person);
+
+
 
 
                 } catch (Exception e) {
@@ -459,7 +465,7 @@ public class BluetoothHandler {
         }
 
         public void run() {
-                Person person = null ;
+                Person matchPerson = null ;
 
                 Log.v("BluetoothFR", "Connected to server- Starting receiving loop ");
 
@@ -469,11 +475,15 @@ public class BluetoothHandler {
                             Log.v("BluetoothFR", "Connected to server- ****** Conected *****");
                         }
 
+                        //Todo .. funciona solamente una ves
                         ObjectInputStream bjr = new ObjectInputStream(mmInStream);
-                        person = (Person)bjr.readObject();
+                        matchPerson = (Person)bjr.readObject();
                         InterestsMethods mtf = new InterestsMethods();
-                        //TODO set real match percentage
-                        mtf.insertReceivedPerson(mAct, person, person.getId(), 50);
+                        Person person = (Person) mAct.getIntent().getSerializableExtra("PERSON");
+                        int percentage = (int) Math.floor(mtf.getMatchPercentage(person, matchPerson));
+
+                        mtf.insertReceivedPerson(mAct, matchPerson, matchPerson.getId(), percentage);
+
 
                         bjr.close();
                     } catch (IOException e) {
@@ -484,7 +494,6 @@ public class BluetoothHandler {
 
 
             Log.v("BluetoothFR", "Datos recieved!");
-                Log.v("BluetoothFR", "for! -> " +person.toString() );
 
         }
 

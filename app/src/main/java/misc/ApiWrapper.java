@@ -109,6 +109,8 @@ public class ApiWrapper {
                     //todo, persona.setGetTextFieldInfo();.. primero hay que hacerlo en servidor
                     // o podriamos quitarlo :D
 
+
+
                     //Obtenemos la fecha
                     String json_fecha = json.getString("fecha_de_nacimiento");
                     int anno = Integer.parseInt(json_fecha.substring(0, 4));
@@ -137,6 +139,7 @@ public class ApiWrapper {
                     //en teoria no deberia de llegar aqui si hay algo en limbo.
                     // por lo tanto no se ponen checks. sin ebargo LoginActivity deberia
                     // de revisar que no haya nada en limbo
+                    usuario.setPassword(password);
                     sqlHelper.insertlimbo(usuario);
                 }
 
@@ -527,7 +530,6 @@ public class ApiWrapper {
 
         db.insertUsuario(usuario);
         mths.insertInterests(context, person);
-        List<Usuario> asd = db.getAllUsuarios();
 
         mths.insertText(context, person);
 

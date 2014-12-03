@@ -11,6 +11,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import Bluetooth.BluetoothHandler;
 import Database.SQLiteHelper;
 import misc.ApiWrapper;
@@ -49,6 +53,13 @@ public class FindMeTool extends Activity {
                 SQLiteHelper hl = SQLiteHelper.getInstance(FindMeTool.this);
                 String id = hl.getLimbo1().getId();
                 Bitmap oo = api.getImageFromURL("http://tupini07.pythonanywhere.com/media/imagenesUs/diagrama.png");
+
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                oo.compress(Bitmap.CompressFormat.PNG, 100, stream);
+                byte[] byteArray = stream.toByteArray();
+
+
+
                 imgView.setImageBitmap(oo);
             }
 

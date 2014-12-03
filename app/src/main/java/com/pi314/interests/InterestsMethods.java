@@ -244,7 +244,12 @@ public class InterestsMethods {
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
         Usuario userFromDataBase = db.getUserByID(userId);
 
-        Long millis_DOB = Long.valueOf(userFromDataBase.getDob());
+        Long millis_DOB =  0l;
+        try{
+            millis_DOB = Long.valueOf(userFromDataBase.getDob());
+        }catch (NumberFormatException e){
+            Log.e(getClass().getSimpleName(), "Usuario no tiene DOB");
+        }
 
         Person person = new Person();
         person.setFecha_de_nacimiento(new Date(millis_DOB));

@@ -20,7 +20,6 @@ public class Person implements Serializable {
     private Date fecha_de_nacimiento = null;
     private int modo_de_cont_favorito;
     private String foto_perfil = null;
-    private List<Person> historial = null;
 
     public Person() {
     }
@@ -28,7 +27,7 @@ public class Person implements Serializable {
     public Person(HashMap<String, String> getContactedByList,
                   HashMap<String, String> textFieldInfo, HashMap<Integer, List<Integer>> dataBaseInterest,
                   String name, String id, Date fecha_de_nacimiento, int modo_de_cont_favorito,
-                  String foto_perfil, List<Person> historial) {
+                  String foto_perfil) {
 
         this.getContactedByList = getContactedByList;
         this.textFieldInfo = textFieldInfo;
@@ -38,7 +37,6 @@ public class Person implements Serializable {
         this.fecha_de_nacimiento = fecha_de_nacimiento;
         this.modo_de_cont_favorito = modo_de_cont_favorito;
         this.foto_perfil = foto_perfil;
-        this.historial = historial;
     }
 
     // Getters and setters
@@ -157,7 +155,6 @@ public class Person implements Serializable {
                 ", fecha_de_nacimiento=" + fecha_de_nacimiento +
                 ", modo_de_cont_favorito=" + modo_de_cont_favorito +
                 ", foto_perfil=" + foto_perfil +
-                ", historial=" + historial +
                 "Modos de contactol= " + getContactedByList +
                 '}';
     }
