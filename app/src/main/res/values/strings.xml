@@ -159,5 +159,9 @@
     <string name="lblprivacy">Privacy</string>
 
 
+    <!-- BackgroundService -->
+
+    <string name="Matchfound">Match found</string>
+    <string name="seePerson">¿Do you want see this person?</string>
 
  </resources>
