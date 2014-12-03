@@ -397,6 +397,10 @@ public class ProfileActivity extends Activity {
 
     //cosas de imagen
 
+    private static int fileNumber = 0;
+    String imagename = String.format("friendonator%05d.txt", fileNumber++);
+
+
 
     private void selectImage() {
 
@@ -409,7 +413,7 @@ public class ProfileActivity extends Activity {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals(getResources().getString(R.string.txttakephoto))) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    File f = new File(android.os.Environment.getExternalStorageDirectory(), imagename);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
                 } else if (options[item].equals( getResources().getString(R.string.txtaddfromgallery))) {
@@ -432,7 +436,7 @@ public class ProfileActivity extends Activity {
             if (requestCode == 1) {
                 File f = new File(Environment.getExternalStorageDirectory().toString());
                 for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
+                    if (temp.getName().equals(imagename)) {
                         f = temp;
                         break;
                     }

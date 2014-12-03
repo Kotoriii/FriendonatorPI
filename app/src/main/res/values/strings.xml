@@ -142,6 +142,7 @@
     <string name="english">English</string>
     <string name="languageoptions">Language Options</string>
     <string name="always">Always</string>
+    <string name="minutes2">2 minutes</string>
     <string name="minutes5">5 minutes</string>
     <string name="minutes10">10 minutes</string>
     <string name="minutes15">15 minutes</string>

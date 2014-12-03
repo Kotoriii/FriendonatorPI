@@ -3,9 +3,9 @@
     <string-array name="movies">
         <item>Acción</item>
         <item>Suspenso</item>
-        <item>Romantica</item>
+        <item>Romántica</item>
         <item>Comedia</item>
-        <item>Fantassia</item>
+        <item>Fantasía</item>
         <item>Historia</item>
         <item>Terror</item>
         <item>Ciencia Ficción</item>
@@ -30,7 +30,7 @@
         <item>Hip Hop</item>
         <item>Electrónica</item>
         <item>Pop</item>
-        <item>Romantica</item>
+        <item>Romántica</item>
     </string-array>
 
     <string-array name="art">
@@ -41,7 +41,7 @@
         <item>Crítica</item>
         <item>Neoclásico</item>
         <item>Clásico</item>
-        <item>Expressionismo</item>
+        <item>Expresionismo</item>
     </string-array>
 
     <string-array name="tvShows">
@@ -57,7 +57,7 @@
 
     <string-array name="sports">
         <item>Artes Marciales Mixtas</item>
-        <item>Escalada</item>
+        <item>Alpinismo</item>
         <item>Gimnasia</item>
         <item>Ciclismo</item>
         <item>Correr</item>

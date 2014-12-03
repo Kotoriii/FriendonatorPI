@@ -36,6 +36,7 @@ public class MySettings extends Activity {
     NavigationAdapter NavAdapter;
     Person person;
     SQLiteHelper db;
+    String interval;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class MySettings extends Activity {
         final Button btnLanguage = (Button)findViewById(R.id.btnLanguage);
         final Button btnIntervaleScan = (Button)findViewById(R.id.btnIntervale);
         final SeekBar seekBar1 = (SeekBar) findViewById(R.id.seekBar);
+        final Button btnSave = (Button)findViewById(R.id.btnSave);
 
         final TextView textPercentage = (TextView) findViewById(R.id.txtPercentage);
 
@@ -108,14 +110,14 @@ public class MySettings extends Activity {
             }
         });
 
-        final CharSequence[] Intervale = {getResources().getString(R.string.always),"2 minutes",getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15)};
+        final CharSequence[] Intervale = {getResources().getString(R.string.minutes2),getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15), getResources().getString(R.string.always)};
         final AlertDialog.Builder alt_bldInt = new AlertDialog.Builder(this);
         alt_bldInt.setIcon(R.drawable.ic_settings_alert);
         alt_bldInt.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
+
         });
         alt_bldInt.setNegativeButton(getResources().getString(R.string.cancel), null);
         alt_bldInt.setTitle(getResources().getString(R.string.intervalscan));
@@ -124,6 +126,21 @@ public class MySettings extends Activity {
             public void onClick(DialogInterface dialog, int item) {
                 String mensajePr = getResources().getString(R.string.intervalscantoast) + Intervale[item];
                 ToastCostumizado(mensajePr);
+                if (Intervale[item]==getResources().getString(R.string.minutes2)){
+                    interval = "2";
+                }
+                else if (Intervale[item]==getResources().getString(R.string.minutes5)){
+                    interval = "5";
+                }
+                else if (Intervale[item]==getResources().getString(R.string.minutes10)){
+                    interval = "10";
+                }
+                else if (Intervale[item]==getResources().getString(R.string.minutes15)){
+                    interval = "15";
+                }
+                else if (Intervale[item]==getResources().getString(R.string.always)){
+                    interval = "0";
+                }
             }
         });
 
@@ -174,6 +191,29 @@ public class MySettings extends Activity {
         });
 
 
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                    // Create intent
+                    Intent intent = new Intent(MySettings.this, HomeActivity.class);
+
+                    // Set person inside intent
+                    intent.putExtra("PERSON", person);
+
+                    // Start change to a new layout
+                    startActivity(intent);
+
+                    // Finish activity
+                    finish();
+
+
+            }
+        });
+
+
+
 
         textPercentage.setText(seekBar1.getProgress() + "/" + seekBar1.getMax());
 
@@ -196,7 +236,12 @@ public class MySettings extends Activity {
                 textPercentage.setText(seekBar1.getProgress() + "/" + seekBar1.getMax());
                 //Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
             }
+
+
         });
+
+
+
 
         ///////////////////////////////////////Logica para el menu//////////////////////////////////////////////////////////
         getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -253,6 +298,8 @@ public class MySettings extends Activity {
         };
 
         drawerLayout.setDrawerListener(toggle);
+
+
     }
 
     public void ToastCostumizado (String mensaje){
@@ -350,5 +397,15 @@ public class MySettings extends Activity {
             default:
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        /*
+        this.finish();
+        //Exit with slide animation
+        this.overridePendingTransition (R.anim.left_to_right, R.anim.right_to_left);
+        */
     }
 }

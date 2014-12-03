@@ -12,18 +12,22 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.pi314.friendonator.MainActivity;
+import com.pi314.friendonator.Person;
 import com.pi314.friendonator.R;
 
 import Bluetooth.BluetoothHandler;
+import Database.SQLiteHelper;
 
 
 /**
  * Created by andrea on 01/10/14.
  */
 public class BackgroundService extends IntentService {
+    SQLiteHelper db = SQLiteHelper.getInstance(getApplicationContext());
     private boolean is_scanning = false;
     private final int mIdNotification = 48454;
     NotificationManager mNotificationManager = null;
+
 
     public BackgroundService() {
         super("FriendonatorBackgroundProcess"); //<--- !!!!!!!!!
@@ -98,7 +102,7 @@ public class BackgroundService extends IntentService {
         mNotificationManager.notify(mIdNotification, mBuilder.build());
     }
 
-    public void ScanEveryX(final int x, final Activity activity){
+    public void ScanEveryX(final Activity activity,final Person person){
         final BluetoothHandler bMan = BluetoothHandler.getInstance(activity);
         Thread scanner = new Thread(){
             public void run(){
@@ -107,7 +111,7 @@ public class BackgroundService extends IntentService {
                         synchronized (this) {
                             bMan.StartScan();
                         }
-                        this.sleep(x);
+                        this.sleep(Integer.parseInt(db.getConfig(person.getEmail()).getInterval()));
                     }
                 }catch(Exception e){
                     e.printStackTrace();
