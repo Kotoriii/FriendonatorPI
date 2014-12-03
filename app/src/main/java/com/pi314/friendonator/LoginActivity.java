@@ -33,7 +33,6 @@ public class LoginActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //this.check_si_existe(); // se fija si ya hay algo en limbo.. si hay lo manda al activity correspondiente
 
         setContentView(R.layout.login_activity);
         db = SQLiteHelper.getInstance(getApplicationContext());
@@ -77,7 +76,7 @@ public class LoginActivity extends Activity {
                 if (person != null && person.getId() != null) {
 
                     //deberia de existir, ya que existe un usuario..
-                    //al hacer login de un nuevo usuario el sistema se encarga de guardar todo e
+                    //al hacer login de un nuevo usuario el sistema se encarga de guardar
                     //en su respectivo lugar
                     userLogin = db.getUser(person.getEmail());
 
@@ -149,7 +148,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        this.check_si_existe();
+        this.check_si_existe(); // se fija si ya hay algo en limbo.. si hay lo manda al activity correspondiente
     }
 
     private void check_si_existe(){

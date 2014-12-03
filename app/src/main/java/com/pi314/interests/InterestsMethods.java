@@ -218,7 +218,7 @@ public class InterestsMethods {
             db.deleteUserInterestData(person.getId());
             for (int interest : person.getDataBaseInterest().keySet())
                 for (int value : person.getDataBaseInterest().get(interest))
-                    db.insertUserint(new Usuariointereses(String.valueOf(value + 1), person.getId()));
+                    db.insertUserint(new Usuariointereses(String.valueOf(value), person.getId()));
         }
     }
 

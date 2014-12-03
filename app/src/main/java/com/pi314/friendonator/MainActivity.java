@@ -55,14 +55,11 @@ Person person;
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final Button btnHome = (Button)findViewById(R.id.btnHome);
+        final Button btnHome = (Button) findViewById(R.id.btnHome);
 
         //getApplicationContext().deleteDatabase("BaseFriendonator");
 
         db = SQLiteHelper.getInstance(getApplicationContext());
-
-        // Insert of all interests for the first time
-        initialDataBaseInserts();
 
         btnHome.setOnClickListener(new OnClickListener() {
             @Override
@@ -127,7 +124,7 @@ Person person;
         NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
         NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
         //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
-        NavAdapter = new NavigationAdapter(this,NavItms);
+        NavAdapter = new NavigationAdapter(this, NavItms);
         NavList.setAdapter(NavAdapter);
 
         drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -139,7 +136,7 @@ Person person;
             }
         });
 
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.hello_world){
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.hello_world) {
             public void onDrawerClosed(View view) {
                 // Drawer cerrado
                 getActionBar().setTitle(getResources().getString(R.string.app_name));
@@ -155,80 +152,6 @@ Person person;
 
         drawerLayout.setDrawerListener(toggle);
 
-    }
-
-    public void initialDataBaseInserts() {
-        if (db.checkDataBase()) {
-            // Insert Superintereses
-            db.insertSuperinter(new Superinteres("Music")); //1
-            db.insertSuperinter(new Superinteres("Literature")); //2
-            db.insertSuperinter(new Superinteres("Movies")); //3
-            db.insertSuperinter(new Superinteres("Art")); //4
-            db.insertSuperinter(new Superinteres("TV Shows")); //5
-            db.insertSuperinter(new Superinteres("Sports")); //6
-            db.insertSuperinter(new Superinteres("Science")); //7
-            db.insertSuperinter(new Superinteres("Looking For")); //8
-
-            // Insert intereses
-            db.insertInteres(new Intereses("1", "Rock")); //1
-            db.insertInteres(new Intereses("1", "Jazz")); //2
-            db.insertInteres(new Intereses("1", "Blues")); //3
-            db.insertInteres(new Intereses("1", "Classical")); //4
-            db.insertInteres(new Intereses("1", "Hip Hop")); //5
-            db.insertInteres(new Intereses("1", "Electronic")); //6
-            db.insertInteres(new Intereses("1", "Pop")); //7
-            db.insertInteres(new Intereses("1", "Romantic")); //8
-
-            db.insertInteres(new Intereses("2", "Novel")); //9
-            db.insertInteres(new Intereses("2", "Drama")); //10
-            db.insertInteres(new Intereses("2", "Poetry")); //11
-            db.insertInteres(new Intereses("2", "Romance")); //12
-            db.insertInteres(new Intereses("2", "Comedy")); //13
-            db.insertInteres(new Intereses("2", "Fiction")); //14
-            db.insertInteres(new Intereses("2", "Fantasy")); //15
-            db.insertInteres(new Intereses("2", "Mythology")); //16
-
-            db.insertInteres(new Intereses("3", "Action")); //17
-            db.insertInteres(new Intereses("3", "Thriller")); //18
-            db.insertInteres(new Intereses("3", "Romantic")); //19
-            db.insertInteres(new Intereses("3", "Comedy")); //20
-            db.insertInteres(new Intereses("3", "Fantasy")); //21
-            db.insertInteres(new Intereses("3", "Historical")); //22
-            db.insertInteres(new Intereses("3", "Horror")); //23
-            db.insertInteres(new Intereses("3", "Scy Fy")); //24
-
-            db.insertInteres(new Intereses("4", "Portrait")); //25
-            db.insertInteres(new Intereses("4", "Landscape")); //26
-            db.insertInteres(new Intereses("4", "Conceptual")); //27
-            db.insertInteres(new Intereses("4", "Modernism")); //28
-            db.insertInteres(new Intereses("4", "Criticism")); //29
-            db.insertInteres(new Intereses("4", "Neoclassic")); //30
-            db.insertInteres(new Intereses("4", "Classic")); //31
-            db.insertInteres(new Intereses("4", "Expressionism")); //32
-
-            db.insertInteres(new Intereses("5", "Soap Opera")); //33
-            db.insertInteres(new Intereses("5", "Sitcom")); //34
-            db.insertInteres(new Intereses("5", "Sports")); //35
-            db.insertInteres(new Intereses("5", "Documentary")); //36
-            db.insertInteres(new Intereses("5", "News")); //37
-            db.insertInteres(new Intereses("5", "Reality")); //38
-            db.insertInteres(new Intereses("5", "Cookery")); //39
-            db.insertInteres(new Intereses("5", "Drama")); //40
-
-            db.insertInteres(new Intereses("6", "Mix Martial Arts")); //41
-            db.insertInteres(new Intereses("6", "Climbing")); //42
-            db.insertInteres(new Intereses("6", "Gymnastic")); //43
-            db.insertInteres(new Intereses("6", "Cycling")); //44
-            db.insertInteres(new Intereses("6", "Jogging")); //45
-            db.insertInteres(new Intereses("6", "Tennis")); //46
-            db.insertInteres(new Intereses("6", "Basketball")); //47
-            db.insertInteres(new Intereses("6", "Soccer")); //48
-
-            db.insertInteres(new Intereses("7", "Science"));  //49
-
-            db.insertInteres(new Intereses("8", "Man"));  //50
-            db.insertInteres(new Intereses("8", "Woman"));  //51
-        }
     }
 
     public void findmeT(View v){

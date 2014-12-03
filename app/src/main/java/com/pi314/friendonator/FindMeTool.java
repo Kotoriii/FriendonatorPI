@@ -2,6 +2,7 @@ package com.pi314.friendonator;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 //import android.renderscript.ProgramStore;
 import android.view.Menu;
@@ -58,9 +59,9 @@ public class FindMeTool extends Activity {
                 oo.compress(Bitmap.CompressFormat.PNG, 100, stream);
                 byte[] byteArray = stream.toByteArray();
 
+                Bitmap neas = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
 
-
-                imgView.setImageBitmap(oo);
+                imgView.setImageBitmap(neas);
             }
 
         });

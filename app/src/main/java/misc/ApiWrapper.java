@@ -3,6 +3,7 @@ package misc;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -80,6 +81,7 @@ public class ApiWrapper {
      */
     public Person loginConServidor(String correo, String password, Activity act) {
         //obtenemos el objeto json correspondiente al correo
+        //para mas seguridad usamos post
         String url = "http://tupini07.pythonanywhere.com/api/webServices/login_usuario/?correo=" + correo + "&pass=" + password;
         int id_us = 0;
         /*---Esto solo si se implementa con POST
@@ -91,6 +93,7 @@ public class ApiWrapper {
         JSONObject json = getRESTJSON(url);
         Person persona = new Person();
         try {
+            //Inserta cosas en el servidor
             JSONArray jsonArray = json.getJSONArray("objects");
             json = jsonArray.getJSONObject(0); //en teoria solo hay una entrada asi que esto es seguro.
             if (correo.equals(json.getString("correo"))) {
@@ -100,6 +103,10 @@ public class ApiWrapper {
                 //si es null entonces inserta el usuario en la base de datos,
                 //quiere decir que esta persona nunca ha iniciado sesion.
                 if (sqlHelper.getUser(correo).getId() == null) {
+                    //llenar la bd con los interes y eso del servidor
+                    //si nunca se ha hecho login a la aplicacion
+                    salvarInteresesDelServidorABDLocal(act);
+
                     Bitmap img_serv = this.getUserImage(id_us);
                     persona.setId(id_us);
                     persona.setEmail(correo);
@@ -141,6 +148,8 @@ public class ApiWrapper {
                     // de revisar que no haya nada en limbo
                     usuario.setPassword(password);
                     sqlHelper.insertlimbo(usuario);
+
+
                 }
 
             }
@@ -367,6 +376,26 @@ public class ApiWrapper {
             e.printStackTrace();
         }
         return b;
+    }
+
+    /**
+     * salva los intereses y superintereses del servidor a la base de datos local
+     * @return true si fue exitoso o false si hubo un problema
+     */
+    public boolean salvarInteresesDelServidorABDLocal(Activity act){
+        SQLiteHelper Helper = SQLiteHelper.getInstance(act);
+        try {
+            HashMap<Superinteres, List<Intereses>> hmap = this.getIntereses();
+            for (Superinteres sup : hmap.keySet()) {
+                Helper.insertSuperinter(sup);
+                for (Intereses in : hmap.get(sup)) {
+                    Helper.insertInteresCust(in);
+                }
+            }
+            return true;
+        }catch (SQLiteException e) {
+            return false;
+        }
     }
 
     private JSONObject getRESTJSON(String URL) {

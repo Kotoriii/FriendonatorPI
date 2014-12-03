@@ -220,6 +220,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void insertInteresCust(Intereses inter) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idSuperInteres", inter.getIdsuperinteres());
+        values.put("idIntereses", inter.getId());
+        values.put("Descripcion", inter.getDescripcion());
+
+        db.insert("intereses", null, values);
+        db.close();
+    }
+
     public void insertSuperinter(Superinteres superint) {
         SQLiteDatabase db = this.getWritableDatabase();
 
