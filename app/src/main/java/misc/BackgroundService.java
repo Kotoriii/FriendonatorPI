@@ -1,11 +1,13 @@
 package misc;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -27,6 +29,7 @@ public class BackgroundService extends IntentService {
     private boolean is_scanning = false;
     private final int mIdNotification = 48454;
     NotificationManager mNotificationManager = null;
+
 
 
     public BackgroundService() {
@@ -148,6 +151,29 @@ public class BackgroundService extends IntentService {
             }
         };
         scanner.start();
+
+    }
+
+
+    public void AlertMatch(Person person, Activity act, int percentagePerson, int percentageMain){
+        // todo sacar minimo pocentage de la base de datos y assignar a percentageMain
+        if(percentagePerson <= percentageMain){}
+
+        new AlertDialog.Builder(this)
+                .setTitle(getResources().getString(R.string.Matchfound))
+                .setMessage(getResources().getString(R.string.seePerson))
+                .setPositiveButton(getResources().getString(R.string.accept), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // code
+                    }
+                })
+                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // code
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
 
     }
 }
