@@ -1,8 +1,6 @@
 package com.pi314.friendonator;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 //import android.renderscript.ProgramStore;
 import android.view.Menu;
@@ -12,13 +10,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
 import Bluetooth.BluetoothHandler;
-import Database.SQLiteHelper;
-import misc.ApiWrapper;
+import misc.GPSHelper;
 
 
 public class FindMeTool extends Activity {
@@ -42,26 +35,15 @@ public class FindMeTool extends Activity {
         });
 
         //TODO remove!!
+        final GPSHelper gps = new GPSHelper(FindMeTool.this);
+        gps.start_gps();
         final TextView txtService = (TextView) findViewById(R.id.txtServiceR);
         final ImageView imgView = (ImageView) findViewById(R.id.imgFiewFindME);
         final Button btnRequest = (Button) findViewById(R.id.btnRequesS);
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiWrapper api = new ApiWrapper();
-                if (!api.isConnected(FindMeTool.this))
-                    api.activateWifi(FindMeTool.this);
-                SQLiteHelper hl = SQLiteHelper.getInstance(FindMeTool.this);
-                String id = hl.getLimbo1().getId();
-                Bitmap oo = api.getImageFromURL("http://tupini07.pythonanywhere.com/media/imagenesUs/diagrama.png");
-
-                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                oo.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                byte[] byteArray = stream.toByteArray();
-
-                Bitmap neas = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
-
-                imgView.setImageBitmap(neas);
+                txtService.setText("Latitud: " + gps.getLat() + "\nLongitud: " + gps.getLng());
             }
 
         });
