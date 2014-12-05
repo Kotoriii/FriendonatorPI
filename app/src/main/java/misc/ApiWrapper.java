@@ -52,6 +52,7 @@ import java.util.Random;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import Database.Configuracion;
 import Database.Historial;
 import Database.Intereses;
 import Database.SQLiteHelper;
@@ -66,7 +67,11 @@ import Database.Usuario;
  * Tambien tiene una clase que sirve para pedirle al usuario que prenda el internet (en caso de que este apagado)
  * Ver doc.
  */
+
+
 public class ApiWrapper {
+    SQLiteHelper db;
+
     private String mResult = null; //Resultado del request, para request asincronicas
     private List<NameValuePair> mPostData = null; //datos a mandar durante el HttpAsyncPOSTTask
     private Bitmap mBitmapHolder = null;
@@ -93,7 +98,6 @@ public class ApiWrapper {
         JSONObject json = getRESTJSON(url);
         Person persona = new Person();
         try {
-            //Inserta cosas en el servidor
             JSONArray jsonArray = json.getJSONArray("objects");
             json = jsonArray.getJSONObject(0); //en teoria solo hay una entrada asi que esto es seguro.
             if (correo.equals(json.getString("correo"))) {
@@ -142,6 +146,18 @@ public class ApiWrapper {
                     usuario.setPassword(""); // <- para evitar inconsistencias
 
                     this.insertPerson(act, persona, usuario);
+
+                    // configuracion default
+
+                    Configuracion def = new Configuracion();
+                    def.setIdUsuario(persona.getId());
+                    def.setMinmatch("50");
+                    def.setNotific("1"); //1 prendido, 2 apagado
+                    def.setSound("1");
+                    def.setVibration("1");
+                    def.setInterval("2"); //2, 5, 10, 15, 0
+                    sqlHelper.insertConfig(def);
+
 
                     //en teoria no deberia de llegar aqui si hay algo en limbo.
                     // por lo tanto no se ponen checks. sin ebargo LoginActivity deberia

@@ -72,13 +72,6 @@ public class ProfileActivity extends Activity {
     SQLiteHelper db;
     Boolean gotPhoto;
 
-    //Elementos del menu
-    private ListView NavList;
-    private ArrayList<Item_objct> NavItms;
-    private ActionBarDrawerToggle toggle;
-    private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
-    private TypedArray NavIcons;
-    NavigationAdapter NavAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -231,63 +224,7 @@ public class ProfileActivity extends Activity {
         });}
 
 
-        /*
-        ///////////////////////////////////////Logica para el menu//////////////////////////////////////////////////////////
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
 
-        final ListView drawer = (ListView) findViewById(R.id.drawer);
-        final DrawerLayout drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
-        //tres lineaas de codigo paraa la imgen del menu
-        NavList = (ListView) findViewById(R.id.drawer);
-        //Declaramos el header el caul sera el layout de header.xml
-        View header = getLayoutInflater().inflate(R.layout.header, null);
-        //Establecemos header
-        NavList.addHeaderView(header);
-
-
-        //obtiene las imagenes desde el string.xml
-        NavIcons = getResources().obtainTypedArray(R.array.navigation_iconos);
-        //crea en arraylist de la clae Item_object que tiene imagen y texto
-        NavItms = new ArrayList<Item_objct>();
-        //Se procede a insertar las imagines y textos
-        NavItms.add(new Item_objct(opciones[0], NavIcons.getResourceId(0, -1)));
-        NavItms.add(new Item_objct(opciones[1], NavIcons.getResourceId(1, -1)));
-        NavItms.add(new Item_objct(opciones[2], NavIcons.getResourceId(2, -1)));
-        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(3, -1)));
-        NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
-        NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
-        //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
-        NavAdapter = new NavigationAdapter(this,NavItms);
-        NavList.setAdapter(NavAdapter);
-
-
-        drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                displayView(arg2);
-                drawerLayout.closeDrawers();
-
-            }
-        });
-
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.drawable.ic_drawer, R.string.app_name, R.string.hello_world){
-            public void onDrawerClosed(View view) {
-                // Drawer cerrado
-                getActionBar().setTitle(getResources().getString(R.string.app_name));
-                //invalidateOptionsMenu();
-            }
-
-            public void onDrawerOpened(View drawerView) {
-                // Drawer abierto
-                getActionBar().setTitle("Menu");
-                //invalidateOptionsMenu();
-            }
-        };
-
-        drawerLayout.setDrawerListener(toggle);
-    } */
 
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
@@ -460,6 +397,10 @@ public class ProfileActivity extends Activity {
 
     //cosas de imagen
 
+    private static int fileNumber = 0;
+    String imagename = String.format("friendonator%05d.txt", fileNumber++);
+
+
 
     private void selectImage() {
 
@@ -472,7 +413,7 @@ public class ProfileActivity extends Activity {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals(getResources().getString(R.string.txttakephoto))) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    File f = new File(android.os.Environment.getExternalStorageDirectory(), imagename);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
                 } else if (options[item].equals( getResources().getString(R.string.txtaddfromgallery))) {
@@ -495,7 +436,7 @@ public class ProfileActivity extends Activity {
             if (requestCode == 1) {
                 File f = new File(Environment.getExternalStorageDirectory().toString());
                 for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
+                    if (temp.getName().equals(imagename)) {
                         f = temp;
                         break;
                     }
@@ -625,13 +566,6 @@ public class ProfileActivity extends Activity {
         }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     // Activamos el toggle con el icono
     @Override
@@ -647,62 +581,5 @@ public class ProfileActivity extends Activity {
         return true;
     }
 
-    /**Metodo para abrir el form escogido en el menu**/
-    private void displayView(int options){
-
-        switch (options) {
-            case 1:
-                //aqui se abrira la actividad de Perfil
-
-                break;
-            case 2:
-                //aqui se abrira la actividad Historial
-                Intent intentHistory = new Intent(ProfileActivity.this, History.class);
-                //Create the Intent element
-                intentHistory.putExtra("PERSON", person);
-                //Start the new Activity
-                startActivity(intentHistory);
-                this.finish();
-                break;
-            case 3:
-                //aqui se abrira la actividad Home
-                Intent intentHome = new Intent(ProfileActivity.this, HomeActivity.class);
-                //Create the Intent element
-                intentHome.putExtra("PERSON", person);
-                //Start the new Activity
-                startActivity(intentHome);
-                this.finish();
-                break;
-            case 4:
-                //aqui se abrira la actividad MainActivity
-                Intent intentMain = new Intent(ProfileActivity.this, MainActivity.class);
-                //Create the Intent element
-                intentMain.putExtra("PERSON", person);
-                //Start the new Activity
-                startActivity(intentMain);
-                this.finish();
-                break;
-            case 5:
-                Intent intentMatch = new Intent(ProfileActivity.this, MenuActivity.class);
-                //Create the Intent element
-                intentMatch.putExtra("PERSON", person);
-                //Start the new Activity
-                startActivity(intentMatch);
-                this.finish();
-                break;
-
-            case 6:
-                //aqui se abrira la actividad MySettings
-                Intent intentMySettings = new Intent(ProfileActivity.this, MySettings.class);
-                //Create the Intent element
-                intentMySettings.putExtra("PERSON", person);
-                //Start the new Activity
-                startActivity(intentMySettings);
-                this.finish();
-                break;
-            default:
-                break;
-        }
-    }
 
 }
