@@ -1,6 +1,7 @@
 package misc;
 
 import android.app.Activity;
+import android.content.Context;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -16,7 +17,7 @@ import android.os.Bundle;
  */
 public class GPSHelper {
     private LocationManager mgr=null;
-    private Activity mAct = null;
+    private Context mAct = null;
     private String lat = null;
     private String lng = null;
 
@@ -24,7 +25,7 @@ public class GPSHelper {
      * Inicializa el gpshelper y directamente pide la posicion (latitud y longitud)
      * @param act
      */
-    public GPSHelper(Activity act) {
+    public GPSHelper(Context act) {
         mAct = act;
         mgr=(LocationManager)mAct.getSystemService(mAct.LOCATION_SERVICE);
         this.start_gps();

@@ -28,6 +28,7 @@ import Database.TextoInteres;
 import Database.Usuario;
 import Database.Usuariointereses;
 import GridView.GridObject;
+import misc.GPSHelper;
 
 public class InterestsMethods {
 
@@ -283,6 +284,11 @@ public class InterestsMethods {
     }
 
     public void insertReceivedPerson(Context context, Person person, String idUsuario, int percentage) {
+
+        //inicializa gpsHelper aqui para que le de mas tiempo de encontrar
+        //lat y long
+        GPSHelper gpsHelper = new GPSHelper(context);
+
         // Insert received person via bluetooth into Data Base
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
         Usuario userToInsert = new Usuario();
@@ -309,8 +315,10 @@ public class InterestsMethods {
         historial.setIdMatch(person.getId());
         historial.setIdusuario(idUsuario);
         historial.setMatchPerc(String.valueOf(percentage));
-        historial.setLatitud("0");
-        historial.setLongitud("0");
+
+        historial.setLatitud(gpsHelper.getLat()); // <- pedimos lat
+        historial.setLongitud(gpsHelper.getLng());// <- pedimos longitud
+
         historial.setMatchName(person.getName());
         historial.setFecha(getDataTime());
 
