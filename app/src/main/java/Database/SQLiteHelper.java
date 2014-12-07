@@ -61,7 +61,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             ")";
 
     String createUsuario = "CREATE TABLE usuario (" +
-            "idUsuario INTEGER PRIMARY KEY AUTOINCREMENT," +
+            "idUsuario INTEGER PRIMARY KEY," +
             "nombre VARCHAR," +
             "fecha_de_nacimiento VARCHAR," +
             "correo VARCHAR," +
@@ -100,6 +100,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             "activo INTEGER," +
             "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario))";
 
+    String createConfig = "CREATE TABLE config (" +
+            "idUsuario INTEGER PRIMARY KEY," +
+            "minmatch INTEGER," +
+            "notific VARCHAR," +
+            "sound VARCHAR," +
+            "vibration VARCHAR," +
+            "interval VARCHAR," +
+            "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario))";
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(createAuth);
@@ -110,6 +119,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(createUserinter);
         db.execSQL(createTextointer);
         db.execSQL(createContacto);
+        db.execSQL(createConfig);
     }
 
     @Override
@@ -220,6 +230,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void insertInteresCust(Intereses inter) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idSuperInteres", inter.getIdsuperinteres());
+        values.put("idIntereses", inter.getId());
+        values.put("Descripcion", inter.getDescripcion());
+
+        db.insert("intereses", null, values);
+        db.close();
+    }
+
     public void insertSuperinter(Superinteres superint) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -235,6 +257,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
+        values.put("idUsuario", user.getId());
         values.put("nombre", user.getNombre());
         values.put("fecha_de_nacimiento", user.getDob());
         values.put("correo", user.getCorreo());
@@ -271,6 +294,20 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("modofavorito", contacto.getModofavorito());
         values.put("activo", contacto.getActivo());
         db.insert("contacto", null, values);
+        db.close();
+    }
+
+    public void insertConfig(Configuracion config) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idUsuario", config.getIdUsuario());
+        values.put("minmatch", config.getMinmatch());
+        values.put("notific", config.getNotific());
+        values.put("sound", config.getSound());
+        values.put("vibration", config.getVibration());
+        values.put("interval", config.getInterval());
+        db.insert("config", null, values);
         db.close();
     }
 
@@ -353,6 +390,22 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("activo", contacto.getActivo());
 
         return db.update("contacto", values, "idContacto=?", new String[]{contacto.getIdContacto()});
+    }
+
+    public int updateConfig(Configuracion config) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put("idUsuario", config.getIdUsuario());
+        values.put("minmatch", config.getMinmatch());
+        values.put("notific", config.getNotific());
+        values.put("sound", config.getSound());
+        values.put("vibration", config.getVibration());
+        values.put("interval", config.getInterval());
+        db.insert("config", null, values);
+        db.close();
+
+        return db.update("config", values, "idUsuario=?", new String[]{config.getIdUsuario()});
     }
 
     public List<Contacto> getAllContactos(int idUser){
@@ -518,6 +571,25 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return usuario;
     }
 
+    public Configuracion getConfig(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Configuracion config = new Configuracion();
+
+        Cursor cursor=db.query("config", null, "correo=?", new String[]{email}, null, null, null);
+        if(cursor.moveToFirst()){
+            config.setIdUsuario(cursor.getString(cursor.getColumnIndex("idUsuario")));
+            config.setMinmatch(cursor.getString(cursor.getColumnIndex("minmatch")));
+            config.setNotific(cursor.getString(cursor.getColumnIndex("notific")));
+            config.setSound(cursor.getString(cursor.getColumnIndex("sound")));
+            config.setVibration(cursor.getString(cursor.getColumnIndex("vibration")));
+            config.setInterval(cursor.getString(cursor.getColumnIndex("facebook")));
+        }
+
+        cursor.close();
+
+        return config;
+    }
+
     public Usuario getUserByID(int userId) {
         SQLiteDatabase db = this.getReadableDatabase();
         Usuario usuario = new Usuario();
@@ -585,7 +657,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put("idUsuario", usuario.getId());
-        values.put("password", "");
+        values.put("password", usuario.getPassword());
 
         db.insert("limbo", null, values);
         db.close();

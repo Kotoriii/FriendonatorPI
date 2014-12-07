@@ -3,6 +3,7 @@ package misc;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
@@ -51,6 +52,7 @@ import java.util.Random;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import Database.Configuracion;
 import Database.Historial;
 import Database.Intereses;
 import Database.SQLiteHelper;
@@ -65,7 +67,11 @@ import Database.Usuario;
  * Tambien tiene una clase que sirve para pedirle al usuario que prenda el internet (en caso de que este apagado)
  * Ver doc.
  */
+
+
 public class ApiWrapper {
+    SQLiteHelper db;
+
     private String mResult = null; //Resultado del request, para request asincronicas
     private List<NameValuePair> mPostData = null; //datos a mandar durante el HttpAsyncPOSTTask
     private Bitmap mBitmapHolder = null;
@@ -80,6 +86,7 @@ public class ApiWrapper {
      */
     public Person loginConServidor(String correo, String password, Activity act) {
         //obtenemos el objeto json correspondiente al correo
+        //para mas seguridad usamos post
         String url = "http://tupini07.pythonanywhere.com/api/webServices/login_usuario/?correo=" + correo + "&pass=" + password;
         int id_us = 0;
         /*---Esto solo si se implementa con POST
@@ -100,6 +107,10 @@ public class ApiWrapper {
                 //si es null entonces inserta el usuario en la base de datos,
                 //quiere decir que esta persona nunca ha iniciado sesion.
                 if (sqlHelper.getUser(correo).getId() == null) {
+                    //llenar la bd con los interes y eso del servidor
+                    //si nunca se ha hecho login a la aplicacion
+                    salvarInteresesDelServidorABDLocal(act);
+
                     Bitmap img_serv = this.getUserImage(id_us);
                     persona.setId(id_us);
                     persona.setEmail(correo);
@@ -108,6 +119,8 @@ public class ApiWrapper {
 
                     //todo, persona.setGetTextFieldInfo();.. primero hay que hacerlo en servidor
                     // o podriamos quitarlo :D
+
+
 
                     //Obtenemos la fecha
                     String json_fecha = json.getString("fecha_de_nacimiento");
@@ -134,10 +147,25 @@ public class ApiWrapper {
 
                     this.insertPerson(act, persona, usuario);
 
+                    // configuracion default
+
+                    Configuracion def = new Configuracion();
+                    def.setIdUsuario(persona.getId());
+                    def.setMinmatch("50");
+                    def.setNotific("1"); //1 prendido, 2 apagado
+                    def.setSound("1");
+                    def.setVibration("1");
+                    def.setInterval("2"); //2, 5, 10, 15, 0
+                    sqlHelper.insertConfig(def);
+
+
                     //en teoria no deberia de llegar aqui si hay algo en limbo.
                     // por lo tanto no se ponen checks. sin ebargo LoginActivity deberia
                     // de revisar que no haya nada en limbo
+                    usuario.setPassword(password);
                     sqlHelper.insertlimbo(usuario);
+
+
                 }
 
             }
@@ -366,6 +394,26 @@ public class ApiWrapper {
         return b;
     }
 
+    /**
+     * salva los intereses y superintereses del servidor a la base de datos local
+     * @return true si fue exitoso o false si hubo un problema
+     */
+    public boolean salvarInteresesDelServidorABDLocal(Activity act){
+        SQLiteHelper Helper = SQLiteHelper.getInstance(act);
+        try {
+            HashMap<Superinteres, List<Intereses>> hmap = this.getIntereses();
+            for (Superinteres sup : hmap.keySet()) {
+                Helper.insertSuperinter(sup);
+                for (Intereses in : hmap.get(sup)) {
+                    Helper.insertInteresCust(in);
+                }
+            }
+            return true;
+        }catch (SQLiteException e) {
+            return false;
+        }
+    }
+
     private JSONObject getRESTJSON(String URL) {
         mResult = null; //reiniciamos el holder
         new HttpAsyncGETTask().execute(URL);
@@ -527,7 +575,6 @@ public class ApiWrapper {
 
         db.insertUsuario(usuario);
         mths.insertInterests(context, person);
-        List<Usuario> asd = db.getAllUsuarios();
 
         mths.insertText(context, person);
 

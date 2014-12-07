@@ -65,8 +65,12 @@ public class SignUp extends Activity {
                     // Save the Data in Database
                     db.insertUsuario(usuario);
 
+                    db.insertlimbo(usuario);
+
                     customToast(getResources().getString(R.string.toastAccountSuccess));
                     //Toast.makeText(getApplicationContext(), R.string.toastAccountSuccess, Toast.LENGTH_LONG).show();
+
+
 
                     // Close SignUp
                     finish();

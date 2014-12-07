@@ -33,7 +33,6 @@ public class LoginActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.check_si_existe(); // se fija si ya hay algo en limbo.. si hay lo manda al activity correspondiente
 
         setContentView(R.layout.login_activity);
         db = SQLiteHelper.getInstance(getApplicationContext());
@@ -58,7 +57,6 @@ public class LoginActivity extends Activity {
                 //todo mandar un alert si no esta conectado a internet y handle la conexion..
                 //la clase de api tiene un metodod especial para ver si se encuentra actualmente
                 //conectado a internet y otro para pedir la conexion
-                customToast("suponemos que esta conectado a internet");
                 try {
                     if (!api.isConnected(LoginActivity.this)) {
                         api.activateWifi(LoginActivity.this);
@@ -75,10 +73,10 @@ public class LoginActivity extends Activity {
                 Usuario userLogin = null;
 
                 //si el login no fuera existoso entonces devolveria null
-                if (person != null) {
+                if (person != null && person.getId() != null) {
 
                     //deberia de existir, ya que existe un usuario..
-                    //al hacer login de un nuevo usuario el sistema se encarga de guardar todo e
+                    //al hacer login de un nuevo usuario el sistema se encarga de guardar
                     //en su respectivo lugar
                     userLogin = db.getUser(person.getEmail());
 
@@ -144,6 +142,13 @@ public class LoginActivity extends Activity {
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.setView(layout);
         toast.show();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.check_si_existe(); // se fija si ya hay algo en limbo.. si hay lo manda al activity correspondiente
     }
 
     private void check_si_existe(){

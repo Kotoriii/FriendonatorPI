@@ -73,6 +73,7 @@ public class ProfileActivity extends Activity {
     SQLiteHelper db;
     Boolean gotPhoto;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         db = SQLiteHelper.getInstance(getApplicationContext());
@@ -227,8 +228,10 @@ public class ProfileActivity extends Activity {
                 if (!forDialog.getTitle().isEmpty() && person.textValue(forDialog.getTitle()) != null)
                     showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), person.textValue(forDialog.getTitle()), forDialog.getTitle());
             }
-        });
-    }
+        });}
+
+
+
 
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
@@ -401,6 +404,10 @@ public class ProfileActivity extends Activity {
 
     //cosas de imagen
 
+    private static int fileNumber = 0;
+    String imagename = String.format("friendonator%05d.txt", fileNumber++);
+
+
 
     private void selectImage() {
 
@@ -413,7 +420,7 @@ public class ProfileActivity extends Activity {
             public void onClick(DialogInterface dialog, int item) {
                 if (options[item].equals(getResources().getString(R.string.txttakephoto))) {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    File f = new File(android.os.Environment.getExternalStorageDirectory(), "temp.jpg");
+                    File f = new File(android.os.Environment.getExternalStorageDirectory(), imagename);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
                 } else if (options[item].equals( getResources().getString(R.string.txtaddfromgallery))) {
@@ -436,7 +443,7 @@ public class ProfileActivity extends Activity {
             if (requestCode == 1) {
                 File f = new File(Environment.getExternalStorageDirectory().toString());
                 for (File temp : f.listFiles()) {
-                    if (temp.getName().equals("temp.jpg")) {
+                    if (temp.getName().equals(imagename)) {
                         f = temp;
                         break;
                     }
@@ -565,14 +572,15 @@ public class ProfileActivity extends Activity {
             }
         }
     }
-/*
+
+
     // Activamos el toggle con el icono
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        toggle.syncState();
+       // toggle.syncState();
     }
-*/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -580,83 +588,5 @@ public class ProfileActivity extends Activity {
         return true;
     }
 
-   /* @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    } */
 
-    /**Metodo para abrir el form escogido en el menu**/
-    private void displayView(int options){
-
-        switch (options) {
-            case 1:
-                /*//aqui se abrira la actividad de Perfil
-                Intent intentProfile = new Intent(ProfileActivity.this, ProfileActivity.class);
-                //Create the Intent element
-                Bundle bProfile = new Bundle();
-                intentProfile.putExtras(bProfile);
-                //Start the new Activity
-                startActivity(intentProfile);
-                break;*/
-                break;
-            case 2:
-                //aqui se abrira la actividad Historial
-                Intent intentHistory = new Intent(ProfileActivity.this, History.class);
-                //Create the Intent element
-                Bundle bHistory = new Bundle();
-                intentHistory.putExtras(bHistory);
-                //Start the new Activity
-                startActivity(intentHistory);
-                break;
-            case 3:
-                //aqui se abrira la actividad Home
-                Intent intentHome = new Intent(ProfileActivity.this, HomeActivity.class);
-                //Create the Intent element
-                Bundle bHome = new Bundle();
-                intentHome.putExtras(bHome);
-                //Start the new Activity
-                startActivity(intentHome);
-                break;
-            case 4:
-                //aqui se abrira la actividad MainActivity
-                Intent intentMain = new Intent(ProfileActivity.this, MainActivity.class);
-                //Create the Intent element
-                Bundle bMain = new Bundle();
-                intentMain.putExtras(bMain);
-                //Start the new Activity
-                startActivity(intentMain);
-                break;
-            case 5:
-                /* //aqui se abrira la actividad Match
-                Intent intentMatch = new Intent(ProfileActivity.this, Match.class);
-                //Create the Intent element
-                Bundle bMatch = new Bundle();
-                intentMatch.putExtras(bMatch);
-                //Start the new Activity
-                startActivity(intentMatch);
-                break;*/
-                Toast.makeText(ProfileActivity.this,
-                        "Maintenance",
-                        Toast.LENGTH_SHORT).show();
-                break;
-            case 6:
-                //aqui se abrira la actividad MySettings
-                Intent intentMySettings = new Intent(ProfileActivity.this, MySettings.class);
-                //Create the Intent element
-                Bundle bMySettings = new Bundle();
-                intentMySettings.putExtras(bMySettings);
-                //Start the new Activity
-                startActivity(intentMySettings);
-                break;
-            default:
-                break;
-        }
-    }
 }

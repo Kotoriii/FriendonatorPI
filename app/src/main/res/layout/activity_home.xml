@@ -1,3 +1,9 @@
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -133,3 +139,15 @@
     </ScrollView>
 
 </RelativeLayout>
+
+
+    <ListView
+        android:id="@+id/drawer"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="left"
+        android:background="#424242"
+        android:divider="#2E2E2E"
+        android:dividerHeight="2dp"/>
+
+</android.support.v4.widget.DrawerLayout>

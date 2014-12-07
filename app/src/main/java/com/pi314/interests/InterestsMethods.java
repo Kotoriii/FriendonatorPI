@@ -28,6 +28,7 @@ import Database.TextoInteres;
 import Database.Usuario;
 import Database.Usuariointereses;
 import GridView.GridObject;
+import misc.GPSHelper;
 
 public class InterestsMethods {
 
@@ -183,7 +184,7 @@ public class InterestsMethods {
             db.deleteUserInterestData(person.getId());
             for (int interest : person.getDataBaseInterest().keySet())
                 for (int value : person.getDataBaseInterest().get(interest))
-                    db.insertUserint(new Usuariointereses(String.valueOf(value + 1), person.getId()));
+                    db.insertUserint(new Usuariointereses(String.valueOf(value), person.getId()));
         }
     }
 
@@ -209,7 +210,12 @@ public class InterestsMethods {
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
         Usuario userFromDataBase = db.getUserByID(userId);
 
-        Long millis_DOB = Long.valueOf(userFromDataBase.getDob());
+        Long millis_DOB =  0l;
+        try{
+            millis_DOB = Long.valueOf(userFromDataBase.getDob());
+        }catch (NumberFormatException e){
+            Log.e(getClass().getSimpleName(), "Usuario no tiene DOB");
+        }
 
         Person person = new Person();
         person.setFecha_de_nacimiento(new Date(millis_DOB));
@@ -243,6 +249,11 @@ public class InterestsMethods {
     }
 
     public void insertReceivedPerson(Context context, Person person, String idUsuario, int percentage) {
+
+        //inicializa gpsHelper aqui para que le de mas tiempo de encontrar
+        //lat y long
+        GPSHelper gpsHelper = new GPSHelper(context);
+
         // Insert received person via bluetooth into Data Base
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
         Usuario userToInsert = new Usuario();
@@ -269,8 +280,10 @@ public class InterestsMethods {
         historial.setIdMatch(person.getId());
         historial.setIdusuario(idUsuario);
         historial.setMatchPerc(String.valueOf(percentage));
-        historial.setLatitud("0");
-        historial.setLongitud("0");
+
+        historial.setLatitud(gpsHelper.getLat()); // <- pedimos lat
+        historial.setLongitud(gpsHelper.getLng());// <- pedimos longitud
+
         historial.setMatchName(person.getName());
         historial.setFecha(getDataTime());
 

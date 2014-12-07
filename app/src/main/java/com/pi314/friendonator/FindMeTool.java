@@ -1,7 +1,6 @@
 package com.pi314.friendonator;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 //import android.renderscript.ProgramStore;
 import android.view.Menu;
@@ -12,8 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import Bluetooth.BluetoothHandler;
-import Database.SQLiteHelper;
-import misc.ApiWrapper;
+import misc.GPSHelper;
 
 
 public class FindMeTool extends Activity {
@@ -37,19 +35,14 @@ public class FindMeTool extends Activity {
         });
 
         //TODO remove!!
+        final GPSHelper gps = new GPSHelper(FindMeTool.this);
         final TextView txtService = (TextView) findViewById(R.id.txtServiceR);
         final ImageView imgView = (ImageView) findViewById(R.id.imgFiewFindME);
         final Button btnRequest = (Button) findViewById(R.id.btnRequesS);
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApiWrapper api = new ApiWrapper();
-                if (!api.isConnected(FindMeTool.this))
-                    api.activateWifi(FindMeTool.this);
-                SQLiteHelper hl = SQLiteHelper.getInstance(FindMeTool.this);
-                String id = hl.getLimbo1().getId();
-                Bitmap oo = api.getImageFromURL("http://tupini07.pythonanywhere.com/media/imagenesUs/diagrama.png");
-                imgView.setImageBitmap(oo);
+                txtService.setText("Latitud: " + gps.getLat() + "\nLongitud: " + gps.getLng());
             }
 
         });
