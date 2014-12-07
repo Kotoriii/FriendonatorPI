@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -126,8 +127,11 @@ public class ProfileActivity extends Activity {
             viewImage.setImageBitmap(bitmap);
             viewImage.setBackgroundColor(0x0000FF00);
             gotPhoto = true;
-        } else
+        } else {
+            Drawable placeHolder = getResources().obtainTypedArray(R.array.place_holder).getDrawable(0);
+            viewImage.setImageDrawable(placeHolder);
             gotPhoto = false;
+        }
 
             viewImage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -196,6 +200,10 @@ public class ProfileActivity extends Activity {
                     // Set name to person object
                     setName();
 
+                    // Update history match percentage
+                    InterestsMethods updateHistory = new InterestsMethods();
+                    updateHistory.updateMatchPorcHistory(ProfileActivity.this, person);
+
                     // Create intent
                     Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
 
@@ -209,7 +217,6 @@ public class ProfileActivity extends Activity {
                     finish();
                 } else
                     customToast(getResources().getString(R.string.profileNameRequired));
-                    //Toast.makeText(getApplication(), R.string.profileNameRequired, Toast.LENGTH_SHORT).show();
             }
         });
 

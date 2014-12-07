@@ -27,7 +27,7 @@
                 android:contentDescription="@string/imageMatch"
                 android:layout_gravity="center_horizontal"
                 android:focusable="false"
-                android:src="@drawable/dogeswag" />
+                android:src="@drawable/match_place_holder" />
 
             <Space
                 android:layout_width="20dp"
@@ -68,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="%"
+                    android:visibility="gone"
                     android:id="@+id/lblSpecialPercentage"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"

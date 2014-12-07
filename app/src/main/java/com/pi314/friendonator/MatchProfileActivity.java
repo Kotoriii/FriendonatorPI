@@ -81,7 +81,10 @@ public class MatchProfileActivity extends Activity {
         int specialPercentage = (int) Math.floor(match.specialMatchResult(person.getEventId(), person, matchPerson));
 
         lblMatchPercentage.setText(getResources().getString(R.string.matchPercentage) + percentage + " %");
-        lblSpecialMatch.setText(getResources().getString(R.string.categoryPercentage) + specialPercentage + " %");
+        if (specialPercentage != 0) {
+            lblSpecialMatch.setVisibility(View.VISIBLE);
+            lblSpecialMatch.setText(getResources().getString(R.string.categoryPercentage) + specialPercentage + " %");
+        }
 
         gridViewInterests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
