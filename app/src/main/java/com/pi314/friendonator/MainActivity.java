@@ -24,10 +24,9 @@ import java.util.UUID;
 
 import Bluetooth.BluetoothHandler;
 import Bluetooth.DeviceValidator;
-import Database.Intereses;
 import Database.SQLiteHelper;
-import Database.Superinteres;
 import misc.BackgroundService;
+import misc.GPSHelper;
 
 
 public class MainActivity extends Activity implements Button.OnClickListener{
@@ -48,13 +47,16 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
     private TypedArray NavIcons;
     NavigationAdapter NavAdapter;
-Person person;
+    Person person;
     SQLiteHelper db;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //metodo estatico.. muestra un alert si location no esta disponible en los settings.
+        GPSHelper.checkIfLocationEnabled(this);
         final Button btnHome = (Button) findViewById(R.id.btnHome);
 
         //getApplicationContext().deleteDatabase("BaseFriendonator");
