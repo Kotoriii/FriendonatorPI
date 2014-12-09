@@ -157,41 +157,6 @@ public class InterestsMethods {
         return percentage;
     }
 
-    public int getPercentage(int event, Person user, Person match) {
-        int percentage;
-        double resultInterest;
-        HashMap<Integer, List<Integer>> userList = user.getDataBaseInterest();
-        HashMap<Integer, List<Integer>> matchList = match.getDataBaseInterest();
-        boolean special = false;
-
-        switch (event) {
-            case 1:
-                if (userList.containsKey(event) && matchList.containsKey(event))
-                    special = true;
-                break;
-            case 2:
-                if (userList.containsKey(event) && matchList.containsKey(event))
-                    special = true;
-                break;
-            case 3:
-                if (userList.containsKey(event) && matchList.containsKey(event))
-                    special = true;
-                break;
-            default:
-                special = false;
-                break;
-        }
-
-        if (special)
-            resultInterest = specialMatchResult(event, user, match);
-        else
-            resultInterest = getMatchPercentage(user, match);
-
-        percentage = (int) Math.floor(resultInterest);
-
-        return percentage;
-    }
-
     public double specialMatchResult(int event, Person user, Person match) {
         double userInterest = 0.0;
         double matchInterest = 0.0;
@@ -229,7 +194,7 @@ public class InterestsMethods {
         if (!person.getTextFieldInfo().isEmpty()) {
             SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
             String[] interestArray = context.getApplicationContext().getResources().getStringArray(R.array.identifyInterests);
-            Log.i("-------------------", "" + db.deleteUserTextData(person.getId()));
+            db.deleteUserTextData(person.getId());
 
             for (Map.Entry<String, String> entry : person.getTextFieldInfo().entrySet()) {
                 TextoInteres text = new TextoInteres();
@@ -357,4 +322,19 @@ public class InterestsMethods {
         }
         return b;
     }
+
+    public void updateMatchPorcHistory(Context context, Person person) {
+        SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+        List<Historial> historyList = db.getAllHistorial();
+
+        for (Historial h : historyList) {
+            Person matchPerson = new Person();
+            matchPerson.setDataBaseInterest(getInterestFromDataBase(context, Integer.parseInt(h.getIdMatch())));
+            int percentage = (int) Math.floor(getMatchPercentage(person, matchPerson));
+            h.setMatchPerc(String.valueOf(percentage));
+            db.updateHistorial(h);
+        }
+
+    }
+
 }

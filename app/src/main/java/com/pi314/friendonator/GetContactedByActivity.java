@@ -99,7 +99,6 @@ public class GetContactedByActivity extends Activity {
                     overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
                 } else
                     customToast(getResources().getString(R.string.textRequired));
-                    //Toast.makeText(getApplicationContext(), R.string.textRequired, Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -111,4 +111,8 @@
         <item>Literature</item>
         <item>Party</item>
     </string-array>
+
+    <array name="place_holder">
+        <item>@drawable/place_holder</item>
+    </array>
 </resources>

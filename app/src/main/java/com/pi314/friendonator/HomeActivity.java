@@ -132,23 +132,23 @@ public class HomeActivity extends Activity {
 
                 switch(position) {
                     case 0:
-                        iv.setImageResource(R.drawable.dogehangout);
+                        iv.setImageResource(R.drawable.event_hangout);
                         eventSelected = position;
                         break;
                     case 1:
-                        iv.setImageResource(R.drawable.snoopdoge);
+                        iv.setImageResource(R.drawable.event_concert);
                         eventSelected = position;
                         break;
                     case 2:
-                        iv.setImageResource(R.drawable.dogeart);
+                        iv.setImageResource(R.drawable.event_art);
                         eventSelected = 4;
                         break;
                     case 3:
-                        iv.setImageResource(R.drawable.dogepotter);
+                        iv.setImageResource(R.drawable.event_literature);
                         eventSelected = 2;
                         break;
                     case 4:
-                        iv.setImageResource(R.drawable.dogeparty);
+                        iv.setImageResource(R.drawable.event_party);
                         eventSelected = position;
                         break;
                 }
