@@ -53,7 +53,7 @@ public class MySettings extends Activity {
 
         // Get object person from intent extras
         getSetPerson();
-
+/*
         final CharSequence[] privacyArr = {getResources().getString(R.string.showinterests), getResources().getString(R.string.showcontactme)};
         final AlertDialog.Builder alt_bldPr = new AlertDialog.Builder(this);
         alt_bldPr.setIcon(R.drawable.ic_settings_alert );
@@ -113,7 +113,7 @@ public class MySettings extends Activity {
                 ToastCostumizado(mensajeLa);
             }
         });
-
+*/
         final CharSequence[] Intervale = {getResources().getString(R.string.minutes2),getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15), getResources().getString(R.string.always)};
         final AlertDialog.Builder alt_bldInt = new AlertDialog.Builder(this);
         alt_bldInt.setIcon(R.drawable.ic_settings_alert);
@@ -148,7 +148,7 @@ public class MySettings extends Activity {
                 }
             }
         });
-
+/*
         btnPrivacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,7 +183,7 @@ public class MySettings extends Activity {
                 alertLa.show();
             }
         });
-
+*/
         btnIntervaleScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
