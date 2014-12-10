@@ -54,9 +54,12 @@ public class BluetoothHandler {
     }
 
     public void redefineActivity(Activity act) {
-        if (mAct.getIntent().getSerializableExtra("PERSON") != null) {
+
+        //si no esta entonces va a dar nullpointerexception
+        try {
+            mAct.getIntent().getSerializableExtra("PERSON");
             user_in_intent = true;
-        } else {
+        } catch (NullPointerException e) {
             user_in_intent = false;
         }
 

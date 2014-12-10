@@ -213,9 +213,8 @@ public class ApiWrapper {
                     }
                 }
 
-                lstIntereses.put(supHolder, interesHolder);
-
-
+                lstIntereses.put(supHolder, new ArrayList<Integer>(interesHolder));
+                interesHolder.clear();
             }
 
         } catch (JSONException e) {
