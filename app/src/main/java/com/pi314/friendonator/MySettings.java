@@ -22,7 +22,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import Database.Configuracion;
 import Database.SQLiteHelper;
+import Database.Usuario;
 
 
 public class MySettings extends Activity {
@@ -114,7 +116,7 @@ public class MySettings extends Activity {
             }
         });
 
-        final CharSequence[] Intervale = {getResources().getString(R.string.minutes2),getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15), getResources().getString(R.string.always)};
+        final CharSequence[] Intervale = {getResources().getString(R.string.minutes2),getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15)};
         final AlertDialog.Builder alt_bldInt = new AlertDialog.Builder(this);
         alt_bldInt.setIcon(R.drawable.ic_settings_alert);
         alt_bldInt.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
@@ -132,20 +134,18 @@ public class MySettings extends Activity {
                 String mensajePr = getResources().getString(R.string.intervalscantoast) + Intervale[item];
                 ToastCostumizado(mensajePr);
                 if (Intervale[item]==getResources().getString(R.string.minutes2)){
-                    interval = "2";
+                    interval = "7200";
                 }
                 else if (Intervale[item]==getResources().getString(R.string.minutes5)){
-                    interval = "5";
+                    interval = "18000";
                 }
                 else if (Intervale[item]==getResources().getString(R.string.minutes10)){
-                    interval = "10";
+                    interval = "36000";
                 }
                 else if (Intervale[item]==getResources().getString(R.string.minutes15)){
-                    interval = "15";
+                    interval = "54000";
                 }
-                else if (Intervale[item]==getResources().getString(R.string.always)){
-                    interval = "0";
-                }
+
             }
         });
 
@@ -198,8 +198,14 @@ public class MySettings extends Activity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Configuracion config = db.getConfig(person.getEmail());
+                config.setInterval(interval);
+                db.updateConfig(config);
+
                     // Create intent
                     Intent intent = new Intent(MySettings.this, HomeActivity.class);
+
 
                     // Set person inside intent
                     intent.putExtra("PERSON", person);
@@ -386,5 +392,8 @@ public class MySettings extends Activity {
         /*
         this.finish();
         */
+
     }
+
+
 }
