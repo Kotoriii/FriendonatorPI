@@ -44,32 +44,46 @@ public class BluetoothHandler {
     List<BluetoothDevice> lstDisptV = new ArrayList<BluetoothDevice>();
     Activity mAct = null;
     private static BluetoothHandler mbth;
+    private boolean user_in_intent = false;
 
-    public static BluetoothHandler getInstance(Activity act){
-        if(mbth == null){
-           mbth = new BluetoothHandler(act);
+    public static BluetoothHandler getInstance(Activity act) {
+        if (mbth == null) {
+            mbth = new BluetoothHandler(act);
         }
         return mbth;
     }
 
-    public void redefineActivity(Activity act){
+    public void redefineActivity(Activity act) {
+
+        //si no esta entonces va a dar nullpointerexception
+        try {
+            mAct.getIntent().getSerializableExtra("PERSON");
+            user_in_intent = true;
+        } catch (NullPointerException e) {
+            user_in_intent = false;
+        }
+
         this.mAct = act;
     }
+
     private BluetoothHandler(Activity act) {
-        this.mAct=act;
+        this.redefineActivity(act);
+
         mValidator = new DeviceValidator();
 
         //primero se registra el listener y luego se prende el bluetooth
         if (!registered) {
             registerAdapter();
         }
-        if(!this.isBluetoothEnabled()) {
+        if (!this.isBluetoothEnabled()) {
             StartBlueTooth();
         }
 
-        //por ultimo, empieza el server thread que corre mientras la
-        //aplicacion este corriendo
-        new ServerThread().run();
+        if (this.user_in_intent) {
+            //por ultimo, empieza el server thread que corre mientras la
+            //aplicacion este corriendo
+            this.startBluetoothServer();
+        }
     }
 
 
@@ -91,13 +105,13 @@ public class BluetoothHandler {
         try {
             mAct.unregisterReceiver(getReceiver());
             Log.d("BluetoothFR", "Reciever registered and unregistering");
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("BluetoothFR", "Reciever wasn't registered");
         }
         try {
             mAct.registerReceiver(getReceiver(), filter);
             registered = true;
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.e("BluetoothFR", "Register is trying to register on top of another");
         }
     }
@@ -126,7 +140,7 @@ public class BluetoothHandler {
      * Antes de empezar el scan se eliminan los elementos de la lista de dispositivos validos.
      * Esto para evitar que se muestren dispositivos que ya no se encuentran en la zona ya que
      * el scan solo descubre dispositivos pero no se fija cuando los dispositivos ya no son visibles.
-     *
+     * <p/>
      * Hay que tener en cuenta que la informacion de cada dispositivo (ej: fuerza de se_al, nombre y
      * direccion) son los que se obtienen a la hora de hacer el scan y no son constantemente actualizados.
      */
@@ -153,6 +167,7 @@ public class BluetoothHandler {
 
     /**
      * Starts the actual bluetooth.
+     *
      * @return
      */
     public boolean StartBlueTooth() {
@@ -163,7 +178,7 @@ public class BluetoothHandler {
         }
 
         if (!mBluetoothAdapter.isEnabled()) {
-          Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             mAct.startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         }
 
@@ -171,13 +186,13 @@ public class BluetoothHandler {
         return true;
     }
 
-    public void startBluetoothServer(){
+    public void startBluetoothServer() {
         ServerThread SV = new ServerThread();
         SV.start();
     }
 
-    public void stopBlueTooth(){
-       mBluetoothAdapter.disable();
+    public void stopBlueTooth() {
+        mBluetoothAdapter.disable();
     }
 
 
@@ -189,6 +204,7 @@ public class BluetoothHandler {
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         private boolean finding = true;
         private BluetoothDevice findingDevice;
+
         @Override
         public void onReceive(Context context, Intent intent) {
             final String action = intent.getAction();
@@ -205,24 +221,24 @@ public class BluetoothHandler {
                     //new ClientThread(device).start();
                 }
 
-                try{
+                try {
                     BluetoothDevice dev = getAdapter().getRemoteDevice(device.getAddress());
-                        int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                        Log.d("BluetoothFR", device.getName() + " RSSI: " + rssi + " describe_contents: "+ device.describeContents());
+                    int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+                    Log.d("BluetoothFR", device.getName() + " RSSI: " + rssi + " describe_contents: " + device.describeContents());
 
-                          mAct.getIntent().putExtra("name", device.getName());
-                        mAct.getIntent().putExtra("strg", rssi);
+                    mAct.getIntent().putExtra("name", device.getName());
+                    mAct.getIntent().putExtra("strg", rssi);
 
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
 
 
+                if (finding && mValidator.isValidDevice(device)) {// && device.getAddress().equals(findingDevice.getAddress())){
 
-                if(finding && mValidator.isValidDevice(device)){// && device.getAddress().equals(findingDevice.getAddress())){
+                    int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
+                    Log.v("BluetoothFR", "Device RSSI: " + rssi + "\n Name: " + device.getName());
 
-                                int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                                Log.v("BluetoothFR", "Device RSSI: " + rssi + "\n Name: " + device.getName());
-
-                  }
+                }
 
             }
 
@@ -247,11 +263,12 @@ public class BluetoothHandler {
 
         }
 
-        public void fingdDeviceMR(BluetoothDevice bd){
+        public void fingdDeviceMR(BluetoothDevice bd) {
             this.findingDevice = bd;
             this.finding = true;
         }
-        public void stopFingdDeviceMR(){
+
+        public void stopFingdDeviceMR() {
             this.findingDevice = null;
             this.finding = false;
         }
@@ -295,13 +312,10 @@ public class BluetoothHandler {
     }
 
 
-
-    public boolean isBluetoothEnabled()
-    {
+    public boolean isBluetoothEnabled() {
         BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         return (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled());
     }
-
 
 
     /**
@@ -318,7 +332,8 @@ public class BluetoothHandler {
             try {
                 // MY_UUID is the app's UUID string, also used by the client code
                 tmp = getAdapter().listenUsingInsecureRfcommWithServiceRecord(NAME, MY_UUID);
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
             mmServerSocket = tmp;
         }
 
@@ -345,11 +360,14 @@ public class BluetoothHandler {
             }
         }
 
-        /** Will cancel the listening socket, and cause the thread to finish */
+        /**
+         * Will cancel the listening socket, and cause the thread to finish
+         */
         public void close() {
             try {
                 mmServerSocket.close();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
         }
 
     }
@@ -374,7 +392,8 @@ public class BluetoothHandler {
             try {
                 // MY_UUID is the app's UUID string, also used by the server code
                 tmp = device.createInsecureRfcommSocketToServiceRecord(MY_UUID);
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
             mmSocket = tmp;
         }
 
@@ -392,11 +411,14 @@ public class BluetoothHandler {
 
         }
 
-        /** Will cancel an in-progress connection, and close the socket */
+        /**
+         * Will cancel an in-progress connection, and close the socket
+         */
         public void close() {
             try {
                 mmSocket.close();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
         }
     }
 
@@ -408,6 +430,7 @@ public class BluetoothHandler {
     private class ConnectedToClientThread extends Thread {
         private final BluetoothSocket mmSocket;
         private final OutputStream mmOutStream;
+
         public ConnectedToClientThread(BluetoothSocket socket) {
             mmSocket = socket;
             OutputStream tmpOut = null;
@@ -416,42 +439,46 @@ public class BluetoothHandler {
             // member streams are final
             try {
                 tmpOut = socket.getOutputStream();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
 
             mmOutStream = tmpOut;
         }
 
         public void run() {
 
-                try {
-                    Log.v("BluetoothFR", "Sending data via ObjectOutputStream");
+            try {
+                Log.v("BluetoothFR", "Sending data via ObjectOutputStream");
 
-                    //por el momento se crea un usuario test. mas adelante se va a sacar de la BD
-
+                //solo escribe el usuario si user_in_intent es true
+                //eso quiere decir que el usuario esta disponible como extra
+                //en el intent de mActivirty
+                if (user_in_intent) {
                     Person person = (Person) mAct.getIntent().getSerializableExtra("PERSON");
-                    ObjectOutputStream oos = new ObjectOutputStream( mmOutStream );
+                    ObjectOutputStream oos = new ObjectOutputStream(mmOutStream);
                     oos.flush();
 
                     oos.writeObject(person);
-
-
-
-
-                } catch (Exception e) {
-
                 }
+
+            } catch (Exception e) {
+
+            }
         }
+
         public void write(byte[] bytes) {
             try {
                 mmOutStream.write(bytes);
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
         }
 
         /* Call this from the main activity to shutdown the connection */
         public void cancel() {
             try {
                 mmSocket.close();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
         }
     }
 
@@ -467,38 +494,40 @@ public class BluetoothHandler {
             // member streams are final
             try {
                 tmpIn = socket.getInputStream();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
 
             mmInStream = tmpIn;
         }
 
         public void run() {
-                Person matchPerson = null ;
+            Person matchPerson = null;
 
-                Log.v("BluetoothFR", "Connected to server- Starting receiving loop ");
+            Log.v("BluetoothFR", "Connected to server- Starting receiving loop ");
 
-                    try {
-                        if(!mmSocket.isConnected()){
-                            mmSocket.connect();
-                            Log.v("BluetoothFR", "Connected to server- ****** Conected *****");
-                        }
+            try {
+                if (!mmSocket.isConnected()) {
+                    mmSocket.connect();
+                    Log.v("BluetoothFR", "Connected to server- ****** Conected *****");
+                }
 
-                        //Todo .. funciona solamente una ves
-                        ObjectInputStream bjr = new ObjectInputStream(mmInStream);
-                        matchPerson = (Person)bjr.readObject();
-                        InterestsMethods mtf = new InterestsMethods();
-                        Person person = (Person) mAct.getIntent().getSerializableExtra("PERSON");
-                        int percentage = (int) Math.floor(mtf.getMatchPercentage(person, matchPerson));
+                if (user_in_intent) {
+                    ObjectInputStream bjr = new ObjectInputStream(mmInStream);
+                    matchPerson = (Person) bjr.readObject();
+                    InterestsMethods mtf = new InterestsMethods();
+                    Person person = (Person) mAct.getIntent().getSerializableExtra("PERSON");
+                    int percentage = (int) Math.floor(mtf.getMatchPercentage(person, matchPerson));
 
-                        mtf.insertReceivedPerson(mAct, matchPerson, matchPerson.getId(), percentage);
+                    mtf.insertReceivedPerson(mAct, matchPerson, matchPerson.getId(), percentage);
 
 
-                        bjr.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    bjr.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
 
 
             Log.v("BluetoothFR", "Datos recieved!");
@@ -509,13 +538,13 @@ public class BluetoothHandler {
         public void cancel() {
             try {
                 mmSocket.close();
-            } catch (IOException e) { }
+            } catch (IOException e) {
+            }
         }
     }
 
 
-
-    public void ClientTest(){
+    public void ClientTest() {
         BluetoothDevice btd = lstDisptV.get(0);
         ClientThread CT = new ClientThread(btd);
         CT.start();
