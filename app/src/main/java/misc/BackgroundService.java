@@ -3,6 +3,7 @@ package misc;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -13,6 +14,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.pi314.friendonator.History;
 import com.pi314.friendonator.MainActivity;
 import com.pi314.friendonator.Person;
 import com.pi314.friendonator.R;
@@ -158,7 +160,7 @@ public class BackgroundService extends IntentService {
     public void AlertMatch(Person person, Activity act, int percentagePerson, int percentageMain){
         // todo sacar minimo pocentage de la base de datos y assignar a percentageMain
         if(percentagePerson <= percentageMain){}
-
+           /*
         new AlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.Matchfound))
                 .setMessage(getResources().getString(R.string.seePerson))
@@ -174,6 +176,31 @@ public class BackgroundService extends IntentService {
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
+                */
+        NotificationManager mNotificationManager =
+        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+//Agregando el icono, texto y momento para lanzar la notificación
+        int icon = R.drawable.ic_launcher;
+        CharSequence tickerText = "Notification Bar";
+        long when = System.currentTimeMillis();
+
+        Notification notification = new Notification(icon, tickerText, when);
+
+        Context context = getApplicationContext();
+        CharSequence contentTitle = getResources().getString(R.string.Matchfound);
+        CharSequence contentText = getResources().getString(R.string.seePerson);
+        //Agregando sonido
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        //Agregando vibración
+        notification.defaults |= Notification.DEFAULT_VIBRATE;
+
+        Intent notificationIntent = new Intent(this, History.class);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
+
+
+        mNotificationManager.notify(1, notification);
 
     }
 }
