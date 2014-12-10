@@ -231,8 +231,6 @@ public class ProfileActivity extends Activity {
         });}
 
 
-
-
     public String BitMapToString(Bitmap bitmap){
         ByteArrayOutputStream baos=new  ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);

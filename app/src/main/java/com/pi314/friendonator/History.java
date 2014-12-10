@@ -41,7 +41,6 @@ public class History extends Activity {
     private ListView NavList;
     private ArrayList<Item_objct> NavItms;
     private ActionBarDrawerToggle toggle;
-    private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
     private TypedArray NavIcons;
     NavigationAdapter NavAdapter;
     Person person;
@@ -69,10 +68,8 @@ public class History extends Activity {
         historialList = db.getAllHistorial();
 
         if (!historialList.isEmpty()) {
-            int count = 2; // Integer.parseInt(h.getIdMatch())
             for (Historial h : historialList) {
                 datos.add(new ListaEntrada_History(R.drawable.ic_launcher, h.getMatchName(), getResources().getString(R.string.matchPercentage) + h.getMatchPerc() + " %", Integer.parseInt(h.getIdMatch())));
-                count ++;
             }
         }
 
@@ -124,6 +121,8 @@ public class History extends Activity {
 
 
         ///////////////////////////////////////Logica para el menu//////////////////////////////////////////////////////////
+        final String[] opciones = getResources().getStringArray(R.array.menu_options);
+
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
@@ -146,13 +145,10 @@ public class History extends Activity {
         NavItms.add(new Item_objct(opciones[0], NavIcons.getResourceId(0, -1)));
         NavItms.add(new Item_objct(opciones[1], NavIcons.getResourceId(1, -1)));
         NavItms.add(new Item_objct(opciones[2], NavIcons.getResourceId(2, -1)));
-        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(3, -1)));
-        NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
-        NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
+        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(5, -1)));
         //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
         NavAdapter = new NavigationAdapter(this,NavItms);
         NavList.setAdapter(NavAdapter);
-
 
         drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -216,7 +212,7 @@ public class History extends Activity {
 
         matchPerson.setDataBaseInterest(interests);
         matchPerson.setName("Female Doge");
-        matchPerson.setId("2");
+        matchPerson.setId("42");
 
         matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestMusic), "Such music, many artist, wow");
         matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestMovies), "Cute puppy");
@@ -255,7 +251,7 @@ public class History extends Activity {
 
         matchPerson2.setDataBaseInterest(interests2);
         matchPerson2.setName("Doge");
-        matchPerson2.setId("3");
+        matchPerson2.setId("63");
 
         matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestLiterature), "Kevin Bacon Guardian, Many Galaxies, Such Mix!");
         matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestArt), "Doge Lisa");
@@ -460,8 +456,7 @@ public class History extends Activity {
                 this.finish();
                 break;
             case 2:
-                //aqui se abrira la actividad Historial
-
+                //Actual activity
                 break;
             case 3:
                 //aqui se abrira la actividad Home
@@ -473,25 +468,6 @@ public class History extends Activity {
                 this.finish();
                 break;
             case 4:
-                //aqui se abrira la actividad MainActivity
-                //aqui se abrira la actividad MainActivity
-                Intent intentMatchProfile = new Intent(History.this, MatchProfileActivity.class);
-                //Create the Intent element
-                intentMatchProfile.putExtra("PERSON", person);
-                //Start the new Activity
-                startActivity(intentMatchProfile);
-                this.finish();
-                break;
-            case 5:
-                Intent intentMatch = new Intent(History.this, MenuActivity.class);
-                //Create the Intent element
-                intentMatch.putExtra("PERSON", person);
-                //Start the new Activity
-                startActivity(intentMatch);
-                this.finish();
-                break;
-
-            case 6:
                 //aqui se abrira la actividad MySettings
                 Intent intentMySettings = new Intent(History.this, MySettings.class);
                 //Create the Intent element

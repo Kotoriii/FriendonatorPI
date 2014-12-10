@@ -56,6 +56,7 @@ Person person;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         final Button btnHome = (Button) findViewById(R.id.btnHome);
+        final Button btnAboutUs = (Button) findViewById(R.id.aboutUs);
 
         //getApplicationContext().deleteDatabase("BaseFriendonator");
 
@@ -67,6 +68,14 @@ Person person;
                 // Create the Intent element
                 Intent intent = new Intent(MainActivity.this,
                         LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnAboutUs.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AboutUs.class);
                 startActivity(intent);
             }
         });

@@ -31,7 +31,6 @@ public class MySettings extends Activity {
     private ListView NavList;
     private ArrayList<Item_objct> NavItms;
     private ActionBarDrawerToggle toggle;
-    private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
     private TypedArray NavIcons;
     NavigationAdapter NavAdapter;
     Person person;
@@ -52,6 +51,9 @@ public class MySettings extends Activity {
 
         final TextView textPercentage = (TextView) findViewById(R.id.txtPercentage);
 
+        // Get object person from intent extras
+        getSetPerson();
+
         final CharSequence[] privacyArr = {getResources().getString(R.string.showinterests), getResources().getString(R.string.showcontactme)};
         final AlertDialog.Builder alt_bldPr = new AlertDialog.Builder(this);
         alt_bldPr.setIcon(R.drawable.ic_settings_alert );
@@ -61,6 +63,7 @@ public class MySettings extends Activity {
 
             }
         });
+
         alt_bldPr.setNegativeButton(getResources().getString(R.string.cancel), null);
         alt_bldPr.setTitle(getResources().getString(R.string.privacyoptions));
         alt_bldPr.setSingleChoiceItems(privacyArr, -1, new DialogInterface
@@ -80,6 +83,7 @@ public class MySettings extends Activity {
 
             }
         });
+
         alt_bldAd.setNegativeButton(getResources().getString(R.string.cancel), null);
         alt_bldAd.setTitle(getResources().getString(R.string.advancedoptions));
         alt_bldAd.setSingleChoiceItems(AdvancedArr, -1, new DialogInterface
@@ -119,6 +123,7 @@ public class MySettings extends Activity {
             }
 
         });
+
         alt_bldInt.setNegativeButton(getResources().getString(R.string.cancel), null);
         alt_bldInt.setTitle(getResources().getString(R.string.intervalscan));
         alt_bldInt.setSingleChoiceItems(Intervale, -1, new DialogInterface
@@ -190,12 +195,9 @@ public class MySettings extends Activity {
             }
         });
 
-
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
                     // Create intent
                     Intent intent = new Intent(MySettings.this, HomeActivity.class);
 
@@ -207,13 +209,8 @@ public class MySettings extends Activity {
 
                     // Finish activity
                     finish();
-
-
             }
         });
-
-
-
 
         textPercentage.setText(seekBar1.getProgress() + "/" + seekBar1.getMax());
 
@@ -237,13 +234,12 @@ public class MySettings extends Activity {
                 //Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
             }
 
-
         });
 
 
-
-
         ///////////////////////////////////////Logica para el menu//////////////////////////////////////////////////////////
+        final String[] opciones = getResources().getStringArray(R.array.menu_options);
+
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
@@ -266,13 +262,10 @@ public class MySettings extends Activity {
         NavItms.add(new Item_objct(opciones[0], NavIcons.getResourceId(0, -1)));
         NavItms.add(new Item_objct(opciones[1], NavIcons.getResourceId(1, -1)));
         NavItms.add(new Item_objct(opciones[2], NavIcons.getResourceId(2, -1)));
-        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(3, -1)));
-        NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
-        NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
+        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(5, -1)));
         //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
         NavAdapter = new NavigationAdapter(this,NavItms);
         NavList.setAdapter(NavAdapter);
-
 
         drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -299,7 +292,13 @@ public class MySettings extends Activity {
 
         drawerLayout.setDrawerListener(toggle);
 
+    }
 
+    public void getSetPerson() {
+        person = (Person) this.getIntent().getSerializableExtra("PERSON");
+
+        if (person == null)
+            person = new Person();
     }
 
     public void ToastCostumizado (String mensaje){
@@ -319,6 +318,7 @@ public class MySettings extends Activity {
         toast.setView(layout);
         toast.show();
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (toggle.onOptionsItemSelected(item)) {
@@ -373,26 +373,7 @@ public class MySettings extends Activity {
                 this.finish();
                 break;
             case 4:
-                //aqui se abrira la actividad MainActivity
-                Intent intentMain = new Intent(MySettings.this, MainActivity.class);
-                //Create the Intent element
-                intentMain.putExtra("PERSON", person);
-                //Start the new Activity
-                startActivity(intentMain);
-                this.finish();
-                break;
-            case 5:
-                Intent intentMatch = new Intent(MySettings.this, MenuActivity.class);
-                //Create the Intent element
-                intentMatch.putExtra("PERSON", person);
-                //Start the new Activity
-                startActivity(intentMatch);
-                this.finish();
-                break;
-
-            case 6:
-                //aqui se abrira la actividad MySettings
-
+                //Actual activity
                 break;
             default:
                 break;
@@ -404,8 +385,6 @@ public class MySettings extends Activity {
     {
         /*
         this.finish();
-        //Exit with slide animation
-        this.overridePendingTransition (R.anim.left_to_right, R.anim.right_to_left);
         */
     }
 }

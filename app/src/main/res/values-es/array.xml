@@ -105,14 +105,21 @@
     </array>
 
     <string-array name="event_array">
-        <item>Hang Out</item>
-        <item>Concert</item>
-        <item>Art</item>
-        <item>Literature</item>
-        <item>Party</item>
+        <item>Pasando el rato</item>
+        <item>Concierto</item>
+        <item>Arte</item>
+        <item>Literatura</item>
+        <item>Fiesta</item>
     </string-array>
 
     <array name="place_holder">
         <item>@drawable/place_holder_esp</item>
     </array>
+
+    <string-array name="menu_options">
+        <item>Perfil</item>
+        <item>Historial</item>
+        <item>Inicio</item>
+        <item>Mi configuración</item>
+    </string-array>
 </resources>

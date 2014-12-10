@@ -159,4 +159,14 @@
     <string name="lblvibration">Vibración</string>
     <string name="lblprivacy">Privacidad</string>
 
+    <!-- BackgroundService -->
+
+    <string name="Matchfound">Match encontrado</string>
+    <string name="seePerson">¿Quieres ver esta persona?</string>
+
+    <string name="title_activity_about_us">Acerca de nosotros</string>
+    <string name="lblVision">Nuestra visión es proporcionar estándares de alta calidad a través de la innovación constante.</string>
+    <string name="lblContactUs">Contactenos</string>
+    <string name="lblCopyright">Copyright © 2014 PI. Todos los derechos reservados.</string>
+
 </resources>
