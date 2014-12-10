@@ -75,6 +75,7 @@ public class ApiWrapper {
     private String mResult = null; //Resultado del request, para request asincronicas
     private List<NameValuePair> mPostData = null; //datos a mandar durante el HttpAsyncPOSTTask
     private Bitmap mBitmapHolder = null;
+    private Activity mAct = null;
 
     /**
      * Devuelve True su el login es exitoso y false si no lo es.
@@ -88,6 +89,7 @@ public class ApiWrapper {
         //obtenemos el objeto json correspondiente al correo
         //para mas seguridad usamos post
         String url = "http://tupini07.pythonanywhere.com/api/webServices/login_usuario/?correo=" + correo + "&pass=" + password;
+        this.mAct = act;
         int id_us = 0;
         /*---Esto solo si se implementa con POST
             List<NameValuePair> datos = new ArrayList<NameValuePair>(2);
@@ -116,10 +118,7 @@ public class ApiWrapper {
                     persona.setEmail(correo);
                     persona.setDataBaseInterest(this.getInteresesUsuario(id_us));
                     persona.setName(json.getString("nombre"));
-
-                    //todo, persona.setGetTextFieldInfo();.. primero hay que hacerlo en servidor
-                    // o podriamos quitarlo :D
-
+                    persona.setGetTextFieldInfo(this.get_texto_Intereses_us(id_us));
 
 
                     //Obtenemos la fecha
@@ -295,11 +294,15 @@ public class ApiWrapper {
      * @return
      */
     public Bitmap getImageFromURL(String url) {
-        //TODO el request sigue ejecutandose incluso si no esta conectado a internet
         mBitmapHolder = null; //limpiamos
         new HttpGetImage().execute(url);
         int ss = 0;
+        boolean failed = false;
         while (mBitmapHolder == null) { //necesitamos esperar por la respuesta
+            if (ss > 78) { // si espera demasiado tiempo entonces se sale.. SS usualmente alcanza no mas de 40
+                failed = true;
+                break;
+            }
             try {
                 synchronized (this) {
                     this.wait(200);
@@ -308,6 +311,9 @@ public class ApiWrapper {
                 e.printStackTrace();
             }
             ss++;
+        }
+        if (failed) {
+            mBitmapHolder = BitmapFactory.decodeResource(mAct.getResources(), R.drawable.match_place_holder);
         }
         Log.d("ApiWrapper", "waited " + ss + " cycles before response");
         return mBitmapHolder;
@@ -395,9 +401,10 @@ public class ApiWrapper {
 
     /**
      * salva los intereses y superintereses del servidor a la base de datos local
+     *
      * @return true si fue exitoso o false si hubo un problema
      */
-    public boolean salvarInteresesDelServidorABDLocal(Activity act){
+    public boolean salvarInteresesDelServidorABDLocal(Activity act) {
         SQLiteHelper Helper = SQLiteHelper.getInstance(act);
         try {
             HashMap<Superinteres, List<Intereses>> hmap = this.getIntereses();
@@ -408,9 +415,25 @@ public class ApiWrapper {
                 }
             }
             return true;
-        }catch (SQLiteException e) {
+        } catch (SQLiteException e) {
             return false;
         }
+    }
+
+    private HashMap<String, String> get_texto_Intereses_us(int id_us) {
+        HashMap<String, String> textos = new HashMap<String, String>();
+        JSONObject json = this.getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/get_texto_extra_usuario/?id_us=" + id_us);
+        Iterator<String> iter = json.keys();
+        String key;
+        try {
+            while (iter.hasNext()) {
+                key = iter.next();
+                textos.put(key, json.getString(key));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return textos;
     }
 
     private JSONObject getRESTJSON(String URL) {
