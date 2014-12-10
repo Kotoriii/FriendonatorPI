@@ -1,5 +1,6 @@
 package com.pi314.interests;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -248,11 +249,12 @@ public class InterestsMethods {
         return contactedByList;
     }
 
-    public void insertReceivedPerson(Context context, Person person, String idUsuario, int percentage) {
+    public void insertReceivedPerson(Activity act, Person person, String idUsuario, int percentage) {
 
         //inicializa gpsHelper aqui para que le de mas tiempo de encontrar
         //lat y long
-        GPSHelper gpsHelper = new GPSHelper(context);
+        GPSHelper gpsHelper = new GPSHelper(act);
+        Context context = act.getApplicationContext();
 
         // Insert received person via bluetooth into Data Base
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());

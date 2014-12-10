@@ -66,6 +66,10 @@ public class BluetoothHandler {
         if(!this.isBluetoothEnabled()) {
             StartBlueTooth();
         }
+
+        //por ultimo, empieza el server thread que corre mientras la
+        //aplicacion este corriendo
+        new ServerThread().run();
     }
 
 
@@ -195,6 +199,10 @@ public class BluetoothHandler {
                 if (!lstDisptV.contains(device) &&
                         mValidator.isValidDevice(device)) {
                     lstDisptV.add(device);
+
+                    //Ejecuta el client thread con el dispositivo recien encontrado
+                    //TODO descomentar esto cuando la inicializacion del BluetoothHandler se haga en el homeScreen
+                    //new ClientThread(device).start();
                 }
 
                 try{

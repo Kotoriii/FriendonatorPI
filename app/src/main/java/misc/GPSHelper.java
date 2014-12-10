@@ -1,11 +1,18 @@
 package misc;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+
+import com.pi314.friendonator.R;
 
 /**
  * Created by andrea on 03/12/14.
@@ -16,19 +23,35 @@ import android.os.Bundle;
  * completen, asi que lo mas seguro es llamarlos desde un thread para si mismos.
  */
 public class GPSHelper {
-    private LocationManager mgr=null;
-    private Context mAct = null;
+    private LocationManager mgr = null;
+    private Activity mAct = null;
     private String lat = null;
     private String lng = null;
+    private boolean gps_location;
+    private boolean network_location;
 
     /**
      * Inicializa el gpshelper y directamente pide la posicion (latitud y longitud)
+     *
      * @param act
      */
-    public GPSHelper(Context act) {
+    public GPSHelper(Activity act) {
+        Handler handler = new Handler(Looper.getMainLooper());
+
         mAct = act;
-        mgr=(LocationManager)mAct.getSystemService(mAct.LOCATION_SERVICE);
-        this.start_gps();
+        mgr = (LocationManager) mAct.getSystemService(mAct.LOCATION_SERVICE);
+
+        //ver si estan disponibles
+        this.gps_location = mgr.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        this.network_location = mgr.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                start_gps();
+            }
+        }, 1000 );
+
     }
 
     /**
@@ -37,23 +60,48 @@ public class GPSHelper {
      * a internet. El metodo que de resultado primero es el que se muestra
      */
     private void start_gps() {
+
         //por network provider
         mgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                 3600000, 1000,
                 onLocationChange);
-
         //por GPS
         mgr.requestLocationUpdates(LocationManager.GPS_PROVIDER,
                 3600000, 1000,
                 onLocationChange);
     }
 
+    /**
+     * Metodo estatico que DEBE de ser llamado desde un activity, se fija si el gps se encuentra
+     * disponible y sino entonces muestra un alert el cual manda al usuario a settings, donde puede
+     * habilitar el location service
+     * @param act, este metodo usa metodos propios de la clase activity
+     */
+    public static void checkIfLocationEnabled(final Activity act) {
+        if(!((LocationManager) act.getSystemService(act.LOCATION_SERVICE)).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(act);
+            builder.setMessage(R.string.checkIfLocationEnabledAlert)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.option_yes, new DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            act.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton(R.string.option_no, new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            dialog.cancel();
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
+        }
+    }
 
     private void stop_gps() {
         mgr.removeUpdates(onLocationChange);
     }
 
-    private LocationListener onLocationChange=new LocationListener() {
+    private LocationListener onLocationChange = new LocationListener() {
         @Override
         public void onLocationChanged(Location location) {
             lat = String.valueOf(location.getLatitude());
@@ -79,23 +127,33 @@ public class GPSHelper {
 
     /**
      * Devuelve la latitud. Bloquea el Thread hasta que se finalice su ejecucion.
+     *
      * @return
      */
     public String getLat() {
-        while(this.lat == null){
+        if(this.gps_location || this.network_location) {
+            while (this.lat == null) {
 
+            }
+            return lat;
+        }else{
+            return "0";
         }
-        return lat;
     }
 
     /**
      * Devuelve la longitud. Bloquea el Thread hasta que se finalice su ejecucion.
+     *
      * @return
      */
     public String getLng() {
-        while(this.lng == null){
+        if(this.gps_location || this.network_location) {
+            while (this.lng == null) {
 
+            }
+            return lng;
+        }else{
+            return "0";
         }
-        return lng;
     }
 }
