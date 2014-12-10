@@ -69,7 +69,7 @@ public class History extends Activity {
 
         if (!historialList.isEmpty()) {
             for (Historial h : historialList) {
-                datos.add(new ListaEntrada_History(R.drawable.ic_launcher, h.getMatchName(), getResources().getString(R.string.matchPercentage) + h.getMatchPerc() + " %", Integer.parseInt(h.getIdMatch())));
+                datos.add(new ListaEntrada_History(R.drawable.match_place_holder, h.getMatchName(), getResources().getString(R.string.matchPercentage) + h.getMatchPerc() + " %", Integer.parseInt(h.getIdMatch())));
             }
         }
 

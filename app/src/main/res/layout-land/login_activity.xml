@@ -45,7 +45,7 @@
             android:id="@+id/btnlogin"
             android:layout_marginTop="40dp"
             android:textColor="@android:color/white"
-            android:background="@drawable/custom_border_button"
+            android:background="@drawable/button_effect"
             android:layout_gravity="center_horizontal" />
 
         <Button
@@ -56,7 +56,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="15dp"
             android:textColor="@android:color/white"
-            android:background="@drawable/custom_border_button" />
+            android:background="@drawable/button_effect" />
 
     </LinearLayout>
 </FrameLayout>

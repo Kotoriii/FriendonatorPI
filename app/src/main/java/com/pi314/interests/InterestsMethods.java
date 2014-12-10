@@ -152,6 +152,10 @@ public class InterestsMethods {
             userInterest = 0.0;
         }
 
+        if (matchValueCount == 1) {
+            matchValueCount = userList.keySet().size();
+        }
+
         percentage = resultInterest / matchValueCount;
 
         return percentage;

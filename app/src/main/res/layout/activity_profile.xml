@@ -79,7 +79,7 @@
                     android:text="@string/btnChooseInterest"
                     android:id="@+id/btnChooseInterest"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/custom_border_button"
+                    android:background="@drawable/button_effect"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
@@ -130,7 +130,7 @@
                     android:text="@string/btnChooseContact"
                     android:id="@+id/btnChooseContact"
                     android:textColor="@android:color/white"
-                    android:background="@drawable/custom_border_button"
+                    android:background="@drawable/button_effect"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true" />
@@ -164,7 +164,7 @@
                 android:text="@string/btnSaveChanges"
                 android:id="@+id/btnSaveChanges"
                 android:textColor="@android:color/white"
-                android:background="@drawable/custom_border_button" />
+                android:background="@drawable/button_effect" />
 
         </LinearLayout>
     </ScrollView>

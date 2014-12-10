@@ -169,4 +169,8 @@
     <string name="lblContactUs">Contactenos</string>
     <string name="lblCopyright">Copyright © 2014 PI. Todos los derechos reservados.</string>
 
+    <!-- GPSHelper -->
+    <string name="checkIfLocationEnabledAlert">Tu GPS está deshabilitado, ¿lo querés habilitar?</string>
+    <string name="option_yes">Si</string>
+    <string name="option_no">No</string>
 </resources>
