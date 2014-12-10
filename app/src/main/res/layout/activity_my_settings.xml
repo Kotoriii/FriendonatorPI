@@ -68,7 +68,7 @@
             android:layout_height="1dp"
             android:background="@android:color/holo_blue_dark"
             android:id="@+id/view2"
-            android:layout_marginTop="63dp"
+            android:layout_marginTop="62dp"
             android:layout_below="@+id/view1"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -133,72 +133,8 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/holo_blue_dark"
-            android:id="@+id/view5"
-            android:layout_below="@+id/btnPrivacy"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
 
 
-
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/holo_blue_dark"
-            android:id="@+id/view7"
-
-            android:layout_below="@+id/btnAdvanced"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Privacy"
-            android:id="@+id/btnPrivacy"
-            android:background="@android:color/transparent"
-            android:layout_below="@+id/view4"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Advanced"
-            android:background="@android:color/transparent"
-            android:id="@+id/btnAdvanced"
-            android:layout_below="@+id/view5"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Language"
-            android:id="@+id/btnLanguage"
-            android:layout_below="@+id/view7"
-            android:background="@android:color/transparent"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/holo_blue_dark"
-            android:id="@+id/view6"
-            android:layout_alignBottom="@+id/btnLanguage"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
 
         <SeekBar
             android:layout_width="wrap_content"
@@ -211,15 +147,6 @@
             android:layout_toRightOf="@+id/txtSound"
             android:layout_toEndOf="@+id/txtSound" />
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/holo_blue_dark"
-            android:id="@+id/view8"
-            android:layout_marginTop="385dp"
-            android:layout_below="@+id/view1"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
 
         <Button
             android:layout_width="wrap_content"
@@ -227,9 +154,19 @@
             android:text="Scan Interval"
             android:id="@+id/btnIntervale"
             android:background="@android:color/transparent"
-            android:layout_below="@+id/view6"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="260dp"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/holo_blue_dark"
+            android:id="@+id/view5"
+            android:layout_marginTop="242dp"
+            android:layout_below="@+id/view1"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -238,8 +175,7 @@
             android:layout_height="wrap_content"
             android:text="Save Changes"
             android:id="@+id/btnSave"
-            android:layout_below="@+id/view8"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="350dp"
             android:textColor="@android:color/white"
             android:background="@drawable/button_effect"
             android:layout_centerHorizontal="true" />
