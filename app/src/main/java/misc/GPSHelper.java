@@ -49,6 +49,11 @@ public class GPSHelper {
             @Override
             public void run() {
                 start_gps();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
             }
         }, 1000 );
 
@@ -132,9 +137,6 @@ public class GPSHelper {
      */
     public String getLat() {
         if(this.gps_location || this.network_location) {
-            while (this.lat == null) {
-
-            }
             return lat;
         }else{
             return "0";
@@ -148,8 +150,9 @@ public class GPSHelper {
      */
     public String getLng() {
         if(this.gps_location || this.network_location) {
-            while (this.lng == null) {
-
+            while(true){
+                if(this.lat != null)
+                    break;
             }
             return lng;
         }else{
