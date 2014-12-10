@@ -40,7 +40,6 @@ public class MatchProfileActivity extends Activity {
     private ListView NavList;
     private ArrayList<Item_objct> NavItms;
     private ActionBarDrawerToggle toggle;
-    private static final String[] opciones = {"Profile", "History", "Home", "MainActivity", "Match", "My settings"};
     private TypedArray NavIcons;
     NavigationAdapter NavAdapter;
 
@@ -130,6 +129,8 @@ public class MatchProfileActivity extends Activity {
         });
 
         ///////////////////////////////////////Logica para el menu//////////////////////////////////////////////////////////
+        final String[] opciones = getResources().getStringArray(R.array.menu_options);
+
         getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
 
@@ -152,13 +153,10 @@ public class MatchProfileActivity extends Activity {
         NavItms.add(new Item_objct(opciones[0], NavIcons.getResourceId(0, -1)));
         NavItms.add(new Item_objct(opciones[1], NavIcons.getResourceId(1, -1)));
         NavItms.add(new Item_objct(opciones[2], NavIcons.getResourceId(2, -1)));
-        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(3, -1)));
-        NavItms.add(new Item_objct(opciones[4], NavIcons.getResourceId(4, -1)));
-        NavItms.add(new Item_objct(opciones[5], NavIcons.getResourceId(5, -1)));
+        NavItms.add(new Item_objct(opciones[3], NavIcons.getResourceId(5, -1)));
         //seteamos el adaptador y le pasamos los iconos y titulos al adaptador
         NavAdapter = new NavigationAdapter(this,NavItms);
         NavList.setAdapter(NavAdapter);
-
 
         drawer.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -336,24 +334,6 @@ public class MatchProfileActivity extends Activity {
                 this.finish();
                 break;
             case 4:
-                //aqui se abrira la actividad MainActivity
-                Intent intentMain = new Intent(MatchProfileActivity.this, MainActivity.class);
-                //Create the Intent element
-                intentMain.putExtra("PERSON", person);
-                //Start the new Activity
-                startActivity(intentMain);
-                this.finish();
-                break;
-            case 5:
-                Intent intentMatch = new Intent(MatchProfileActivity.this, MenuActivity.class);
-                //Create the Intent element
-                intentMatch.putExtra("PERSON", person);
-                //Start the new Activity
-                startActivity(intentMatch);
-                this.finish();
-                break;
-
-            case 6:
                 //aqui se abrira la actividad MySettings
                 Intent intentMySettings = new Intent(MatchProfileActivity.this, MySettings.class);
                 //Create the Intent element

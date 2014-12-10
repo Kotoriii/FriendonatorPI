@@ -4,7 +4,6 @@
     <string name="app_name">Friendonator</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
     <string name="title_activity_profile">Profile</string>
     <string name="lblProfileName">Name</string>
     <string name="txtProfileName">Name</string>
@@ -27,7 +26,6 @@
     <string name="setInterests">Set your interests to continue</string>
     <string name="setContactedBy">Set your Contact preferences to continue</string>
     <string name="setPicture">Set a picture to continue</string>
-
     <string name="title_activity_interests">Interests</string>
     <string name="lblInterestsL">Interest</string>
     <string name="lblMusic">Music</string>
@@ -49,7 +47,6 @@
     <string name="btnSaveInterestsChanges">Save Interests</string>
     <string name="whatILike">What I like about</string>
     <string name="interestRequired">Please select an interest</string>
-
     <string name="title_activity_get_contacted_by">Get Contacted By</string>
     <string name="lblContact">Contact me</string>
     <string name="lblCellphone">Cellphone</string>
@@ -76,7 +73,6 @@
     <string name="ok">OK</string>
     <string name="textRequired">Selected fields must be filled</string>
     <string name="contactRequired">Please select a contact</string>
-
     <string name="title_activity_home">Home</string>
     <string name="lblMatchhome">Female Doge</string>
     <string name="spnEvent">Choose Event</string>
@@ -84,7 +80,6 @@
     <string name="txttakephoto">Take Photo</string>
     <string name="txtaddfromgallery">Choose from Gallery</string>
     <string name="txtphotocancel">Cancel</string>
-
     <string name="title_activity_login">Login</string>
     <string name="txtLoginUserName">Username</string>
     <string name="txtLoginPassword">Password</string>
@@ -103,7 +98,6 @@
 
     <string name="title_activity_my_settings">MySettings</string>
     <string name="title_activity_history">History</string>
-
     <string name="title_activity_sign_up">SignUp</string>
     <string name="editTextUserName">Email Address</string>
     <string name="editTextPassword">Password</string>
@@ -115,10 +109,8 @@
     <string name="toastPassword">Password does not match</string>
     <string name="toastCheckEmail">Please provide a valid email address</string>
     <string name="toastAccountSuccess">Account Successfully Created</string>
-
     <string name="title_activity_menu">MenuActivity</string>
     <string name="title_activity_find_me_tool">FindMeTool</string>
-
     <string name="title_activity_match_profile">Match Profile</string>
     <string name="lblMatchName">Match Name</string>
     <string name="btnClose">Close Profile</string>
@@ -147,24 +139,25 @@
     <string name="minutes10">10 minutes</string>
     <string name="minutes15">15 minutes</string>
     <string name="intervalscan">Interval Scan</string>
-
     <string name="privacyoptiontoast">Privacy Option = </string>
     <string name="advancedoptiontoast">Advanced Option = </string>
     <string name="languageoptiontoast">Selected Language = </string>
     <string name="intervalscantoast">Interval scan-time selected = </string>
-
     <string name="lblminmatchpercentage">Minimum matching percentage</string>
     <string name="lblnotifications">Notifications</string>
     <string name="lblsound">Sound</string>
     <string name="lblvibration">Vibration</string>
     <string name="lblprivacy">Privacy</string>
 
-
     <!-- BackgroundService -->
 
     <string name="Matchfound">Match found</string>
-    <string name="seePerson">¿Do you want see this person?</string>
+    <string name="seePerson">Do you want to see this person?</string>
 
+    <string name="title_activity_about_us">About us</string>
+    <string name="lblVision">Our vision is to provide high quality standards through constant innovation.</string>
+    <string name="lblContactUs">Contact us</string>
+    <string name="lblCopyright">Copyright © 2014 PI. All rights reserved.</string>
 
     <!-- GPSHelper -->
     <string name="checkIfLocationEnabledAlert">Your GPS seems to be disabled, do you want to enable it?</string>

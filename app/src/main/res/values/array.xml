@@ -115,4 +115,11 @@
     <array name="place_holder">
         <item>@drawable/place_holder</item>
     </array>
+
+    <string-array name="menu_options">
+        <item>Profile</item>
+        <item>History</item>
+        <item>Home</item>
+        <item>My settings</item>
+    </string-array>
 </resources>

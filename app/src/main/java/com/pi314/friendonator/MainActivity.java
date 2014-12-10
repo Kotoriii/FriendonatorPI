@@ -58,6 +58,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         //metodo estatico.. muestra un alert si location no esta disponible en los settings.
         GPSHelper.checkIfLocationEnabled(this);
         final Button btnHome = (Button) findViewById(R.id.btnHome);
+        final Button btnAboutUs = (Button) findViewById(R.id.aboutUs);
 
         //getApplicationContext().deleteDatabase("BaseFriendonator");
 
@@ -69,6 +70,14 @@ public class MainActivity extends Activity implements Button.OnClickListener{
                 // Create the Intent element
                 Intent intent = new Intent(MainActivity.this,
                         LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnAboutUs.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AboutUs.class);
                 startActivity(intent);
             }
         });
