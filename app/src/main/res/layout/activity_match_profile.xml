@@ -154,7 +154,7 @@
                 android:text="@string/btnClose"
                 android:id="@+id/btnClose"
                 android:textColor="@android:color/white"
-                android:background="@drawable/custom_border_button" />
+                android:background="@drawable/button_effect" />
 
         </LinearLayout>
     </ScrollView>
