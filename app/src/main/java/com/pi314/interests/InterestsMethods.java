@@ -253,6 +253,7 @@ public class InterestsMethods {
         return person;
     }
 
+
     public HashMap<String, String> getContactedByFromDataBase(Context context, Usuario user) {
         // Create contactedBy hash map from Data Base user information
         HashMap<String, String> contactedByList = new HashMap<String, String>();

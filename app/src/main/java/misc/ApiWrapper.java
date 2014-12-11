@@ -169,7 +169,7 @@ public class ApiWrapper {
         return (new InterestsMethods()).createPerson(act, id_us);
     }
 
-    private String saveUserBitmapFromUrl(Activity act, int id_us) {
+    protected String saveUserBitmapFromUrl(Activity act, int id_us) {
         return this.saveBitmap(act, this.getUserImage(id_us));
     }
 
@@ -409,7 +409,7 @@ public class ApiWrapper {
         }
     }
 
-    private HashMap<String, String> get_texto_Intereses_us(int id_us) {
+    protected HashMap<String, String> get_texto_Intereses_us(int id_us) {
         HashMap<String, String> textos = new HashMap<String, String>();
         JSONObject json = this.getRESTJSONObject("http://tupini07.pythonanywhere.com/api/webServices/get_texto_extra_usuario/?id_us=" + id_us);
         Iterator<String> iter = json.keys();
@@ -615,6 +615,8 @@ public class ApiWrapper {
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
 
         db.insertUsuario(usuario);
+
+
         mths.insertOnLoginIntereses(context, person);
 
         mths.insertText(context, person);

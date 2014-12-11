@@ -323,6 +323,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.update("historial", values, "idMatch=?", new String[]{hist.getIdMatch()});
     }
 
+
     public int updateInteres(Intereses intereses) {
         SQLiteDatabase db = this.getWritableDatabase();
 
