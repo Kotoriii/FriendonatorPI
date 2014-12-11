@@ -44,9 +44,7 @@ public class MySettings extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_settings);
 
-        final Button btnPrivacy = (Button)findViewById(R.id.btnPrivacy);
-        final Button btnAdvanced = (Button)findViewById(R.id.btnAdvanced);
-        final Button btnLanguage = (Button)findViewById(R.id.btnLanguage);
+
         final Button btnIntervaleScan = (Button)findViewById(R.id.btnIntervale);
         final SeekBar seekBar1 = (SeekBar) findViewById(R.id.seekBar);
         final Button btnSave = (Button)findViewById(R.id.btnSave);
