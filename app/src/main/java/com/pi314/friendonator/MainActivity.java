@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -27,6 +28,7 @@ import Bluetooth.DeviceValidator;
 import Database.SQLiteHelper;
 import misc.BackgroundService;
 import misc.GPSHelper;
+import misc.SyncWithServer;
 
 
 public class MainActivity extends Activity implements Button.OnClickListener{
@@ -167,7 +169,20 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 
     public void findmeT(View v){
         Intent inte = new Intent(this, FindMeTool.class);
-        startActivity(inte);
+        //startActivity(inte);
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SyncWithServer as = new SyncWithServer(MainActivity.this);
+                try {
+                    as.sync_image();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        t.start();
+
     }
     @Override
     public void onClick(View v) {

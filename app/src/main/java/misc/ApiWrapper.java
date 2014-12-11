@@ -67,6 +67,7 @@ public class ApiWrapper {
     private List<NameValuePair> mPostData = null; //datos a mandar durante el HttpAsyncPOSTTask
     private Bitmap mBitmapHolder = null;
     private Activity mAct = null;
+    protected String urlDomain = "http://tupini07.pythonanywhere.com/";
 
     /**
      * Devuelve True su el login es exitoso y false si no lo es.
@@ -424,7 +425,7 @@ public class ApiWrapper {
         return textos;
     }
 
-    private JSONObject getRESTJSONObject(String URL) {
+    protected JSONObject getRESTJSONObject(String URL) {
         mResult = null; //reiniciamos el holder
         new HttpAsyncGETTask().execute(URL);
         int ss = 0;
@@ -454,7 +455,7 @@ public class ApiWrapper {
         return json;
     }
 
-    private JSONArray getRESTJSONArray(String URL) {
+    protected JSONArray getRESTJSONArray(String URL) {
         mResult = null; //reiniciamos el holder
         new HttpAsyncGETTask().execute(URL);
         int ss = 0;
@@ -484,7 +485,7 @@ public class ApiWrapper {
         return json;
     }
 
-    private JSONObject postRESTJSON(String URL, List<NameValuePair> data) {
+    protected JSONObject postRESTJSON(String URL, List<NameValuePair> data) {
         mPostData = data;
         new HttpAsyncPOSTTask().execute(URL);
         int ss = 0;

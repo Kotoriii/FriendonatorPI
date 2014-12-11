@@ -12,11 +12,11 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.pi314.clover.History;
-import com.pi314.clover.MainActivity;
-import com.pi314.clover.MatchProfileActivity;
-import com.pi314.clover.Person;
-import com.pi314.clover.R;
+import com.pi314.friendonator.History;
+import com.pi314.friendonator.MainActivity;
+import com.pi314.friendonator.MatchProfileActivity;
+import com.pi314.friendonator.Person;
+import com.pi314.friendonator.R;
 
 import Bluetooth.BluetoothHandler;
 import Database.SQLiteHelper;

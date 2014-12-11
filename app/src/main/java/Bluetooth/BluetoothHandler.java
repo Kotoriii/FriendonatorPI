@@ -11,7 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-import com.pi314.clover.Person;
+import com.pi314.friendonator.Person;
 import com.pi314.interests.InterestsMethods;
 
 import java.io.IOException;
