@@ -19,7 +19,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -175,7 +174,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
             public void run() {
                 SyncWithServer as = new SyncWithServer(MainActivity.this);
                 try {
-                    as.sync_image();
+                    as.sync_image_upstream();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
