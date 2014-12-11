@@ -43,7 +43,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             "matchName VARCHAR," +
             "latitud VARCHAR," +
             "longitud VARCHAR," +
-            "fecha VARCHAR," + // ToDo should use DataTime or equivalent
+            "fecha VARCHAR," +
             "PRIMARY KEY (idMatch, idUsuario)" +
             "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)" +
             ")";
@@ -463,8 +463,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         if(cursor.moveToFirst()) {
             do {
                 Superinteres superinteres = new Superinteres();
-                superinteres.setId(cursor.getString(0));
-                superinteres.setDescripcion(cursor.getString(1));
+                superinteres.setId(cursor.getString(cursor.getColumnIndex("idSuperInteres")));
+                superinteres.setDescripcion(cursor.getString(cursor.getColumnIndex("Descripcion")));
                 superinterList.add(superinteres);
             } while (cursor.moveToNext());
         }

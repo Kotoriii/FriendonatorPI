@@ -10,8 +10,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import com.pi314.friendonator.Person;
@@ -26,7 +24,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,8 +37,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.math.BigInteger;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,11 +44,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-
 import Database.Configuracion;
-import Database.Historial;
 import Database.Intereses;
 import Database.SQLiteHelper;
 import Database.Superinteres;
@@ -97,7 +88,7 @@ public class ApiWrapper {
             datos.add(new BasicNameValuePair("pass", password));
         */
         SQLiteHelper sqlHelper = SQLiteHelper.getInstance(act);
-        JSONObject json = getRESTJSON(url);
+        JSONObject json = getRESTJSONObject(url);
         Person persona = new Person();
         try {
             JSONArray jsonArray = json.getJSONArray("objects");
@@ -191,7 +182,7 @@ public class ApiWrapper {
      */
     public HashMap<Integer, List<Integer>> getInteresesUsuario(int id_us) {
         HashMap<Integer, List<Integer>> lstIntereses = new HashMap<Integer, List<Integer>>();
-        JSONObject json = getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/intereses_usuario/?id_us=" + id_us);
+        JSONObject json = getRESTJSONObject("http://tupini07.pythonanywhere.com/api/webServices/intereses_usuario/?id_us=" + id_us);
         try {
             Integer supHolder = null;
             List<Integer> interesHolder = new ArrayList<Integer>();
@@ -229,7 +220,7 @@ public class ApiWrapper {
      */
     public List<Superinteres> getSuperIntereses() {
         List<Superinteres> lstSupInt = new ArrayList<Superinteres>();
-        JSONObject json = getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/SuperIntereses/?format=json");
+        JSONObject json = getRESTJSONObject("http://tupini07.pythonanywhere.com/api/webServices/SuperIntereses/?format=json");
         try {
             JSONArray jsonArray = json.getJSONArray("objects");
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -249,35 +240,32 @@ public class ApiWrapper {
      * @return lstIntereses
      */
     public HashMap<Superinteres, List<Intereses>> getIntereses() {
+        JSONArray json = getRESTJSONArray("http://tupini07.pythonanywhere.com/api/webServices/intereses/");
         HashMap<Superinteres, List<Intereses>> lstIntereses = new HashMap<Superinteres, List<Intereses>>();
-        JSONObject json = getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/Intereses/?format=json");
         try {
-            JSONArray jsonArray = json.getJSONArray("objects");
-            Superinteres supHolder = null;
-            Intereses interesHolder = null;
-            JSONObject supIntJson = null;
-            boolean added_checker = false;
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject row = jsonArray.getJSONObject(i);
-                supIntJson = row.getJSONObject("super_interes");
+            Superinteres supHolder;
+            Intereses interesHolder;
+            JSONArray inteJson;
+            List<Intereses> lstIntHolder;
+            JSONObject internal_interest;
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject row = json.getJSONObject(i);
+                inteJson = row.getJSONArray("intereses");
+                supHolder = new Superinteres(row.getString("id"), row.getString("descripcion"));
 
-                //holders para la actual linea de codigo
-                interesHolder = new Intereses(row.getString("id"), row.getString("descripcion"), supIntJson.getString("id"));
-                supHolder = new Superinteres(supIntJson.getString("id"), supIntJson.getString("descripcion"));
+                //inicializa lista
+                lstIntHolder = new ArrayList<Intereses>();
+                for (int e = 0; e < inteJson.length(); e++) {
+                    internal_interest = inteJson.getJSONObject(e);
+                    interesHolder = new Intereses(
+                            internal_interest.getString("id"),
+                            internal_interest.getString("descripcion"),
+                            supHolder.getId());
+                    lstIntHolder.add(interesHolder);
+                }
 
-                for (Superinteres su : lstIntereses.keySet()) {
-                    if (su.getId() == supHolder.getId()) {
-                        lstIntereses.get(su).add(interesHolder);
-                        added_checker = true;
-                        break;
-                    }
-                }
-                if (!added_checker) {
-                    List<Intereses> intLSTHOlder = new ArrayList<Intereses>();
-                    intLSTHOlder.add(interesHolder);
-                    lstIntereses.put(supHolder, intLSTHOlder);
-                }
-                added_checker = false;
+                lstIntereses.put(supHolder, lstIntHolder);
+
             }
 
         } catch (JSONException e) {
@@ -368,7 +356,7 @@ public class ApiWrapper {
      * @return
      */
     public Bitmap getUserImage(int user_id) {
-        JSONObject json = getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/get_imagen_usuario/?id_usuario=" + user_id);
+        JSONObject json = getRESTJSONObject("http://tupini07.pythonanywhere.com/api/webServices/get_imagen_usuario/?id_usuario=" + user_id);
 
         try {
             String url = "http://tupini07.pythonanywhere.com" + json.getString("url_foto");
@@ -422,7 +410,7 @@ public class ApiWrapper {
 
     private HashMap<String, String> get_texto_Intereses_us(int id_us) {
         HashMap<String, String> textos = new HashMap<String, String>();
-        JSONObject json = this.getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/get_texto_extra_usuario/?id_us=" + id_us);
+        JSONObject json = this.getRESTJSONObject("http://tupini07.pythonanywhere.com/api/webServices/get_texto_extra_usuario/?id_us=" + id_us);
         Iterator<String> iter = json.keys();
         String key;
         try {
@@ -436,7 +424,7 @@ public class ApiWrapper {
         return textos;
     }
 
-    private JSONObject getRESTJSON(String URL) {
+    private JSONObject getRESTJSONObject(String URL) {
         mResult = null; //reiniciamos el holder
         new HttpAsyncGETTask().execute(URL);
         int ss = 0;
@@ -459,6 +447,36 @@ public class ApiWrapper {
         } catch (JSONException e) {
             try {
                 json = new JSONObject("{\"error\": \"not a valid json object\"}");
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return json;
+    }
+
+    private JSONArray getRESTJSONArray(String URL) {
+        mResult = null; //reiniciamos el holder
+        new HttpAsyncGETTask().execute(URL);
+        int ss = 0;
+        while (mResult == null) { //necesitamos esperar por la respuesta
+            try {
+                synchronized (this) {
+                    this.wait(200);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ss++;
+        }
+        Log.d("ApiWrapper", "waited " + ss + " cycles before response");
+        JSONArray json = null;
+        try {
+            json = new JSONArray(mResult);
+
+
+        } catch (JSONException e) {
+            try {
+                json = new JSONArray("[{\"error\": \"not a valid json object\"}]");
             } catch (JSONException e1) {
                 e1.printStackTrace();
             }
@@ -596,7 +614,7 @@ public class ApiWrapper {
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
 
         db.insertUsuario(usuario);
-        mths.insertInterests(context, person);
+        mths.insertOnLoginIntereses(context, person);
 
         mths.insertText(context, person);
 
