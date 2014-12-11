@@ -1,6 +1,7 @@
 package misc;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.AndroidHttpClient;
 import android.util.Log;

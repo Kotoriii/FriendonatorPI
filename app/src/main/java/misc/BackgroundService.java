@@ -24,13 +24,16 @@ import Database.SQLiteHelper;
 
 /**
  * Created by andrea on 01/10/14.
+ *
+ * como usar:
+ *      Intent in = new Intent(this, BackgroundService.class);
+ *      startService(in);
  */
 public class BackgroundService extends IntentService {
 
-    private boolean is_scanning = false;
     private final int mIdNotification = 48454;
     NotificationManager mNotificationManager = null;
-
+    private boolean running = true;
 
 
     public BackgroundService() {
@@ -46,43 +49,24 @@ public class BackgroundService extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         //lo que se ejecuta antes de ejecutar el servicio
+        this.running = true;
 
-        //########################### Momentaneo
         Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
 
+        //todo descomentar
+        //this.ScanEveryX(getApplicationContext(), (Person)intent.getSerializableExtra("PERSON"));
+        this.ScanForSync(getBaseContext());
 
-        Thread scareTimer = new Thread(){
-            public void run(){
-                try{
-                    Integer p = 9999;
-                    Integer o = 0;
-                    while (o <p){
-                        synchronized (this) {
-                            buildNotification(o.toString());
-                            o++;
-                        }
-                        this.sleep(5000);
-                    }
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-            }
-        };
-        scareTimer.start();
-
-
-        //this.buildNotification();
-        //##########################
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public void endService(){
-        if(this.mNotificationManager != null) {
+    public void endService() {
+        if (this.mNotificationManager != null) {
             this.mNotificationManager.cancel(mIdNotification);
         }
     }
 
-    public void alert_new_match(String id_match, Person person, int match_perc){
+    public void alert_new_match(String id_match, Person person, int match_perc) {
         NotificationCompat.Builder mBuilder;
         mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher)
@@ -130,19 +114,19 @@ public class BackgroundService extends IntentService {
         mNotificationManager.notify(mIdNotification, mBuilder.build());
     }
 
-    public void ScanEveryX(final Activity activity,final Person person){
-        final BluetoothHandler bMan = BluetoothHandler.getInstance(activity);
+    public void ScanEveryX(final Context activity, final Person person) {
+        final BluetoothHandler bMan = BluetoothHandler.getInstance((Activity) activity);
         final SQLiteHelper db = SQLiteHelper.getInstance(getApplicationContext());
-        Thread scanner = new Thread(){
-            public void run(){
-                try{
-                    while (true){
+        Thread scanner = new Thread() {
+            public void run() {
+                try {
+                    while (running) {
                         synchronized (this) {
                             bMan.StartScan();
                         }
                         this.sleep(Integer.parseInt(db.getConfig(person.getEmail()).getInterval()));
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -151,27 +135,76 @@ public class BackgroundService extends IntentService {
 
     }
 
-    public void cancelScan(){
-        this.is_scanning = false;
+    public void ScanForSync(final Context act) {
+        final SQLiteHelper help = SQLiteHelper.getInstance(act);
+        final SyncWithServer sync = new SyncWithServer((Activity) act);
+
+        Thread syncThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean algo_cambio = false;
+                while (running) {
+                    if (sync.isConnected(act)) {
+                        if (help.textosCambiaron()) {
+                            sync.sync_textos_upstream();
+                            help.updateSync(help.TEXTOS, 0);
+                            algo_cambio = true;
+                        }
+                        if (help.imgPerfCambiaron()) {
+                            sync.sync_image_upstream();
+                            help.updateSync(help.IMAGEN_PERFIL, 0);
+                            algo_cambio = true;
+                        }
+                        if (help.interesesCambiaron()) {
+                            sync.sync_interests_upstream();
+                            help.updateSync(help.INTERESES, 0);
+                            algo_cambio = true;
+                        }
+                        if (help.datosPCambiaron()) {
+                            sync.sync_user_upstream();
+                            help.updateSync(help.DATOS_PERSONALES, 0);
+                            algo_cambio = true;
+                        }
+                        if (!algo_cambio) {
+                            sync.sync_user_downstream();
+                        } else {
+                            algo_cambio = false;
+                        }
+                    }
+                    try {
+                        Thread.sleep(300000); //5 min
+
+                        //todo descomentar
+                        //Thread.sleep(1800000); // 30 min
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        syncThread.start();
     }
 
-    public void ScanConstantly(final Activity activity){
+    public void stopBackgroundService() {
+        this.running = false;
+    }
+
+    public void ScanConstantly(final Activity activity) {
         final BluetoothHandler bMan = BluetoothHandler.getInstance(activity);
         //sets this.is_scanning to true
-        this.is_scanning = true;
-        Thread scanner = new Thread(){
-            public void run(){
-                try{
-                    while (is_scanning){
+        Thread scanner = new Thread() {
+            public void run() {
+                try {
+                    while (running) {
                         synchronized (this) {
-                            if(!bMan.getAdapter().isDiscovering()) {
+                            if (!bMan.getAdapter().isDiscovering()) {
                                 Log.v("BackgroundService", "^^^^^ start scan Background Service. Conserving list");
                                 bMan.getAdapter().startDiscovery();//doesn't clear the devices list
                             }
                         }
                         this.sleep(400);//sleep 400 ms, just to not occupy to much memory
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -181,9 +214,10 @@ public class BackgroundService extends IntentService {
     }
 
 
-    public void AlertMatch(Person person, Activity act, int percentagePerson, int percentageMain){
+    public void AlertMatch(Person person, Activity act, int percentagePerson, int percentageMain) {
         // todo sacar minimo pocentage de la base de datos y assignar a percentageMain
-        if(percentagePerson <= percentageMain){}
+        if (percentagePerson <= percentageMain) {
+        }
            /*
         new AlertDialog.Builder(this)
                 .setTitle(getResources().getString(R.string.Matchfound))
@@ -202,7 +236,7 @@ public class BackgroundService extends IntentService {
                 .show();
                 */
         NotificationManager mNotificationManager =
-        (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
 //Agregando el icono, texto y momento para lanzar la notificación
         int icon = R.drawable.ic_launcher;

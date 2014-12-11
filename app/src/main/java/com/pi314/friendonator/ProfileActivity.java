@@ -432,6 +432,9 @@ public class ProfileActivity extends Activity {
                 }
             }
         });
+
+        db.updateSync(db.IMAGEN_PERFIL, 1);
+
         builder.show();
     }
 
