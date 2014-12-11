@@ -16,10 +16,10 @@ import java.util.List;
  * Created by Christian on 10/30/2014.
  */
 public class SQLiteHelper extends SQLiteOpenHelper {
-    private final String INTERESES = "intereses";
-    private final String DATOS_PERSONALES = "datos_us";
-    private final String IMAGEN_PERFIL = "imagen_perfil";
-    private final String TEXTOS = "textos";
+    public final String INTERESES = "intereses";
+    public final String DATOS_PERSONALES = "datos_us";
+    public final String IMAGEN_PERFIL = "imagen_perfil";
+    public final String TEXTOS = "textos";
 
     private static SQLiteHelper sInstance;
 

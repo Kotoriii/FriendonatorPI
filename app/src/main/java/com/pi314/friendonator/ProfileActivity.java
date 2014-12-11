@@ -205,6 +205,8 @@ public class ProfileActivity extends Activity {
                     InterestsMethods updateHistory = new InterestsMethods();
                     updateHistory.updateMatchPorcHistory(ProfileActivity.this, person);
 
+                    db.updateSync(db.DATOS_PERSONALES, 1);
+
                     // Create intent
                     Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
 
