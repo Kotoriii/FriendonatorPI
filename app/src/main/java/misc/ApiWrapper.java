@@ -70,6 +70,17 @@ public class ApiWrapper {
     protected String urlDomain = "http://tupini07.pythonanywhere.com/";
 
     /**
+     * para cuando se necesitan funciones con activities.
+     * @param mAct
+     */
+    public ApiWrapper(Activity mAct) {
+        this.mAct = mAct;
+    }
+
+    public ApiWrapper() {
+    }
+
+    /**
      * Devuelve True su el login es exitoso y false si no lo es.
      * Este login solo lo puede accesar la aplicacion con dicho api_key.
      *

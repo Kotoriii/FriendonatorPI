@@ -174,7 +174,8 @@ public class MainActivity extends Activity implements Button.OnClickListener{
             public void run() {
                 SyncWithServer as = new SyncWithServer(MainActivity.this);
                 try {
-                    as.sync_image_upstream();
+
+                    as.sync_user_downstream();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

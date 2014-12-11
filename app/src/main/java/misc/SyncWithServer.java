@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -47,8 +48,9 @@ public class SyncWithServer extends ApiWrapper {
     private Activity mAct;
     private Person mP;
 
-    public SyncWithServer(Activity mAct) {
-        this.mAct = mAct;
+    public SyncWithServer(Activity Act) {
+        super(Act);
+        this.mAct = Act;
         mP = this.obtain_user();
     }
 
@@ -56,7 +58,7 @@ public class SyncWithServer extends ApiWrapper {
         SQLiteHelper helper = SQLiteHelper.getInstance(mAct);
         String password = helper.getLimbo1().getPassword();
         int id_us;
-        String url = "http://tupini07.pythonanywhere.com/api/webServices/login_usuario/?correo=" + mP.getEmail() + "&pass=" + password;
+        String url =  "http://tupini07.pythonanywhere.com/api/webServices/login_usuario/?correo=" + mP.getEmail() + "&pass=" + password;
         JSONObject json = getRESTJSONObject(url);
         Person persona = new Person();
         try {
@@ -97,20 +99,19 @@ public class SyncWithServer extends ApiWrapper {
             usuario.setPassword(""); // <- para evitar inconsistencias
 
             this.updatePerson(mAct, persona, usuario);
-
+            return true;
         } catch (JSONException e) {
-            Log.e(getClass().getSimpleName(), "error de lecctura de json. " + e.getStackTrace());
+            return false;
         }
 
-        return true;
-    }
+    } //funciona
 
     public boolean sync_user_upstream() {
-        String url = super.urlDomain + "api/webServices/actualizar_usuario/";
+        String url = super.urlDomain + "/api/webServices/actualizar_usuario/";
         List<NameValuePair> data = new ArrayList<NameValuePair>(9);
         data.add(new BasicNameValuePair("id_usuario", mP.getId()));//id_usuario
         data.add(new BasicNameValuePair("nombre", mP.getName()));//nombre
-        data.add(new BasicNameValuePair("dob", mP.getFecha_de_nacimiento().toString()));//fecha de nacimiento
+        data.add(new BasicNameValuePair("dob", String.valueOf(mP.getFecha_de_nacimiento().getYear())+"-"+String.valueOf(mP.getFecha_de_nacimiento().getMonth())+"-"+String.valueOf(mP.getFecha_de_nacimiento().getDay()) ));//fecha de nacimiento
         data.add(new BasicNameValuePair("correo", mP.getEmail()));//correo
         data.add(new BasicNameValuePair("numero_tel", mP.getGetContactedByList().get(mAct.getApplicationContext().getResources().getString(R.string.lblCellphone))));//numero de telefono
         data.add(new BasicNameValuePair("facebook", mP.getGetContactedByList().get(mAct.getApplicationContext().getResources().getString(R.string.lblFacebook))));//facebookID
@@ -123,11 +124,13 @@ public class SyncWithServer extends ApiWrapper {
             return false;
         }
         return true;
-    }
+    } //funciona
 
     public boolean sync_interests_upstream() {
         String url = super.urlDomain + "api/webServices/actualizar_intereses/";
         List<NameValuePair> data = new ArrayList<NameValuePair>();
+
+        SQLiteHelper h = SQLiteHelper.getInstance(mAct);
 
         data.add(new BasicNameValuePair("id_us", String.valueOf(mP.getId())));
 
@@ -144,13 +147,13 @@ public class SyncWithServer extends ApiWrapper {
         }
 
         return true;
-    }
+    } //funciona
 
     public boolean sync_textos_upstream() {
         String url = super.urlDomain + "api/webServices/actualizar_textos/";
         List<NameValuePair> data = new ArrayList<NameValuePair>();
         HashMap<String, String> textos_super = mP.getTextFieldInfo();
-
+        data.add(new BasicNameValuePair("id_us", mP.getId()));//id_usuario
         SQLiteHelper helper = SQLiteHelper.getInstance(mAct);
         for (Superinteres sup : helper.getAllSuperinter()) {
             for (String desc : textos_super.keySet()) {
@@ -169,7 +172,7 @@ public class SyncWithServer extends ApiWrapper {
             return false;
         }
         return true;
-    }
+    } //funciona
 
     public boolean sync_image_upstream() {
         //Bitmap foto_usuario = super.loadImageFromStorage(mP.getFoto_perfil());
