@@ -1,6 +1,5 @@
 package Bluetooth;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -10,11 +9,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
-import com.pi314.friendonator.Person;
+import com.pi314.clover.Person;
 import com.pi314.interests.InterestsMethods;
 
 import java.io.IOException;
@@ -26,10 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
-
-import Database.SQLiteHelper;
-import Database.Usuario;
-import misc.BackgroundService;
 
 /**
  * Created by andrea on 30/09/14.
@@ -54,7 +47,6 @@ public class BluetoothHandler {
     }
 
     public void redefineActivity(Activity act) {
-
         //si no esta entonces va a dar nullpointerexception
         try {
             mAct.getIntent().getSerializableExtra("PERSON");
@@ -62,7 +54,6 @@ public class BluetoothHandler {
         } catch (NullPointerException e) {
             user_in_intent = false;
         }
-
         this.mAct = act;
     }
 
@@ -520,6 +511,9 @@ public class BluetoothHandler {
 
                     mtf.insertReceivedPerson(mAct, matchPerson, matchPerson.getId(), percentage);
 
+                    //Alerta of the find
+                    //todo fijarse si el % de match es suficientemente alto como para avisar
+                    //BackgroundService.getInstance(mAct).alert_new_match(matchPerson.getId(), person, percentage);
 
                     bjr.close();
                 }

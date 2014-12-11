@@ -1,23 +1,22 @@
 package misc;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.pi314.friendonator.History;
-import com.pi314.friendonator.MainActivity;
-import com.pi314.friendonator.Person;
-import com.pi314.friendonator.R;
+import com.pi314.clover.History;
+import com.pi314.clover.MainActivity;
+import com.pi314.clover.MatchProfileActivity;
+import com.pi314.clover.Person;
+import com.pi314.clover.R;
 
 import Bluetooth.BluetoothHandler;
 import Database.SQLiteHelper;
@@ -27,7 +26,7 @@ import Database.SQLiteHelper;
  * Created by andrea on 01/10/14.
  */
 public class BackgroundService extends IntentService {
-    SQLiteHelper db = SQLiteHelper.getInstance(getApplicationContext());
+
     private boolean is_scanning = false;
     private final int mIdNotification = 48454;
     NotificationManager mNotificationManager = null;
@@ -83,6 +82,30 @@ public class BackgroundService extends IntentService {
         }
     }
 
+    public void alert_new_match(String id_match, Person person, int match_perc){
+        NotificationCompat.Builder mBuilder;
+        mBuilder = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setContentTitle("Friendonator");
+        mBuilder.setContentText(getResources().getText(R.string.found_a_match) + String.valueOf(match_perc));
+
+        Intent resultIntent = new Intent(this, MatchProfileActivity.class);
+        resultIntent.putExtra("PERSON", person);
+        resultIntent.putExtra("ID", id_match);
+
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MatchProfileActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        this.mIdNotification,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        mBuilder.setOngoing(true);
+        mNotificationManager.notify(mIdNotification, mBuilder.build());
+    }
+
     public void buildNotification(String mensaje) {
 
         NotificationCompat.Builder mBuilder;
@@ -97,7 +120,7 @@ public class BackgroundService extends IntentService {
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
-                        0,
+                        this.mIdNotification,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
         mBuilder.setContentIntent(resultPendingIntent);
@@ -109,6 +132,7 @@ public class BackgroundService extends IntentService {
 
     public void ScanEveryX(final Activity activity,final Person person){
         final BluetoothHandler bMan = BluetoothHandler.getInstance(activity);
+        final SQLiteHelper db = SQLiteHelper.getInstance(getApplicationContext());
         Thread scanner = new Thread(){
             public void run(){
                 try{
