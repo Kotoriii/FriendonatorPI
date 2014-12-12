@@ -31,11 +31,7 @@ import misc.SyncWithServer;
 
 
 public class MainActivity extends Activity implements Button.OnClickListener{
-    BluetoothAdapter mBluetoothAdapter =null;
-    BluetoothDevice device;
-    private static final int REQUEST_ENABLE_BT = 2;
-    private static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
-    private static final String NAME = "BluetoothDemo";
+
     TextView output;
     Button btnServer, btnScan, btnClient, startservice, startServer, startClientTest;
     BluetoothHandler mBHand;
@@ -55,7 +51,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        this.mBHand = BluetoothHandler.getInstance(this);
         //metodo estatico.. muestra un alert si location no esta disponible en los settings.
         GPSHelper.checkIfLocationEnabled(this);
         final Button btnHome = (Button) findViewById(R.id.btnHome);
@@ -99,7 +95,7 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         startservice = (Button) findViewById(R.id.startservice);
         startservice.setOnClickListener(this);
 
-        mBHand = BluetoothHandler.getInstance(this);
+        //mBHand = BluetoothHandler.getInstance(this);
 
         DeviceValidator dv = new DeviceValidator();
         String enc = dv.encrypt("1193434");

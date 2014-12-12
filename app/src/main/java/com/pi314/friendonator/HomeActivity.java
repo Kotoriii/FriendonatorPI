@@ -265,11 +265,10 @@ public class HomeActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*BluetoothHandler mbh = BluetoothHandler.getInstance(this);
-        mbh.redefineActivity(this);
+
         Intent intent = new Intent(HomeActivity.this, MainActivity.class);
         intent.putExtra("PERSON", person);
-        startActivity(intent);*/
+        startActivity(intent);
 
         if (toggle.onOptionsItemSelected(item)) {
             return true;

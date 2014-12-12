@@ -282,6 +282,7 @@ public class InterestsMethods {
         Usuario userToInsert = new Usuario();
         userToInsert.setId(person.getId());
         userToInsert.setNombre(person.getName());
+        userToInsert.setFoto(person.getFoto_perfil());
         if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblCellphone)) != null) {
             userToInsert.setNum(person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblCellphone)));
         }

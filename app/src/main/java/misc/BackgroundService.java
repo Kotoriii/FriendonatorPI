@@ -186,7 +186,7 @@ public class BackgroundService extends IntentService {
                         }
                     }
                     try {
-                        Thread.sleep(120000); //2.2 min
+                        Thread.sleep(300000); //2.2 min
 
                         //todo descomentar
                         //Thread.sleep(1800000); // 30 min

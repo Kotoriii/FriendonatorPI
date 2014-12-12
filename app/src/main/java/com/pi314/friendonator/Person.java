@@ -17,6 +17,8 @@ public class Person implements Serializable {
     private String email;
     private int eventId;
 
+    private String encodedImage; //solo para bluetooth. no deberia de usarse para nada mas
+
     private Date fecha_de_nacimiento = null;
     private int modo_de_cont_favorito;
     private String foto_perfil = null;
@@ -161,5 +163,13 @@ public class Person implements Serializable {
 
     public void setId(int id_us) {
         this.id = Integer.toString(id_us);
+    }
+
+    public String getEncodedImage() {
+        return encodedImage;
+    }
+
+    public void setEncodedImage(String encodedImage) {
+        this.encodedImage = encodedImage;
     }
 }

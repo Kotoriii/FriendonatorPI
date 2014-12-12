@@ -49,7 +49,7 @@ import Database.Usuario;
 public class SyncWithServer extends ApiWrapper {
     private Activity mAct;
     private Person mP;
-    private HttpClient httpClient = AndroidHttpClient.newInstance("Android");
+
 
     public SyncWithServer(Activity Act) {
         super(Act);
@@ -233,7 +233,7 @@ public class SyncWithServer extends ApiWrapper {
 
     private String post(String url, List<NameValuePair> nameValuePairs) throws IOException {
         String responseS = "";
-
+        AndroidHttpClient httpClient = AndroidHttpClient.newInstance("Android");
         HttpContext localContext = new BasicHttpContext();
         HttpPost httpPost = new HttpPost(url);
 
@@ -258,6 +258,7 @@ public class SyncWithServer extends ApiWrapper {
         if (responseS.equals("0")) {
             throw new IOException();
         }
+        httpClient.close();
         return responseS;
     }
 
