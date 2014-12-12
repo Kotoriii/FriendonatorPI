@@ -146,23 +146,23 @@ public class BackgroundService extends IntentService {
                 while (running) {
                     if (sync.isConnected(act)) {
                         if (help.textosCambiaron()) {
-                            sync.sync_textos_upstream();
-                            help.updateSync(help.TEXTOS, 0);
+                            if(sync.sync_textos_upstream())
+                                help.updateSync(help.TEXTOS, 0);
                             algo_cambio = true;
                         }
                         if (help.imgPerfCambiaron()) {
-                            sync.sync_image_upstream();
-                            help.updateSync(help.IMAGEN_PERFIL, 0);
+                            if(sync.sync_image_upstream())
+                                help.updateSync(help.IMAGEN_PERFIL, 0);
                             algo_cambio = true;
                         }
                         if (help.interesesCambiaron()) {
-                            sync.sync_interests_upstream();
-                            help.updateSync(help.INTERESES, 0);
+                            if(sync.sync_interests_upstream())
+                                help.updateSync(help.INTERESES, 0);
                             algo_cambio = true;
                         }
                         if (help.datosPCambiaron()) {
-                            sync.sync_user_upstream();
-                            help.updateSync(help.DATOS_PERSONALES, 0);
+                            if(sync.sync_user_upstream())
+                                help.updateSync(help.DATOS_PERSONALES, 0);
                             algo_cambio = true;
                         }
                         if (!algo_cambio) {
@@ -172,7 +172,7 @@ public class BackgroundService extends IntentService {
                         }
                     }
                     try {
-                        Thread.sleep(300000); //5 min
+                        Thread.sleep(120000); //2.2 min
 
                         //todo descomentar
                         //Thread.sleep(1800000); // 30 min

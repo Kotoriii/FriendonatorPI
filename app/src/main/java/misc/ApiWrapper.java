@@ -67,7 +67,7 @@ public class ApiWrapper {
     private List<NameValuePair> mPostData = null; //datos a mandar durante el HttpAsyncPOSTTask
     private Bitmap mBitmapHolder = null;
     private Activity mAct = null;
-    protected String urlDomain = "http://tupini07.pythonanywhere.com/";
+    protected String urlDomain = "http://192.168.1.118:8000/";// "http://tupini07.pythonanywhere.com/";
 
     /**
      * para cuando se necesitan funciones con activities.
@@ -91,7 +91,7 @@ public class ApiWrapper {
     public Person loginConServidor(String correo, String password, Activity act) {
         //obtenemos el objeto json correspondiente al correo
         //para mas seguridad usamos post
-        String url = "http://tupini07.pythonanywhere.com/api/webServices/login_usuario/?correo=" + correo + "&pass=" + password;
+        String url = urlDomain+"api/webServices/login_usuario/?correo=" + correo + "&pass=" + password;
         this.mAct = act;
         int id_us = 0;
         /*---Esto solo si se implementa con POST
@@ -194,7 +194,7 @@ public class ApiWrapper {
      */
     public HashMap<Integer, List<Integer>> getInteresesUsuario(int id_us) {
         HashMap<Integer, List<Integer>> lstIntereses = new HashMap<Integer, List<Integer>>();
-        JSONObject json = getRESTJSONObject("http://tupini07.pythonanywhere.com/api/webServices/intereses_usuario/?id_us=" + id_us);
+        JSONObject json = getRESTJSONObject(urlDomain + "api/webServices/intereses_usuario/?id_us=" + id_us);
         try {
             Integer supHolder = null;
             List<Integer> interesHolder = new ArrayList<Integer>();
@@ -232,7 +232,7 @@ public class ApiWrapper {
      */
     public List<Superinteres> getSuperIntereses() {
         List<Superinteres> lstSupInt = new ArrayList<Superinteres>();
-        JSONObject json = getRESTJSONObject("http://tupini07.pythonanywhere.com/api/webServices/SuperIntereses/?format=json");
+        JSONObject json = getRESTJSONObject(urlDomain + "api/webServices/SuperIntereses/?format=json");
         try {
             JSONArray jsonArray = json.getJSONArray("objects");
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -252,7 +252,7 @@ public class ApiWrapper {
      * @return lstIntereses
      */
     public HashMap<Superinteres, List<Intereses>> getIntereses() {
-        JSONArray json = getRESTJSONArray("http://tupini07.pythonanywhere.com/api/webServices/intereses/");
+        JSONArray json = getRESTJSONArray(urlDomain+"api/webServices/intereses/");
         HashMap<Superinteres, List<Intereses>> lstIntereses = new HashMap<Superinteres, List<Intereses>>();
         try {
             Superinteres supHolder;
@@ -314,6 +314,8 @@ public class ApiWrapper {
         }
         if (failed) {
             mBitmapHolder = BitmapFactory.decodeResource(mAct.getResources(), R.drawable.match_place_holder);
+            SQLiteHelper hlp = SQLiteHelper.getInstance(mAct);
+            hlp.updateSync(hlp.IMAGEN_PERFIL, 1);
         }
         Log.d("ApiWrapper", "waited " + ss + " cycles before response");
         return mBitmapHolder;
@@ -368,10 +370,10 @@ public class ApiWrapper {
      * @return
      */
     public Bitmap getUserImage(int user_id) {
-        JSONObject json = getRESTJSONObject("http://tupini07.pythonanywhere.com/api/webServices/get_imagen_usuario/?id_usuario=" + user_id);
+        JSONObject json = getRESTJSONObject(urlDomain+"api/webServices/get_imagen_usuario/?id_usuario=" + user_id);
 
         try {
-            String url = "http://tupini07.pythonanywhere.com" + json.getString("url_foto");
+            String url = urlDomain.substring(0, urlDomain.length()-1) + json.getString("url_foto");
             return getImageFromURL(url);
 
         } catch (JSONException e) {
@@ -379,24 +381,6 @@ public class ApiWrapper {
             return null;
         }
 
-    }
-
-    /**
-     * Devuelve la imagen q se encuentra en cierto path..
-     * no sabia donde poner el metodo :) pero por el momento se queda aqui
-     *
-     * @param path
-     * @return
-     */
-    public Bitmap loadImageFromStorage(String path) {
-        Bitmap b = null;
-        try {
-            File f = new File(path, "profile.jpg");
-            b = BitmapFactory.decodeStream(new FileInputStream(f));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return b;
     }
 
     /**
@@ -422,7 +406,7 @@ public class ApiWrapper {
 
     protected HashMap<String, String> get_texto_Intereses_us(int id_us) {
         HashMap<String, String> textos = new HashMap<String, String>();
-        JSONObject json = this.getRESTJSONObject("http://tupini07.pythonanywhere.com/api/webServices/get_texto_extra_usuario/?id_us=" + id_us);
+        JSONObject json = this.getRESTJSONObject(urlDomain + "api/webServices/get_texto_extra_usuario/?id_us=" + id_us);
         Iterator<String> iter = json.keys();
         String key;
         try {

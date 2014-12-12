@@ -48,6 +48,7 @@ import Database.Usuario;
 public class SyncWithServer extends ApiWrapper {
     private Activity mAct;
     private Person mP;
+    private HttpClient httpClient = AndroidHttpClient.newInstance("Android");
 
     public SyncWithServer(Activity Act) {
         super(Act);
@@ -59,7 +60,7 @@ public class SyncWithServer extends ApiWrapper {
         SQLiteHelper helper = SQLiteHelper.getInstance(mAct);
         String password = helper.getLimbo1().getPassword();
         int id_us;
-        String url =  "http://tupini07.pythonanywhere.com/api/webServices/login_usuario/?correo=" + mP.getEmail() + "&pass=" + password;
+        String url =  super.urlDomain + "api/webServices/login_usuario/?correo=" + mP.getEmail() + "&pass=" + password;
         JSONObject json = getRESTJSONObject(url);
         Person persona = new Person();
         try {
@@ -108,7 +109,7 @@ public class SyncWithServer extends ApiWrapper {
     } //funciona
 
     public boolean sync_user_upstream() {
-        String url = super.urlDomain + "/api/webServices/actualizar_usuario/";
+        String url = super.urlDomain + "api/webServices/actualizar_usuario/";
         List<NameValuePair> data = new ArrayList<NameValuePair>(9);
         data.add(new BasicNameValuePair("id_usuario", mP.getId()));//id_usuario
         data.add(new BasicNameValuePair("nombre", mP.getName()));//nombre
@@ -177,7 +178,7 @@ public class SyncWithServer extends ApiWrapper {
 
     public boolean sync_image_upstream() {
         //Bitmap foto_usuario = super.loadImageFromStorage(mP.getFoto_perfil());
-        String url = super.urlDomain + "/api/webServices/upload_image_usuario/";
+        String url = super.urlDomain + "api/webServices/upload_image_usuario/";
         List<NameValuePair> data = new ArrayList<NameValuePair>(2);
         data.add(new BasicNameValuePair("id_usuario", mP.getId()));
         data.add(new BasicNameValuePair("imagen", mP.getFoto_perfil()));
@@ -212,7 +213,7 @@ public class SyncWithServer extends ApiWrapper {
 
     private String post(String url, List<NameValuePair> nameValuePairs) throws IOException {
         String responseS = "";
-        HttpClient httpClient = AndroidHttpClient.newInstance("Android");
+
         HttpContext localContext = new BasicHttpContext();
         HttpPost httpPost = new HttpPost(url);
 

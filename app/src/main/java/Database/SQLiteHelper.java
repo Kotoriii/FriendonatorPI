@@ -20,6 +20,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public final String DATOS_PERSONALES = "datos_us";
     public final String IMAGEN_PERFIL = "imagen_perfil";
     public final String TEXTOS = "textos";
+    public final String HISTORIAL = "historial";
 
     private static SQLiteHelper sInstance;
 
