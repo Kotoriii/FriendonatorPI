@@ -82,8 +82,10 @@ public class BackgroundService extends IntentService {
             NotificationCompat.Builder mBuilder;
             mBuilder = new NotificationCompat.Builder(mAct)
                     .setSmallIcon(R.drawable.ic_launcher)
-                    .setContentTitle("Friendonator");
-            mBuilder.setContentText(mAct.getResources().getText(R.string.found_a_match) + String.valueOf(match_perc));
+                    .setContentTitle("Clover")
+                    .setDefaults(Notification.DEFAULT_SOUND);
+
+            mBuilder.setContentText(mAct.getResources().getText(R.string.found_a_match) + " " + String.valueOf(match_perc));
 
             Intent resultIntent = new Intent(mAct, MatchProfileActivity.class);
             resultIntent.putExtra("PERSON", person);
@@ -98,7 +100,6 @@ public class BackgroundService extends IntentService {
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
             mBuilder.setContentIntent(resultPendingIntent);
-            mBuilder.setOngoing(true);
             mNotificationManager.notify(mIdNotification, mBuilder.build());
         }
     }
@@ -108,7 +109,7 @@ public class BackgroundService extends IntentService {
         NotificationCompat.Builder mBuilder;
         mBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("Friendonator")
+                .setContentTitle("Clover")
                 .setContentText(mensaje);
         Intent resultIntent = new Intent(this, MainActivity.class);
 

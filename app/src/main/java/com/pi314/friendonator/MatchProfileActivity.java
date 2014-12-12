@@ -65,11 +65,11 @@ public class MatchProfileActivity extends Activity {
 
         // Test getting match from Data Base
         Bundle bundle = this.getIntent().getExtras();
-        int idUser = bundle.getInt("ID");
+        String idUser = bundle.getString("ID");
 
         // Create match person from Data Base
         InterestsMethods getMatch = new InterestsMethods();
-        matchPerson = getMatch.createPerson(MatchProfileActivity.this, idUser);
+        matchPerson = getMatch.createPerson(MatchProfileActivity.this, Integer.parseInt(idUser));
 
         //ponemos la foto adecuada al image match
         File file = new File(matchPerson.getFoto_perfil());
