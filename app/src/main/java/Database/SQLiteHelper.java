@@ -662,11 +662,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return usuario;
     }
 
-    public Configuracion getConfig(String email) {
+    public Configuracion getConfig(String idUsuario) {
         SQLiteDatabase db = this.getReadableDatabase();
         Configuracion config = new Configuracion();
 
-        Cursor cursor = db.query("config", null, "correo=?", new String[]{email}, null, null, null);
+        Cursor cursor = db.query("config", null, "idUsuario=?", new String[]{idUsuario}, null, null, null);
         if (cursor.moveToFirst()) {
             config.setIdUsuario(cursor.getString(cursor.getColumnIndex("idUsuario")));
             config.setMinmatch(cursor.getString(cursor.getColumnIndex("minmatch")));

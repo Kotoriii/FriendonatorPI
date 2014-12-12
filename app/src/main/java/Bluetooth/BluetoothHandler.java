@@ -34,6 +34,7 @@ import java.util.UUID;
 
 import Database.SQLiteHelper;
 import Database.Usuario;
+import misc.BackgroundService;
 
 /**
  * Created by andrea on 30/09/14.
@@ -542,7 +543,7 @@ public class BluetoothHandler {
                         f.delete(); // <-- borramos la foto vieja
                         hlp.deleteUserTextData(us.getId());
                         hlp.deleteUserInterestData(us.getId());
-                        dtb.execSQL("delete from usuario where idUsuario="+us.getId());
+                        dtb.execSQL("delete from usuario where idUsuario=" + us.getId());
                         dtb.execSQL("delete from historial where idMatch="+us.getId());
                     }
 
@@ -557,13 +558,13 @@ public class BluetoothHandler {
                     final int percentage = (int) Math.floor(mtf.getMatchPercentage(person, matchPerson));
 
                     final Person finalMatchPerson = matchPerson;
-                    final Person finalMatchPerson1 = matchPerson;
-                    mtf.insertReceivedPerson(mAct, finalMatchPerson, finalMatchPerson1.getId(), percentage);
+                    mtf.insertReceivedPerson(mAct, finalMatchPerson, finalMatchPerson.getId(), percentage);
                     hlp.updateSync(hlp.HISTORIAL, 1);
 
 
                     //Alerta of the find
                     //todo fijarse si el % de match es suficientemente alto como para avisar
+                    BackgroundService.alert_new_match(matchPerson.getId(),person,percentage);
                     //BackgroundService.getInstance(mAct).alert_new_match(matchPerson.getId(), person, percentage);
 
                     bjr.close();

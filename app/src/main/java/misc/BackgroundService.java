@@ -32,8 +32,8 @@ import Database.SQLiteHelper;
  */
 public class BackgroundService extends IntentService {
 
-    private final int mIdNotification = 48454;
-    NotificationManager mNotificationManager = null;
+    private static final int mIdNotification = 48454;
+    static NotificationManager mNotificationManager = null;
     private boolean running = true;
     private static Activity mAct;
 
@@ -55,6 +55,8 @@ public class BackgroundService extends IntentService {
     public int onStartCommand(Intent intent, int flags, int startId) {
         //lo que se ejecuta antes de ejecutar el servicio
         this.running = true;
+        this.mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
 
         //todo quitar toasts
         if (this.mAct != null) {
@@ -75,28 +77,30 @@ public class BackgroundService extends IntentService {
         }
     }
 
-    public void alert_new_match(String id_match, Person person, int match_perc) {
-        NotificationCompat.Builder mBuilder;
-        mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("Friendonator");
-        mBuilder.setContentText(getResources().getText(R.string.found_a_match) + String.valueOf(match_perc));
+    public static void alert_new_match(String id_match, Person person, int match_perc) {
+        if(mAct!= null && mNotificationManager != null) {
+            NotificationCompat.Builder mBuilder;
+            mBuilder = new NotificationCompat.Builder(mAct)
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setContentTitle("Friendonator");
+            mBuilder.setContentText(mAct.getResources().getText(R.string.found_a_match) + String.valueOf(match_perc));
 
-        Intent resultIntent = new Intent(this, MatchProfileActivity.class);
-        resultIntent.putExtra("PERSON", person);
-        resultIntent.putExtra("ID", id_match);
+            Intent resultIntent = new Intent(mAct, MatchProfileActivity.class);
+            resultIntent.putExtra("PERSON", person);
+            resultIntent.putExtra("ID", id_match);
 
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MatchProfileActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        this.mIdNotification,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        mBuilder.setOngoing(true);
-        mNotificationManager.notify(mIdNotification, mBuilder.build());
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(mAct);
+            stackBuilder.addParentStack(MatchProfileActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            mIdNotification,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent);
+            mBuilder.setOngoing(true);
+            mNotificationManager.notify(mIdNotification, mBuilder.build());
+        }
     }
 
     public void buildNotification(String mensaje) {
@@ -133,7 +137,7 @@ public class BackgroundService extends IntentService {
                         synchronized (this) {
                             bMan.StartScan();
                         }
-                        this.sleep(Integer.parseInt(db.getConfig(person.getEmail()).getInterval()));
+                        this.sleep(Integer.parseInt(db.getConfig(person.getId()).getInterval()));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
