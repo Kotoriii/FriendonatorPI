@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
@@ -24,22 +25,26 @@ import Database.SQLiteHelper;
 
 /**
  * Created by andrea on 01/10/14.
- *
+ * <p/>
  * como usar:
- *      Intent in = new Intent(this, BackgroundService.class);
- *      startService(in);
+ * Intent in = new Intent(this, BackgroundService.class);
+ * startService(in);
  */
 public class BackgroundService extends IntentService {
 
     private final int mIdNotification = 48454;
     NotificationManager mNotificationManager = null;
     private boolean running = true;
+    private static Activity mAct;
 
 
     public BackgroundService() {
         super("FriendonatorBackgroundProcess"); //<--- !!!!!!!!!
     }
 
+    public static void setmAct(Activity mAct) {
+        BackgroundService.mAct = mAct;
+    }
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -51,11 +56,15 @@ public class BackgroundService extends IntentService {
         //lo que se ejecuta antes de ejecutar el servicio
         this.running = true;
 
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
-
-        //todo descomentar
-        //this.ScanEveryX(getApplicationContext(), (Person)intent.getSerializableExtra("PERSON"));
-        this.ScanForSync(getBaseContext());
+        //todo quitar toasts
+        if (this.mAct != null) {
+            Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+            SyncWithServer sync = new SyncWithServer(mAct);
+            this.ScanEveryX(mAct, sync.obtain_user());
+            this.ScanForSync(mAct);
+        } else {
+            Toast.makeText(this, "BackgroundService. Variable estatica mAct es null. no se puede inicializar", Toast.LENGTH_SHORT).show();
+        }
 
         return super.onStartCommand(intent, flags, startId);
     }
@@ -135,9 +144,9 @@ public class BackgroundService extends IntentService {
 
     }
 
-    public void ScanForSync(final Context act) {
+    public void ScanForSync(final Activity act) {
         final SQLiteHelper help = SQLiteHelper.getInstance(act);
-        final SyncWithServer sync = new SyncWithServer((Activity) act);
+        final SyncWithServer sync = new SyncWithServer(act);
 
         Thread syncThread = new Thread(new Runnable() {
             @Override
@@ -146,23 +155,28 @@ public class BackgroundService extends IntentService {
                 while (running) {
                     if (sync.isConnected(act)) {
                         if (help.textosCambiaron()) {
-                            if(sync.sync_textos_upstream())
+                            if (sync.sync_textos_upstream())
                                 help.updateSync(help.TEXTOS, 0);
                             algo_cambio = true;
                         }
                         if (help.imgPerfCambiaron()) {
-                            if(sync.sync_image_upstream())
+                            if (sync.sync_image_upstream())
                                 help.updateSync(help.IMAGEN_PERFIL, 0);
                             algo_cambio = true;
                         }
                         if (help.interesesCambiaron()) {
-                            if(sync.sync_interests_upstream())
+                            if (sync.sync_interests_upstream())
                                 help.updateSync(help.INTERESES, 0);
                             algo_cambio = true;
                         }
                         if (help.datosPCambiaron()) {
-                            if(sync.sync_user_upstream())
+                            if (sync.sync_user_upstream())
                                 help.updateSync(help.DATOS_PERSONALES, 0);
+                            algo_cambio = true;
+                        }
+                        if (help.historialCambiaron()) {
+                            if (sync.sync_history_upstream())
+                                help.updateSync(help.HISTORIAL, 0);
                             algo_cambio = true;
                         }
                         if (!algo_cambio) {

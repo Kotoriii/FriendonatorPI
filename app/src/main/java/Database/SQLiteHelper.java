@@ -138,6 +138,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.IMAGEN_PERFIL + "',0)");
         db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.DATOS_PERSONALES + "',0)");
         db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.TEXTOS + "',0)");
+        db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.HISTORIAL + "',0)");
     }
 
     @Override
@@ -193,6 +194,19 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Boolean emptyTable = true;
 
         Cursor cursor = db.rawQuery("SELECT * FROM sync where descripcion='" + this.IMAGEN_PERFIL + "'", null);
+        cursor.moveToFirst();
+        if (cursor.getInt(cursor.getColumnIndex("cambiado")) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean historialCambiaron() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Boolean emptyTable = true;
+
+        Cursor cursor = db.rawQuery("SELECT * FROM sync where descripcion='" + this.HISTORIAL + "'", null);
         cursor.moveToFirst();
         if (cursor.getInt(cursor.getColumnIndex("cambiado")) == 1) {
             return true;

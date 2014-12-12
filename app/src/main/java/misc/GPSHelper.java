@@ -55,7 +55,7 @@ public class GPSHelper {
                     e.printStackTrace();
                 }
             }
-        }, 1000 );
+        }, 1000);
 
     }
 
@@ -80,10 +80,11 @@ public class GPSHelper {
      * Metodo estatico que DEBE de ser llamado desde un activity, se fija si el gps se encuentra
      * disponible y sino entonces muestra un alert el cual manda al usuario a settings, donde puede
      * habilitar el location service
+     *
      * @param act, este metodo usa metodos propios de la clase activity
      */
     public static void checkIfLocationEnabled(final Activity act) {
-        if(!((LocationManager) act.getSystemService(act.LOCATION_SERVICE)).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (!((LocationManager) act.getSystemService(act.LOCATION_SERVICE)).isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             final AlertDialog.Builder builder = new AlertDialog.Builder(act);
             builder.setMessage(R.string.checkIfLocationEnabledAlert)
                     .setCancelable(false)
@@ -131,32 +132,36 @@ public class GPSHelper {
     };
 
     /**
-     * Devuelve la latitud. Bloquea el Thread hasta que se finalice su ejecucion.
+     * Devuelve la latitud. No es super preciso ya q devuelve la ultima latitud
+     * conocida. Pero mejor eso q bloquear el thread esperando a que llegue la latitud
      *
      * @return
      */
     public String getLat() {
-        if(this.gps_location || this.network_location) {
-            return lat;
-        }else{
-            return "0";
+        Double dbLat = 0.0;
+        if (this.gps_location || this.network_location) {
+            dbLat = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+            if (dbLat == null) {
+                dbLat = mgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
+            }
         }
+        return String.valueOf(dbLat);
     }
 
     /**
-     * Devuelve la longitud. Bloquea el Thread hasta que se finalice su ejecucion.
+     * Devuelve la longitud. No es super preciso ya q devuelve la ultima longitud
+     * conocida. Pero mejor eso q bloquear el thread esperando a que llegue la longintud
      *
      * @return
      */
     public String getLng() {
-        if(this.gps_location || this.network_location) {
-            while(true){
-                if(this.lat != null)
-                    break;
+        Double dbLong = 0.0;
+        if (this.gps_location || this.network_location) {
+            dbLong = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+            if (dbLong == null) {
+                dbLong = mgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
             }
-            return lng;
-        }else{
-            return "0";
         }
+        return String.valueOf(dbLong);
     }
 }

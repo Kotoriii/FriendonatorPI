@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import Database.Configuracion;
+import Database.Historial;
 import Database.Intereses;
 import Database.SQLiteHelper;
 import Database.Superinteres;
@@ -191,12 +192,31 @@ public class SyncWithServer extends ApiWrapper {
         return true;
     } //funciona
 
+    public boolean sync_history_upstream() {
+        String url = super.urlDomain + "api/webServices/actualizar_historial/";
+        List<NameValuePair> data = new ArrayList<NameValuePair>();
+        data.add(new BasicNameValuePair("id_us", mP.getId()));//id_usuario
+
+        SQLiteHelper helper = SQLiteHelper.getInstance(mAct);
+        List<Historial> historialList = helper.getAllHistorial();
+        for(Historial h : historialList){
+            data.add(new BasicNameValuePair("meets[]", h.getIdMatch()+","+h.getLatitud()+","+h.getLongitud()+","+h.getFecha()+","+h.getMatchPerc()));
+        }
+
+        try {
+            this.post(url, data);
+       } catch (IOException e) {
+            return false;
+        }
+        return true;
+    }
+
     /**
      * Saca al usuario de la base de datos
      *
      * @return el objeto usuario
      */
-    private Person obtain_user() {
+    public Person obtain_user() {
         SQLiteHelper pop = SQLiteHelper.getInstance(mAct);
         Person pers;
         InterestsMethods mthl = new InterestsMethods();
@@ -255,4 +275,6 @@ public class SyncWithServer extends ApiWrapper {
         mths.insertText(act, person);
 
     }
+
+
 }

@@ -192,6 +192,9 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         else if ((Button)v == startservice){
             Toast t = Toast.makeText(this, "calling service", Toast.LENGTH_LONG);
             t.show();
+            //todo esta inicializacion se paso a 'HomeActivity'. solo se deja aqui por conveniencia
+            //borrar
+            BackgroundService.setmAct(this);
             Intent in = new Intent(this, BackgroundService.class);
             startService(in);
         }

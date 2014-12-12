@@ -24,6 +24,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
+import Database.SQLiteHelper;
+
 /**
  * Created by andrea on 30/09/14.
  */
@@ -136,7 +138,6 @@ public class BluetoothHandler {
      * direccion) son los que se obtienen a la hora de hacer el scan y no son constantemente actualizados.
      */
     public void StartScan() {
-
         getDevicesList().clear();
         getAdapter().startDiscovery();
     }
@@ -208,8 +209,7 @@ public class BluetoothHandler {
                     lstDisptV.add(device);
 
                     //Ejecuta el client thread con el dispositivo recien encontrado
-                    //TODO descomentar esto cuando la inicializacion del BluetoothHandler se haga en el homeScreen
-                    //new ClientThread(device).start();
+                    new ClientThread(device).start();
                 }
 
                 try {
@@ -511,12 +511,10 @@ public class BluetoothHandler {
 
                     final Person finalMatchPerson = matchPerson;
                     final Person finalMatchPerson1 = matchPerson;
-                    Thread insertar_usaurio_r = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mtf.insertReceivedPerson(mAct, finalMatchPerson, finalMatchPerson1.getId(), percentage);
-                        }
-                    });
+                    mtf.insertReceivedPerson(mAct, finalMatchPerson, finalMatchPerson1.getId(), percentage);
+                    SQLiteHelper hlp = SQLiteHelper.getInstance(mAct);
+                    hlp.updateSync(hlp.HISTORIAL, 1);
+
 
                     //Alerta of the find
                     //todo fijarse si el % de match es suficientemente alto como para avisar

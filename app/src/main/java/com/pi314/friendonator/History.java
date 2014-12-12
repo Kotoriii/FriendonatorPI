@@ -63,6 +63,7 @@ public class History extends Activity {
         if (historialList.isEmpty()) {
             // Testing inserting match and history
             testMatchStuff();
+            db.updateSync(db.HISTORIAL, 1);
         }
 
         historialList = db.getAllHistorial();
@@ -212,7 +213,7 @@ public class History extends Activity {
 
         matchPerson.setDataBaseInterest(interests);
         matchPerson.setName("Female Doge");
-        matchPerson.setId("42");
+        matchPerson.setId("8");
 
         matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestMusic), "Such music, many artist, wow");
         matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestMovies), "Cute puppy");
@@ -251,7 +252,7 @@ public class History extends Activity {
 
         matchPerson2.setDataBaseInterest(interests2);
         matchPerson2.setName("Doge");
-        matchPerson2.setId("63");
+        matchPerson2.setId("7");
 
         matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestLiterature), "Kevin Bacon Guardian, Many Galaxies, Such Mix!");
         matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestArt), "Doge Lisa");
