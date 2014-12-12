@@ -32,8 +32,8 @@ import Database.SQLiteHelper;
  */
 public class BackgroundService extends IntentService {
 
-    private static final int mIdNotification = 48454;
-    static NotificationManager mNotificationManager = null;
+    public static final int mIdNotification = 48454;
+    public static NotificationManager mNotificationManager = null;
     private boolean running = true;
     private static Activity mAct;
 

@@ -32,6 +32,7 @@ import Database.SQLiteHelper;
 import Dialog.InterestInfo;
 import GridView.GridCustomAdapter;
 import GridView.GridObject;
+import misc.BackgroundService;
 
 public class MatchProfileActivity extends Activity {
 
@@ -59,6 +60,11 @@ public class MatchProfileActivity extends Activity {
         final TextView lblSpecialMatch = (TextView) findViewById(R.id.lblSpecialPercentage);
         final Button btnClose = (Button) findViewById(R.id.btnClose);
         imageMatch = (ImageView) findViewById(R.id.imageMatch);
+
+        try{
+            //intentamos quitar el notification (en el caso de que existiese)
+            BackgroundService.mNotificationManager.cancel(BackgroundService.mIdNotification);
+        }finally {}
 
         // Get object person from intent extras
         getSetPerson();
