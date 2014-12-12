@@ -321,6 +321,7 @@ public class History extends Activity {
 
         Collections.sort(datos, new OrderArrayListByName());
 
+
         //de nueva la logica para llenar el listView una vez con la lista ordenada :D
         ListView historyList = (ListView) findViewById(R.id.ListView_listado_history);
         historyList.setAdapter(new Lista_History(this, R.layout.entrada_history, datos) {
@@ -336,6 +337,7 @@ public class History extends Activity {
                     if (txtPercentage != null)
                         txtPercentage.setText(((ListaEntrada_History) entrada).getPercentage());
 
+                    //todo poner imagen real
                     ImageView imgProfile = (ImageView) view.findViewById(R.id.imageView_imagen);
                     if (imgProfile != null)
                         imgProfile.setImageResource(((ListaEntrada_History) entrada).getImage());

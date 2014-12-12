@@ -543,7 +543,7 @@ public class BluetoothHandler {
                         hlp.deleteUserTextData(us.getId());
                         hlp.deleteUserInterestData(us.getId());
                         dtb.execSQL("delete from usuario where idUsuario="+us.getId());
-                        dtb.execSQL("delete from usuario where idMatch="+us.getId());
+                        dtb.execSQL("delete from historial where idMatch="+us.getId());
                     }
 
                     //decodificamos la foto
