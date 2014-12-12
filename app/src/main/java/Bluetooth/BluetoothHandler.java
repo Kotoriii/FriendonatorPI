@@ -505,11 +505,18 @@ public class BluetoothHandler {
                 if (user_in_intent) {
                     ObjectInputStream bjr = new ObjectInputStream(mmInStream);
                     matchPerson = (Person) bjr.readObject();
-                    InterestsMethods mtf = new InterestsMethods();
+                    final InterestsMethods mtf = new InterestsMethods();
                     Person person = (Person) mAct.getIntent().getSerializableExtra("PERSON");
-                    int percentage = (int) Math.floor(mtf.getMatchPercentage(person, matchPerson));
+                    final int percentage = (int) Math.floor(mtf.getMatchPercentage(person, matchPerson));
 
-                    mtf.insertReceivedPerson(mAct, matchPerson, matchPerson.getId(), percentage);
+                    final Person finalMatchPerson = matchPerson;
+                    final Person finalMatchPerson1 = matchPerson;
+                    Thread insertar_usaurio_r = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mtf.insertReceivedPerson(mAct, finalMatchPerson, finalMatchPerson1.getId(), percentage);
+                        }
+                    });
 
                     //Alerta of the find
                     //todo fijarse si el % de match es suficientemente alto como para avisar
