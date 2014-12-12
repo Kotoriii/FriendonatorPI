@@ -67,7 +67,7 @@ public class ApiWrapper {
     private List<NameValuePair> mPostData = null; //datos a mandar durante el HttpAsyncPOSTTask
     private Bitmap mBitmapHolder = null;
     private Activity mAct = null;
-    protected String urlDomain = "http://192.168.1.118:8000/";// "http://tupini07.pythonanywhere.com/";
+    protected String urlDomain = "http://tupini07.pythonanywhere.com/";
 
     /**
      * para cuando se necesitan funciones con activities.
