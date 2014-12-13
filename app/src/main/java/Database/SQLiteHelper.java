@@ -47,6 +47,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             "PRIMARY KEY (descripcion)" +
             ")";
 
+    //diria que esto es un poco overkill jaja
+    String createNombreBluetooth = "CREATE TABLE nombreB (" +
+            "nombre VARCHAR," +
+            "PRIMARY KEY (nombre)" +
+            ")";
+
     String createHist = "CREATE TABLE historial (" +
             "idMatch INTEGER," +
             "idUsuario INTEGER," +
@@ -132,6 +138,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(createContacto);
         db.execSQL(createConfig);
         db.execSQL(createSync);
+        db.execSQL(createNombreBluetooth);
 
         //se inicializan los observadores de cambios
         db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.INTERESES + "',0)");
@@ -139,11 +146,32 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.DATOS_PERSONALES + "',0)");
         db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.TEXTOS + "',0)");
         db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.HISTORIAL + "',0)");
+
+        //inicializa nombreBluetooth.
+        db.execSQL("insert into nombreB (nombre) VALUES ('banana')");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+
+    public void salvarNombreBluetooth(String nuevo_nombre){
+        if(this.getNombreBluetooth().equals(nuevo_nombre)){
+            return;
+        }else{
+            this.getWritableDatabase().execSQL(
+                    "update nombreB set nombre='"+nuevo_nombre+"'"
+            );
+        }
+    }
+    public String getNombreBluetooth(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM nombreB", null);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex("nombre"));
     }
 
     public void updateSync(String descripcion, int cambiado) {

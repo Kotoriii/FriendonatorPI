@@ -64,8 +64,6 @@ public class BluetoothHandler {
         try {
             Person p = (Person)act.getIntent().getSerializableExtra("PERSON");
             if(p != null) {
-                if(!user_in_intent) // es la primera ves que user in intent
-                    this.startBluetoothServer();
                 user_in_intent = true;
             }
         } catch (NullPointerException e) {
@@ -87,11 +85,6 @@ public class BluetoothHandler {
             StartBlueTooth();
         }
 
-        if (this.user_in_intent) {
-            //por ultimo, empieza el server thread que corre mientras la
-            //aplicacion este corriendo
-            this.startBluetoothServer();
-        }
     }
 
 
@@ -258,8 +251,12 @@ public class BluetoothHandler {
                         break;
                     case BluetoothAdapter.STATE_ON:
                         //
+                        salvarNombre(mAct);
                         setNuevoNombre();
                         setUnlimitedVisibility();
+                        if (user_in_intent) {
+                            startBluetoothServer();
+                        }
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
                         break;
@@ -323,6 +320,17 @@ public class BluetoothHandler {
         return (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled());
     }
 
+    public static void salvarNombre(Activity act){
+        SQLiteHelper.getInstance(act).salvarNombreBluetooth(
+                BluetoothAdapter.getDefaultAdapter().getName()
+        );
+    }
+
+    public static void restaurarNombre(Activity act){
+        BluetoothAdapter.getDefaultAdapter().setName(
+                SQLiteHelper.getInstance(act).getDatabaseName()
+        );
+    }
 
     /**
      * Corre indefinidamente, acepta conexiones inseguras de dispositivos con el mismo UUID y
@@ -348,10 +356,8 @@ public class BluetoothHandler {
             // Keep listening until exception occurs or a socket is returned
             while (true) {
                 try {
-                    try {
+                    if(isBluetoothEnabled()) {
                         socket = mmServerSocket.accept();
-                    }catch (NullPointerException e){
-                        Log.e(getClass().getSimpleName(), "mmServerSocket is null");
                     }
                 } catch (IOException e) {
                     break;
