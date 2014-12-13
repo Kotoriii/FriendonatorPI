@@ -61,8 +61,12 @@ public class BluetoothHandler {
     public void redefineActivity(Activity act) {
         //si no esta entonces va a dar nullpointerexception
         try {
-            act.getIntent().getSerializableExtra("PERSON");
-            user_in_intent = true;
+            Person p = (Person)act.getIntent().getSerializableExtra("PERSON");
+            if(p != null) {
+                if(!user_in_intent) // es la primera ves que user in intent
+                    this.startBluetoothServer();
+                user_in_intent = true;
+            }
         } catch (NullPointerException e) {
             user_in_intent = false;
         }

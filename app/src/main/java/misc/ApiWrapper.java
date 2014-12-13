@@ -184,6 +184,11 @@ public class ApiWrapper {
         return this.saveBitmap(act, this.getUserImage(id_us));
     }
 
+    public Person registrarseConServidor(){
+        String url = this.urlDomain + "api/webServices/registrar_usuario/";
+        return new Person();
+    }
+
     /**
      * Retorna un HashMap<Integer, List<Integer>> para meter en el nuevo objeto
      * Person. Casi que solo se usa en el login.
