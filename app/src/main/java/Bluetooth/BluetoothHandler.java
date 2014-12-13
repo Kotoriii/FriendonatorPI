@@ -16,6 +16,7 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
+import com.pi314.friendonator.LoginActivity;
 import com.pi314.friendonator.Person;
 import com.pi314.interests.InterestsMethods;
 
@@ -347,7 +348,11 @@ public class BluetoothHandler {
             // Keep listening until exception occurs or a socket is returned
             while (true) {
                 try {
-                    socket = mmServerSocket.accept();
+                    try {
+                        socket = mmServerSocket.accept();
+                    }catch (NullPointerException e){
+                        Log.e(getClass().getSimpleName(), "mmServerSocket is null");
+                    }
                 } catch (IOException e) {
                     break;
                 }

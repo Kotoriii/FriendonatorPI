@@ -673,7 +673,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             config.setNotific(cursor.getString(cursor.getColumnIndex("notific")));
             config.setSound(cursor.getString(cursor.getColumnIndex("sound")));
             config.setVibration(cursor.getString(cursor.getColumnIndex("vibration")));
-            config.setInterval(cursor.getString(cursor.getColumnIndex("facebook")));
+            config.setInterval(cursor.getString(cursor.getColumnIndex("interval")));
         }
 
         cursor.close();

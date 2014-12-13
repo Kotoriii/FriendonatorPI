@@ -51,7 +51,6 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.mBHand = BluetoothHandler.getInstance(this);
         //metodo estatico.. muestra un alert si location no esta disponible en los settings.
         GPSHelper.checkIfLocationEnabled(this);
         final Button btnHome = (Button) findViewById(R.id.btnHome);
@@ -95,7 +94,6 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         startservice = (Button) findViewById(R.id.startservice);
         startservice.setOnClickListener(this);
 
-        //mBHand = BluetoothHandler.getInstance(this);
 
         DeviceValidator dv = new DeviceValidator();
         String enc = dv.encrypt("1193434");

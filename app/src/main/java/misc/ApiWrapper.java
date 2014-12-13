@@ -159,7 +159,7 @@ public class ApiWrapper {
                     def.setNotific("1"); //1 prendido, 2 apagado
                     def.setSound("1");
                     def.setVibration("1");
-                    def.setInterval("2"); //2, 5, 10, 15, 0
+                    def.setInterval("120000"); //2, 5, 10, 15, 0
                     sqlHelper.insertConfig(def);
 
 
@@ -200,6 +200,16 @@ public class ApiWrapper {
         } catch (JSONException e) {
             return null;
         }
+
+        Configuracion def = new Configuracion();
+        def.setIdUsuario(us.getId());
+        def.setMinmatch("50");
+        def.setNotific("1"); //1 prendido, 2 apagado
+        def.setSound("1");
+        def.setVibration("1");
+        def.setInterval("120000"); //2, 5, 10, 15, 0
+        SQLiteHelper.getInstance(act).insertConfig(def);
+
         return us;
     }
 

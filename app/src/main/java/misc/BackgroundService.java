@@ -136,7 +136,11 @@ public class BackgroundService extends IntentService {
                 try {
                     while (running) {
                         synchronized (this) {
-                            bMan.StartScan();
+                            if(bMan.isBluetoothEnabled()) {
+                                bMan.StartScan();
+                            }else{
+                                bMan.StartBlueTooth();
+                            }
                         }
                         this.sleep(Integer.parseInt(db.getConfig(person.getId()).getInterval()));
                     }

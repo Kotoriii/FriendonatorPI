@@ -78,6 +78,8 @@ public class ProfileActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         db = SQLiteHelper.getInstance(getApplicationContext());
         super.onCreate(savedInstanceState);
+
+        //todo no se donde es pero las fotos no se estan seleccionando. (cuando quiero ca
         setContentView(R.layout.activity_profile);
         final Button btnChooseInterest = (Button) findViewById(R.id.btnChooseInterest);
         final Button btnChooseContact = (Button) findViewById(R.id.btnChooseContact);
