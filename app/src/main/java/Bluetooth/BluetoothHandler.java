@@ -577,10 +577,11 @@ public class BluetoothHandler {
                     hlp.updateSync(hlp.HISTORIAL, 1);
 
 
-                    //Alerta of the find
-                    //todo fijarse si el % de match es suficientemente alto como para avisar
-                    BackgroundService.alert_new_match(matchPerson.getId(),person,percentage);
-                    //BackgroundService.getInstance(mAct).alert_new_match(matchPerson.getId(), person, percentage);
+                    //obtiene el min match para poder saber si mostrar una notificacion o no.
+                    int min_match = Integer.parseInt(hlp.getConfig(person.getId()).getMinmatch());
+                    if(percentage >= min_match)
+                        //bum
+                        BackgroundService.alert_new_match(matchPerson.getId(),person,percentage);
 
                     bjr.close();
                 }
