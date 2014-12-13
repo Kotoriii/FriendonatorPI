@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import Database.SQLiteHelper;
 import Database.Usuario;
+import misc.ApiWrapper;
 
 
 public class SignUp extends Activity {
@@ -58,22 +59,29 @@ public class SignUp extends Activity {
                     customToast(getResources().getString(R.string.toastCheckEmail));
                     //Toast.makeText(getApplicationContext(), R.string.toastCheckEmail, Toast.LENGTH_LONG).show();
                 } else {
-                    Usuario usuario = new Usuario();
-                    usuario.setCorreo(userName);
-                    usuario.setPassword(password);
 
-                    // Save the Data in Database
-                    db.insertUsuario(usuario);
+                    //si everything esta bien entonces llamamos al web service de registrar
+                    ApiWrapper api = new ApiWrapper(SignUp.this);
+                    if (!api.isConnected(SignUp.this)) {
+                        api.activateWifi(SignUp.this);
+                    }
+                    Usuario usuario = api.registrarseConServidor(userName, password, SignUp.this);
+                    if(usuario == null){
+                        customToast(getResources().getString(R.string.toastEmail));
+                    }else {
 
-                    db.insertlimbo(usuario);
+                        // Save the Data in Database
+                        db.insertUsuario(usuario);
 
-                    customToast(getResources().getString(R.string.toastAccountSuccess));
-                    //Toast.makeText(getApplicationContext(), R.string.toastAccountSuccess, Toast.LENGTH_LONG).show();
+                        db.insertlimbo(usuario);
+
+                        customToast(getResources().getString(R.string.toastAccountSuccess));
+                        //Toast.makeText(getApplicationContext(), R.string.toastAccountSuccess, Toast.LENGTH_LONG).show();
 
 
-
-                    // Close SignUp
-                    finish();
+                        // Close SignUp
+                        finish();
+                    }
                 }
             }
         });

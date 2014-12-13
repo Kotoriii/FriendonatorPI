@@ -14,6 +14,7 @@ import android.util.Log;
 
 import com.pi314.friendonator.Person;
 import com.pi314.friendonator.R;
+import com.pi314.friendonator.SignUp;
 import com.pi314.interests.InterestsMethods;
 
 import org.apache.http.HttpResponse;
@@ -24,6 +25,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -67,7 +69,7 @@ public class ApiWrapper {
     private List<NameValuePair> mPostData = null; //datos a mandar durante el HttpAsyncPOSTTask
     private Bitmap mBitmapHolder = null;
     private Activity mAct = null;
-    protected String urlDomain = "http://tupini07.pythonanywhere.com/";
+    protected String urlDomain = "http://192.168.1.118:8000/";//"http://tupini07.pythonanywhere.com/";
 
     /**
      * para cuando se necesitan funciones con activities.
@@ -184,9 +186,21 @@ public class ApiWrapper {
         return this.saveBitmap(act, this.getUserImage(id_us));
     }
 
-    public Person registrarseConServidor(){
+    public Usuario registrarseConServidor(String userName, String password, Activity act){
         String url = this.urlDomain + "api/webServices/registrar_usuario/";
-        return new Person();
+        Usuario us = new Usuario();
+        List<NameValuePair> data = new ArrayList<NameValuePair>(2);
+        data.add(new BasicNameValuePair("correo", userName));
+        data.add(new BasicNameValuePair("password", password));
+        JSONObject json = this.postRESTJSON(url, data);
+        try {
+            us.setId(json.getInt("id"));
+            us.setCorreo(userName);
+            us.setPassword(password);
+        } catch (JSONException e) {
+            return null;
+        }
+        return us;
     }
 
     /**
