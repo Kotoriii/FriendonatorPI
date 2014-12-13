@@ -163,6 +163,7 @@
     <string name="lblCopyright">Copyright © 2014 PI. All rights reserved.</string>
 
     <!-- GPSHelper -->
+    <string name="wifiNotConnectedLogin">Your Network connectios seem to be disabled. Do you want to enable it?</string>
     <string name="checkIfLocationEnabledAlert">Your GPS seems to be disabled, do you want to enable it?</string>
     <string name="option_yes">Yes</string>
     <string name="option_no">No</string>
