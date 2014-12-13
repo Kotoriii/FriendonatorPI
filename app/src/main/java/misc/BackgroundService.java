@@ -128,8 +128,8 @@ public class BackgroundService extends IntentService {
         mNotificationManager.notify(mIdNotification, mBuilder.build());
     }
 
-    public void ScanEveryX(final Context activity, final Person person) {
-        final BluetoothHandler bMan = BluetoothHandler.getInstance((Activity) activity);
+    public void ScanEveryX(final Activity activity, final Person person) {
+        final BluetoothHandler bMan = BluetoothHandler.getInstance(activity);
         final SQLiteHelper db = SQLiteHelper.getInstance(getApplicationContext());
         Thread scanner = new Thread() {
             public void run() {
