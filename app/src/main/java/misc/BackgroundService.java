@@ -186,6 +186,10 @@ public class BackgroundService extends IntentService {
                         if (help.historialCambiaron()) {
                             if (sync.sync_history_upstream())
                                 help.updateSync(help.HISTORIAL, 0);
+                                //todo descomentar para que el historial se borre despues de que se
+                                //actualize con el servidor. Supongo que para la presentacion lo vamos
+                                //a dejar sin q se borre para q el historial se muestre
+                                //help.getWritableDatabase().execSQL("dete from historial");
                             algo_cambio = true;
                         }
                         if (!algo_cambio) {
