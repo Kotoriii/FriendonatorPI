@@ -201,7 +201,7 @@ public class BackgroundService extends IntentService {
                     try {
                         Thread.sleep(300000); //2.2 min
 
-                        //todo descomentar
+                        //todo se deberia de fijar cada 2 min o cada 30?
                         //Thread.sleep(1800000); // 30 min
                     } catch (InterruptedException e) {
                         e.printStackTrace();
@@ -240,52 +240,4 @@ public class BackgroundService extends IntentService {
 
     }
 
-
-    public void AlertMatch(Person person, Activity act, int percentagePerson, int percentageMain) {
-        // todo sacar minimo pocentage de la base de datos y assignar a percentageMain
-        if (percentagePerson <= percentageMain) {
-        }
-           /*
-        new AlertDialog.Builder(this)
-                .setTitle(getResources().getString(R.string.Matchfound))
-                .setMessage(getResources().getString(R.string.seePerson))
-                .setPositiveButton(getResources().getString(R.string.accept), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // code
-                    }
-                })
-                .setNegativeButton(getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // code
-                    }
-                })
-                .setIcon(android.R.drawable.ic_dialog_alert)
-                .show();
-                */
-        NotificationManager mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-//Agregando el icono, texto y momento para lanzar la notificación
-        int icon = R.drawable.ic_launcher;
-        CharSequence tickerText = "Notification Bar";
-        long when = System.currentTimeMillis();
-
-        Notification notification = new Notification(icon, tickerText, when);
-
-        Context context = getApplicationContext();
-        CharSequence contentTitle = getResources().getString(R.string.Matchfound);
-        CharSequence contentText = getResources().getString(R.string.seePerson);
-        //Agregando sonido
-        notification.defaults |= Notification.DEFAULT_SOUND;
-        //Agregando vibración
-        notification.defaults |= Notification.DEFAULT_VIBRATE;
-
-        Intent notificationIntent = new Intent(this, History.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-        notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-
-
-        mNotificationManager.notify(1, notification);
-
-    }
 }
