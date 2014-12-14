@@ -155,7 +155,7 @@ public class ApiWrapper {
 
                     Configuracion def = new Configuracion();
                     def.setIdUsuario(persona.getId());
-                    def.setMinmatch("50");
+                    def.setMinmatch("1");
                     def.setNotific("1"); //1 prendido, 2 apagado
                     def.setSound("1");
                     def.setVibration("1");
@@ -203,7 +203,7 @@ public class ApiWrapper {
 
         Configuracion def = new Configuracion();
         def.setIdUsuario(us.getId());
-        def.setMinmatch("50");
+        def.setMinmatch("1");
         def.setNotific("1"); //1 prendido, 2 apagado
         def.setSound("1");
         def.setVibration("1");

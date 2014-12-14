@@ -69,13 +69,22 @@ public class MatchProfileActivity extends Activity {
         // Get object person from intent extras
         getSetPerson();
 
+
+        // Create match person from Data Base
+        InterestsMethods getMatch = new InterestsMethods();
+
         // Test getting match from Data Base
         Bundle bundle = this.getIntent().getExtras();
         String idUser = bundle.getString("ID");
 
-        // Create match person from Data Base
-        InterestsMethods getMatch = new InterestsMethods();
-        matchPerson = getMatch.createPerson(MatchProfileActivity.this, Integer.parseInt(idUser));
+        //yo se que esto es retundante. pero al pareces si yo pongo un putExtra(int) me retorna null
+        //si le pido bundle.getString. Solo lo retorna si pido bundle.getInt.
+        if(idUser == null){
+            int pops = getIntent().getIntExtra("ID",0);
+            matchPerson = getMatch.createPerson(MatchProfileActivity.this, pops);
+        }else{
+            matchPerson = getMatch.createPerson(MatchProfileActivity.this, Integer.parseInt(idUser));
+        }
 
         //ponemos la foto adecuada al image match
         File file = new File(matchPerson.getFoto_perfil());

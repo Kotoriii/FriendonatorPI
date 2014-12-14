@@ -425,9 +425,11 @@ public class ProfileActivity extends Activity {
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), imagename);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     startActivityForResult(intent, 1);
+                    db.updateSync(db.IMAGEN_PERFIL, 1);
                 } else if (options[item].equals( getResources().getString(R.string.txtaddfromgallery))) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
+                    db.updateSync(db.IMAGEN_PERFIL, 1);
 
                 } else if (options[item].equals(getResources().getString(R.string.txtphotocancel))) {
                     dialog.dismiss();
@@ -435,7 +437,7 @@ public class ProfileActivity extends Activity {
             }
         });
 
-        db.updateSync(db.IMAGEN_PERFIL, 1);
+
 
         builder.show();
     }

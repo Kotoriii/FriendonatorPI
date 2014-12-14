@@ -177,7 +177,7 @@ public class HomeActivity extends Activity {
         this.inicializarBluetooth();
 
         if(!is_BackgroundRunning) { // solo queremos q lo inicialize una ves ya que es un 'activity'
-            //this.inicializarBackgroundService();
+            this.inicializarBackgroundService();
             this.is_BackgroundRunning = true;
         }
 
