@@ -5,6 +5,8 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -159,6 +161,8 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 
         drawerLayout.setDrawerListener(toggle);
 
+        //importante que esto este aqui!
+        GPSHelper.home = this;
     }
 
     public void findmeT(View v){
@@ -290,5 +294,20 @@ public class MainActivity extends Activity implements Button.OnClickListener{
             default:
                 break;
         }
+    }
+
+    public Location getLocation(){
+        LocationManager man = (LocationManager) getSystemService(LOCATION_SERVICE);
+        Location loc = man.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        if(loc == null)
+            loc = man.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        if(loc == null) {
+            loc = new Location(LocationManager.GPS_PROVIDER);
+            loc.setLongitude(0.0);
+            loc.setLatitude(0.0);
+        }
+        return loc;
     }
 }

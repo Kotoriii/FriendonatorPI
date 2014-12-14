@@ -182,8 +182,6 @@ public class HomeActivity extends Activity {
             this.is_BackgroundRunning = true;
         }
 
-        //inicializa gps_helper
-        GPSHelper.getInstance(this);
 
     }
 

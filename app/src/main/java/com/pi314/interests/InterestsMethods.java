@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
 import android.util.Log;
 
 import com.pi314.friendonator.Person;
@@ -274,8 +275,8 @@ public class InterestsMethods {
 
         //inicializa gpsHelper aqui para que le de mas tiempo de encontrar
         //lat y long
-        GPSHelper gpsHelper = GPSHelper.getInstance(act);
         Context context = act.getApplicationContext();
+        Location location = GPSHelper.getLocation();
 
         // Insert received person via bluetooth into Data Base
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
@@ -305,8 +306,8 @@ public class InterestsMethods {
         historial.setIdusuario(idUsuario);
         historial.setMatchPerc(String.valueOf(percentage));
 
-        historial.setLatitud(gpsHelper.getLat()); // <- pedimos lat
-        historial.setLongitud(gpsHelper.getLng());// <- pedimos longitud
+        historial.setLatitud(String.valueOf(location.getLatitude())); // <- pedimos lat
+        historial.setLongitud(String.valueOf(location.getLongitude()));// <- pedimos longitud
 
         historial.setMatchName(person.getName());
         historial.setFecha(getDataTime());
