@@ -85,6 +85,14 @@ public class BluetoothHandler {
             StartBlueTooth();
         }
 
+        if(this.isBluetoothEnabled()){
+            salvarNombre(mAct);
+            setNuevoNombre();
+            setUnlimitedVisibility();
+            if (user_in_intent) {
+                startBluetoothServer();
+            }
+        }
     }
 
 

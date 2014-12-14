@@ -104,30 +104,6 @@ public class BackgroundService extends IntentService {
         }
     }
 
-    public void buildNotification(String mensaje) {
-
-        NotificationCompat.Builder mBuilder;
-        mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_launcher)
-                .setContentTitle("Clover")
-                .setContentText(mensaje);
-        Intent resultIntent = new Intent(this, MainActivity.class);
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        this.mIdNotification,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        mBuilder.setOngoing(true);
-        mNotificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(mIdNotification, mBuilder.build());
-    }
-
     public void ScanEveryX(final Activity activity, final Person person) {
         final BluetoothHandler bMan = BluetoothHandler.getInstance(activity);
         final SQLiteHelper db = SQLiteHelper.getInstance(getApplicationContext());

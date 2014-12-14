@@ -163,7 +163,7 @@ public class LoginActivity extends Activity {
                 InterestsMethods fillPerson = new InterestsMethods();
                 pers.setDataBaseInterest(fillPerson.getInterestFromDataBase(LoginActivity.this, Integer.parseInt(pers.getId())));
                 pers.setGetTextFieldInfo(fillPerson.getTextsFromDataBase(LoginActivity.this, Integer.parseInt(pers.getId())));
-                pers.setGetContactedByList(fillPerson.getContactedByFromDataBase(LoginActivity.this, pop.getUser(pers.getEmail())));
+                pers.setGetContactedByList(fillPerson.getContactedByFromDataBase(LoginActivity.this, pop.getUserByID(Integer.parseInt(pers.getId()))));
             }
 
             intent.putExtra("PERSON", pers);
