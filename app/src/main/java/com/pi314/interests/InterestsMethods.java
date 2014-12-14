@@ -274,7 +274,7 @@ public class InterestsMethods {
 
         //inicializa gpsHelper aqui para que le de mas tiempo de encontrar
         //lat y long
-        GPSHelper gpsHelper = new GPSHelper(act);
+        GPSHelper gpsHelper = GPSHelper.getInstance(act);
         Context context = act.getApplicationContext();
 
         // Insert received person via bluetooth into Data Base

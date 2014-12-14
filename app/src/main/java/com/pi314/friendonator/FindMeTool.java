@@ -1,6 +1,7 @@
 package com.pi314.friendonator;
 
 import android.app.Activity;
+import android.location.LocationManager;
 import android.os.Bundle;
 //import android.renderscript.ProgramStore;
 import android.view.Menu;
@@ -24,8 +25,6 @@ public class FindMeTool extends Activity {
         setContentView(R.layout.activity_find_me_tool);
 
         txtRS = (TextView) findViewById(R.id.txtPOP);
-        BluetoothHandler bth = BluetoothHandler.getInstance(this);
-        bth.redefineActivity(this);
 
         ((Button) findViewById(R.id.btnReload)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,14 +34,18 @@ public class FindMeTool extends Activity {
         });
 
         //TODO remove!!
-        final GPSHelper gps = new GPSHelper(FindMeTool.this);
+        final LocationManager man = (LocationManager) getSystemService(LOCATION_SERVICE);
+        final GPSHelper gg = GPSHelper.getInstance(this);
+
+
         final TextView txtService = (TextView) findViewById(R.id.txtServiceR);
         final ImageView imgView = (ImageView) findViewById(R.id.imgFiewFindME);
         final Button btnRequest = (Button) findViewById(R.id.btnRequesS);
         btnRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                txtService.setText("Latitud: " + gps.getLat() + "\nLongitud: " + gps.getLng());
+                txtService.setText("Latitud: "// + gg.getLat()
+                        + "\nLongitud: " + gg.getLng());
             }
 
         });

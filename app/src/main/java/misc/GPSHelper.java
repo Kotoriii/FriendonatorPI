@@ -29,13 +29,16 @@ public class GPSHelper {
     private String lng = null;
     private boolean gps_location;
     private boolean network_location;
+    private static GPSHelper hl = null;
 
     /**
      * Inicializa el gpshelper y directamente pide la posicion (latitud y longitud)
      *
      * @param act
      */
-    public GPSHelper(Activity act) {
+    private GPSHelper(Activity act) {
+
+
         Handler handler = new Handler(Looper.getMainLooper());
 
         mAct = act;
@@ -59,6 +62,12 @@ public class GPSHelper {
 
     }
 
+    public static GPSHelper getInstance(Activity act){
+        if(hl == null){
+            hl = new GPSHelper(act);
+        }
+        return hl;
+    }
     /**
      * Empieza el servicio GPS. Lo que quiere decir es q pide la posicion actual de la persona.
      * La posicion se obtiene tanto por GPS como por 'network' en el caso de que este conectado
@@ -140,9 +149,11 @@ public class GPSHelper {
     public String getLat() {
         Double dbLat = 0.0;
         if (this.gps_location || this.network_location) {
-            dbLat = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
+            dbLat = ((LocationManager) mAct.getSystemService(mAct.LOCATION_SERVICE))
+                    .getLastKnownLocation(LocationManager.GPS_PROVIDER).getLatitude();
             if (dbLat == null) {
-                dbLat = mgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
+                dbLat = ((LocationManager) mAct.getSystemService(mAct.LOCATION_SERVICE))
+                        .getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLatitude();
             }
         }
         return String.valueOf(dbLat);
@@ -157,9 +168,11 @@ public class GPSHelper {
     public String getLng() {
         Double dbLong = 0.0;
         if (this.gps_location || this.network_location) {
-            dbLong = mgr.getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
+            dbLong = ((LocationManager) mAct.getSystemService(mAct.LOCATION_SERVICE))
+                    .getLastKnownLocation(LocationManager.GPS_PROVIDER).getLongitude();
             if (dbLong == null) {
-                dbLong = mgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
+                dbLong = ((LocationManager) mAct.getSystemService(mAct.LOCATION_SERVICE))
+                        .getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getLongitude();
             }
         }
         return String.valueOf(dbLong);

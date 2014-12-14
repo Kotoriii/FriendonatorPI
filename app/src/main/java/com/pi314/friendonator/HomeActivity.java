@@ -33,6 +33,7 @@ import Bluetooth.BluetoothHandler;
 import Database.SQLiteHelper;
 import Database.Usuario;
 import misc.BackgroundService;
+import misc.GPSHelper;
 
 /**
  * Created by Christian on 10/12/2014.
@@ -180,6 +181,9 @@ public class HomeActivity extends Activity {
             this.inicializarBackgroundService();
             this.is_BackgroundRunning = true;
         }
+
+        //inicializa gps_helper
+        GPSHelper.getInstance(this);
 
     }
 

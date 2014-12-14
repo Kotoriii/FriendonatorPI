@@ -162,8 +162,8 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     }
 
     public void findmeT(View v){
-        BackgroundService ser = new BackgroundService();
-        ser.ScanForSync(this);
+        Intent intt = new Intent(MainActivity.this, FindMeTool.class);
+        this.startActivity(intt);
 
     }
     @Override

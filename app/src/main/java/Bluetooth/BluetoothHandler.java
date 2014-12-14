@@ -556,8 +556,10 @@ public class BluetoothHandler {
                     //entonces hay que borrar su foto vieja y su viejo registro en la BD (para ahorrar recursos)
                     boolean usuario_existe = false;
                     SQLiteHelper hlp = SQLiteHelper.getInstance(mAct);
-                    Usuario us =hlp.getUserByID(Integer.parseInt(matchPerson.getId()));
-                    if(us.getNombre() != null){
+                    Usuario us = hlp.getUserByID(Integer.parseInt(matchPerson.getId()));
+                    //tambien tenemos que fijarnos que el usuario que estoy recibiendo no sea yo mismo.
+                    //con otro telefono
+                    if(us.getNombre() != null && !hlp.getLimbo1().getId().equals(us.getId())){
                         usuario_existe = true;
                     }
                     if(usuario_existe){
