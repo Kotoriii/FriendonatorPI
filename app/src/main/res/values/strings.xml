@@ -74,7 +74,7 @@
     <string name="textRequired">Selected fields must be filled</string>
     <string name="contactRequired">Please select a contact</string>
     <string name="title_activity_home">Home</string>
-    <string name="lblMatchhome">Female Doge</string>
+    <string name="lblMatchhome">MatchName</string>
     <string name="spnEvent">Choose Event</string>
     <string name="txtaddphoto">Add a photo</string>
     <string name="txttakephoto">Take Photo</string>
@@ -163,4 +163,6 @@
     <string name="checkIfLocationEnabledAlert">Your GPS seems to be disabled, do you want to enable it?</string>
     <string name="option_yes">Yes</string>
     <string name="option_no">No</string>
+
+    <string name="menu">Menu</string>
  </resources>
