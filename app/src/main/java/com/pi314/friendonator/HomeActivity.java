@@ -175,11 +175,18 @@ public class HomeActivity extends Activity {
 
         //inicializamos el bluetooth. Como es singleton no hay q preocuparse por cuantas veces
         //lo inicializamos
-        this.inicializarBluetooth();
-
+        try {
+            this.inicializarBluetooth();
+        }catch (Exception e){
+            Log.e(this.getClass().getSimpleName(), "Leaked Bluetooth Handler");
+        }
         if(!is_BackgroundRunning) { // solo queremos q lo inicialize una ves ya que es un 'activity'
-            this.inicializarBackgroundService();
-            this.is_BackgroundRunning = true;
+            try {
+                this.inicializarBackgroundService();
+                this.is_BackgroundRunning = true;
+            }catch (Exception e){
+                Log.e(this.getClass().getSimpleName(), "Leaked Bluetooth Handler");
+            }
         }
 
 
