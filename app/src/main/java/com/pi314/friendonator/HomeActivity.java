@@ -33,6 +33,7 @@ import Bluetooth.BluetoothHandler;
 import Database.SQLiteHelper;
 import Database.Usuario;
 import misc.BackgroundService;
+import misc.GPSHelper;
 
 /**
  * Created by Christian on 10/12/2014.
@@ -174,12 +175,20 @@ public class HomeActivity extends Activity {
 
         //inicializamos el bluetooth. Como es singleton no hay q preocuparse por cuantas veces
         //lo inicializamos
-        this.inicializarBluetooth();
-
-        if(!is_BackgroundRunning) { // solo queremos q lo inicialize una ves ya que es un 'activity'
-            this.inicializarBackgroundService();
-            this.is_BackgroundRunning = true;
+        try {
+            this.inicializarBluetooth();
+        }catch (Exception e){
+            Log.e(this.getClass().getSimpleName(), "Leaked Bluetooth Handler");
         }
+        if(!is_BackgroundRunning) { // solo queremos q lo inicialize una ves ya que es un 'activity'
+            try {
+                this.inicializarBackgroundService();
+                this.is_BackgroundRunning = true;
+            }catch (Exception e){
+                Log.e(this.getClass().getSimpleName(), "Leaked Bluetooth Handler");
+            }
+        }
+
 
     }
 
@@ -267,10 +276,6 @@ public class HomeActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        Intent intent = new Intent(HomeActivity.this, MainActivity.class);
-        intent.putExtra("PERSON", person);
-        startActivity(intent);
-
         if (toggle.onOptionsItemSelected(item)) {
             return true;
         }
@@ -286,8 +291,6 @@ public class HomeActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 

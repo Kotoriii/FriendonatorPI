@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -75,8 +76,12 @@ public class MatchProfileActivity extends Activity {
 
         // Test getting match from Data Base
         Bundle bundle = this.getIntent().getExtras();
-        String idUser = bundle.getString("ID");
-
+        String idUser = null;
+        try {
+            idUser = bundle.getString("ID");
+        }catch (ClassCastException e){
+            Log.e(getClass().getSimpleName(), "ID es numerico no se puede cast a string");
+        }
         //yo se que esto es retundante. pero al pareces si yo pongo un putExtra(int) me retorna null
         //si le pido bundle.getString. Solo lo retorna si pido bundle.getInt.
         if(idUser == null){
@@ -324,8 +329,6 @@ public class MatchProfileActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 

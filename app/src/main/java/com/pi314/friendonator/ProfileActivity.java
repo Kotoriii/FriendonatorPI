@@ -79,7 +79,6 @@ public class ProfileActivity extends Activity {
         db = SQLiteHelper.getInstance(getApplicationContext());
         super.onCreate(savedInstanceState);
 
-        //todo no se donde es pero las fotos no se estan seleccionando. (cuando quiero ca
         setContentView(R.layout.activity_profile);
         final Button btnChooseInterest = (Button) findViewById(R.id.btnChooseInterest);
         final Button btnChooseContact = (Button) findViewById(R.id.btnChooseContact);
@@ -163,6 +162,7 @@ public class ProfileActivity extends Activity {
 
                 // Slide animation
                 overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
+                db.updateSync(db.INTERESES, 1);
             }
         });
 
@@ -591,8 +591,6 @@ public class ProfileActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 

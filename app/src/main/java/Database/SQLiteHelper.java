@@ -47,6 +47,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             "PRIMARY KEY (descripcion)" +
             ")";
 
+    String createMACBT = "CREATE TABLE mac_bt (" +
+            "idUsuario INTEGER," +
+            "MAC VARCHAR," +
+            "PRIMARY KEY (idUsuario, MAC)" +
+            ")";
+
+
     //diria que esto es un poco overkill jaja
     String createNombreBluetooth = "CREATE TABLE nombreB (" +
             "nombre VARCHAR," +
@@ -139,6 +146,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(createConfig);
         db.execSQL(createSync);
         db.execSQL(createNombreBluetooth);
+        db.execSQL(createMACBT);
 
         //se inicializan los observadores de cambios
         db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.INTERESES + "',0)");
@@ -173,6 +181,39 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         cursor.moveToFirst();
         return cursor.getString(cursor.getColumnIndex("nombre"));
     }
+
+    public String getUserIDFROMMAC(String MAC){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM mac_bt where MAC='"+MAC+"'", null);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex("idUsuario"));
+    }
+
+    public String getMACFROMID(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM mac_bt where idUsuario="+id, null);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex("MAC"));
+    }
+
+    public void insertMAC_BT(int id_us, String Address){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM mac_bt where idUSuario="+id_us
+                , null);
+        //si existe
+        if(cursor.moveToFirst()){
+            db.execSQL(
+                    "update mac_bt set MAC='"+Address+"' where idUsuario="+id_us
+            );
+        }else{
+            db.execSQL(
+                    "insert into mac_bt (idUsuario, MAC) VALUES" +
+                            " ("+id_us+",'"+Address+"')"
+            );
+        }
+    }
+
 
     public void updateSync(String descripcion, int cambiado) {
         getWritableDatabase().execSQL("update sync set cambiado=" + cambiado + " where descripcion='" + descripcion + "'");

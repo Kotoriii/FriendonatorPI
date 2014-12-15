@@ -16,7 +16,6 @@ import android.graphics.BitmapFactory;
 import android.util.Base64;
 import android.util.Log;
 
-import com.pi314.friendonator.LoginActivity;
 import com.pi314.friendonator.Person;
 import com.pi314.interests.InterestsMethods;
 
@@ -29,6 +28,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -51,6 +51,10 @@ public class BluetoothHandler {
     Activity mAct = null;
     private static BluetoothHandler mbth;
     private boolean user_in_intent = false;
+
+    //lista estatica de dispositivos. para el 'searching'
+    //<id usurario, fuerza de conexion>
+    public static HashMap<String, Short> FUERZA_CON = new HashMap<String, Short>();
 
     public static BluetoothHandler getInstance(Activity act) {
         if (mbth == null) {
@@ -215,14 +219,33 @@ public class BluetoothHandler {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
+           final String action = intent.getAction();
 
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+
+
+                //Si esta en la lista estatica de dispositivos entonces queremos
+                //acualizarlo.
+                try {
+                    Integer id_us = new Integer(
+                            SQLiteHelper.getInstance(mAct)
+                                    .getUserIDFROMMAC(device.getAddress()));
+
+                    Short rssi = new Short(intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE));
+
+                    if (FUERZA_CON.keySet().contains(id_us)) {
+                        FUERZA_CON.remove(device.getAddress());
+                        FUERZA_CON.put(device.getAddress(), rssi);
+                    }
+                }catch (Exception e){
+
+                }
+
                 if (!lstDisptV.contains(device) &&
                         mValidator.isValidDevice(device)) {
-                    lstDisptV.add(device);
+                        lstDisptV.add(device);
 
                     //Ejecuta el client thread con el dispositivo recien encontrado
                     new ClientThread(device).start();
@@ -550,14 +573,19 @@ public class BluetoothHandler {
 
 
                     ObjectInputStream bjr = new ObjectInputStream(mmInStream);
+
                     //otenemos a la persona
                     matchPerson = (Person) bjr.readObject();
+
                     //nos tenemos q fijar si el usuario existe o no.. en el caso de q exista
                     //entonces hay que borrar su foto vieja y su viejo registro en la BD (para ahorrar recursos)
                     boolean usuario_existe = false;
                     SQLiteHelper hlp = SQLiteHelper.getInstance(mAct);
-                    Usuario us =hlp.getUserByID(Integer.parseInt(matchPerson.getId()));
-                    if(us.getNombre() != null){
+                    Usuario us = hlp.getUserByID(Integer.parseInt(matchPerson.getId()));
+
+                    //tambien tenemos que fijarnos que el usuario que estoy recibiendo no sea yo mismo.
+                    //con otro telefono
+                    if(us.getNombre() != null && !hlp.getLimbo1().getId().equals(us.getId())){
                         usuario_existe = true;
                     }
                     if(usuario_existe){
@@ -567,7 +595,8 @@ public class BluetoothHandler {
                         hlp.deleteUserTextData(us.getId());
                         hlp.deleteUserInterestData(us.getId());
                         dtb.execSQL("delete from usuario where idUsuario=" + us.getId());
-                        dtb.execSQL("delete from historial where idMatch="+us.getId());
+                        dtb.execSQL("delete from mac_bt where idUsuario=" + us.getId());
+                        dtb.execSQL("delete from historial where idMatch=" + us.getId());
                     }
 
                     //decodificamos la foto
@@ -586,11 +615,16 @@ public class BluetoothHandler {
 
 
                     //obtiene el min match para poder saber si mostrar una notificacion o no.
+                    //le notificamos solo si el match es suficientemente alto y si no le ha notificado
+                    //hace poco de dicho usuairo
                     int min_match = Integer.parseInt(hlp.getConfig(person.getId()).getMinmatch());
-                    if(percentage >= min_match)
+                    if(percentage >= min_match && lstDisptV.contains(mmSocket.getRemoteDevice()))
                         //bum
                         BackgroundService.alert_new_match(matchPerson.getId(),person,percentage);
 
+                    //si exitoso entonces metemos en la bd
+                    hlp.insertMAC_BT(Integer.parseInt(matchPerson.getId()),
+                            mmSocket.getRemoteDevice().getAddress());
                     bjr.close();
                 }
             } catch (IOException e) {

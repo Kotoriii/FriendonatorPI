@@ -179,7 +179,7 @@ public class LoginActivity extends Activity {
         if(pop.hay_algo_en_limbo()){
             InterestsMethods mthl = new InterestsMethods();
             Person pers = mthl.createPerson(this, Integer.valueOf(pop.getLimbo1().getId()));
-
+            Usuario simb = pop.getUserByID(Integer.parseInt(pers.getId()));
             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
             if (pers.getName() == null) {
                 // Create intent to open interests activity
@@ -188,7 +188,7 @@ public class LoginActivity extends Activity {
                 InterestsMethods fillPerson = new InterestsMethods();
                 pers.setDataBaseInterest(fillPerson.getInterestFromDataBase(LoginActivity.this, Integer.parseInt(pers.getId())));
                 pers.setGetTextFieldInfo(fillPerson.getTextsFromDataBase(LoginActivity.this, Integer.parseInt(pers.getId())));
-                pers.setGetContactedByList(fillPerson.getContactedByFromDataBase(LoginActivity.this, pop.getUserByID(Integer.parseInt(pers.getId()))));
+                pers.setGetContactedByList(fillPerson.getContactedByFromDataBase(LoginActivity.this, simb));
             }
 
             intent.putExtra("PERSON", pers);

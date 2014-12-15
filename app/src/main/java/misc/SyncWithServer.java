@@ -259,6 +259,7 @@ public class SyncWithServer extends ApiWrapper {
             throw new IOException();
         }
         httpClient.close();
+        httpClient = null; //para garbage collection
         return responseS;
     }
 
