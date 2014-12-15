@@ -1,10 +1,10 @@
 package com.pi314.friendonator;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -28,6 +28,7 @@ public class LoginActivity extends Activity {
 
     SQLiteHelper db;
     Person person;
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,23 +47,41 @@ public class LoginActivity extends Activity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String correo = txtusername.getText().toString();
-                String password = txtpassword.getText().toString();
+                final String correo = txtusername.getText().toString();
+                final String password = txtpassword.getText().toString();
 
                 //implementacion de api para login
-                ApiWrapper api = new ApiWrapper();
+                final ApiWrapper api = new ApiWrapper();
+
+                // Start progress dialog while app waits for log in to check info
+                progressDialog = new ProgressDialog(LoginActivity.this, R.style.MyTheme);
+                progressDialog.setCancelable(false);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Large);
+                progressDialog.show();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //la clase de api tiene un metodod especial para ver si se encuentra actualmente
+                        //conectado a internet y otro para pedir la conexion
+                        try {
+                            if (!api.isConnected(LoginActivity.this)) {
+                                LoginActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        enableWIFI();
+                                    }
+                                });
+                            }
+                            //esto se encarga de sacar y armar automaticamente la persona. Si hay algun error
+                            //por ejemplo, no existe la persona en el servidor entonces va a mandar null
+                            person = api.loginConServidor(correo, password, LoginActivity.this);
 
 
-                //la clase de api tiene un metodod especial para ver si se encuentra actualmente
-                //conectado a internet y otro para pedir la conexion
-                try {
-                    if (!api.isConnected(LoginActivity.this)) {
-                        enableWIFI();
-                    }else {
-                        //esto se encarga de sacar y armar automaticamente la persona. Si hay algun error
-                        //por ejemplo, no existe la persona en el servidor entonces va a mandar null
-                        person = api.loginConServidor(correo, password, LoginActivity.this);
-
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
                         Usuario userLogin = null;
 
@@ -97,12 +116,18 @@ public class LoginActivity extends Activity {
                             // Finish activity
                             finish();
                         } else {
-                            customToast(getResources().getString(R.string.toastWrongLogIn));
+                            // This makes possible to use toast inside a threat
+                            LoginActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    customToast(getResources().getString(R.string.toastWrongLogIn));
+                                }
+                            });
                         }
+                        // Close progress dialog
+                        progressDialog.dismiss();
                     }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                }).start();
             }
         });
 

@@ -232,7 +232,7 @@ public class HomeActivity extends Activity {
 
             public void onDrawerOpened(View drawerView) {
                 // Drawer abierto
-                getActionBar().setTitle("Menu");
+                getActionBar().setTitle(getResources().getString(R.string.menu));
                 //invalidateOptionsMenu();
             }
         };
