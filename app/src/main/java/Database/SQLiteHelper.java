@@ -196,7 +196,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return cursor.getString(cursor.getColumnIndex("MAC"));
     }
 
-    public String insertMAC_BT(int id_us, String Address){
+    public void insertMAC_BT(int id_us, String Address){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 "SELECT * FROM mac_bt where idUSuario="+id_us
@@ -212,8 +212,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                             " ("+id_us+",'"+Address+"')"
             );
         }
-
-        return cursor.getString(cursor.getColumnIndex("nombre"));
     }
 
 
