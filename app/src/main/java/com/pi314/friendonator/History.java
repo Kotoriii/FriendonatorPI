@@ -64,6 +64,7 @@ public class History extends Activity {
             // Testing inserting match and history
             testMatchStuff();
             historialList = db.getAllHistorial();
+            db.updateSync(db.HISTORIAL, 1);
         }
 
         if (!historialList.isEmpty()) {
@@ -211,7 +212,7 @@ public class History extends Activity {
 
         matchPerson.setDataBaseInterest(interests);
         matchPerson.setName("Female Doge");
-        matchPerson.setId("42");
+        matchPerson.setId("8");
 
         matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestMusic), "Such music, many artist, wow");
         matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestMovies), "Cute puppy");
@@ -250,7 +251,7 @@ public class History extends Activity {
 
         matchPerson2.setDataBaseInterest(interests2);
         matchPerson2.setName("Doge");
-        matchPerson2.setId("63");
+        matchPerson2.setId("7");
 
         matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestLiterature), "Kevin Bacon Guardian, Many Galaxies, Such Mix!");
         matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestArt), "Doge Lisa");
@@ -319,6 +320,7 @@ public class History extends Activity {
 
         Collections.sort(datos, new OrderArrayListByName());
 
+
         //de nueva la logica para llenar el listView una vez con la lista ordenada :D
         ListView historyList = (ListView) findViewById(R.id.ListView_listado_history);
         historyList.setAdapter(new Lista_History(this, R.layout.entrada_history, datos) {
@@ -334,6 +336,7 @@ public class History extends Activity {
                     if (txtPercentage != null)
                         txtPercentage.setText(((ListaEntrada_History) entrada).getPercentage());
 
+                    //todo poner imagen real
                     ImageView imgProfile = (ImageView) view.findViewById(R.id.imageView_imagen);
                     if (imgProfile != null)
                         imgProfile.setImageResource(((ListaEntrada_History) entrada).getImage());

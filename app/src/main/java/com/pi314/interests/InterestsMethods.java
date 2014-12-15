@@ -15,8 +15,10 @@ import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -189,7 +191,21 @@ public class InterestsMethods {
             db.deleteUserInterestData(person.getId());
             for (int interest : person.getDataBaseInterest().keySet())
                 for (int value : person.getDataBaseInterest().get(interest))
-                    db.insertUserint(new Usuariointereses(String.valueOf(value), person.getId()));
+                    db.insertUserint(new Usuariointereses(String.valueOf(value+1), person.getId()));
+        }
+    }
+
+    public void insertOnLoginIntereses(Context context, Person person){
+        // Insert interest from person interest hash map
+        if (!person.getDataBaseInterest().isEmpty()) {
+            SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
+            db.deleteUserInterestData(person.getId());
+            Collection<List<Integer>> intereste_array= person.getDataBaseInterest().values();
+            for(List<Integer> lst_intrs : intereste_array){
+                for(Integer id_inte : lst_intrs){
+                    db.insertUserint(new Usuariointereses(String.valueOf(id_inte), person.getId()));
+                }
+            }
         }
     }
 
@@ -237,6 +253,7 @@ public class InterestsMethods {
         return person;
     }
 
+
     public HashMap<String, String> getContactedByFromDataBase(Context context, Usuario user) {
         // Create contactedBy hash map from Data Base user information
         HashMap<String, String> contactedByList = new HashMap<String, String>();
@@ -265,6 +282,7 @@ public class InterestsMethods {
         Usuario userToInsert = new Usuario();
         userToInsert.setId(person.getId());
         userToInsert.setNombre(person.getName());
+        userToInsert.setFoto(person.getFoto_perfil());
         if (person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblCellphone)) != null) {
             userToInsert.setNum(person.contactedByValue(context.getApplicationContext().getResources().getString(R.string.lblCellphone)));
         }

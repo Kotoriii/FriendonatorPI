@@ -78,6 +78,8 @@ public class ProfileActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         db = SQLiteHelper.getInstance(getApplicationContext());
         super.onCreate(savedInstanceState);
+
+        //todo no se donde es pero las fotos no se estan seleccionando. (cuando quiero ca
         setContentView(R.layout.activity_profile);
         final Button btnChooseInterest = (Button) findViewById(R.id.btnChooseInterest);
         final Button btnChooseContact = (Button) findViewById(R.id.btnChooseContact);
@@ -204,6 +206,8 @@ public class ProfileActivity extends Activity {
                     // Update history match percentage
                     InterestsMethods updateHistory = new InterestsMethods();
                     updateHistory.updateMatchPorcHistory(ProfileActivity.this, person);
+
+                    db.updateSync(db.DATOS_PERSONALES, 1);
 
                     // Create intent
                     Intent intent = new Intent(ProfileActivity.this, HomeActivity.class);
@@ -422,15 +426,20 @@ public class ProfileActivity extends Activity {
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
                     intent.putExtra("android.intent.extras.CAMERA_FACING", 1); // Uses front camera to take picture
                     startActivityForResult(intent, 1);
+                    db.updateSync(db.IMAGEN_PERFIL, 1);
                 } else if (options[item].equals( getResources().getString(R.string.txtaddfromgallery))) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(intent, 2);
+                    db.updateSync(db.IMAGEN_PERFIL, 1);
 
                 } else if (options[item].equals(getResources().getString(R.string.txtphotocancel))) {
                     dialog.dismiss();
                 }
             }
         });
+
+
+
         builder.show();
     }
 

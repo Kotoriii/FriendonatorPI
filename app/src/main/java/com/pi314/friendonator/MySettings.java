@@ -22,7 +22,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import Database.Configuracion;
 import Database.SQLiteHelper;
+import Database.Usuario;
 
 
 public class MySettings extends Activity {
@@ -42,9 +44,7 @@ public class MySettings extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_settings);
 
-        final Button btnPrivacy = (Button)findViewById(R.id.btnPrivacy);
-        final Button btnAdvanced = (Button)findViewById(R.id.btnAdvanced);
-        final Button btnLanguage = (Button)findViewById(R.id.btnLanguage);
+
         final Button btnIntervaleScan = (Button)findViewById(R.id.btnIntervale);
         final SeekBar seekBar1 = (SeekBar) findViewById(R.id.seekBar);
         final Button btnSave = (Button)findViewById(R.id.btnSave);
@@ -53,7 +53,7 @@ public class MySettings extends Activity {
 
         // Get object person from intent extras
         getSetPerson();
-
+/*
         final CharSequence[] privacyArr = {getResources().getString(R.string.showinterests), getResources().getString(R.string.showcontactme)};
         final AlertDialog.Builder alt_bldPr = new AlertDialog.Builder(this);
         alt_bldPr.setIcon(R.drawable.ic_settings_alert );
@@ -114,6 +114,7 @@ public class MySettings extends Activity {
             }
         });
 
+*/
         final CharSequence[] Intervale = {getResources().getString(R.string.minutes2),getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15), getResources().getString(R.string.always)};
         final AlertDialog.Builder alt_bldInt = new AlertDialog.Builder(this);
         alt_bldInt.setIcon(R.drawable.ic_settings_alert);
@@ -132,23 +133,21 @@ public class MySettings extends Activity {
                 String mensajePr = getResources().getString(R.string.intervalscantoast) + Intervale[item];
                 ToastCostumizado(mensajePr);
                 if (Intervale[item]==getResources().getString(R.string.minutes2)){
-                    interval = "2";
+                    interval = "7200";
                 }
                 else if (Intervale[item]==getResources().getString(R.string.minutes5)){
-                    interval = "5";
+                    interval = "18000";
                 }
                 else if (Intervale[item]==getResources().getString(R.string.minutes10)){
-                    interval = "10";
+                    interval = "36000";
                 }
                 else if (Intervale[item]==getResources().getString(R.string.minutes15)){
-                    interval = "15";
+                    interval = "54000";
                 }
-                else if (Intervale[item]==getResources().getString(R.string.always)){
-                    interval = "0";
-                }
+
             }
         });
-
+/*
         btnPrivacy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,7 +182,7 @@ public class MySettings extends Activity {
                 alertLa.show();
             }
         });
-
+*/
         btnIntervaleScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -198,8 +197,14 @@ public class MySettings extends Activity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Configuracion config = db.getConfig(person.getEmail());
+                config.setInterval(interval);
+                db.updateConfig(config);
+
                     // Create intent
                     Intent intent = new Intent(MySettings.this, HomeActivity.class);
+
 
                     // Set person inside intent
                     intent.putExtra("PERSON", person);
@@ -386,5 +391,8 @@ public class MySettings extends Activity {
         /*
         this.finish();
         */
+
     }
+
+
 }

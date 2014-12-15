@@ -3,6 +3,8 @@ package com.pi314.friendonator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
@@ -12,11 +14,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.pi314.interests.InterestsMethods;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -28,6 +32,7 @@ import Database.SQLiteHelper;
 import Dialog.InterestInfo;
 import GridView.GridCustomAdapter;
 import GridView.GridObject;
+import misc.BackgroundService;
 
 public class MatchProfileActivity extends Activity {
 
@@ -43,6 +48,8 @@ public class MatchProfileActivity extends Activity {
     private TypedArray NavIcons;
     NavigationAdapter NavAdapter;
 
+    private ImageView imageMatch;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +59,37 @@ public class MatchProfileActivity extends Activity {
         final TextView lblMatchPercentage = (TextView) findViewById(R.id.lblMatchPercentage);
         final TextView lblSpecialMatch = (TextView) findViewById(R.id.lblSpecialPercentage);
         final Button btnClose = (Button) findViewById(R.id.btnClose);
+        imageMatch = (ImageView) findViewById(R.id.imageMatch);
+
+        try{
+            //intentamos quitar el notification (en el caso de que existiese)
+            BackgroundService.mNotificationManager.cancel(BackgroundService.mIdNotification);
+        }finally {}
 
         // Get object person from intent extras
         getSetPerson();
 
-        // Test getting match from Data Base
-        Bundle bundle = this.getIntent().getExtras();
-        int idUser = bundle.getInt("ID");
 
         // Create match person from Data Base
         InterestsMethods getMatch = new InterestsMethods();
-        matchPerson = getMatch.createPerson(MatchProfileActivity.this, idUser);
+
+        // Test getting match from Data Base
+        Bundle bundle = this.getIntent().getExtras();
+        String idUser = bundle.getString("ID");
+
+        //yo se que esto es retundante. pero al pareces si yo pongo un putExtra(int) me retorna null
+        //si le pido bundle.getString. Solo lo retorna si pido bundle.getInt.
+        if(idUser == null){
+            int pops = getIntent().getIntExtra("ID",0);
+            matchPerson = getMatch.createPerson(MatchProfileActivity.this, pops);
+        }else{
+            matchPerson = getMatch.createPerson(MatchProfileActivity.this, Integer.parseInt(idUser));
+        }
+
+        //ponemos la foto adecuada al image match
+        File file = new File(matchPerson.getFoto_perfil());
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+        imageMatch.setImageBitmap(bitmap);
 
         // Set match name
         lblMatchName.setText(matchPerson.getName());

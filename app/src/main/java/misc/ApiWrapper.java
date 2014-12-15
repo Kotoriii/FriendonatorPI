@@ -10,12 +10,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import com.pi314.friendonator.Person;
 import com.pi314.friendonator.R;
+import com.pi314.friendonator.SignUp;
 import com.pi314.interests.InterestsMethods;
 
 import org.apache.http.HttpResponse;
@@ -40,8 +39,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.math.BigInteger;
-import java.security.Key;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -49,11 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.crypto.Cipher;
-import javax.crypto.spec.SecretKeySpec;
-
 import Database.Configuracion;
-import Database.Historial;
 import Database.Intereses;
 import Database.SQLiteHelper;
 import Database.Superinteres;
@@ -75,6 +68,19 @@ public class ApiWrapper {
     private String mResult = null; //Resultado del request, para request asincronicas
     private List<NameValuePair> mPostData = null; //datos a mandar durante el HttpAsyncPOSTTask
     private Bitmap mBitmapHolder = null;
+    private Activity mAct = null;
+    protected String urlDomain = "http://tupini07.pythonanywhere.com/";
+
+    /**
+     * para cuando se necesitan funciones con activities.
+     * @param mAct
+     */
+    public ApiWrapper(Activity mAct) {
+        this.mAct = mAct;
+    }
+
+    public ApiWrapper() {
+    }
 
     /**
      * Devuelve True su el login es exitoso y false si no lo es.
@@ -87,7 +93,8 @@ public class ApiWrapper {
     public Person loginConServidor(String correo, String password, Activity act) {
         //obtenemos el objeto json correspondiente al correo
         //para mas seguridad usamos post
-        String url = "http://tupini07.pythonanywhere.com/api/webServices/login_usuario/?correo=" + correo + "&pass=" + password;
+        String url = urlDomain+"api/webServices/login_usuario/?correo=" + correo + "&pass=" + password;
+        this.mAct = act;
         int id_us = 0;
         /*---Esto solo si se implementa con POST
             List<NameValuePair> datos = new ArrayList<NameValuePair>(2);
@@ -95,7 +102,7 @@ public class ApiWrapper {
             datos.add(new BasicNameValuePair("pass", password));
         */
         SQLiteHelper sqlHelper = SQLiteHelper.getInstance(act);
-        JSONObject json = getRESTJSON(url);
+        JSONObject json = getRESTJSONObject(url);
         Person persona = new Person();
         try {
             JSONArray jsonArray = json.getJSONArray("objects");
@@ -116,10 +123,7 @@ public class ApiWrapper {
                     persona.setEmail(correo);
                     persona.setDataBaseInterest(this.getInteresesUsuario(id_us));
                     persona.setName(json.getString("nombre"));
-
-                    //todo, persona.setGetTextFieldInfo();.. primero hay que hacerlo en servidor
-                    // o podriamos quitarlo :D
-
+                    persona.setGetTextFieldInfo(this.get_texto_Intereses_us(id_us));
 
 
                     //Obtenemos la fecha
@@ -151,11 +155,11 @@ public class ApiWrapper {
 
                     Configuracion def = new Configuracion();
                     def.setIdUsuario(persona.getId());
-                    def.setMinmatch("50");
+                    def.setMinmatch("1");
                     def.setNotific("1"); //1 prendido, 2 apagado
                     def.setSound("1");
                     def.setVibration("1");
-                    def.setInterval("2"); //2, 5, 10, 15, 0
+                    def.setInterval("120000"); //2, 5, 10, 15, 0
                     sqlHelper.insertConfig(def);
 
 
@@ -178,8 +182,35 @@ public class ApiWrapper {
         return (new InterestsMethods()).createPerson(act, id_us);
     }
 
-    private String saveUserBitmapFromUrl(Activity act, int id_us) {
+    protected String saveUserBitmapFromUrl(Activity act, int id_us) {
         return this.saveBitmap(act, this.getUserImage(id_us));
+    }
+
+    public Usuario registrarseConServidor(String userName, String password, Activity act){
+        String url = this.urlDomain + "api/webServices/registrar_usuario/";
+        Usuario us = new Usuario();
+        List<NameValuePair> data = new ArrayList<NameValuePair>(2);
+        data.add(new BasicNameValuePair("correo", userName));
+        data.add(new BasicNameValuePair("password", password));
+        JSONObject json = this.postRESTJSON(url, data);
+        try {
+            us.setId(json.getInt("id"));
+            us.setCorreo(userName);
+            us.setPassword(password);
+        } catch (JSONException e) {
+            return null;
+        }
+
+        Configuracion def = new Configuracion();
+        def.setIdUsuario(us.getId());
+        def.setMinmatch("1");
+        def.setNotific("1"); //1 prendido, 2 apagado
+        def.setSound("1");
+        def.setVibration("1");
+        def.setInterval("120000"); //2, 5, 10, 15, 0
+        SQLiteHelper.getInstance(act).insertConfig(def);
+
+        return us;
     }
 
     /**
@@ -192,7 +223,7 @@ public class ApiWrapper {
      */
     public HashMap<Integer, List<Integer>> getInteresesUsuario(int id_us) {
         HashMap<Integer, List<Integer>> lstIntereses = new HashMap<Integer, List<Integer>>();
-        JSONObject json = getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/intereses_usuario/?id_us=" + id_us);
+        JSONObject json = getRESTJSONObject(urlDomain + "api/webServices/intereses_usuario/?id_us=" + id_us);
         try {
             Integer supHolder = null;
             List<Integer> interesHolder = new ArrayList<Integer>();
@@ -230,7 +261,7 @@ public class ApiWrapper {
      */
     public List<Superinteres> getSuperIntereses() {
         List<Superinteres> lstSupInt = new ArrayList<Superinteres>();
-        JSONObject json = getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/SuperIntereses/?format=json");
+        JSONObject json = getRESTJSONObject(urlDomain + "api/webServices/SuperIntereses/?format=json");
         try {
             JSONArray jsonArray = json.getJSONArray("objects");
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -250,35 +281,32 @@ public class ApiWrapper {
      * @return lstIntereses
      */
     public HashMap<Superinteres, List<Intereses>> getIntereses() {
+        JSONArray json = getRESTJSONArray(urlDomain+"api/webServices/intereses/");
         HashMap<Superinteres, List<Intereses>> lstIntereses = new HashMap<Superinteres, List<Intereses>>();
-        JSONObject json = getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/Intereses/?format=json");
         try {
-            JSONArray jsonArray = json.getJSONArray("objects");
-            Superinteres supHolder = null;
-            Intereses interesHolder = null;
-            JSONObject supIntJson = null;
-            boolean added_checker = false;
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject row = jsonArray.getJSONObject(i);
-                supIntJson = row.getJSONObject("super_interes");
+            Superinteres supHolder;
+            Intereses interesHolder;
+            JSONArray inteJson;
+            List<Intereses> lstIntHolder;
+            JSONObject internal_interest;
+            for (int i = 0; i < json.length(); i++) {
+                JSONObject row = json.getJSONObject(i);
+                inteJson = row.getJSONArray("intereses");
+                supHolder = new Superinteres(row.getString("id"), row.getString("descripcion"));
 
-                //holders para la actual linea de codigo
-                interesHolder = new Intereses(row.getString("id"), row.getString("descripcion"), supIntJson.getString("id"));
-                supHolder = new Superinteres(supIntJson.getString("id"), supIntJson.getString("descripcion"));
+                //inicializa lista
+                lstIntHolder = new ArrayList<Intereses>();
+                for (int e = 0; e < inteJson.length(); e++) {
+                    internal_interest = inteJson.getJSONObject(e);
+                    interesHolder = new Intereses(
+                            internal_interest.getString("id"),
+                            internal_interest.getString("descripcion"),
+                            supHolder.getId());
+                    lstIntHolder.add(interesHolder);
+                }
 
-                for (Superinteres su : lstIntereses.keySet()) {
-                    if (su.getId() == supHolder.getId()) {
-                        lstIntereses.get(su).add(interesHolder);
-                        added_checker = true;
-                        break;
-                    }
-                }
-                if (!added_checker) {
-                    List<Intereses> intLSTHOlder = new ArrayList<Intereses>();
-                    intLSTHOlder.add(interesHolder);
-                    lstIntereses.put(supHolder, intLSTHOlder);
-                }
-                added_checker = false;
+                lstIntereses.put(supHolder, lstIntHolder);
+
             }
 
         } catch (JSONException e) {
@@ -295,11 +323,15 @@ public class ApiWrapper {
      * @return
      */
     public Bitmap getImageFromURL(String url) {
-        //TODO el request sigue ejecutandose incluso si no esta conectado a internet
         mBitmapHolder = null; //limpiamos
         new HttpGetImage().execute(url);
         int ss = 0;
+        boolean failed = false;
         while (mBitmapHolder == null) { //necesitamos esperar por la respuesta
+            if (ss > 78) { // si espera demasiado tiempo entonces se sale.. SS usualmente alcanza no mas de 40
+                failed = true;
+                break;
+            }
             try {
                 synchronized (this) {
                     this.wait(200);
@@ -308,6 +340,11 @@ public class ApiWrapper {
                 e.printStackTrace();
             }
             ss++;
+        }
+        if (failed) {
+            mBitmapHolder = BitmapFactory.decodeResource(mAct.getResources(), R.drawable.match_place_holder);
+            SQLiteHelper hlp = SQLiteHelper.getInstance(mAct);
+            hlp.updateSync(hlp.IMAGEN_PERFIL, 1);
         }
         Log.d("ApiWrapper", "waited " + ss + " cycles before response");
         return mBitmapHolder;
@@ -362,10 +399,10 @@ public class ApiWrapper {
      * @return
      */
     public Bitmap getUserImage(int user_id) {
-        JSONObject json = getRESTJSON("http://tupini07.pythonanywhere.com/api/webServices/get_imagen_usuario/?id_usuario=" + user_id);
+        JSONObject json = getRESTJSONObject(urlDomain+"api/webServices/get_imagen_usuario/?id_usuario=" + user_id);
 
         try {
-            String url = "http://tupini07.pythonanywhere.com" + json.getString("url_foto");
+            String url = urlDomain.substring(0, urlDomain.length()-1) + json.getString("url_foto");
             return getImageFromURL(url);
 
         } catch (JSONException e) {
@@ -376,28 +413,11 @@ public class ApiWrapper {
     }
 
     /**
-     * Devuelve la imagen q se encuentra en cierto path..
-     * no sabia donde poner el metodo :) pero por el momento se queda aqui
-     *
-     * @param path
-     * @return
-     */
-    public Bitmap loadImageFromStorage(String path) {
-        Bitmap b = null;
-        try {
-            File f = new File(path, "profile.jpg");
-            b = BitmapFactory.decodeStream(new FileInputStream(f));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return b;
-    }
-
-    /**
      * salva los intereses y superintereses del servidor a la base de datos local
+     *
      * @return true si fue exitoso o false si hubo un problema
      */
-    public boolean salvarInteresesDelServidorABDLocal(Activity act){
+    public boolean salvarInteresesDelServidorABDLocal(Activity act) {
         SQLiteHelper Helper = SQLiteHelper.getInstance(act);
         try {
             HashMap<Superinteres, List<Intereses>> hmap = this.getIntereses();
@@ -408,12 +428,28 @@ public class ApiWrapper {
                 }
             }
             return true;
-        }catch (SQLiteException e) {
+        } catch (SQLiteException e) {
             return false;
         }
     }
 
-    private JSONObject getRESTJSON(String URL) {
+    protected HashMap<String, String> get_texto_Intereses_us(int id_us) {
+        HashMap<String, String> textos = new HashMap<String, String>();
+        JSONObject json = this.getRESTJSONObject(urlDomain + "api/webServices/get_texto_extra_usuario/?id_us=" + id_us);
+        Iterator<String> iter = json.keys();
+        String key;
+        try {
+            while (iter.hasNext()) {
+                key = iter.next();
+                textos.put(key, json.getString(key));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return textos;
+    }
+
+    protected JSONObject getRESTJSONObject(String URL) {
         mResult = null; //reiniciamos el holder
         new HttpAsyncGETTask().execute(URL);
         int ss = 0;
@@ -443,7 +479,37 @@ public class ApiWrapper {
         return json;
     }
 
-    private JSONObject postRESTJSON(String URL, List<NameValuePair> data) {
+    protected JSONArray getRESTJSONArray(String URL) {
+        mResult = null; //reiniciamos el holder
+        new HttpAsyncGETTask().execute(URL);
+        int ss = 0;
+        while (mResult == null) { //necesitamos esperar por la respuesta
+            try {
+                synchronized (this) {
+                    this.wait(200);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ss++;
+        }
+        Log.d("ApiWrapper", "waited " + ss + " cycles before response");
+        JSONArray json = null;
+        try {
+            json = new JSONArray(mResult);
+
+
+        } catch (JSONException e) {
+            try {
+                json = new JSONArray("[{\"error\": \"not a valid json object\"}]");
+            } catch (JSONException e1) {
+                e1.printStackTrace();
+            }
+        }
+        return json;
+    }
+
+    protected JSONObject postRESTJSON(String URL, List<NameValuePair> data) {
         mPostData = data;
         new HttpAsyncPOSTTask().execute(URL);
         int ss = 0;
@@ -573,7 +639,9 @@ public class ApiWrapper {
         SQLiteHelper db = SQLiteHelper.getInstance(context.getApplicationContext());
 
         db.insertUsuario(usuario);
-        mths.insertInterests(context, person);
+
+
+        mths.insertOnLoginIntereses(context, person);
 
         mths.insertText(context, person);
 

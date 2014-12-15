@@ -27,14 +27,11 @@ import Bluetooth.DeviceValidator;
 import Database.SQLiteHelper;
 import misc.BackgroundService;
 import misc.GPSHelper;
+import misc.SyncWithServer;
 
 
 public class MainActivity extends Activity implements Button.OnClickListener{
-    BluetoothAdapter mBluetoothAdapter =null;
-    BluetoothDevice device;
-    private static final int REQUEST_ENABLE_BT = 2;
-    private static final UUID MY_UUID = UUID.fromString("fa87c0d0-afac-11de-8a39-0800200c9a66");
-    private static final String NAME = "BluetoothDemo";
+
     TextView output;
     Button btnServer, btnScan, btnClient, startservice, startServer, startClientTest;
     BluetoothHandler mBHand;
@@ -54,9 +51,9 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         //metodo estatico.. muestra un alert si location no esta disponible en los settings.
         GPSHelper.checkIfLocationEnabled(this);
+
         final Button btnHome = (Button) findViewById(R.id.btnHome);
         final Button btnAboutUs = (Button) findViewById(R.id.aboutUs);
 
@@ -98,7 +95,6 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         startservice = (Button) findViewById(R.id.startservice);
         startservice.setOnClickListener(this);
 
-        mBHand = BluetoothHandler.getInstance(this);
 
         DeviceValidator dv = new DeviceValidator();
         String enc = dv.encrypt("1193434");
@@ -166,8 +162,9 @@ public class MainActivity extends Activity implements Button.OnClickListener{
     }
 
     public void findmeT(View v){
-        Intent inte = new Intent(this, FindMeTool.class);
-        startActivity(inte);
+        BackgroundService ser = new BackgroundService();
+        ser.ScanForSync(this);
+
     }
     @Override
     public void onClick(View v) {
@@ -190,6 +187,9 @@ public class MainActivity extends Activity implements Button.OnClickListener{
         else if ((Button)v == startservice){
             Toast t = Toast.makeText(this, "calling service", Toast.LENGTH_LONG);
             t.show();
+            //todo esta inicializacion se paso a 'HomeActivity'. solo se deja aqui por conveniencia
+            //borrar
+            BackgroundService.setmAct(this);
             Intent in = new Intent(this, BackgroundService.class);
             startService(in);
         }
@@ -202,29 +202,10 @@ public class MainActivity extends Activity implements Button.OnClickListener{
 
     }
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }*/
-
-    /*@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }*/
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        BluetoothHandler.restaurarNombre(this);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package Bluetooth;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -8,15 +7,22 @@ import android.bluetooth.BluetoothServerSocket;
 import android.bluetooth.BluetoothSocket;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 
+import com.pi314.friendonator.LoginActivity;
 import com.pi314.friendonator.Person;
 import com.pi314.interests.InterestsMethods;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
@@ -54,15 +60,15 @@ public class BluetoothHandler {
     }
 
     public void redefineActivity(Activity act) {
-
         //si no esta entonces va a dar nullpointerexception
         try {
-            mAct.getIntent().getSerializableExtra("PERSON");
-            user_in_intent = true;
+            Person p = (Person)act.getIntent().getSerializableExtra("PERSON");
+            if(p != null) {
+                user_in_intent = true;
+            }
         } catch (NullPointerException e) {
             user_in_intent = false;
         }
-
         this.mAct = act;
     }
 
@@ -79,10 +85,13 @@ public class BluetoothHandler {
             StartBlueTooth();
         }
 
-        if (this.user_in_intent) {
-            //por ultimo, empieza el server thread que corre mientras la
-            //aplicacion este corriendo
-            this.startBluetoothServer();
+        if(this.isBluetoothEnabled()){
+            salvarNombre(mAct);
+            setNuevoNombre();
+            setUnlimitedVisibility();
+            if (user_in_intent) {
+                startBluetoothServer();
+            }
         }
     }
 
@@ -145,7 +154,6 @@ public class BluetoothHandler {
      * direccion) son los que se obtienen a la hora de hacer el scan y no son constantemente actualizados.
      */
     public void StartScan() {
-
         getDevicesList().clear();
         getAdapter().startDiscovery();
     }
@@ -217,8 +225,7 @@ public class BluetoothHandler {
                     lstDisptV.add(device);
 
                     //Ejecuta el client thread con el dispositivo recien encontrado
-                    //TODO descomentar esto cuando la inicializacion del BluetoothHandler se haga en el homeScreen
-                    //new ClientThread(device).start();
+                    new ClientThread(device).start();
                 }
 
                 try {
@@ -252,8 +259,12 @@ public class BluetoothHandler {
                         break;
                     case BluetoothAdapter.STATE_ON:
                         //
+                        salvarNombre(mAct);
                         setNuevoNombre();
                         setUnlimitedVisibility();
+                        if (user_in_intent) {
+                            startBluetoothServer();
+                        }
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
                         break;
@@ -317,6 +328,17 @@ public class BluetoothHandler {
         return (mBluetoothAdapter != null && mBluetoothAdapter.isEnabled());
     }
 
+    public static void salvarNombre(Activity act){
+        SQLiteHelper.getInstance(act).salvarNombreBluetooth(
+                BluetoothAdapter.getDefaultAdapter().getName()
+        );
+    }
+
+    public static void restaurarNombre(Activity act){
+        BluetoothAdapter.getDefaultAdapter().setName(
+                SQLiteHelper.getInstance(act).getDatabaseName()
+        );
+    }
 
     /**
      * Corre indefinidamente, acepta conexiones inseguras de dispositivos con el mismo UUID y
@@ -342,7 +364,9 @@ public class BluetoothHandler {
             // Keep listening until exception occurs or a socket is returned
             while (true) {
                 try {
-                    socket = mmServerSocket.accept();
+                    if(isBluetoothEnabled()) {
+                        socket = mmServerSocket.accept();
+                    }
                 } catch (IOException e) {
                     break;
                 }
@@ -455,6 +479,9 @@ public class BluetoothHandler {
                 //en el intent de mActivirty
                 if (user_in_intent) {
                     Person person = (Person) mAct.getIntent().getSerializableExtra("PERSON");
+                    File foto_p_file = new File(person.getFoto_perfil());
+                    Bitmap foto_p_bitmp = BitmapFactory.decodeFile(foto_p_file.getAbsolutePath());
+                    person.setEncodedImage(this.BitMapToString(foto_p_bitmp));
                     ObjectOutputStream oos = new ObjectOutputStream(mmOutStream);
                     oos.flush();
 
@@ -479,6 +506,14 @@ public class BluetoothHandler {
                 mmSocket.close();
             } catch (IOException e) {
             }
+        }
+
+        public String BitMapToString(Bitmap bitmap){
+            ByteArrayOutputStream baos=new  ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG,100, baos);
+            byte [] b=baos.toByteArray();
+            String temp= Base64.encodeToString(b, Base64.DEFAULT);
+            return temp;
         }
     }
 
@@ -512,14 +547,49 @@ public class BluetoothHandler {
                 }
 
                 if (user_in_intent) {
+
+
                     ObjectInputStream bjr = new ObjectInputStream(mmInStream);
+                    //otenemos a la persona
                     matchPerson = (Person) bjr.readObject();
-                    InterestsMethods mtf = new InterestsMethods();
+                    //nos tenemos q fijar si el usuario existe o no.. en el caso de q exista
+                    //entonces hay que borrar su foto vieja y su viejo registro en la BD (para ahorrar recursos)
+                    boolean usuario_existe = false;
+                    SQLiteHelper hlp = SQLiteHelper.getInstance(mAct);
+                    Usuario us =hlp.getUserByID(Integer.parseInt(matchPerson.getId()));
+                    if(us.getNombre() != null){
+                        usuario_existe = true;
+                    }
+                    if(usuario_existe){
+                        SQLiteDatabase dtb = hlp.getWritableDatabase();
+                        File f = new File(us.getFoto());
+                        f.delete(); // <-- borramos la foto vieja
+                        hlp.deleteUserTextData(us.getId());
+                        hlp.deleteUserInterestData(us.getId());
+                        dtb.execSQL("delete from usuario where idUsuario=" + us.getId());
+                        dtb.execSQL("delete from historial where idMatch="+us.getId());
+                    }
+
+                    //decodificamos la foto
+                    Bitmap foto_p = this.StringToBitMap(matchPerson.getEncodedImage());
+                    //la salvamos y le asignamos el path a la persona
+                    matchPerson.setFoto_perfil(this.saveBitmap(mAct, foto_p));
+
+
+                    final InterestsMethods mtf = new InterestsMethods();
                     Person person = (Person) mAct.getIntent().getSerializableExtra("PERSON");
-                    int percentage = (int) Math.floor(mtf.getMatchPercentage(person, matchPerson));
+                    final int percentage = (int) Math.floor(mtf.getMatchPercentage(person, matchPerson));
 
-                    mtf.insertReceivedPerson(mAct, matchPerson, matchPerson.getId(), percentage);
+                    final Person finalMatchPerson = matchPerson;
+                    mtf.insertReceivedPerson(mAct, finalMatchPerson, finalMatchPerson.getId(), percentage);
+                    hlp.updateSync(hlp.HISTORIAL, 1);
 
+
+                    //obtiene el min match para poder saber si mostrar una notificacion o no.
+                    int min_match = Integer.parseInt(hlp.getConfig(person.getId()).getMinmatch());
+                    if(percentage >= min_match)
+                        //bum
+                        BackgroundService.alert_new_match(matchPerson.getId(),person,percentage);
 
                     bjr.close();
                 }
@@ -541,6 +611,58 @@ public class BluetoothHandler {
             } catch (IOException e) {
             }
         }
+        public Bitmap StringToBitMap(String encodedString){
+            try{
+                byte [] encodeByte=Base64.decode(encodedString,Base64.DEFAULT);
+                Bitmap bitmap=BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+                return bitmap;
+            }catch(Exception e){
+                e.getMessage();
+                return null;
+            }
+        }
+
+        /**
+         * Salva el bitmap path default. Devuelve el path
+         * a la imagen.
+         *
+         * @param act
+         * @param img_serv
+         * @return El string donde se guardo.
+         */
+        public String saveBitmap(Activity act, Bitmap img_serv) {
+            Bitmap btmp = img_serv;
+
+
+            Random rndm = new Random();
+            boolean salvada = false;
+            while (!salvada) {
+                try {
+                    OutputStream fOut = null;
+                    // save image
+                    String name = String.valueOf(rndm.nextLong());
+                    ContextWrapper cw = new ContextWrapper(act.getApplicationContext());
+                    // path to /data/data/yourapp/app_data/imageDir
+                    File directory = cw.getDir("Pictures", Context.MODE_PRIVATE);
+                    File file = new File(directory, name + ".jpg"); // the File to save to
+                    fOut = new FileOutputStream(file);
+                    btmp.compress(Bitmap.CompressFormat.JPEG, 85, fOut); // saving the Bitmap to a file compressed as a JPEG with 85% compression rate
+                    salvada = true;
+                    fOut.flush();
+                    fOut.close(); // do not forget to close the stream
+                    Log.v(getClass().getSimpleName(), "image directory path " + file.getAbsolutePath());
+                    return file.getAbsolutePath();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return null;
+                }
+            }
+
+            return null;
+
+        }
+
     }
 
 

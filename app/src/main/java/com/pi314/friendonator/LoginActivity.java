@@ -1,11 +1,12 @@
 package com.pi314.friendonator;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Gravity;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pi314.interests.InterestsMethods;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import Database.SQLiteHelper;
 import Database.Usuario;
@@ -65,12 +63,16 @@ public class LoginActivity extends Activity {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        //todo mandar un alert si no esta conectado a internet y handle la conexion..
                         //la clase de api tiene un metodod especial para ver si se encuentra actualmente
                         //conectado a internet y otro para pedir la conexion
                         try {
                             if (!api.isConnected(LoginActivity.this)) {
-                                api.activateWifi(LoginActivity.this);
+                                LoginActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        enableWIFI();
+                                    }
+                                });
                             }
                             //esto se encarga de sacar y armar automaticamente la persona. Si hay algun error
                             //por ejemplo, no existe la persona en el servidor entonces va a mandar null
@@ -126,7 +128,6 @@ public class LoginActivity extends Activity {
                         progressDialog.dismiss();
                     }
                 }).start();
-
             }
         });
 
@@ -187,7 +188,7 @@ public class LoginActivity extends Activity {
                 InterestsMethods fillPerson = new InterestsMethods();
                 pers.setDataBaseInterest(fillPerson.getInterestFromDataBase(LoginActivity.this, Integer.parseInt(pers.getId())));
                 pers.setGetTextFieldInfo(fillPerson.getTextsFromDataBase(LoginActivity.this, Integer.parseInt(pers.getId())));
-                pers.setGetContactedByList(fillPerson.getContactedByFromDataBase(LoginActivity.this, pop.getUser(pers.getEmail())));
+                pers.setGetContactedByList(fillPerson.getContactedByFromDataBase(LoginActivity.this, pop.getUserByID(Integer.parseInt(pers.getId()))));
             }
 
             intent.putExtra("PERSON", pers);
@@ -195,6 +196,24 @@ public class LoginActivity extends Activity {
             startActivity(intent);
             this.finish();
         }
+    }
+    public void enableWIFI() {
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.wifiNotConnectedLogin)
+                    .setCancelable(false)
+                    .setPositiveButton(R.string.option_yes, new DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton(R.string.option_no, new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            dialog.cancel();
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
+
     }
 
 }

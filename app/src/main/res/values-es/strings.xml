@@ -174,5 +174,9 @@
     <string name="option_yes">Si</string>
     <string name="option_no">No</string>
 
+    <string name="found_a_match">Encontrado un usuario con porcentade  de compatibilidad igual a</string>
+    <string name="titulo_notification">Clover esta activo</string>
+    <string name="wifiNotConnectedLogin">La conexión de red esta deshabilitada. ¿Deseas habilitarla?</string>
+
     <string name="menu">Menú</string>
 </resources>

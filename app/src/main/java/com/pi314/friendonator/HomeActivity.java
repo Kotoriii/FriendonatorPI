@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import Bluetooth.BluetoothHandler;
 import Database.SQLiteHelper;
 import Database.Usuario;
+import misc.BackgroundService;
 
 /**
  * Created by Christian on 10/12/2014.
@@ -47,6 +48,7 @@ public class HomeActivity extends Activity {
     SQLiteHelper db;
     int eventSelected;
     ImageView viewImage;
+    private static boolean is_BackgroundRunning = false;
 
     //Elementos del menu
     private ListView NavList;
@@ -168,7 +170,20 @@ public class HomeActivity extends Activity {
             }
         }
 
+        this.inicializarMenu();
 
+        //inicializamos el bluetooth. Como es singleton no hay q preocuparse por cuantas veces
+        //lo inicializamos
+        this.inicializarBluetooth();
+
+        if(!is_BackgroundRunning) { // solo queremos q lo inicialize una ves ya que es un 'activity'
+            this.inicializarBackgroundService();
+            this.is_BackgroundRunning = true;
+        }
+
+    }
+
+    private void inicializarMenu() {
         ///////////////////////////////////////Logica para el menu//////////////////////////////////////////////////////////
         final String[] opciones = getResources().getStringArray(R.array.menu_options);
 
@@ -221,7 +236,6 @@ public class HomeActivity extends Activity {
         };
 
         drawerLayout.setDrawerListener(toggle);
-
     }
 
     public void getSetPerson() {
@@ -252,11 +266,10 @@ public class HomeActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        /*BluetoothHandler mbh = BluetoothHandler.getInstance(this);
-        mbh.redefineActivity(this);
+
         Intent intent = new Intent(HomeActivity.this, MainActivity.class);
         intent.putExtra("PERSON", person);
-        startActivity(intent);*/
+        startActivity(intent);
 
         if (toggle.onOptionsItemSelected(item)) {
             return true;
@@ -317,5 +330,23 @@ public class HomeActivity extends Activity {
         }
     }
 
+    private void inicializarBackgroundService(){
+        BackgroundService.setmAct(this);
+        Intent in = new Intent(this, BackgroundService.class);
+        startService(in);
+    }
+
+    /**
+     * Inicializa la instancia del bluetooth handler, empieza el serverThread (el que acepta conexionex)
+     * y el clientThread (el que busca conexiones). No se encarga de empezar el "Scan" ya que
+     * el background activity se ocupa de esa logica (cada cuando escanea y eso)
+     * La razon x la que se inicializa el bluetooth aqui y no en el background activity es porque se
+     * necesita que un activity lo inicie. Supongo q se puede hacer tambien desde background service..
+     * pero para que complicarse :)
+     */
+    private void inicializarBluetooth(){
+        BluetoothHandler handler = BluetoothHandler.getInstance(this);
+        handler.redefineActivity(this); //<-- solo por aquello, realmente no es necesario
+    }
 
 }

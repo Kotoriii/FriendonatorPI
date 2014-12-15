@@ -83,6 +83,8 @@ public class GetContactedByActivity extends Activity {
                     updateUser.setTwitter(txtTwitter.getText().toString());
                     db.updateUserContacts(updateUser);
 
+                    db.updateSync(db.DATOS_PERSONALES, 1);
+
                     // Create intent to open interests activity
                     Intent intent = new Intent(GetContactedByActivity.this, ProfileActivity.class);
 

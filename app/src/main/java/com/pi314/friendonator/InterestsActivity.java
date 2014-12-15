@@ -107,6 +107,9 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                     insert.insertInterests(InterestsActivity.this, person);
                     insert.insertText(InterestsActivity.this, person);
 
+                    db.updateSync(db.INTERESES, 1);
+                    db.updateSync(db.TEXTOS, 1);
+
                     // Create intent to open interests activity
                     Intent intent = new Intent(InterestsActivity.this, ProfileActivity.class);
 

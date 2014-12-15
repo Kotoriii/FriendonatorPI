@@ -16,6 +16,11 @@ import java.util.List;
  * Created by Christian on 10/30/2014.
  */
 public class SQLiteHelper extends SQLiteOpenHelper {
+    public final String INTERESES = "intereses";
+    public final String DATOS_PERSONALES = "datos_us";
+    public final String IMAGEN_PERFIL = "imagen_perfil";
+    public final String TEXTOS = "textos";
+    public final String HISTORIAL = "historial";
 
     private static SQLiteHelper sInstance;
 
@@ -36,6 +41,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             "PRIMARY KEY (idUsuario)" +
             ")";
 
+    String createSync = "CREATE TABLE sync (" +
+            "descripcion VARCHAR," +
+            "cambiado INTEGER," +
+            "PRIMARY KEY (descripcion)" +
+            ")";
+
+    //diria que esto es un poco overkill jaja
+    String createNombreBluetooth = "CREATE TABLE nombreB (" +
+            "nombre VARCHAR," +
+            "PRIMARY KEY (nombre)" +
+            ")";
+
     String createHist = "CREATE TABLE historial (" +
             "idMatch INTEGER," +
             "idUsuario INTEGER," +
@@ -43,7 +60,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             "matchName VARCHAR," +
             "latitud VARCHAR," +
             "longitud VARCHAR," +
-            "fecha VARCHAR," + // ToDo should use DataTime or equivalent
+            "fecha VARCHAR," +
             "PRIMARY KEY (idMatch, idUsuario)" +
             "FOREIGN KEY(idUsuario) REFERENCES usuario(idUsuario)" +
             ")";
@@ -120,11 +137,110 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         db.execSQL(createTextointer);
         db.execSQL(createContacto);
         db.execSQL(createConfig);
+        db.execSQL(createSync);
+        db.execSQL(createNombreBluetooth);
+
+        //se inicializan los observadores de cambios
+        db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.INTERESES + "',0)");
+        db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.IMAGEN_PERFIL + "',0)");
+        db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.DATOS_PERSONALES + "',0)");
+        db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.TEXTOS + "',0)");
+        db.execSQL("insert into sync (descripcion, cambiado) VALUES ('" + this.HISTORIAL + "',0)");
+
+        //inicializa nombreBluetooth.
+        db.execSQL("insert into nombreB (nombre) VALUES ('banana')");
+
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
+    }
+
+
+    public void salvarNombreBluetooth(String nuevo_nombre){
+        if(this.getNombreBluetooth().equals(nuevo_nombre)){
+            return;
+        }else{
+            this.getWritableDatabase().execSQL(
+                    "update nombreB set nombre='"+nuevo_nombre+"'"
+            );
+        }
+    }
+    public String getNombreBluetooth(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM nombreB", null);
+        cursor.moveToFirst();
+        return cursor.getString(cursor.getColumnIndex("nombre"));
+    }
+
+    public void updateSync(String descripcion, int cambiado) {
+        getWritableDatabase().execSQL("update sync set cambiado=" + cambiado + " where descripcion='" + descripcion + "'");
+    }
+
+    public boolean textosCambiaron() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Boolean emptyTable = true;
+
+        Cursor cursor = db.rawQuery("SELECT * FROM sync where descripcion='" + this.TEXTOS + "'", null);
+        cursor.moveToFirst();
+        if (cursor.getInt(cursor.getColumnIndex("cambiado")) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean interesesCambiaron() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Boolean emptyTable = true;
+
+        Cursor cursor = db.rawQuery("SELECT * FROM sync where descripcion='" + this.INTERESES + "'", null);
+        cursor.moveToFirst();
+        if (cursor.getInt(cursor.getColumnIndex("cambiado")) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean datosPCambiaron() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Boolean emptyTable = true;
+
+        Cursor cursor = db.rawQuery("SELECT * FROM sync where descripcion='" + this.DATOS_PERSONALES + "'", null);
+        cursor.moveToFirst();
+        if (cursor.getInt(cursor.getColumnIndex("cambiado")) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean imgPerfCambiaron() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Boolean emptyTable = true;
+
+        Cursor cursor = db.rawQuery("SELECT * FROM sync where descripcion='" + this.IMAGEN_PERFIL + "'", null);
+        cursor.moveToFirst();
+        if (cursor.getInt(cursor.getColumnIndex("cambiado")) == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean historialCambiaron() {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Boolean emptyTable = true;
+
+        Cursor cursor = db.rawQuery("SELECT * FROM sync where descripcion='" + this.HISTORIAL + "'", null);
+        cursor.moveToFirst();
+        if (cursor.getInt(cursor.getColumnIndex("cambiado")) == 1) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Boolean checkDataBase() {
@@ -145,14 +261,15 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * retorna el usuario que es el propietario del telefono
+     *
      * @return
      */
     public Usuario getLimbo1() {
         SQLiteDatabase db = this.getReadableDatabase();
         Usuario usuario = new Usuario();
 
-        Cursor cursor=db.rawQuery("select * from limbo",null);
-        if(cursor.moveToFirst()){
+        Cursor cursor = db.rawQuery("select * from limbo", null);
+        if (cursor.moveToFirst()) {
             usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
             usuario.setPassword(cursor.getString(cursor.getColumnIndex("password")));
         }
@@ -164,20 +281,21 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     /**
      * retorna el usuario que es el propietario del telefono
+     *
      * @return
      */
     public boolean hay_algo_en_limbo() {
         SQLiteDatabase db = this.getReadableDatabase();
 
 
-        Cursor cursor=db.rawQuery("select * from limbo",null);
+        Cursor cursor = db.rawQuery("select * from limbo", null);
         //si moveToFirst quiere decir q hay algo en limbo
-        if(cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             cursor.close();
             return true;
-        }else
+        } else
             cursor.close();
-            return false;
+        return false;
     }
 
     public void insertTexto(TextoInteres text) {
@@ -323,6 +441,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.update("historial", values, "idMatch=?", new String[]{hist.getIdMatch()});
     }
 
+
     public int updateInteres(Intereses intereses) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -384,8 +503,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("idUsuario",contacto.getIdUsuario());
-        values.put("descripcion",contacto.getDescripcion());
+        values.put("idUsuario", contacto.getIdUsuario());
+        values.put("descripcion", contacto.getDescripcion());
         values.put("modofavorito", contacto.getModofavorito());
         values.put("activo", contacto.getActivo());
 
@@ -408,12 +527,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.update("config", values, "idUsuario=?", new String[]{config.getIdUsuario()});
     }
 
-    public List<Contacto> getAllContactos(int idUser){
+    public List<Contacto> getAllContactos(int idUser) {
         List<Contacto> contactoList = new ArrayList<Contacto>();
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM contacto WHERE activo=?", new String[]{String.valueOf(idUser)});
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 Contacto contacto = new Contacto();
                 contacto.setIdContacto(cursor.getString(0));
@@ -436,7 +555,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery("SELECT * FROM historial", null);
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 Historial historial = new Historial();
                 historial.setIdMatch(cursor.getString(0));
@@ -460,11 +579,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM superinteres", null);
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 Superinteres superinteres = new Superinteres();
-                superinteres.setId(cursor.getString(0));
-                superinteres.setDescripcion(cursor.getString(1));
+                superinteres.setId(cursor.getString(cursor.getColumnIndex("idSuperInteres")));
+                superinteres.setDescripcion(cursor.getString(cursor.getColumnIndex("Descripcion")));
                 superinterList.add(superinteres);
             } while (cursor.moveToNext());
         }
@@ -479,10 +598,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT * FROM intereses, usuariointereses " +
-                                    "WHERE intereses.idIntereses = usuariointereses.idInteres AND usuariointereses.idUsuario=?" +
-                                    "GROUP BY intereses.idIntereses", new String[] {String.valueOf(idUser)});
+                "WHERE intereses.idIntereses = usuariointereses.idInteres AND usuariointereses.idUsuario=?" +
+                "GROUP BY intereses.idIntereses", new String[]{String.valueOf(idUser)});
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 Intereses intereses = new Intereses();
                 intereses.setId(cursor.getString(0));
@@ -503,7 +622,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery("SELECT * FROM usuario", null);
 
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             do {
                 Usuario usuario = new Usuario();
                 usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
@@ -531,7 +650,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         List<TextoInteres> textList = new ArrayList<TextoInteres>();
         SQLiteDatabase db = this.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT * FROM textointeres WHERE idUsuario=?", new String[] {String.valueOf(idUser)});
+        Cursor cursor = db.rawQuery("SELECT * FROM textointeres WHERE idUsuario=?", new String[]{String.valueOf(idUser)});
 
         if (cursor.moveToFirst()) {
             do {
@@ -550,8 +669,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Usuario usuario = new Usuario();
 
-        Cursor cursor=db.query("usuario", null, "correo=?", new String[]{email}, null, null, null);
-        if(cursor.moveToFirst()){
+        Cursor cursor = db.query("usuario", null, "correo=?", new String[]{email}, null, null, null);
+        if (cursor.moveToFirst()) {
             usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
             usuario.setDob(cursor.getString(cursor.getColumnIndex("fecha_de_nacimiento")));
             usuario.setCorreo(cursor.getString(cursor.getColumnIndex("correo")));
@@ -571,18 +690,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return usuario;
     }
 
-    public Configuracion getConfig(String email) {
+    public Configuracion getConfig(String idUsuario) {
         SQLiteDatabase db = this.getReadableDatabase();
         Configuracion config = new Configuracion();
 
-        Cursor cursor=db.query("config", null, "correo=?", new String[]{email}, null, null, null);
-        if(cursor.moveToFirst()){
+        Cursor cursor = db.query("config", null, "idUsuario=?", new String[]{idUsuario}, null, null, null);
+        if (cursor.moveToFirst()) {
             config.setIdUsuario(cursor.getString(cursor.getColumnIndex("idUsuario")));
             config.setMinmatch(cursor.getString(cursor.getColumnIndex("minmatch")));
             config.setNotific(cursor.getString(cursor.getColumnIndex("notific")));
             config.setSound(cursor.getString(cursor.getColumnIndex("sound")));
             config.setVibration(cursor.getString(cursor.getColumnIndex("vibration")));
-            config.setInterval(cursor.getString(cursor.getColumnIndex("facebook")));
+            config.setInterval(cursor.getString(cursor.getColumnIndex("interval")));
         }
 
         cursor.close();
@@ -594,8 +713,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         Usuario usuario = new Usuario();
 
-        Cursor cursor=db.query("usuario", null, "idUsuario=?", new String[]{String.valueOf(userId)}, null, null, null);
-        if(cursor.moveToFirst()){
+        Cursor cursor = db.query("usuario", null, "idUsuario=?", new String[]{String.valueOf(userId)}, null, null, null);
+        if (cursor.moveToFirst()) {
             usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
             usuario.setDob(cursor.getString(cursor.getColumnIndex("fecha_de_nacimiento")));
             usuario.setCorreo(cursor.getString(cursor.getColumnIndex("correo")));
@@ -625,12 +744,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return db.delete("textointeres", "idUsuario=?", new String[]{idUser});
     }
 
-    public TextoInteres getTexto(String id){
+    public TextoInteres getTexto(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
         TextoInteres texto = new TextoInteres();
 
-        Cursor cursor=db.query("textointeres", null, " idTexto=?", new String[]{id}, null, null, null);
-        if(cursor.moveToFirst()){
+        Cursor cursor = db.query("textointeres", null, " idTexto=?", new String[]{id}, null, null, null);
+        if (cursor.moveToFirst()) {
             texto.setIdSuperInteres(cursor.getString(0));
             texto.setUsuario(cursor.getString(1));
             texto.setTexto(cursor.getString(2));
