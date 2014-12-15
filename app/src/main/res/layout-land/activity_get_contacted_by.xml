@@ -210,12 +210,7 @@
                         android:layout_height="25dp"
                         android:id="@+id/space9" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="@string/lblFindMeTool"
-                        android:id="@+id/lblFindMeTool" />
+
 
                     <Space
                         android:layout_width="20dp"
