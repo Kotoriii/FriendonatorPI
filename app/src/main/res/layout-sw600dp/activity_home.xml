@@ -118,7 +118,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
                         android:layout_marginRight="50dp"
-                        android:src="@drawable/dogemarilyn"
+                        android:src="@drawable/match_place_holder"
                         android:clickable="true"
                         android:onClick="onClickMatch" />
 
