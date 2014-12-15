@@ -3,6 +3,7 @@ package misc;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -69,7 +70,7 @@ public class ApiWrapper {
     private List<NameValuePair> mPostData = null; //datos a mandar durante el HttpAsyncPOSTTask
     private Bitmap mBitmapHolder = null;
     private Activity mAct = null;
-    protected String urlDomain = "http://tupini07.pythonanywhere.com/";
+    protected String urlDomain = "http://192.168.1.118:8001/";//"http://tupini07.pythonanywhere.com/";
 
     /**
      * para cuando se necesitan funciones con activities.
@@ -128,10 +129,10 @@ public class ApiWrapper {
 
                     //Obtenemos la fecha
                     String json_fecha = json.getString("fecha_de_nacimiento");
-                    int anno = Integer.parseInt(json_fecha.substring(0, 4));
-                    int mes = Integer.parseInt(json_fecha.substring(5, 7));
-                    int dia = Integer.parseInt(json_fecha.substring(8));
-                    persona.setFecha_de_nacimiento(new Date(anno, mes, dia));
+//                    int anno = Integer.parseInt(json_fecha.substring(0, 4));
+//                    int mes = Integer.parseInt(json_fecha.substring(5, 7));
+ //                   int dia = Integer.parseInt(json_fecha.substring(8));
+                    persona.setFecha_de_nacimiento(new Date());
                     persona.setFoto_perfil(this.saveUserBitmapFromUrl(act, id_us));
 
                     //cosas especificas de usuario
@@ -406,8 +407,10 @@ public class ApiWrapper {
             return getImageFromURL(url);
 
         } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
+            mBitmapHolder = BitmapFactory.decodeResource(mAct.getResources(), R.drawable.match_place_holder);
+            SQLiteHelper hlp = SQLiteHelper.getInstance(mAct);
+            hlp.updateSync(hlp.IMAGEN_PERFIL, 1);
+            return mBitmapHolder;
         }
 
     }
@@ -419,6 +422,11 @@ public class ApiWrapper {
      */
     public boolean salvarInteresesDelServidorABDLocal(Activity act) {
         SQLiteHelper Helper = SQLiteHelper.getInstance(act);
+        SQLiteDatabase db = Helper.getWritableDatabase();
+        db.execSQL("delete from intereses");
+        db.execSQL("delete from superinteres");
+        db.execSQL("delete from usuariointereses");
+        db.execSQL("delete from config");
         try {
             HashMap<Superinteres, List<Intereses>> hmap = this.getIntereses();
             for (Superinteres sup : hmap.keySet()) {

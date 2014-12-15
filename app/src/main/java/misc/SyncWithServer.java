@@ -80,10 +80,10 @@ public class SyncWithServer extends ApiWrapper {
 
             //Obtenemos la fecha
             String json_fecha = json.getString("fecha_de_nacimiento");
-            int anno = Integer.parseInt(json_fecha.substring(0, 4));
-            int mes = Integer.parseInt(json_fecha.substring(5, 7));
-            int dia = Integer.parseInt(json_fecha.substring(8));
-            persona.setFecha_de_nacimiento(new Date(anno, mes, dia));
+//            int anno = Integer.parseInt(json_fecha.substring(0, 4));
+//            int mes = Integer.parseInt(json_fecha.substring(5, 7));
+//            int dia = Integer.parseInt(json_fecha.substring(8));
+            persona.setFecha_de_nacimiento(new Date());
             persona.setFoto_perfil(this.saveUserBitmapFromUrl(mAct, id_us));
 
             //cosas especificas de usuario
@@ -243,7 +243,9 @@ public class SyncWithServer extends ApiWrapper {
         for (int index = 0; index < nameValuePairs.size(); index++) {
             if (nameValuePairs.get(index).getName().equalsIgnoreCase("imagen")) {
                 // If the key equals to "image", we use FileBody to transfer the data
-                entity.addPart(nameValuePairs.get(index).getName(), new FileBody(new File(nameValuePairs.get(index).getValue())));
+                try {
+                    entity.addPart(nameValuePairs.get(index).getName(), new FileBody(new File(nameValuePairs.get(index).getValue())));
+                }catch (Exception e){}
             } else {
                 // Normal string data
                 entity.addPart(nameValuePairs.get(index).getName(), new StringBody(nameValuePairs.get(index).getValue()));
