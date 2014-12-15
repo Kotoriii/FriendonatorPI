@@ -219,7 +219,7 @@ public class BluetoothHandler {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            final String action = intent.getAction();
+           final String action = intent.getAction();
 
 
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
@@ -245,7 +245,7 @@ public class BluetoothHandler {
 
                 if (!lstDisptV.contains(device) &&
                         mValidator.isValidDevice(device)) {
-                    lstDisptV.add(device);
+                        lstDisptV.add(device);
 
                     //Ejecuta el client thread con el dispositivo recien encontrado
                     new ClientThread(device).start();
@@ -573,13 +573,16 @@ public class BluetoothHandler {
 
 
                     ObjectInputStream bjr = new ObjectInputStream(mmInStream);
+
                     //otenemos a la persona
                     matchPerson = (Person) bjr.readObject();
+
                     //nos tenemos q fijar si el usuario existe o no.. en el caso de q exista
                     //entonces hay que borrar su foto vieja y su viejo registro en la BD (para ahorrar recursos)
                     boolean usuario_existe = false;
                     SQLiteHelper hlp = SQLiteHelper.getInstance(mAct);
                     Usuario us = hlp.getUserByID(Integer.parseInt(matchPerson.getId()));
+
                     //tambien tenemos que fijarnos que el usuario que estoy recibiendo no sea yo mismo.
                     //con otro telefono
                     if(us.getNombre() != null && !hlp.getLimbo1().getId().equals(us.getId())){
@@ -612,8 +615,10 @@ public class BluetoothHandler {
 
 
                     //obtiene el min match para poder saber si mostrar una notificacion o no.
+                    //le notificamos solo si el match es suficientemente alto y si no le ha notificado
+                    //hace poco de dicho usuairo
                     int min_match = Integer.parseInt(hlp.getConfig(person.getId()).getMinmatch());
-                    if(percentage >= min_match)
+                    if(percentage >= min_match && lstDisptV.contains(mmSocket.getRemoteDevice()))
                         //bum
                         BackgroundService.alert_new_match(matchPerson.getId(),person,percentage);
 

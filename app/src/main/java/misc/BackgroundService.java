@@ -115,6 +115,7 @@ public class BackgroundService extends IntentService {
                             if(bMan.isBluetoothEnabled()) {
                                 bMan.StartScan();
                             }else{
+                                bMan.getDevicesList().clear();
                                 bMan.StartBlueTooth();
                             }
                         }
