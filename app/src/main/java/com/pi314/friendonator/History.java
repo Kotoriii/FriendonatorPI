@@ -63,13 +63,12 @@ public class History extends Activity {
         if (historialList.isEmpty()) {
             // Testing inserting match and history
             testMatchStuff();
+            historialList = db.getAllHistorial();
         }
-
-        historialList = db.getAllHistorial();
 
         if (!historialList.isEmpty()) {
             for (Historial h : historialList) {
-                datos.add(new ListaEntrada_History(R.drawable.match_place_holder, h.getMatchName(), getResources().getString(R.string.matchPercentage) + h.getMatchPerc() + " %", Integer.parseInt(h.getIdMatch())));
+                datos.add(new ListaEntrada_History(R.drawable.match_place_holder, h.getMatchName(), getResources().getString(R.string.matchPercentage) + " " + h.getMatchPerc() + "%", Integer.parseInt(h.getIdMatch())));
             }
         }
 
@@ -168,7 +167,7 @@ public class History extends Activity {
 
             public void onDrawerOpened(View drawerView) {
                 // Drawer abierto
-                getActionBar().setTitle("Menu");
+                getActionBar().setTitle(getResources().getString(R.string.menu));
                 //invalidateOptionsMenu();
             }
         };

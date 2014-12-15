@@ -93,10 +93,10 @@ public class MatchProfileActivity extends Activity {
         int percentage = (int) Math.floor(match.getMatchPercentage(person, matchPerson));
         int specialPercentage = (int) Math.floor(match.specialMatchResult(person.getEventId(), person, matchPerson));
 
-        lblMatchPercentage.setText(getResources().getString(R.string.matchPercentage) + percentage + " %");
+        lblMatchPercentage.setText(getResources().getString(R.string.matchPercentage) + " " + percentage + "%");
         if (specialPercentage != 0) {
             lblSpecialMatch.setVisibility(View.VISIBLE);
-            lblSpecialMatch.setText(getResources().getString(R.string.categoryPercentage) + specialPercentage + " %");
+            lblSpecialMatch.setText(getResources().getString(R.string.categoryPercentage) + " " + specialPercentage + "%");
         }
 
         gridViewInterests.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -176,7 +176,7 @@ public class MatchProfileActivity extends Activity {
 
             public void onDrawerOpened(View drawerView) {
                 // Drawer abierto
-                getActionBar().setTitle("Menu");
+                getActionBar().setTitle(getResources().getString(R.string.menu));
                 //invalidateOptionsMenu();
             }
         };

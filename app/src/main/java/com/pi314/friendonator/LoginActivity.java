@@ -2,6 +2,7 @@ package com.pi314.friendonator;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -29,6 +30,7 @@ public class LoginActivity extends Activity {
 
     SQLiteHelper db;
     Person person;
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,64 +49,84 @@ public class LoginActivity extends Activity {
         btnlogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String correo = txtusername.getText().toString();
-                String password = txtpassword.getText().toString();
+                final String correo = txtusername.getText().toString();
+                final String password = txtpassword.getText().toString();
 
                 //implementacion de api para login
-                ApiWrapper api = new ApiWrapper();
+                final ApiWrapper api = new ApiWrapper();
+
+                // Start progress dialog while app waits for log in to check info
+                progressDialog = new ProgressDialog(LoginActivity.this, R.style.MyTheme);
+                progressDialog.setCancelable(false);
+                progressDialog.setIndeterminate(true);
+                progressDialog.setProgressStyle(android.R.style.Widget_ProgressBar_Large);
+                progressDialog.show();
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //todo mandar un alert si no esta conectado a internet y handle la conexion..
+                        //la clase de api tiene un metodod especial para ver si se encuentra actualmente
+                        //conectado a internet y otro para pedir la conexion
+                        try {
+                            if (!api.isConnected(LoginActivity.this)) {
+                                api.activateWifi(LoginActivity.this);
+                            }
+                            //esto se encarga de sacar y armar automaticamente la persona. Si hay algun error
+                            //por ejemplo, no existe la persona en el servidor entonces va a mandar null
+                            person = api.loginConServidor(correo, password, LoginActivity.this);
 
 
-                //todo mandar un alert si no esta conectado a internet y handle la conexion..
-                //la clase de api tiene un metodod especial para ver si se encuentra actualmente
-                //conectado a internet y otro para pedir la conexion
-                try {
-                    if (!api.isConnected(LoginActivity.this)) {
-                        api.activateWifi(LoginActivity.this);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+                        Usuario userLogin = null;
+
+                        //si el login no fuera existoso entonces devolveria null
+                        if (person != null && person.getId() != null) {
+
+                            //deberia de existir, ya que existe un usuario..
+                            //al hacer login de un nuevo usuario el sistema se encarga de guardar
+                            //en su respectivo lugar
+                            userLogin = db.getUser(person.getEmail());
+
+                            // Create intent to open interests activity
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+
+
+                            if (person.getName() == null) {
+                                // Create intent to open interests activity
+                                intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                            } else {
+                                InterestsMethods fillPerson = new InterestsMethods();
+                                person.setDataBaseInterest(fillPerson.getInterestFromDataBase(LoginActivity.this, Integer.parseInt(person.getId())));
+                                person.setGetTextFieldInfo(fillPerson.getTextsFromDataBase(LoginActivity.this, Integer.parseInt(person.getId())));
+                                person.setGetContactedByList(fillPerson.getContactedByFromDataBase(LoginActivity.this, userLogin));
+                            }
+
+                            // Set person inside intent
+                            intent.putExtra("PERSON", person);
+
+                            // Start change to a new layout
+                            startActivity(intent);
+
+                            // Finish activity
+                            finish();
+                        } else {
+                            // This makes possible to use toast inside a threat
+                            LoginActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    customToast(getResources().getString(R.string.toastWrongLogIn));
+                                }
+                            });
+                        }
+                        // Close progress dialog
+                        progressDialog.dismiss();
                     }
-                    //esto se encarga de sacar y armar automaticamente la persona. Si hay algun error
-                    //por ejemplo, no existe la persona en el servidor entonces va a mandar null
-                    person = api.loginConServidor(correo, password, LoginActivity.this);
+                }).start();
 
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                Usuario userLogin = null;
-
-                //si el login no fuera existoso entonces devolveria null
-                if (person != null && person.getId() != null) {
-
-                    //deberia de existir, ya que existe un usuario..
-                    //al hacer login de un nuevo usuario el sistema se encarga de guardar
-                    //en su respectivo lugar
-                    userLogin = db.getUser(person.getEmail());
-
-                    // Create intent to open interests activity
-                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-
-
-                    if (person.getName() == null) {
-                        // Create intent to open interests activity
-                        intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                    } else {
-                        InterestsMethods fillPerson = new InterestsMethods();
-                        person.setDataBaseInterest(fillPerson.getInterestFromDataBase(LoginActivity.this, Integer.parseInt(person.getId())));
-                        person.setGetTextFieldInfo(fillPerson.getTextsFromDataBase(LoginActivity.this, Integer.parseInt(person.getId())));
-                        person.setGetContactedByList(fillPerson.getContactedByFromDataBase(LoginActivity.this, userLogin));
-                    }
-
-                    // Set person inside intent
-                    intent.putExtra("PERSON", person);
-
-                    // Start change to a new layout
-                    startActivity(intent);
-
-                    // Finish activity
-                    finish();
-                } else {
-                    customToast(getResources().getString(R.string.toastWrongLogIn));
-                }
             }
         });
 

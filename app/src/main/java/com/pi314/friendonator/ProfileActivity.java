@@ -420,6 +420,7 @@ public class ProfileActivity extends Activity {
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     File f = new File(android.os.Environment.getExternalStorageDirectory(), imagename);
                     intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(f));
+                    intent.putExtra("android.intent.extras.CAMERA_FACING", 1); // Uses front camera to take picture
                     startActivityForResult(intent, 1);
                 } else if (options[item].equals( getResources().getString(R.string.txtaddfromgallery))) {
                     Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
