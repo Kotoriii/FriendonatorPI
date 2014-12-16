@@ -60,7 +60,6 @@ public class BackgroundService extends IntentService {
 
         //todo quitar toasts
         if (this.mAct != null) {
-            Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
             SyncWithServer sync = new SyncWithServer(mAct);
             this.ScanEveryX(mAct, sync.obtain_user());
             this.ScanForSync(mAct);
@@ -113,9 +112,10 @@ public class BackgroundService extends IntentService {
                     while (running) {
                         synchronized (this) {
                             if(bMan.isBluetoothEnabled()) {
+                                Log.v(getClass().getSimpleName(), "restarting scan. Clearing device list");
+                                bMan.getDevicesList().clear();
                                 bMan.StartScan();
                             }else{
-                                bMan.getDevicesList().clear();
                                 bMan.StartBlueTooth();
                             }
                         }

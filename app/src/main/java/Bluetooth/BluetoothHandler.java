@@ -243,6 +243,7 @@ public class BluetoothHandler {
 
                 }
 
+
                 if (!lstDisptV.contains(device) &&
                         mValidator.isValidDevice(device)) {
                         lstDisptV.add(device);
@@ -254,7 +255,7 @@ public class BluetoothHandler {
                 try {
                     BluetoothDevice dev = getAdapter().getRemoteDevice(device.getAddress());
                     int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                    Log.d("BluetoothFR", device.getName() + " RSSI: " + rssi + " describe_contents: " + device.describeContents());
+                    Log.d("BluetoothFR", device.getName() + " RSSI: " + rssi);
 
                     mAct.getIntent().putExtra("name", device.getName());
                     mAct.getIntent().putExtra("strg", rssi);
@@ -618,7 +619,8 @@ public class BluetoothHandler {
                     //le notificamos solo si el match es suficientemente alto y si no le ha notificado
                     //hace poco de dicho usuairo
                     int min_match = Integer.parseInt(hlp.getConfig(person.getId()).getMinmatch());
-                    if(percentage >= min_match && lstDisptV.contains(mmSocket.getRemoteDevice()))
+                    //todo descomentar
+                    if(percentage >= min_match )//&& lstDisptV.contains(mmSocket.getRemoteDevice()))
                         //bum
                         BackgroundService.alert_new_match(matchPerson.getId(),person,percentage);
 
