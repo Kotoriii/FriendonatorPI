@@ -37,7 +37,6 @@ public class BackgroundService extends IntentService {
     private boolean running = true;
     private static Activity mAct;
 
-
     public BackgroundService() {
         super("FriendonatorBackgroundProcess"); //<--- !!!!!!!!!
     }
@@ -60,7 +59,6 @@ public class BackgroundService extends IntentService {
 
         //todo quitar toasts
         if (this.mAct != null) {
-            Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
             SyncWithServer sync = new SyncWithServer(mAct);
             this.ScanEveryX(mAct, sync.obtain_user());
             this.ScanForSync(mAct);
@@ -113,9 +111,10 @@ public class BackgroundService extends IntentService {
                     while (running) {
                         synchronized (this) {
                             if(bMan.isBluetoothEnabled()) {
+                                Log.v(getClass().getSimpleName(), "restarting scan. Clearing device list");
+                                bMan.getDevicesList().clear();
                                 bMan.StartScan();
                             }else{
-                                bMan.getDevicesList().clear();
                                 bMan.StartBlueTooth();
                             }
                         }
@@ -143,21 +142,25 @@ public class BackgroundService extends IntentService {
                         if (help.textosCambiaron()) {
                             if (sync.sync_textos_upstream())
                                 help.updateSync(help.TEXTOS, 0);
+                                Log.v(getClass().getSimpleName(), "Textos actualizados");
                             algo_cambio = true;
                         }
                         if (help.imgPerfCambiaron()) {
                             if (sync.sync_image_upstream())
                                 help.updateSync(help.IMAGEN_PERFIL, 0);
+                                Log.v(getClass().getSimpleName(), "IMG Perfil Actualizada");
                             algo_cambio = true;
                         }
                         if (help.interesesCambiaron()) {
                             if (sync.sync_interests_upstream())
                                 help.updateSync(help.INTERESES, 0);
+                            Log.v(getClass().getSimpleName(), "Intereses Actualizados");
                             algo_cambio = true;
                         }
                         if (help.datosPCambiaron()) {
                             if (sync.sync_user_upstream())
                                 help.updateSync(help.DATOS_PERSONALES, 0);
+                                Log.v(getClass().getSimpleName(), "Datos Personales actualizados");
                             algo_cambio = true;
                         }
                         if (help.historialCambiaron()) {
@@ -167,10 +170,12 @@ public class BackgroundService extends IntentService {
                                 //actualize con el servidor. Supongo que para la presentacion lo vamos
                                 //a dejar sin q se borre para q el historial se muestre
                                 //help.getWritableDatabase().execSQL("dete from historial");
+                                Log.v(getClass().getSimpleName(), "Historial actualizado");
                             algo_cambio = true;
                         }
                         if (!algo_cambio) {
                             sync.sync_user_downstream();
+                            Log.v(getClass().getSimpleName(), "Sync user Downstream");
                         } else {
                             algo_cambio = false;
                         }

@@ -89,6 +89,9 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
         // Set Data Base
         db = SQLiteHelper.getInstance(getApplicationContext());
 
+        db.updateSync(db.INTERESES, 1);
+        db.updateSync(db.TEXTOS, 1);
+
         // Get object person from intent extras
         setPerson();
 
@@ -106,9 +109,6 @@ public class InterestsActivity extends Activity implements SelectInterests.Notic
                     InterestsMethods insert = new InterestsMethods();
                     insert.insertInterests(InterestsActivity.this, person);
                     insert.insertText(InterestsActivity.this, person);
-
-                    db.updateSync(db.INTERESES, 1);
-                    db.updateSync(db.TEXTOS, 1);
 
                     // Create intent to open interests activity
                     Intent intent = new Intent(InterestsActivity.this, ProfileActivity.class);
