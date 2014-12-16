@@ -92,9 +92,11 @@ public class MatchProfileActivity extends Activity {
         }
 
         //ponemos la foto adecuada al image match
-        File file = new File(matchPerson.getFoto_perfil());
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-        imageMatch.setImageBitmap(bitmap);
+        if(matchPerson.getFoto_perfil() != null) {
+            File file = new File(matchPerson.getFoto_perfil());
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+            imageMatch.setImageBitmap(bitmap);
+        }
 
         // Set match name
         lblMatchName.setText(matchPerson.getName());

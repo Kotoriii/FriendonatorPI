@@ -5,13 +5,13 @@ package com.pi314.friendonator;
  */
 public class ListaEntrada_History {
     private int id;
-    private int Image;
+    private String Image;
     private String name;
     private String percentage;
 
 
-    public ListaEntrada_History(int image, String name, String percentage, int _id) {
-        Image = image;
+    public ListaEntrada_History(String imagePath, String name, String percentage, int _id) {
+        Image = imagePath;
         this.name = name;
         this.percentage = percentage;
         id = _id;
@@ -25,11 +25,11 @@ public class ListaEntrada_History {
         this.id = id;
     }
 
-    public int getImage() {
+    public String getImage() {
         return Image;
     }
 
-    public void setImage(int image) {
+    public void setImage(String image) {
         Image = image;
     }
 

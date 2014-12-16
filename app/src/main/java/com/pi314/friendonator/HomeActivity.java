@@ -351,4 +351,20 @@ public class HomeActivity extends Activity {
         handler.redefineActivity(this); //<-- solo por aquello, realmente no es necesario
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        // Create the Intent element
+        Intent intent = new Intent(HomeActivity.this, MainActivity.class);
+
+        // Set flag to close app
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.putExtra("Exit me", true);
+
+        startActivity(intent);
+
+        // Finish activity
+        finish();
+    }
+
 }

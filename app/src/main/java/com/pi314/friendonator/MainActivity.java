@@ -40,32 +40,35 @@ public class MainActivity extends Activity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /** Aqui solamente se inicializan cosas y se utiliza el OnDestroy de esta Clase */
-        //metodo estatico.. muestra un alert si location no esta disponible en los settings.
-        GPSHelper.checkIfLocationEnabled(this);
+        // This will close the app from Home
+        if(getIntent().getBooleanExtra("Exit me", false)){
+            finish();
+        } else {
+            /** Aqui solamente se inicializan cosas y se utiliza el OnDestroy de esta Clase */
+            //metodo estatico.. muestra un alert si location no esta disponible en los settings.
+            GPSHelper.checkIfLocationEnabled(this);
 
-        SQLiteHelper.getInstance(getApplicationContext());
+            SQLiteHelper.getInstance(getApplicationContext());
 
-        GPSHelper.home = this;
+            GPSHelper.home = this;
 
-        // solamente para que se pueda apreciar mejor el splashscreen
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    synchronized (this) {
-                        this.wait(900);
-                        Intent login = new Intent(MainActivity.this, LoginActivity.class);
-                        startActivity(login);
+            // solamente para que se pueda apreciar mejor el splashscreen
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        synchronized (this) {
+                            this.wait(900);
+                            Intent login = new Intent(MainActivity.this, LoginActivity.class);
+                            startActivity(login);
+
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
-            }
-        }).start();
-
-
-
+            }).start();
+        }
     }
 
     @Override
