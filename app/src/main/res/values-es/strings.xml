@@ -162,7 +162,7 @@
     <!-- BackgroundService -->
 
     <string name="Matchfound">Match encontrado</string>
-    <string name="seePerson">¿Quieres ver esta persona?</string>
+    <string name="seePerson">¿Querés ver esta persona?</string>
 
     <string name="title_activity_about_us">Acerca de nosotros</string>
     <string name="lblVision">Nuestra visión es proporcionar estándares de alta calidad a través de la innovación constante.</string>
@@ -171,12 +171,12 @@
 
     <!-- GPSHelper -->
     <string name="checkIfLocationEnabledAlert">Tu GPS está deshabilitado, ¿lo querés habilitar?</string>
-    <string name="option_yes">Si</string>
+    <string name="option_yes">Sí</string>
     <string name="option_no">No</string>
 
-    <string name="found_a_match">Encontrado un usuario con porcentade  de compatibilidad igual a</string>
-    <string name="titulo_notification">Clover esta activo</string>
-    <string name="wifiNotConnectedLogin">La conexión de red esta deshabilitada. ¿Deseas habilitarla?</string>
+    <string name="found_a_match">Encontrado un usuario con %  de compatibilidad igual a</string>
+    <string name="titulo_notification">Clover está activo</string>
+    <string name="wifiNotConnectedLogin">La conexión de red está deshabilitada. ¿Deseás habilitarla?</string>
 
     <string name="menu">Menú</string>
 </resources>

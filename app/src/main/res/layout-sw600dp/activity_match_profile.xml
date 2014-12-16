@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:layout_marginTop="25dp">
 
         <LinearLayout
             android:orientation="vertical"
@@ -149,12 +150,13 @@
                 android:id="@+id/space3" />
 
             <Button
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btnClose"
                 android:id="@+id/btnClose"
                 android:textColor="@android:color/white"
-                android:background="@drawable/button_effect" />
+                android:background="@drawable/button_effect"
+                android:layout_gravity="center_horizontal" />
 
         </LinearLayout>
     </ScrollView>

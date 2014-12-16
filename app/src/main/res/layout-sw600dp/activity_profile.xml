@@ -18,7 +18,8 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp">
 
         <LinearLayout
             android:orientation="vertical"
@@ -159,12 +160,13 @@
                 android:layout_height="20dp" />
 
             <Button
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btnSaveChanges"
                 android:id="@+id/btnSaveChanges"
                 android:textColor="@android:color/white"
-                android:background="@drawable/button_effect" />
+                android:background="@drawable/button_effect"
+                android:layout_gravity="center" />
 
         </LinearLayout>
     </ScrollView>
