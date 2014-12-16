@@ -114,6 +114,7 @@
     <string name="title_activity_match_profile">Match Profile</string>
     <string name="lblMatchName">Match Name</string>
     <string name="btnClose">Close Profile</string>
+    <string name="findMatch">Find</string>
     <string name="imageMatch" translatable="false">Match Image</string>
     <string name="lblMatchInterests">Interests</string>
     <string name="lblMatchContactedBy">Get contacted by</string>
@@ -169,4 +170,5 @@
     <string name="option_no">No</string>
 
     <string name="menu">Menu</string>
+    <string name="lblSignal">Search Signal</string>
  </resources>

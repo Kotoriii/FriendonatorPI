@@ -50,7 +50,7 @@ public class MatchProfileActivity extends Activity {
     NavigationAdapter NavAdapter;
 
     private ImageView imageMatch;
-
+    public static HashMap<String, Short> FUERZA_CON = new HashMap<String, Short>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,7 @@ public class MatchProfileActivity extends Activity {
         final TextView lblSpecialMatch = (TextView) findViewById(R.id.lblSpecialPercentage);
         final Button btnClose = (Button) findViewById(R.id.btnClose);
         imageMatch = (ImageView) findViewById(R.id.imageMatch);
+        final Button btnFind = (Button) findViewById(R.id.findMatch);
 
         try{
             //intentamos quitar el notification (en el caso de que existiese)
@@ -139,6 +140,29 @@ public class MatchProfileActivity extends Activity {
                 GridObject forDialog = gridList.get(position);
                 if (!forDialog.getTitle().isEmpty() && matchPerson.textValue(forDialog.getTitle()) != null)
                     showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), matchPerson.textValue(forDialog.getTitle()), forDialog.getTitle());
+            }
+        });
+
+        btnFind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Static list for search stuff in home
+                FUERZA_CON.put(matchPerson.getId(), null);
+
+                // Create intent
+                Intent intent = new Intent(MatchProfileActivity.this, HomeActivity.class);
+
+                // Set person inside intent
+                intent.putExtra("PERSON", person);
+
+                // Start change to a new layout
+                startActivity(intent);
+
+                // Finish activity
+                finish();
+
+                // Slide animation
+                overridePendingTransition(R.anim.left_to_right, R.anim.right_to_left);
             }
         });
 

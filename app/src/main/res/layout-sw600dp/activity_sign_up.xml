@@ -4,15 +4,16 @@
     android:orientation="vertical" >
 
     <ScrollView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:id="@+id/scrollView2"
         android:scrollbars="none"
         android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp">
+        android:layout_marginRight="25dp"
+        android:layout_gravity="center_horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:orientation="vertical">
@@ -20,36 +21,39 @@
             <EditText
                 android:id="@+id/editTextUserName"
                 android:hint="@string/editTextUserName"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:inputType="textEmailAddress"
-                android:layout_marginTop="300dp">
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp">
                 <requestFocus />
             </EditText>
 
             <EditText
                 android:id="@+id/editTextPassword"
-                android:layout_width="fill_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/editTextPassword"
                 android:inputType="textPassword"
                 android:fontFamily="sans-serif"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal" />
 
             <EditText
                 android:id="@+id/editTextConfirmPassword"
-                android:layout_width="fill_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:hint="@string/editTextConfirmPassword"
                 android:inputType="textPassword"
                 android:fontFamily="sans-serif"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal" />
 
             <Button
                 android:id="@+id/btnCreateAccount"

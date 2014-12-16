@@ -21,12 +21,16 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import Bluetooth.BluetoothHandler;
 import Database.SQLiteHelper;
@@ -58,6 +62,8 @@ public class HomeActivity extends Activity {
     private TypedArray NavIcons;
     NavigationAdapter NavAdapter;
 
+    public static HashMap<String, Short> FUERZA_CON = new HashMap<String, Short>();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +71,11 @@ public class HomeActivity extends Activity {
         spnEvent = (Spinner) findViewById(R.id.spnEvent);
         iv = (ImageView) findViewById(R.id.imgviewEventpic);
         final String txtSpinner = spnEvent.getSelectedItem().toString();
+        final LinearLayout searchLayout = (LinearLayout) findViewById(R.id.layoutMatch);
+        final ImageView imgviewMatchhome = (ImageView) findViewById(R.id.imgviewMatchhome);
+        final TextView lblSignal = (TextView) findViewById(R.id.lblSignal);
+        final TextView lblMatchName = (TextView) findViewById(R.id.textView2);
+        final ProgressBar searchSignal = (ProgressBar) findViewById(R.id.progressBar);
 
         db = SQLiteHelper.getInstance(getApplicationContext());
 
@@ -171,6 +182,27 @@ public class HomeActivity extends Activity {
         }
 
         this.inicializarMenu();
+
+        // Make visible search stuff
+        if(FUERZA_CON != null && !FUERZA_CON.isEmpty()) {
+            searchLayout.setVisibility(View.VISIBLE);
+
+            Usuario match = new Usuario();
+
+            for (Map.Entry<String, Short> entry : FUERZA_CON.entrySet()) {
+                match = db.getUserByID(Integer.parseInt(entry.getKey()));
+                searchSignal.setProgress(entry.getValue());
+            }
+
+            if(match.getFoto() != null) {
+                File file = new File(usuario.getFoto());
+                Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                imgviewMatchhome.setImageBitmap(bitmap);
+            }
+
+            lblSignal.setText(getResources().getText(R.string.lblSignal) + "...");
+            lblMatchName.setText(match.getNombre());
+        }
 
         //inicializamos el bluetooth. Como es singleton no hay q preocuparse por cuantas veces
         //lo inicializamos
