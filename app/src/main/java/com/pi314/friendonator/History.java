@@ -3,6 +3,8 @@ package com.pi314.friendonator;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import android.support.v4.app.ActionBarDrawerToggle;
@@ -22,6 +24,7 @@ import android.widget.Toast;
 
 import com.pi314.interests.InterestsMethods;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,6 +32,7 @@ import java.util.List;
 
 import Database.Historial;
 import Database.SQLiteHelper;
+import Database.Usuario;
 
 
 public class History extends Activity {
@@ -69,7 +73,10 @@ public class History extends Activity {
 
         if (!historialList.isEmpty()) {
             for (Historial h : historialList) {
-                datos.add(new ListaEntrada_History(R.drawable.match_place_holder, h.getMatchName(), getResources().getString(R.string.matchPercentage) + " " + h.getMatchPerc() + "%", Integer.parseInt(h.getIdMatch())));
+                Usuario usuario = new Usuario();
+                db.getUserByID(Integer.parseInt(h.getIdMatch()));
+
+                datos.add(new ListaEntrada_History(usuario.getFoto(), h.getMatchName(), getResources().getString(R.string.matchPercentage) + " " + h.getMatchPerc() + "%", Integer.parseInt(h.getIdMatch())));
             }
         }
 
@@ -88,8 +95,14 @@ public class History extends Activity {
                         txtPercentage.setText(((ListaEntrada_History) entrada).getPercentage());
 
                     ImageView imgProfile = (ImageView) view.findViewById(R.id.imageView_imagen);
-                    if (imgProfile != null)
-                        imgProfile.setImageResource(((ListaEntrada_History) entrada).getImage());
+                    if (imgProfile != null) {
+                        if (((ListaEntrada_History) entrada).getImage() != null) {
+                            File file = new File(((ListaEntrada_History) entrada).getImage());
+                            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                            imgProfile.setImageBitmap(bitmap);
+                        } else
+                            imgProfile.setImageDrawable(getResources().getDrawable(R.drawable.match_place_holder));
+                    }
                 }
             }
         });
@@ -338,8 +351,14 @@ public class History extends Activity {
 
                     //todo poner imagen real
                     ImageView imgProfile = (ImageView) view.findViewById(R.id.imageView_imagen);
-                    if (imgProfile != null)
-                        imgProfile.setImageResource(((ListaEntrada_History) entrada).getImage());
+                    if (imgProfile != null) {
+                        if (((ListaEntrada_History) entrada).getImage() != null) {
+                            File file = new File(((ListaEntrada_History) entrada).getImage());
+                            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                            imgProfile.setImageBitmap(bitmap);
+                        } else
+                            imgProfile.setImageDrawable(getResources().getDrawable(R.drawable.match_place_holder));
+                    }
                 }
             }
         });
@@ -365,8 +384,14 @@ public class History extends Activity {
                         txtPercentage.setText(((ListaEntrada_History) entrada).getPercentage());
 
                     ImageView imgProfile = (ImageView) view.findViewById(R.id.imageView_imagen);
-                    if (imgProfile != null)
-                        imgProfile.setImageResource(((ListaEntrada_History) entrada).getImage());
+                    if (imgProfile != null) {
+                        if (((ListaEntrada_History) entrada).getImage() != null) {
+                            File file = new File(((ListaEntrada_History) entrada).getImage());
+                            Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                            imgProfile.setImageBitmap(bitmap);
+                        } else
+                            imgProfile.setImageDrawable(getResources().getDrawable(R.drawable.match_place_holder));
+                    }
                 }
             }
         });

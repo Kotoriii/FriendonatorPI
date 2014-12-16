@@ -117,7 +117,7 @@
     <string name="imageMatch" translatable="false">Match Image</string>
     <string name="lblMatchInterests">Interests</string>
     <string name="lblMatchContactedBy">Get contacted by</string>
-    <string name="matchPercentage">Match: </string>
+    <string name="matchPercentage">General match: </string>
     <string name="categoryPercentage">Category match: </string>
 
     <!-- Settings -->

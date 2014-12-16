@@ -229,7 +229,7 @@ public class ProfileActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GridObject forDialog = gridList.get(position);
-                if (!forDialog.getTitle().isEmpty() && person.textValue(forDialog.getTitle()) != null)
+                if (!forDialog.getTitle().isEmpty() && person.textValue(forDialog.getTitle()) != null && !person.textValue(forDialog.getTitle()).isEmpty())
                     showInterestInfoDialog(getResources().getString(R.string.whatILike) + " " + forDialog.getTitle(), person.textValue(forDialog.getTitle()), forDialog.getTitle());
             }
         });}

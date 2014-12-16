@@ -125,7 +125,7 @@
     <string name="imageMatch">Imagen de Match</string>
     <string name="lblMatchInterests">Intereses</string>
     <string name="lblMatchContactedBy">Contáctame por</string>
-    <string name="matchPercentage">Match: </string>
+    <string name="matchPercentage">Match general: </string>
     <string name="categoryPercentage">Match por categoría: </string>
 
     <!-- Settings -->
