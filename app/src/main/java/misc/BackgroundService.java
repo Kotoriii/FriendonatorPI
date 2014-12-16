@@ -69,9 +69,9 @@ public class BackgroundService extends IntentService {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    public void endService() {
-        if (this.mNotificationManager != null) {
-            this.mNotificationManager.cancel(mIdNotification);
+    public static void endService() {
+        if (mNotificationManager != null) {
+            mNotificationManager.cancel(mIdNotification);
         }
     }
 
@@ -79,7 +79,7 @@ public class BackgroundService extends IntentService {
         if(mAct!= null && mNotificationManager != null) {
             NotificationCompat.Builder mBuilder;
             mBuilder = new NotificationCompat.Builder(mAct)
-                    .setSmallIcon(R.drawable.logo_notification_bar)
+                    .setSmallIcon(R.drawable.ic_launcher)
                     .setContentTitle("Clover")
 
                     .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
@@ -119,7 +119,9 @@ public class BackgroundService extends IntentService {
                                 bMan.StartBlueTooth();
                             }
                         }
-                        this.sleep(Integer.parseInt(db.getConfig(person.getId()).getInterval()));
+                        this.sleep(10000);
+
+                        //this.sleep(Integer.parseInt(db.getConfig(person.getId()).getInterval()));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -208,7 +210,8 @@ public class BackgroundService extends IntentService {
                     while (running) {
                         synchronized (this) {
                             if (!bMan.getAdapter().isDiscovering()) {
-                                Log.v("BackgroundService", "^^^^^ start scan Background Service. Conserving list");
+                                Log.v("BackgroundService", "^^^^^ start scan Background Service");
+                                bMan.getDevicesList().clear();
                                 bMan.getAdapter().startDiscovery();//doesn't clear the devices list
                             }
                         }

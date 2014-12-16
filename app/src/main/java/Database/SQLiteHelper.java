@@ -310,9 +310,13 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Usuario usuario = new Usuario();
 
         Cursor cursor = db.rawQuery("select * from limbo", null);
-        if (cursor.moveToFirst()) {
-            usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
-            usuario.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+        try {
+            if (cursor.moveToFirst()) {
+                usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
+                usuario.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+            }
+        }catch (IllegalStateException e){
+            return getLimbo1();
         }
 
         cursor.close();

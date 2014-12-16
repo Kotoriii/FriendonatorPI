@@ -2,7 +2,10 @@ package com.pi314.friendonator;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -271,6 +274,26 @@ public class HomeActivity extends Activity {
         finish();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+       // if(is_bluetoothRunning)
+       //     unregisterReceiver(BluetoothHandler.getInstance(this).getReceiver());
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+            IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
+            filter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
+            registerReceiver(
+                    BluetoothHandler.getInstance(this).getReceiver(),
+                    filter
+            );
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
