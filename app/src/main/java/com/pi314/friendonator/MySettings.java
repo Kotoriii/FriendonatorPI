@@ -51,70 +51,9 @@ public class MySettings extends Activity {
 
         final TextView textPercentage = (TextView) findViewById(R.id.txtPercentage);
         final SQLiteHelper db = SQLiteHelper.getInstance(getApplicationContext());
-        // Get object person from intent extras
+
         getSetPerson();
-/*
-        final CharSequence[] privacyArr = {getResources().getString(R.string.showinterests), getResources().getString(R.string.showcontactme)};
-        final AlertDialog.Builder alt_bldPr = new AlertDialog.Builder(this);
-        alt_bldPr.setIcon(R.drawable.ic_settings_alert );
-        alt_bldPr.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
 
-            }
-        });
-
-        alt_bldPr.setNegativeButton(getResources().getString(R.string.cancel), null);
-        alt_bldPr.setTitle(getResources().getString(R.string.privacyoptions));
-        alt_bldPr.setSingleChoiceItems(privacyArr, -1, new DialogInterface
-                .OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-               String mensajePr = getResources().getString(R.string.privacyoptiontoast) + privacyArr[item];
-                ToastCostumizado(mensajePr);
-            }
-        });
-
-        final CharSequence[] AdvancedArr = {getResources().getString(R.string.wifi),getResources().getString(R.string.bluetooth),getResources().getString(R.string.dataconnection), getResources().getString(R.string.application)};
-        final AlertDialog.Builder alt_bldAd = new AlertDialog.Builder(this);
-        alt_bldAd.setIcon(R.drawable.ic_settings_alert);
-        alt_bldAd.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        alt_bldAd.setNegativeButton(getResources().getString(R.string.cancel), null);
-        alt_bldAd.setTitle(getResources().getString(R.string.advancedoptions));
-        alt_bldAd.setSingleChoiceItems(AdvancedArr, -1, new DialogInterface
-                .OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                String mensajeAd = getResources().getString(R.string.advancedoptiontoast) +AdvancedArr[item];
-                ToastCostumizado(mensajeAd);
-            }
-        });
-
-
-        final CharSequence[] LanguageArr = {getResources().getString(R.string.english), getResources().getString(R.string.espanol)};
-        final AlertDialog.Builder alt_bldLa = new AlertDialog.Builder(this);
-        alt_bldLa.setIcon(R.drawable.ic_settings_alert);
-        alt_bldLa.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-        alt_bldLa.setNegativeButton(getResources().getString(R.string.cancel), null);
-        alt_bldLa.setTitle(getResources().getString(R.string.languageoptions));
-        alt_bldLa.setSingleChoiceItems(LanguageArr, -1, new DialogInterface
-                .OnClickListener() {
-            public void onClick(DialogInterface dialog, int item) {
-                String mensajeLa = getResources().getString(R.string.languageoptiontoast)+LanguageArr[item];
-                ToastCostumizado(mensajeLa);
-            }
-        });
-
-*/
         final CharSequence[] Intervale = {getResources().getString(R.string.minutes2),getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15), getResources().getString(R.string.always)};
         final AlertDialog.Builder alt_bldInt = new AlertDialog.Builder(this);
         alt_bldInt.setIcon(R.drawable.ic_settings_alert);
@@ -147,48 +86,11 @@ public class MySettings extends Activity {
 
             }
         });
-/*
-        btnPrivacy.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //String fd =  "boton Privacy presionado";
-                //Toast.makeText(getApplicationContext(), fd,
-                //        Toast.LENGTH_SHORT).show();
-                AlertDialog alertPr = alt_bldPr.create();
-                alertPr.show();
-            }
-        });
 
-        btnAdvanced.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View v) {
-                //String fd =  "boton Advanced presionado";
-                //Toast.makeText(getApplicationContext(), fd,
-                //Toast.LENGTH_SHORT).show();
-                AlertDialog alertAd = alt_bldAd.create();
-                alertAd.show();
-            }
-        });
-
-        btnLanguage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //String fd =  "boton Language presionado";
-                //Toast.makeText(getApplicationContext(), fd,
-                //Toast.LENGTH_SHORT).show();
-                AlertDialog alertLa = alt_bldLa.create();
-                alertLa.show();
-            }
-        });
-*/
         btnIntervaleScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //String fd =  "boton Privacy presionado";
-                //Toast.makeText(getApplicationContext(), fd,
-                //        Toast.LENGTH_SHORT).show();
+
                 AlertDialog alertInt = alt_bldInt.create();
                 alertInt.show();
             }
@@ -225,18 +127,18 @@ public class MySettings extends Activity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
                 progress = progresValue;
-                //Toast.makeText(getApplicationContext(), "Changing seekbar's progress", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                //Toast.makeText(getApplicationContext(), "Started tracking seekbar", Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 textPercentage.setText(seekBar1.getProgress() + "/" + seekBar1.getMax());
-                //Toast.makeText(getApplicationContext(), "Stopped tracking seekbar", Toast.LENGTH_SHORT).show();
+
             }
 
         });
