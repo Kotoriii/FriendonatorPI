@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import Database.Configuracion;
 import Database.SQLiteHelper;
 import Database.Usuario;
 import misc.ApiWrapper;

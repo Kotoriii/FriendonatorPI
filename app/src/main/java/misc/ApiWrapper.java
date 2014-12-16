@@ -198,7 +198,7 @@ public class ApiWrapper {
             return null;
         }
 
-        Configuracion def = new Configuracion();
+       Configuracion def = new Configuracion();
         def.setIdUsuario(us.getId());
         def.setMinmatch("1");
         def.setNotific("1"); //1 prendido, 2 apagado

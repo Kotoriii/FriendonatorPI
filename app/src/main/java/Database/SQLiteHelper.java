@@ -563,7 +563,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("vibration", config.getVibration());
         values.put("interval", config.getInterval());
         db.insert("config", null, values);
-        db.close();
+
 
         return db.update("config", values, "idUsuario=?", new String[]{config.getIdUsuario()});
     }
