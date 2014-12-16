@@ -150,7 +150,7 @@
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Scan Interval"
+            android:text="@string/intervalscan"
             android:id="@+id/btnIntervale"
             android:background="@android:color/transparent"
             android:layout_alignParentRight="true"
@@ -172,12 +172,33 @@
         <Button
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="Save Changes"
+            android:text="@string/btnSaveChanges"
             android:id="@+id/btnSave"
-            android:layout_marginTop="350dp"
+            android:layout_marginTop="400dp"
             android:textColor="@android:color/white"
             android:background="@drawable/button_effect"
             android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_activity_about_us"
+            android:id="@+id/btnAboutUs"
+            android:background="@android:color/transparent"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="310dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:text="New Button"
+            android:id="@+id/AboutUsLine"
+            android:background="@android:color/holo_blue_dark"
+            android:layout_below="@+id/btnAboutUs"
+            android:layout_toRightOf="@+id/txtPercentage" />
 
     </RelativeLayout>
 </ScrollView>

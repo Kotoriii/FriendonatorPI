@@ -48,6 +48,7 @@ public class MySettings extends Activity {
         final Button btnIntervaleScan = (Button)findViewById(R.id.btnIntervale);
         final SeekBar seekBar1 = (SeekBar) findViewById(R.id.seekBar);
         final Button btnSave = (Button)findViewById(R.id.btnSave);
+        final Button btnAboutUs = (Button)findViewById(R.id.btnAboutUs);
 
         final TextView textPercentage = (TextView) findViewById(R.id.txtPercentage);
         final SQLiteHelper db = SQLiteHelper.getInstance(getApplicationContext());
@@ -63,6 +64,9 @@ public class MySettings extends Activity {
             }
 
         });
+
+
+
 
         alt_bldInt.setNegativeButton(getResources().getString(R.string.cancel), null);
         alt_bldInt.setTitle(getResources().getString(R.string.intervalscan));
@@ -104,18 +108,34 @@ public class MySettings extends Activity {
                 config.setInterval(interval);
                 db.updateConfig(config);
 
-                    // Create intent
-                    Intent intent = new Intent(MySettings.this, HomeActivity.class);
+                // Create intent
+                Intent intent = new Intent(MySettings.this, HomeActivity.class);
 
 
-                    // Set person inside intent
-                    intent.putExtra("PERSON", person);
+                // Set person inside intent
+                intent.putExtra("PERSON", person);
 
-                    // Start change to a new layout
-                    startActivity(intent);
+                // Start change to a new layout
+                startActivity(intent);
 
-                    // Finish activity
-                    finish();
+                // Finish activity
+                finish();
+            }
+        });
+
+
+        btnAboutUs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // Create intent
+                Intent intent = new Intent(MySettings.this, AboutUs.class);
+
+                // Start change to a new layout
+                startActivity(intent);
+
+                // Finish activity
+                finish();
             }
         });
 
