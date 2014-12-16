@@ -58,7 +58,7 @@ public class MainActivity extends Activity{
                 public void run() {
                     try {
                         synchronized (this) {
-                            this.wait(900);
+                            this.wait(3000);
                             Intent login = new Intent(MainActivity.this, LoginActivity.class);
                             startActivity(login);
 
