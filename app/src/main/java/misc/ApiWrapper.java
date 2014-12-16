@@ -127,11 +127,7 @@ public class ApiWrapper {
                     persona.setGetTextFieldInfo(this.get_texto_Intereses_us(id_us));
 
 
-                    //Obtenemos la fecha
-                    String json_fecha = json.getString("fecha_de_nacimiento");
-//                    int anno = Integer.parseInt(json_fecha.substring(0, 4));
-//                    int mes = Integer.parseInt(json_fecha.substring(5, 7));
- //                   int dia = Integer.parseInt(json_fecha.substring(8));
+                    //jojo
                     persona.setFecha_de_nacimiento(new Date());
                     persona.setFoto_perfil(this.saveUserBitmapFromUrl(act, id_us));
 
@@ -448,8 +444,10 @@ public class ApiWrapper {
         String key;
         try {
             while (iter.hasNext()) {
-                key = iter.next();
-                textos.put(key, json.getString(key));
+                    key = iter.next();
+                if(!key.equals("error")) {
+                    textos.put(key, json.getString(key));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();
