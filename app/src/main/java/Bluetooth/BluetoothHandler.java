@@ -51,6 +51,7 @@ public class BluetoothHandler {
     Activity mAct = null;
     private static BluetoothHandler mbth;
     private boolean user_in_intent = false;
+    private boolean already_on = false;
 
     //lista estatica de dispositivos. para el 'searching'
     //<id usurario, fuerza de conexion>
@@ -257,18 +258,7 @@ public class BluetoothHandler {
                     int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
                     Log.d("BluetoothFR", device.getName() + " RSSI: " + rssi);
 
-                    mAct.getIntent().putExtra("name", device.getName());
-                    mAct.getIntent().putExtra("strg", rssi);
-
                 } catch (Exception e) {
-                }
-
-
-                if (finding && mValidator.isValidDevice(device)) {// && device.getAddress().equals(findingDevice.getAddress())){
-
-                    int rssi = intent.getShortExtra(BluetoothDevice.EXTRA_RSSI, Short.MIN_VALUE);
-                    Log.v("BluetoothFR", "Device RSSI: " + rssi + "\n Name: " + device.getName());
-
                 }
 
             }
@@ -283,11 +273,14 @@ public class BluetoothHandler {
                         break;
                     case BluetoothAdapter.STATE_ON:
                         //
-                        salvarNombre(mAct);
-                        setNuevoNombre();
-                        setUnlimitedVisibility();
-                        if (user_in_intent) {
-                            startBluetoothServer();
+                        if(!already_on) {
+                            salvarNombre(mAct);
+                            setNuevoNombre();
+                            setUnlimitedVisibility();
+                            if (user_in_intent) {
+                                startBluetoothServer();
+                            }
+                            already_on = true;
                         }
                         break;
                     case BluetoothAdapter.STATE_TURNING_ON:
@@ -457,6 +450,7 @@ public class BluetoothHandler {
             ConnectedToServerThread coTST = new ConnectedToServerThread(mmSocket);
             coTST.start();
 
+
         }
 
         /**
@@ -512,6 +506,7 @@ public class BluetoothHandler {
                     oos.writeObject(person);
                 }
 
+                cancel();
             } catch (Exception e) {
 
             }

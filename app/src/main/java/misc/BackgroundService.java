@@ -37,7 +37,6 @@ public class BackgroundService extends IntentService {
     private boolean running = true;
     private static Activity mAct;
 
-
     public BackgroundService() {
         super("FriendonatorBackgroundProcess"); //<--- !!!!!!!!!
     }
