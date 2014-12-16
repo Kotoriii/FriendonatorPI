@@ -70,7 +70,7 @@
                     android:id="@+id/lblProfileName"
                     android:focusableInTouchMode="true"
                     android:text="Name"
-                    android:textSize="25dp"
+                    android:textSize="25sp"
                     android:layout_toEndOf="@+id/imgviewHomeprofile"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@+id/imgviewHomeprofile"
@@ -80,7 +80,9 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:id="@+id/layoutMatch" >
 
                 <ProgressBar
                     style="?android:attr/progressBarStyleHorizontal"
@@ -88,8 +90,6 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/progressBar"
                     android:layout_marginBottom="10dp"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="25dp"
                     android:layout_marginLeft="70dp"
                     android:layout_marginRight="70dp"
@@ -98,12 +98,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Search Signal..."
-                    android:id="@+id/textView"
+                    android:text="@string/lblSignal"
+                    android:id="@+id/lblSignal"
                     android:layout_marginLeft="70dp"
                     android:textColor="#ff4066ff"
                     android:textStyle="bold"
-                    android:textSize="20dp" />
+                    android:textSize="20sp" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -130,7 +130,7 @@
                         android:id="@+id/textView2"
                         android:layout_marginTop="30dp"
                         android:layout_marginLeft="70dp"
-                        android:textSize="25dp"
+                        android:textSize="25sp"
                         android:layout_toLeftOf="@+id/imgviewMatchhome"
                         android:layout_toStartOf="@+id/imgviewMatchhome" />
                 </RelativeLayout>

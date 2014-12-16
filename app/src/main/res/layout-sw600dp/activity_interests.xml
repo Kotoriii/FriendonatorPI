@@ -2,8 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingLeft="50dp"
+    android:paddingRight="50dp"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.pi314.friendonator.InterestsActivity">
@@ -54,10 +54,11 @@
                     android:visibility="gone"
                     android:contentDescription="@string/btnEditMusic"
                     android:layout_toEndOf="@+id/lblMusic"
-                    android:layout_alignParentTop="true"
+                    android:layout_alignParentTop="false"
                     android:layout_toRightOf="@+id/lblMusic"
                     android:layout_marginLeft="10dp"
-                    android:onClick="onPencilClicked" />
+                    android:onClick="onPencilClicked"
+                    android:layout_centerVertical="true" />
 
                 <CheckBox
                     android:layout_width="wrap_content"
@@ -123,9 +124,10 @@
                     android:contentDescription="@string/btnEditLiterature"
                     android:layout_toEndOf="@+id/lblLiterature"
                     android:layout_marginLeft="10dp"
-                    android:layout_alignParentTop="true"
+                    android:layout_alignParentTop="false"
                     android:layout_toRightOf="@+id/lblLiterature"
-                    android:onClick="onPencilClicked" />
+                    android:onClick="onPencilClicked"
+                    android:layout_centerVertical="true" />
             </RelativeLayout>
 
             <EditText
@@ -176,11 +178,12 @@
                     android:src="@drawable/ic_action_edit"
                     android:visibility="gone"
                     android:contentDescription="@string/btnEditMovies"
-                    android:layout_alignParentTop="true"
+                    android:layout_alignParentTop="false"
                     android:layout_toRightOf="@+id/lblMovies"
                     android:layout_toEndOf="@+id/lblMovies"
                     android:layout_marginLeft="10dp"
-                    android:onClick="onPencilClicked" />
+                    android:onClick="onPencilClicked"
+                    android:layout_centerVertical="true" />
             </RelativeLayout>
 
             <EditText
@@ -231,11 +234,12 @@
                     android:src="@drawable/ic_action_edit"
                     android:visibility="gone"
                     android:contentDescription="@string/btnEditArt"
-                    android:layout_alignParentTop="true"
+                    android:layout_alignParentTop="false"
                     android:layout_toRightOf="@+id/lblArt"
                     android:layout_toEndOf="@+id/lblArt"
                     android:layout_marginLeft="10dp"
-                    android:onClick="onPencilClicked" />
+                    android:onClick="onPencilClicked"
+                    android:layout_centerVertical="true" />
             </RelativeLayout>
 
             <EditText
@@ -286,11 +290,12 @@
                     android:src="@drawable/ic_action_edit"
                     android:visibility="gone"
                     android:contentDescription="@string/btnEditTvShows"
-                    android:layout_alignParentTop="true"
+                    android:layout_alignParentTop="false"
                     android:layout_toRightOf="@+id/lblTvShow"
                     android:layout_toEndOf="@+id/lblTvShow"
                     android:layout_marginLeft="10dp"
-                    android:onClick="onPencilClicked" />
+                    android:onClick="onPencilClicked"
+                    android:layout_centerVertical="true" />
             </RelativeLayout>
 
             <EditText
@@ -341,11 +346,12 @@
                     android:src="@drawable/ic_action_edit"
                     android:visibility="gone"
                     android:contentDescription="@string/btnEditSports"
-                    android:layout_alignParentTop="true"
+                    android:layout_alignParentTop="false"
                     android:layout_toRightOf="@+id/lblSports"
                     android:layout_toEndOf="@+id/lblSports"
                     android:layout_marginLeft="10dp"
-                    android:onClick="onPencilClicked" />
+                    android:onClick="onPencilClicked"
+                    android:layout_centerVertical="true" />
             </RelativeLayout>
 
             <EditText
@@ -434,7 +440,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/btnEditLookingFor"
-                    android:layout_alignParentTop="true"
+                    android:layout_alignParentTop="false"
                     android:background="@android:color/transparent"
                     android:src="@drawable/ic_action_edit"
                     android:visibility="gone"
@@ -442,7 +448,8 @@
                     android:layout_toRightOf="@+id/lblLookingFor"
                     android:layout_toEndOf="@+id/lblLookingFor"
                     android:layout_marginLeft="10dp"
-                    android:onClick="onPencilClicked" />
+                    android:onClick="onPencilClicked"
+                    android:layout_centerVertical="true" />
             </RelativeLayout>
 
             <EditText
