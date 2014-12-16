@@ -80,7 +80,7 @@
                 android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="visible"
+                android:visibility="gone"
                 android:id="@+id/layoutMatch">
 
                 <ProgressBar
@@ -97,8 +97,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Search Signal..."
-                    android:id="@+id/textView"
+                    android:text="@string/lblSignal"
+                    android:id="@+id/lblSignal"
                     android:layout_marginLeft="40dp"
                     android:textColor="#ff4066ff"
                     android:textStyle="bold"

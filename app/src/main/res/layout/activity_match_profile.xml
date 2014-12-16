@@ -151,6 +151,19 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:text="@string/findMatch"
+                android:id="@+id/findMatch"
+                android:textColor="@android:color/white"
+                android:background="@drawable/button_effect" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="5dp"
+                android:id="@+id/space12" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/btnClose"
                 android:id="@+id/btnClose"
                 android:textColor="@android:color/white"

@@ -122,6 +122,7 @@
     <string name="title_activity_match_profile">Perfil de Match</string>
     <string name="lblMatchName">Nombre de Match</string>
     <string name="btnClose">Cerrar perfil</string>
+    <string name="findMatch">Buscar</string>
     <string name="imageMatch">Imagen de Match</string>
     <string name="lblMatchInterests">Intereses</string>
     <string name="lblMatchContactedBy">Contáctame por</string>
@@ -179,4 +180,5 @@
     <string name="wifiNotConnectedLogin">La conexión de red está deshabilitada. ¿Deseás habilitarla?</string>
 
     <string name="menu">Menú</string>
+    <string name="lblSignal">Señal de búsqueda</string>
 </resources>
