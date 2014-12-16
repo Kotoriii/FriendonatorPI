@@ -17,14 +17,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.pi314.interests.InterestsMethods;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -33,7 +29,6 @@ import Bluetooth.BluetoothHandler;
 import Database.SQLiteHelper;
 import Database.Usuario;
 import misc.BackgroundService;
-import misc.GPSHelper;
 
 /**
  * Created by Christian on 10/12/2014.
@@ -50,6 +45,7 @@ public class HomeActivity extends Activity {
     int eventSelected;
     ImageView viewImage;
     private static boolean is_BackgroundRunning = false;
+    private boolean is_bluetoothRunning = false;
 
     //Elementos del menu
     private ListView NavList;
@@ -175,10 +171,13 @@ public class HomeActivity extends Activity {
 
         //inicializamos el bluetooth. Como es singleton no hay q preocuparse por cuantas veces
         //lo inicializamos
-        try {
-            this.inicializarBluetooth();
-        }catch (Exception e){
-            Log.e(this.getClass().getSimpleName(), "Leaked Bluetooth Handler");
+        if(!is_bluetoothRunning) {
+            try {
+                this.inicializarBluetooth();
+                this.is_bluetoothRunning = true;
+            } catch (Exception e) {
+                Log.e(this.getClass().getSimpleName(), "Leaked Bluetooth Handler");
+            }
         }
         if(!is_BackgroundRunning) { // solo queremos q lo inicialize una ves ya que es un 'activity'
             try {

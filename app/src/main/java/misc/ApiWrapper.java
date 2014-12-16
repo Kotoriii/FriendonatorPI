@@ -3,6 +3,7 @@ package misc;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -126,12 +127,8 @@ public class ApiWrapper {
                     persona.setGetTextFieldInfo(this.get_texto_Intereses_us(id_us));
 
 
-                    //Obtenemos la fecha
-                    String json_fecha = json.getString("fecha_de_nacimiento");
-                    int anno = Integer.parseInt(json_fecha.substring(0, 4));
-                    int mes = Integer.parseInt(json_fecha.substring(5, 7));
-                    int dia = Integer.parseInt(json_fecha.substring(8));
-                    persona.setFecha_de_nacimiento(new Date(anno, mes, dia));
+                    //jojo
+                    persona.setFecha_de_nacimiento(new Date());
                     persona.setFoto_perfil(this.saveUserBitmapFromUrl(act, id_us));
 
                     //cosas especificas de usuario
@@ -201,7 +198,7 @@ public class ApiWrapper {
             return null;
         }
 
-        Configuracion def = new Configuracion();
+       Configuracion def = new Configuracion();
         def.setIdUsuario(us.getId());
         def.setMinmatch("1");
         def.setNotific("1"); //1 prendido, 2 apagado
@@ -406,8 +403,10 @@ public class ApiWrapper {
             return getImageFromURL(url);
 
         } catch (JSONException e) {
-            e.printStackTrace();
-            return null;
+            mBitmapHolder = BitmapFactory.decodeResource(mAct.getResources(), R.drawable.match_place_holder);
+            SQLiteHelper hlp = SQLiteHelper.getInstance(mAct);
+            hlp.updateSync(hlp.IMAGEN_PERFIL, 1);
+            return mBitmapHolder;
         }
 
     }
@@ -419,6 +418,11 @@ public class ApiWrapper {
      */
     public boolean salvarInteresesDelServidorABDLocal(Activity act) {
         SQLiteHelper Helper = SQLiteHelper.getInstance(act);
+        SQLiteDatabase db = Helper.getWritableDatabase();
+        db.execSQL("delete from intereses");
+        db.execSQL("delete from superinteres");
+        db.execSQL("delete from usuariointereses");
+        db.execSQL("delete from config");
         try {
             HashMap<Superinteres, List<Intereses>> hmap = this.getIntereses();
             for (Superinteres sup : hmap.keySet()) {
@@ -440,8 +444,10 @@ public class ApiWrapper {
         String key;
         try {
             while (iter.hasNext()) {
-                key = iter.next();
-                textos.put(key, json.getString(key));
+                    key = iter.next();
+                if(!key.equals("error")) {
+                    textos.put(key, json.getString(key));
+                }
             }
         } catch (JSONException e) {
             e.printStackTrace();

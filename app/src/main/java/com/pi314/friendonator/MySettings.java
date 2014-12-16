@@ -36,7 +36,7 @@ public class MySettings extends Activity {
     private TypedArray NavIcons;
     NavigationAdapter NavAdapter;
     Person person;
-    SQLiteHelper db;
+
     String interval;
 
     @Override
@@ -50,7 +50,7 @@ public class MySettings extends Activity {
         final Button btnSave = (Button)findViewById(R.id.btnSave);
 
         final TextView textPercentage = (TextView) findViewById(R.id.txtPercentage);
-        db = SQLiteHelper.getInstance(this);
+        final SQLiteHelper db = SQLiteHelper.getInstance(getApplicationContext());
         // Get object person from intent extras
         getSetPerson();
 /*

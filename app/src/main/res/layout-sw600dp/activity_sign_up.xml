@@ -5,14 +5,17 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:id="@+id/scrollView2"
-        android:scrollbars="none" >
+        android:scrollbars="none"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/editTextUserName"
@@ -22,7 +25,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:inputType="textEmailAddress"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="300dp">
                 <requestFocus />
             </EditText>
 
@@ -50,17 +53,18 @@
 
             <Button
                 android:id="@+id/btnCreateAccount"
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btnCreateAccount"
                 android:background="@drawable/button_effect"
                 android:textColor="@android:color/white"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="20dp" />
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center_horizontal" />
 
             <Button
-                android:layout_width="match_parent"
+                android:layout_width="300dp"
                 android:layout_height="wrap_content"
                 android:text="@string/btnCancelSignUp"
                 android:id="@+id/btnCancelSignUp"
@@ -69,7 +73,8 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginBottom="20dp"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_horizontal" />
         </LinearLayout>
     </ScrollView>
 

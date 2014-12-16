@@ -4,12 +4,12 @@
     android:orientation="vertical" >
 
     <ScrollView
-        android:layout_width="375dp"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView2"
         android:scrollbars="none"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp">
+        android:layout_gravity="center"
+        android:layout_marginTop="175dp">
 
         <LinearLayout
             android:layout_width="match_parent"

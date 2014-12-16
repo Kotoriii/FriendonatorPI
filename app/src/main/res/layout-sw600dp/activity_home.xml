@@ -12,7 +12,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollView" >
+        android:id="@+id/scrollView"
+        android:layout_marginTop="25dp">
 
         <LinearLayout
             android:orientation="vertical"
@@ -29,7 +30,7 @@
                     android:layout_height="225dp"
                     android:id="@+id/imgviewEventpic"
                     android:layout_gravity="center_horizontal|top"
-                    android:layout_marginTop="25dp"
+                    android:layout_marginTop="50dp"
                     android:background="@android:color/white" />
 
             </FrameLayout>
@@ -90,8 +91,8 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="25dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginRight="40dp"
+                    android:layout_marginLeft="70dp"
+                    android:layout_marginRight="70dp"
                     android:progress="75" />
 
                 <TextView
@@ -99,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:text="Search Signal..."
                     android:id="@+id/textView"
-                    android:layout_marginLeft="40dp"
+                    android:layout_marginLeft="70dp"
                     android:textColor="#ff4066ff"
                     android:textStyle="bold"
                     android:textSize="20dp" />
@@ -117,7 +118,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_alignParentRight="true"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginRight="50dp"
+                        android:layout_marginRight="70dp"
                         android:src="@drawable/match_place_holder"
                         android:clickable="true"
                         android:onClick="onClickMatch" />

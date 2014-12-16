@@ -64,12 +64,6 @@ public class History extends Activity {
         // Get history list from Data Base
         List<Historial> historialList = db.getAllHistorial();
 
-        if (historialList.isEmpty()) {
-            // Testing inserting match and history
-            testMatchStuff();
-            historialList = db.getAllHistorial();
-            db.updateSync(db.HISTORIAL, 1);
-        }
 
         if (!historialList.isEmpty()) {
             for (Historial h : historialList) {
@@ -195,89 +189,6 @@ public class History extends Activity {
 
         if (person == null)
             person = new Person();
-    }
-
-    public void testMatchStuff() {
-        InterestsMethods test = new InterestsMethods();
-
-        Person matchPerson = new Person();
-
-        HashMap<Integer, List<Integer>> interests = new HashMap<Integer, List<Integer>>();
-        List<Integer> genres = new ArrayList<Integer>();
-        genres.add(0);
-        genres.add(1);
-        genres.add(2);
-        genres.add(3);
-
-        List<Integer> genres2 = new ArrayList<Integer>();
-        genres2.add(40);
-        genres2.add(43);
-        genres2.add(44);
-        genres2.add(47);
-
-        List<Integer> genres3 = new ArrayList<Integer>();
-        genres3.add(18);
-        genres3.add(22);
-
-        interests.put(1, genres);
-        interests.put(3, genres3);
-        interests.put(6, genres2);
-
-        matchPerson.setDataBaseInterest(interests);
-        matchPerson.setName("Female Doge");
-        matchPerson.setId("8");
-
-        matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestMusic), "Such music, many artist, wow");
-        matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestMovies), "Cute puppy");
-        matchPerson.fillTextFieldInfo(getResources().getString(R.string.selectInterestSports), "Must shape body");
-
-        HashMap<String, String> contactedBy = new HashMap<String, String>();
-        contactedBy.put("Cellphone", "8649-5984");
-        contactedBy.put("Facebook", "www.facebook.com/female.doge");
-        contactedBy.put("Twitter", "@SuchClass");
-
-        matchPerson.setGetContactedByList(contactedBy);
-
-        int percentage = (int) Math.floor(test.getMatchPercentage(person, matchPerson));
-        test.insertReceivedPerson(History.this, matchPerson, person.getId(), percentage);
-
-        Person matchPerson2 = new Person();
-
-        HashMap<Integer, List<Integer>> interests2 = new HashMap<Integer, List<Integer>>();
-        List<Integer> genres4 = new ArrayList<Integer>();
-        genres4.add(10);
-        genres4.add(11);
-        genres4.add(12);
-
-        List<Integer> genres5 = new ArrayList<Integer>();
-        genres5.add(27);
-        genres5.add(28);
-        genres5.add(29);
-
-        List<Integer> genres6 = new ArrayList<Integer>();
-        genres6.add(49);
-        genres6.add(50);
-
-        interests2.put(2, genres4);
-        interests2.put(4, genres5);
-        interests2.put(8, genres6);
-
-        matchPerson2.setDataBaseInterest(interests2);
-        matchPerson2.setName("Doge");
-        matchPerson2.setId("7");
-
-        matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestLiterature), "Kevin Bacon Guardian, Many Galaxies, Such Mix!");
-        matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestArt), "Doge Lisa");
-        matchPerson2.fillTextFieldInfo(getResources().getString(R.string.selectInterestLookingFor), "Many friends, wow");
-
-        HashMap<String, String> contactedBy2 = new HashMap<String, String>();
-        contactedBy2.put("Cellphone", "8321-8495");
-        contactedBy2.put("Twitter", "@MuchFood");
-
-        matchPerson2.setGetContactedByList(contactedBy2);
-
-        int percentage2 = (int) Math.floor(test.getMatchPercentage(person, matchPerson2));
-        test.insertReceivedPerson(History.this, matchPerson2, person.getId(), percentage2);
     }
 
 /*
