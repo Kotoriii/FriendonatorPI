@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import Bluetooth.BluetoothHandler;
 import Database.SQLiteHelper;
 import Dialog.InterestInfo;
 import GridView.GridCustomAdapter;
@@ -50,7 +51,6 @@ public class MatchProfileActivity extends Activity {
     NavigationAdapter NavAdapter;
 
     private ImageView imageMatch;
-    public static HashMap<String, Short> FUERZA_CON = new HashMap<String, Short>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +147,7 @@ public class MatchProfileActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // Static list for search stuff in home
-                FUERZA_CON.put(matchPerson.getId(), null);
+                BluetoothHandler.FUERZA_CON.put(matchPerson.getId(), null);
 
                 // Create intent
                 Intent intent = new Intent(MatchProfileActivity.this, HomeActivity.class);

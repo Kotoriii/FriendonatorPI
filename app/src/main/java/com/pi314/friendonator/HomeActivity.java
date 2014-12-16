@@ -62,8 +62,6 @@ public class HomeActivity extends Activity {
     private TypedArray NavIcons;
     NavigationAdapter NavAdapter;
 
-    public static HashMap<String, Short> FUERZA_CON = new HashMap<String, Short>();
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -184,12 +182,12 @@ public class HomeActivity extends Activity {
         this.inicializarMenu();
 
         // Make visible search stuff
-        if(FUERZA_CON != null && !FUERZA_CON.isEmpty()) {
+        if(!BluetoothHandler.FUERZA_CON.isEmpty()) {
             searchLayout.setVisibility(View.VISIBLE);
 
             Usuario match = new Usuario();
 
-            for (Map.Entry<String, Short> entry : FUERZA_CON.entrySet()) {
+            for (Map.Entry<String, Short> entry : BluetoothHandler.FUERZA_CON.entrySet()) {
                 match = db.getUserByID(Integer.parseInt(entry.getKey()));
                 searchSignal.setProgress(entry.getValue());
             }
