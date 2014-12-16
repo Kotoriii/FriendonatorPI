@@ -159,6 +159,7 @@ public class BluetoothHandler {
      * direccion) son los que se obtienen a la hora de hacer el scan y no son constantemente actualizados.
      */
     public void StartScan() {
+
         getDevicesList().clear();
         getAdapter().startDiscovery();
     }
@@ -222,9 +223,9 @@ public class BluetoothHandler {
         public void onReceive(Context context, Intent intent) {
            final String action = intent.getAction();
 
-
             if (BluetoothDevice.ACTION_FOUND.equals(action)) {
                 final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            Log.v(getClass().getSimpleName(), "Got device name "+ device.getName());
 
 
                 //Si esta en la lista estatica de dispositivos entonces queremos
@@ -441,7 +442,7 @@ public class BluetoothHandler {
         public void run() {
             // Cancel discovery because it will slow down the connection
             // temporalmente
-            getAdapter().cancelDiscovery();
+            //getAdapter().cancelDiscovery();
 
             // Connect the device through the socket. This will block
             // until it succeeds or throws an exception
@@ -505,8 +506,6 @@ public class BluetoothHandler {
 
                     oos.writeObject(person);
                 }
-
-                cancel();
             } catch (Exception e) {
 
             }
@@ -623,6 +622,9 @@ public class BluetoothHandler {
                     hlp.insertMAC_BT(Integer.parseInt(matchPerson.getId()),
                             mmSocket.getRemoteDevice().getAddress());
                     bjr.close();
+                    cancel();
+            Log.v("BluetoothFR", "Datos recieved!");
+
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -630,15 +632,13 @@ public class BluetoothHandler {
                 e.printStackTrace();
             }
 
-
-            Log.v("BluetoothFR", "Datos recieved!");
-
         }
 
         /* Call this from the main activity to shutdown the connection */
         public void cancel() {
             try {
                 mmSocket.close();
+                this.mmInStream.close();
             } catch (IOException e) {
             }
         }

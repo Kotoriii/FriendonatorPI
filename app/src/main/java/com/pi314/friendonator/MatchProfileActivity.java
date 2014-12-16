@@ -66,7 +66,7 @@ public class MatchProfileActivity extends Activity {
         try{
             //intentamos quitar el notification (en el caso de que existiese)
             BackgroundService.mNotificationManager.cancel(BackgroundService.mIdNotification);
-        }finally {}
+        }catch (Exception e){}
 
         // Get object person from intent extras
         getSetPerson();

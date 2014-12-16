@@ -26,6 +26,7 @@ public class MainActivity extends Activity{
         if(getIntent().getBooleanExtra("Exit me", false)){
             BluetoothHandler.restaurarNombre(this);//restaura el nombre del telefono a su original
             BackgroundService.stopBackgroundService(); //para todos los threads del BKS
+            BackgroundService.endService();
             finish();
         } else {
             /** Aqui solamente se inicializan cosas y se utiliza el OnDestroy de esta Clase */
