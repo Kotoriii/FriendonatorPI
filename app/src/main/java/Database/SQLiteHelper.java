@@ -350,7 +350,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("texto", text.getTexto());
 
         db.insert("textointeres", null, values);
-        db.close();
+
     }
 
     public void insertAuth(Limbo auth) {
@@ -361,7 +361,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("password", auth.getPassword());
 
         db.insert("limbo", null, values);
-        db.close();
+
     }
 
     public void insertHistorial(Historial hist) { // ToDo change this to match the new table values
@@ -377,7 +377,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("longitud", hist.getLongitud());
 
         db.insert("historial", null, values);
-        db.close();
+
     }
 
     public void insertInteres(Intereses inter) {
@@ -388,7 +388,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("Descripcion", inter.getDescripcion());
 
         db.insert("intereses", null, values);
-        db.close();
+
     }
 
     public void insertInteresCust(Intereses inter) {
@@ -400,7 +400,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("Descripcion", inter.getDescripcion());
 
         db.insert("intereses", null, values);
-        db.close();
+
     }
 
     public void insertSuperinter(Superinteres superint) {
@@ -411,7 +411,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("Descripcion", superint.getDescripcion());
 
         db.insert("superinteres", null, values);
-        db.close();
+
     }
 
     public void insertUsuario(Usuario user) {
@@ -432,7 +432,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("match_percentage", user.getMatchp());
 
         db.insert("usuario", null, values);
-        db.close();
+
     }
 
     public void insertUserint(Usuariointereses userint) {
@@ -443,7 +443,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("idUsuario", userint.getIdusuario());
 
         db.insert("usuariointereses", null, values);
-        db.close();
+
     }
 
     public void insertContacto(Contacto contacto) {
@@ -455,7 +455,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("modofavorito", contacto.getModofavorito());
         values.put("activo", contacto.getActivo());
         db.insert("contacto", null, values);
-        db.close();
+
     }
 
     public void insertConfig(Configuracion config) {
@@ -469,7 +469,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("vibration", config.getVibration());
         values.put("interval", config.getInterval());
         db.insert("config", null, values);
-        db.close();
+
     }
 
     public int updateHistorial(Historial hist) { // ToDo change this to match the new table values
@@ -824,6 +824,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("password", usuario.getPassword());
 
         db.insert("limbo", null, values);
-        db.close();
+
     }
 }
