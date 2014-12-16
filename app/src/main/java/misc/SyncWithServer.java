@@ -1,10 +1,8 @@
 package misc;
 
 import android.app.Activity;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.http.AndroidHttpClient;
-import android.util.Log;
 
 import com.pi314.friendonator.Person;
 import com.pi314.friendonator.R;
@@ -13,13 +11,11 @@ import com.pi314.interests.InterestsMethods;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
@@ -30,15 +26,12 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import Database.Configuracion;
 import Database.Historial;
-import Database.Intereses;
 import Database.SQLiteHelper;
 import Database.Superinteres;
 import Database.Usuario;
@@ -78,11 +71,6 @@ public class SyncWithServer extends ApiWrapper {
             persona.setGetTextFieldInfo(this.get_texto_Intereses_us(id_us));
 
 
-            //Obtenemos la fecha
-            String json_fecha = json.getString("fecha_de_nacimiento");
-//            int anno = Integer.parseInt(json_fecha.substring(0, 4));
-//            int mes = Integer.parseInt(json_fecha.substring(5, 7));
-//            int dia = Integer.parseInt(json_fecha.substring(8));
             persona.setFecha_de_nacimiento(new Date());
             persona.setFoto_perfil(this.saveUserBitmapFromUrl(mAct, id_us));
 

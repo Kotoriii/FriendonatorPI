@@ -34,7 +34,7 @@ public class BackgroundService extends IntentService {
 
     public static final int mIdNotification = 48454;
     public static NotificationManager mNotificationManager = null;
-    private boolean running = true;
+    private static boolean running = true;
     private static Activity mAct;
 
     public BackgroundService() {
@@ -79,9 +79,10 @@ public class BackgroundService extends IntentService {
         if(mAct!= null && mNotificationManager != null) {
             NotificationCompat.Builder mBuilder;
             mBuilder = new NotificationCompat.Builder(mAct)
-                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setSmallIcon(R.drawable.logo_notification_bar)
                     .setContentTitle("Clover")
-                    .setDefaults(Notification.DEFAULT_SOUND);
+
+                    .setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 
             mBuilder.setContentText(mAct.getResources().getText(R.string.found_a_match) + " " + String.valueOf(match_perc));
 
@@ -194,8 +195,8 @@ public class BackgroundService extends IntentService {
         syncThread.start();
     }
 
-    public void stopBackgroundService() {
-        this.running = false;
+    public static void stopBackgroundService() {
+        running = false;
     }
 
     public void ScanConstantly(final Activity activity) {
