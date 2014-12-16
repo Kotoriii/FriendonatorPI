@@ -1,35 +1,17 @@
 package com.pi314.friendonator;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
-import android.content.res.TypedArray;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.widget.DrawerLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.UUID;
 
 import Bluetooth.BluetoothHandler;
-import Bluetooth.DeviceValidator;
 import Database.SQLiteHelper;
 import misc.BackgroundService;
 import misc.GPSHelper;
-import misc.SyncWithServer;
 
 
 public class MainActivity extends Activity{
@@ -42,6 +24,8 @@ public class MainActivity extends Activity{
 
         // This will close the app from Home
         if(getIntent().getBooleanExtra("Exit me", false)){
+            BluetoothHandler.restaurarNombre(this);//restaura el nombre del telefono a su original
+            BackgroundService.stopBackgroundService(); //para todos los threads del BKS
             finish();
         } else {
             /** Aqui solamente se inicializan cosas y se utiliza el OnDestroy de esta Clase */
@@ -74,7 +58,6 @@ public class MainActivity extends Activity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        BluetoothHandler.restaurarNombre(this);
     }
 
     @Override
