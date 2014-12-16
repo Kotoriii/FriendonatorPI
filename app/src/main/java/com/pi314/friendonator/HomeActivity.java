@@ -309,8 +309,8 @@ public class HomeActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-       // if(is_bluetoothRunning)
-       //     unregisterReceiver(BluetoothHandler.getInstance(this).getReceiver());
+        if(is_bluetoothRunning)
+            unregisterReceiver(BluetoothHandler.getInstance(this).getReceiver());
     }
 
 
