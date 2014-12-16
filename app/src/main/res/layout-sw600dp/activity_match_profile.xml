@@ -152,11 +152,26 @@
             <Button
                 android:layout_width="300dp"
                 android:layout_height="wrap_content"
+                android:text="@string/findMatch"
+                android:id="@+id/findMatch"
+                android:textColor="@android:color/white"
+                android:background="@drawable/button_effect"
+                android:layout_gravity="center_horizontal" />
+
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:id="@+id/space12" />
+
+            <Button
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
                 android:text="@string/btnClose"
                 android:id="@+id/btnClose"
                 android:textColor="@android:color/white"
                 android:background="@drawable/button_effect"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:paddingTop="10dp" />
 
         </LinearLayout>
     </ScrollView>

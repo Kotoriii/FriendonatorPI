@@ -310,14 +310,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Usuario usuario = new Usuario();
 
         Cursor cursor = db.rawQuery("select * from limbo", null);
-        try {
+
             if (cursor.moveToFirst()) {
                 usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
                 usuario.setPassword(cursor.getString(cursor.getColumnIndex("password")));
             }
-        }catch (IllegalStateException e){
-            return getLimbo1();
-        }
+
 
         cursor.close();
 
@@ -759,20 +757,22 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         Usuario usuario = new Usuario();
 
         Cursor cursor = db.query("usuario", null, "idUsuario=?", new String[]{String.valueOf(userId)}, null, null, null);
-        if (cursor.moveToFirst()) {
-            usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
-            usuario.setDob(cursor.getString(cursor.getColumnIndex("fecha_de_nacimiento")));
-            usuario.setCorreo(cursor.getString(cursor.getColumnIndex("correo")));
-            usuario.setPassword(cursor.getString(cursor.getColumnIndex("password")));
-            usuario.setNum(cursor.getString(cursor.getColumnIndex("numero_telefono")));
-            usuario.setFb(cursor.getString(cursor.getColumnIndex("facebook")));
-            usuario.setGplus(cursor.getString(cursor.getColumnIndex("google_p")));
-            usuario.setTwitter(cursor.getString(cursor.getColumnIndex("Twitter")));
-            usuario.setModfav(cursor.getString(cursor.getColumnIndex("modo_favorito")));
-            usuario.setFoto(cursor.getString(cursor.getColumnIndex("foto_perfil")));
-            usuario.setNombre(cursor.getString(cursor.getColumnIndex("nombre")));
-            usuario.setMatchp(cursor.getString(cursor.getColumnIndex("match_percentage")));
-        }
+
+            if (cursor.moveToFirst()) {
+                usuario.setId(cursor.getString(cursor.getColumnIndex("idUsuario")));
+                usuario.setDob(cursor.getString(cursor.getColumnIndex("fecha_de_nacimiento")));
+                usuario.setCorreo(cursor.getString(cursor.getColumnIndex("correo")));
+                usuario.setPassword(cursor.getString(cursor.getColumnIndex("password")));
+                usuario.setNum(cursor.getString(cursor.getColumnIndex("numero_telefono")));
+                usuario.setFb(cursor.getString(cursor.getColumnIndex("facebook")));
+                usuario.setGplus(cursor.getString(cursor.getColumnIndex("google_p")));
+                usuario.setTwitter(cursor.getString(cursor.getColumnIndex("Twitter")));
+                usuario.setModfav(cursor.getString(cursor.getColumnIndex("modo_favorito")));
+                usuario.setFoto(cursor.getString(cursor.getColumnIndex("foto_perfil")));
+                usuario.setNombre(cursor.getString(cursor.getColumnIndex("nombre")));
+                usuario.setMatchp(cursor.getString(cursor.getColumnIndex("match_percentage")));
+            }
+
 
         cursor.close();
 
