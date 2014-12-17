@@ -215,6 +215,8 @@ public class ProfileActivity extends Activity {
                     // Set person inside intent
                     intent.putExtra("PERSON", person);
 
+                    db.updateSync(db.IMAGEN_PERFIL, 1);
+
                     // Start change to a new layout
                     startActivity(intent);
 
