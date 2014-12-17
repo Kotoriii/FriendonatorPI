@@ -11,11 +11,13 @@ import com.pi314.interests.InterestsMethods;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
@@ -221,7 +223,7 @@ public class SyncWithServer extends ApiWrapper {
 
     private String post(String url, List<NameValuePair> nameValuePairs) throws IOException {
         String responseS = "";
-        AndroidHttpClient httpClient = AndroidHttpClient.newInstance("Android");
+        HttpClient httpClient = new DefaultHttpClient();
         HttpContext localContext = new BasicHttpContext();
         HttpPost httpPost = new HttpPost(url);
 
@@ -248,7 +250,6 @@ public class SyncWithServer extends ApiWrapper {
         if (responseS.equals("0")) {
             throw new IOException();
         }
-        httpClient.close();
         httpClient = null; //para garbage collection
         return responseS;
     }
@@ -259,11 +260,8 @@ public class SyncWithServer extends ApiWrapper {
         SQLiteHelper db = SQLiteHelper.getInstance(act.getApplicationContext());
 
         db.updateUsuario(usuario);
-        db.getWritableDatabase().execSQL("delete from usuariointereses where idUsuario=" + person.getId());
         mths.insertOnLoginIntereses(act, person);
 
-
-        db.getWritableDatabase().execSQL("delete from textointeres where idUsuario=" + person.getId());
         mths.insertText(act, person);
 
     }

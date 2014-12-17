@@ -119,9 +119,8 @@ public class BackgroundService extends IntentService {
                                 bMan.StartBlueTooth();
                             }
                         }
-                        this.sleep(10000);
 
-                        //this.sleep(Integer.parseInt(db.getConfig(person.getId()).getInterval()));
+                        this.sleep(Integer.parseInt(db.getConfig(person.getId()).getInterval()));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

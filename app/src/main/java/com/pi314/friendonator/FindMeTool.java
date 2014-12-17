@@ -34,7 +34,6 @@ public class FindMeTool extends Activity {
             }
         });
 
-        //TODO remove!!
         final TextView txtService = (TextView) findViewById(R.id.txtServiceR);
         final ImageView imgView = (ImageView) findViewById(R.id.imgFiewFindME);
         final Button btnRequest = (Button) findViewById(R.id.btnRequesS);

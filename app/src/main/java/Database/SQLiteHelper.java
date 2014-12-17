@@ -410,7 +410,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("idSuperInteres", superint.getId());
         values.put("Descripcion", superint.getDescripcion());
 
-        db.insert("superinteres", null, values);
+        //db.insert("superinteres", null, values);
+        db.execSQL("insert into superinteres (idSuperInteres, Descripcion) " +
+                "VALUES ("+superint.getId()+",'"+superint.getDescripcion()+"')");
 
     }
 
@@ -442,7 +444,9 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.put("idInteres", userint.getIdinteres());
         values.put("idUsuario", userint.getIdusuario());
 
-        db.insert("usuariointereses", null, values);
+        db.execSQL("insert into usuariointereses " +
+                "(idInteres, idUsuario) VALUES ("+userint.getIdinteres()+", "+userint.getIdusuario()+") ");
+        //db.insert("usuariointereses", null, values);
 
     }
 
