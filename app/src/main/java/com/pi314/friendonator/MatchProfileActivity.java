@@ -147,7 +147,7 @@ public class MatchProfileActivity extends Activity {
             @Override
             public void onClick(View v) {
                 // Static list for search stuff in home
-                BluetoothHandler.FUERZA_CON.put(matchPerson.getId(), null);
+                BluetoothHandler.FUERZA_CON.put(matchPerson.getId(), Short.valueOf("85"));
 
                 // Create intent
                 Intent intent = new Intent(MatchProfileActivity.this, HomeActivity.class);

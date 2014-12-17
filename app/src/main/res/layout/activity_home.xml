@@ -39,7 +39,7 @@
                 android:layout_height="match_parent">
 
                 <Spinner
-                    android:layout_width="275dp"
+                    android:layout_width="300dp"
                     android:layout_height="50dp"
                     android:id="@+id/spnEvent"
                     android:layout_centerHorizontal="true"
