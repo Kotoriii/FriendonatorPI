@@ -123,7 +123,7 @@ public class InterestsMethods {
 
         while (count < allTexts.size()) {
             for (TextoInteres t : allTexts) {
-                contactedByList.put(interest[Integer.parseInt(t.getIdSuperInteres())], t.getTexto());
+                contactedByList.put(interest[Integer.parseInt(t.getIdSuperInteres())-1], t.getTexto());
             }
             count++;
         }
@@ -219,7 +219,7 @@ public class InterestsMethods {
 
             for (Map.Entry<String, String> entry : person.getTextFieldInfo().entrySet()) {
                 TextoInteres text = new TextoInteres();
-                text.setIdSuperInteres(String.valueOf(Arrays.asList(interestArray).indexOf(entry.getKey())));
+                text.setIdSuperInteres(String.valueOf(Arrays.asList(interestArray).indexOf(entry.getKey())+1));
                 text.setUsuario(person.getId());
                 text.setTexto(entry.getValue());
                 db.insertTexto(text);

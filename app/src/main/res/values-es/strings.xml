@@ -2,7 +2,7 @@
 
 <resources>
 
-    <string name="app_name">Friendonator</string>
+    <string name="app_name">Clover</string>
     <string name="action_settings">Preferencias</string>
 
     <string name="title_activity_profile">Perfil</string>
