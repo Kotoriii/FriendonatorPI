@@ -94,7 +94,6 @@ public class MySettings extends Activity {
         btnIntervaleScan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 AlertDialog alertInt = alt_bldInt.create();
                 alertInt.show();
             }
@@ -103,14 +102,12 @@ public class MySettings extends Activity {
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Configuracion config = db.getConfig(person.getEmail());
                 config.setInterval(interval);
                 db.updateConfig(config);
 
                 // Create intent
                 Intent intent = new Intent(MySettings.this, HomeActivity.class);
-
 
                 // Set person inside intent
                 intent.putExtra("PERSON", person);
@@ -123,19 +120,14 @@ public class MySettings extends Activity {
             }
         });
 
-
         btnAboutUs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 // Create intent
                 Intent intent = new Intent(MySettings.this, AboutUs.class);
 
                 // Start change to a new layout
                 startActivity(intent);
-
-                // Finish activity
-                finish();
             }
         });
 
