@@ -39,6 +39,13 @@ public class MySettings extends Activity {
 
     String interval;
 
+    String defaultinterval;
+    int intervaloption = 0;
+
+    String defaultminmatch;
+    String stringminmatch;
+    int minmatch = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,39 +60,62 @@ public class MySettings extends Activity {
         final TextView textPercentage = (TextView) findViewById(R.id.txtPercentage);
         final SQLiteHelper db = SQLiteHelper.getInstance(getApplicationContext());
 
+
+
         getSetPerson();
 
-        final CharSequence[] Intervale = {getResources().getString(R.string.minutes2),getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15), getResources().getString(R.string.always)};
+        final Configuracion config = db.getConfig(person.getId());
+
+        defaultinterval = (config.getInterval());
+        defaultminmatch = (config.getMinmatch());
+
+        if (defaultinterval == "120000") {
+            intervaloption = 0;
+        }
+        else if (defaultinterval == "300000"){
+            intervaloption = 1;
+        }
+        else if (defaultinterval == "600000"){
+            intervaloption = 2;
+        }
+        else if (defaultinterval == "900000"){
+            intervaloption = 3;
+        }
+
+        seekBar1.setProgress(Integer.parseInt(defaultminmatch));
+
+
+
+        final CharSequence[] Intervale = {getResources().getString(R.string.minutes2),getResources().getString(R.string.minutes5), getResources().getString(R.string.minutes10), getResources().getString(R.string.minutes15)};
         final AlertDialog.Builder alt_bldInt = new AlertDialog.Builder(this);
         alt_bldInt.setIcon(R.drawable.ic_settings_alert);
-        alt_bldInt.setPositiveButton(getResources().getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-            }
-
-        });
 
 
 
 
-        alt_bldInt.setNegativeButton(getResources().getString(R.string.cancel), null);
+
         alt_bldInt.setTitle(getResources().getString(R.string.intervalscan));
-        alt_bldInt.setSingleChoiceItems(Intervale, -1, new DialogInterface
+        alt_bldInt.setSingleChoiceItems(Intervale, intervaloption, new DialogInterface
                 .OnClickListener() {
             public void onClick(DialogInterface dialog, int item) {
                 String mensajePr = getResources().getString(R.string.intervalscantoast) + Intervale[item];
+                int selectedPosition = ((AlertDialog)dialog).getListView().getCheckedItemPosition();
                 ToastCostumizado(mensajePr);
-                if (Intervale[item]==getResources().getString(R.string.minutes2)){
-                    interval = "7200";
+                if (selectedPosition==0){
+                    interval = "120000";
+                    dialog.dismiss();
                 }
-                else if (Intervale[item]==getResources().getString(R.string.minutes5)){
-                    interval = "18000";
+                else if (selectedPosition==1){
+                    interval = "300000";
+                    dialog.dismiss();
                 }
-                else if (Intervale[item]==getResources().getString(R.string.minutes10)){
-                    interval = "36000";
+                else if (selectedPosition==2){
+                    interval = "600000";
+                    dialog.dismiss();
                 }
-                else if (Intervale[item]==getResources().getString(R.string.minutes15)){
-                    interval = "54000";
+                else if (selectedPosition==3){
+                    interval = "900000";
+                    dialog.dismiss();
                 }
 
             }
@@ -100,28 +130,7 @@ public class MySettings extends Activity {
             }
         });
 
-        btnSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-                Configuracion config = db.getConfig(person.getEmail());
-                config.setInterval(interval);
-                db.updateConfig(config);
-
-                // Create intent
-                Intent intent = new Intent(MySettings.this, HomeActivity.class);
-
-
-                // Set person inside intent
-                intent.putExtra("PERSON", person);
-
-                // Start change to a new layout
-                startActivity(intent);
-
-                // Finish activity
-                finish();
-            }
-        });
 
 
         btnAboutUs.setOnClickListener(new View.OnClickListener() {
@@ -142,11 +151,12 @@ public class MySettings extends Activity {
         textPercentage.setText(seekBar1.getProgress() + "/" + seekBar1.getMax());
 
         seekBar1.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            int progress = 0;
+
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progresValue, boolean fromUser) {
-                progress = progresValue;
+                minmatch = progresValue;
+
 
             }
 
@@ -162,6 +172,32 @@ public class MySettings extends Activity {
             }
 
         });
+
+        btnSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                config.setIdUsuario(person.getId());
+                config.setInterval(interval);
+                config.setMinmatch(String.valueOf(minmatch));
+                db.updateConfig(config);
+
+                // Create intent
+                Intent intent = new Intent(MySettings.this, HomeActivity.class);
+
+
+                // Set person inside intent
+                intent.putExtra("PERSON", person);
+
+                // Start change to a new layout
+                startActivity(intent);
+
+                // Finish activity
+                finish();
+            }
+        });
+
+
 
 
         ///////////////////////////////////////Logica para el menu//////////////////////////////////////////////////////////

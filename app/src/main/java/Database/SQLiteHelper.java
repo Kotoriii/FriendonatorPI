@@ -558,7 +558,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put("idUsuario", config.getIdUsuario());
         values.put("minmatch", config.getMinmatch());
         values.put("notific", config.getNotific());
         values.put("sound", config.getSound());
