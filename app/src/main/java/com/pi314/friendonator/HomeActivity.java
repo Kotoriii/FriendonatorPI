@@ -193,7 +193,7 @@ public class HomeActivity extends Activity {
             }
 
             if(match.getFoto() != null) {
-                File file = new File(usuario.getFoto());
+                File file = new File(match.getFoto());
                 Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
                 imgviewMatchhome.setImageBitmap(bitmap);
             }

@@ -68,7 +68,7 @@ public class History extends Activity {
         if (!historialList.isEmpty()) {
             for (Historial h : historialList) {
                 Usuario usuario = new Usuario();
-                db.getUserByID(Integer.parseInt(h.getIdMatch()));
+                usuario = db.getUserByID(Integer.parseInt(h.getIdMatch()));
 
                 datos.add(new ListaEntrada_History(usuario.getFoto(), h.getMatchName(), getResources().getString(R.string.matchPercentage) + " " + h.getMatchPerc() + "%", Integer.parseInt(h.getIdMatch())));
             }
